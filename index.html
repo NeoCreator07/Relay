@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relay</title>
+  <!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  RELAY — SETUP GUIDE                                         ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                              ║
+  ║  FIREBASE (free, takes ~5 mins)                              ║
+  ║  1. Go to https://console.firebase.google.com                ║
+  ║  2. Create a project                                         ║
+  ║  3. Click "Add app" → Web → register it                      ║
+  ║  4. Copy the firebaseConfig object and paste it below        ║
+  ║  5. In the sidebar: Realtime Database → Create database      ║
+  ║     → pick a region → Start in test mode                     ║
+  ║                                                              ║
+  ║  DEPLOY TO CLOUDFLARE PAGES                                  ║
+  ║  1. Rename this file index.html and push to a GitHub repo    ║
+  ║  2. Cloudflare Dashboard → Workers & Pages → Create          ║
+  ║  3. Connect your GitHub repo                                  ║
+  ║  4. Framework preset: None  |  Build command: (leave blank)  ║
+  ║     Output directory: /  (leave blank / root)                ║
+  ║  5. Save and deploy — done!                                   ║
+  ║                                                              ║
+  ╚══════════════════════════════════════════════════════════════╝
+  -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0A0A10;
+      --surface:  #13131C;
+      --border:   #22223A;
+      --text:     #EEEEF8;
+      --muted:    #5A5A72;
+      --accent:   #5B4FE8;
+      --accentlt: #7C6FFF;
+      --danger:   #FF6B6B;
+      --thembbl:  #1A1A2A;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ── Auth ── */
+    #auth {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100dvh;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 30px;
+      width: min(320px, calc(100vw - 32px));
+    }
+
+    .logo { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+    .logo-text { font-size: 26px; font-weight: 700; letter-spacing: -0.05em; }
+
+    #auth-tagline { color: var(--muted); font-size: 14px; margin-bottom: 22px; line-height: 1.4; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6B6B84;
+      margin-bottom: 5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    input[type=text], input[type=password] {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    input[type=text]:focus, input[type=password]:focus { border-color: var(--accent); }
+
+    #auth-error { color: var(--danger); font-size: 13px; margin-bottom: 10px; line-height: 1.4; }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+      margin-bottom: 16px;
+    }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+
+    #auth-footer { text-align: center; color: #4A4A62; font-size: 13px; }
+    #auth-toggle {
+      background: none; border: none; color: var(--accentlt);
+      font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 0;
+    }
+
+    /* ── Chat ── */
+    #chat { display: flex; flex-direction: column; height: 100dvh; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      border-bottom: 1px solid #17172A;
+      flex-shrink: 0;
+    }
+    .h-left { display: flex; align-items: center; gap: 7px; }
+    .h-right { display: flex; align-items: center; gap: 8px; }
+    .h-title { font-size: 16px; font-weight: 700; letter-spacing: -0.04em; }
+    #h-name  { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+    .btn-ghost {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 4px 10px; font-size: 12px; color: var(--muted);
+      cursor: pointer; font-family: inherit; transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: #3A3A5A; }
+
+    #feed {
+      flex: 1; overflow-y: auto;
+      padding: 16px 14px;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    #feed::-webkit-scrollbar { width: 4px; }
+    #feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    #empty { margin: auto; text-align: center; color: var(--muted); }
+    #empty-icon { font-size: 32px; margin-bottom: 8px; }
+    #empty p    { font-size: 14px; }
+
+    .row { display: flex; margin-bottom: 1px; }
+    .row.mine   { justify-content: flex-end; }
+    .row.theirs { justify-content: flex-start; }
+
+    .grp { max-width: 72%; display: flex; flex-direction: column; }
+    .mine   .grp { align-items: flex-end; }
+    .theirs .grp { align-items: flex-start; }
+
+    .s-name {
+      font-size: 11px; font-weight: 600;
+      margin-bottom: 3px; margin-left: 10px; letter-spacing: 0.01em;
+    }
+
+    .bbl {
+      padding: 9px 13px; border-radius: 18px; font-size: 14px;
+      display: flex; align-items: flex-end; gap: 7px;
+      word-break: break-word; line-height: 1.45;
+    }
+    .bbl.mine   { background: var(--accent);  border-bottom-right-radius: 4px; color: #fff; }
+    .bbl.theirs { background: var(--thembbl); border-bottom-left-radius:  4px; color: #DDDDF0; }
+    .bbl-txt  { flex: 1; }
+    .bbl-time { font-size: 10px; opacity: 0.5; white-space: nowrap; flex-shrink: 0; padding-bottom: 1px; }
+
+    .bar {
+      display: flex; gap: 8px; padding: 10px 14px;
+      border-top: 1px solid #17172A; flex-shrink: 0;
+    }
+
+    #msg-input {
+      flex: 1; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 22px; padding: 9px 16px; font-size: 14px;
+      color: var(--text); outline: none; font-family: inherit; transition: border-color 0.15s;
+    }
+    #msg-input:focus { border-color: var(--accent); }
+    #msg-input::placeholder { color: #35354E; }
+
+    #send-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--accent); border: none; color: #fff; font-size: 17px;
+      cursor: pointer; flex-shrink: 0; transition: opacity 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+<!-- AUTH ──────────────────────────────────────────────────────── -->
+<div id="auth">
+  <div class="card">
+    <div class="logo">
+      <span style="font-size:26px">⚡</span>
+      <span class="logo-text">Relay</span>
+    </div>
+    <p id="auth-tagline">Welcome back.</p>
+
+    <label for="u-in">Username</label>
+    <input id="u-in" type="text" placeholder="yourname"
+           autocapitalize="none" autocomplete="username" />
+
+    <label for="p-in">Password</label>
+    <input id="p-in" type="password" placeholder="••••••••"
+           autocomplete="current-password" />
+
+    <p id="auth-error" class="hidden"></p>
+
+    <button class="btn-primary" id="auth-btn">Sign in</button>
+
+    <p id="auth-footer">
+      <span id="footer-txt">New to Relay? </span>
+      <button id="auth-toggle">Create account</button>
+    </p>
+  </div>
+</div>
+
+<!-- CHAT ──────────────────────────────────────────────────────── -->
+<div id="chat" class="hidden">
+  <header>
+    <div class="h-left">
+      <span style="font-size:18px">⚡</span>
+      <span class="h-title">Relay</span>
+    </div>
+    <div class="h-right">
+      <span id="h-dot" style="font-size:10px">●</span>
+      <span id="h-name"></span>
+      <button class="btn-ghost" id="leave-btn">Leave</button>
+    </div>
+  </header>
+
+  <div id="feed">
+    <div id="empty">
+      <div id="empty-icon">⚡</div>
+      <p>No messages yet — start the relay!</p>
+    </div>
+  </div>
+
+  <div class="bar">
+    <input type="text" id="msg-input" placeholder="Type a message…" />
+    <button id="send-btn" disabled>↑</button>
+  </div>
+</div>
+
+<!-- Firebase ──────────────────────────────────────────────────── -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  PASTE YOUR FIREBASE CONFIG HERE
+// ════════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyCBeIg5wfpDuLsZWK8am4hvNnueVU3FF20",
+  authDomain:        "test-chat2-89c58.firebaseapp.com",
+  databaseURL:       "https://test-chat2-89c58-default-rtdb.firebaseio.com",
+  projectId:         "test-chat2-89c58",
+  storageBucket:     "test-chat2-89c58.firebasestorage.app",
+  messagingSenderId: "557960980063",
+  appId:             "1:557960980063:web:6e8b35970d7cd59cd79dea"
+};
+// ════════════════════════════════════════════════════════════════
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ── Config ───────────────────────────────────────────────────────
+const COLORS  = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
+const MAX_MSG = 150;
+
+// ── State ────────────────────────────────────────────────────────
+let me       = null;      // { username, color }
+let mode     = "login";
+let msgsRef  = null;
+let seenIds  = new Set();
+let lastUser = null;      // for sender name grouping
+
+// ── Utilities ────────────────────────────────────────────────────
+const $         = id => document.getElementById(id);
+const uid       = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const randColor = () => COLORS[Math.floor(Math.random() * COLORS.length)];
+const fmtTime   = ts => new Date(ts).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+function nearBottom() {
+  const f = $("feed");
+  return f.scrollHeight - f.scrollTop - f.clientHeight < 100;
+}
+function scrollDown() { const f = $("feed"); f.scrollTop = f.scrollHeight; }
+
+// ── Auth ─────────────────────────────────────────────────────────
+function showErr(msg) { const e = $("auth-error"); e.textContent = msg; e.classList.remove("hidden"); }
+function clearErr()   { $("auth-error").classList.add("hidden"); }
+
+function setMode(m) {
+  mode = m;
+  const login = m === "login";
+  $("auth-tagline").textContent = login ? "Welcome back."        : "Create your account.";
+  $("auth-btn").textContent     = login ? "Sign in"              : "Create account";
+  $("footer-txt").textContent   = login ? "New to Relay? "       : "Already have an account? ";
+  $("auth-toggle").textContent  = login ? "Create account"       : "Sign in";
+  clearErr();
+}
+
+async function handleAuth() {
+  const username = $("u-in").value.trim().toLowerCase();
+  const password = $("p-in").value;
+
+  if (!username || !password)          return showErr("Please fill in all fields.");
+  if (username.length < 3)             return showErr("Username must be at least 3 characters.");
+  if (!/^[a-z0-9_]+$/.test(username)) return showErr("Letters, numbers, and underscores only.");
+  if (password.length < 4)             return showErr("Password must be at least 4 characters.");
+
+  const btn = $("auth-btn");
+  btn.disabled = true;
+  btn.textContent = "…";
+  clearErr();
+
+  try {
+    const hash = await sha256(password);
+    const ref  = db.ref("users/" + username);
+    const snap = await ref.get();
+
+    if (mode === "signup") {
+      if (snap.exists()) return showErr("Username already taken.");
+      const color = randColor();
+      await ref.set({ username, passwordHash: hash, color });
+      me = { username, color };
+      enterChat();
+    } else {
+      if (!snap.exists()) return showErr("No account found with that username.");
+      const data = snap.val();
+      if (data.passwordHash !== hash) return showErr("Incorrect password.");
+      me = { username: data.username, color: data.color };
+      enterChat();
+    }
+  } catch (err) {
+    showErr("Connection error. Check your Firebase config and database rules.");
+    console.error(err);
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = mode === "login" ? "Sign in" : "Create account";
+  }
+}
+
+// ── Chat ─────────────────────────────────────────────────────────
+function enterChat() {
+  $("auth").classList.add("hidden");
+  $("chat").classList.remove("hidden");
+  $("h-dot").style.color  = me.color;
+  $("h-name").textContent = me.username;
+  listenMessages();
+  setTimeout(() => $("msg-input").focus(), 50);
+}
+
+function leaveChat() {
+  if (msgsRef) { msgsRef.off(); msgsRef = null; }
+  seenIds.clear();
+  lastUser = null;
+  me = null;
+  $("chat").classList.add("hidden");
+  $("auth").classList.remove("hidden");
+  $("feed").innerHTML = `<div id="empty"><div id="empty-icon">⚡</div><p>No messages yet — start the relay!</p></div>`;
+  $("u-in").value = "";
+  $("p-in").value = "";
+  clearErr();
+  setTimeout(() => $("u-in").focus(), 50);
+}
+
+function appendMsg(msg) {
+  const empty = $("empty");
+  if (empty) empty.remove();
+
+  const feed         = $("feed");
+  const shouldScroll = nearBottom();
+  const isMine       = msg.username === me.username;
+  const showSender   = !isMine && msg.username !== lastUser;
+  lastUser           = msg.username;
+
+  const row = document.createElement("div");
+  row.className = "row " + (isMine ? "mine" : "theirs");
+
+  const grp = document.createElement("div");
+  grp.className = "grp";
+
+  if (showSender) {
+    const sn = document.createElement("div");
+    sn.className   = "s-name";
+    sn.textContent = msg.username;
+    sn.style.color = msg.color;
+    grp.appendChild(sn);
+  }
+
+  const bbl = document.createElement("div");
+  bbl.className = "bbl " + (isMine ? "mine" : "theirs");
+
+  const txt = document.createElement("span");
+  txt.className   = "bbl-txt";
+  txt.textContent = msg.text;
+
+  const ts = document.createElement("span");
+  ts.className   = "bbl-time";
+  ts.textContent = fmtTime(msg.ts);
+
+  bbl.appendChild(txt);
+  bbl.appendChild(ts);
+  grp.appendChild(bbl);
+  row.appendChild(grp);
+  feed.appendChild(row);
+
+  if (shouldScroll) scrollDown();
+}
+
+function listenMessages() {
+  // child_added fires for each existing message in order, then each new one
+  msgsRef = db.ref("messages").orderByChild("ts").limitToLast(MAX_MSG);
+  msgsRef.on("child_added", snap => {
+    const msg = snap.val();
+    if (seenIds.has(msg.id)) return;
+    seenIds.add(msg.id);
+    appendMsg(msg);
+  });
+}
+
+async function sendMsg() {
+  const input = $("msg-input");
+  const text  = input.value.trim();
+  if (!text) return;
+
+  input.value = "";
+  $("send-btn").disabled = true;
+
+  try {
+    await db.ref("messages/" + uid()).set({
+      id:       uid(),
+      username: me.username,
+      color:    me.color,
+      text,
+      ts:       Date.now()
+    });
+  } catch (err) {
+    console.error("Send failed:", err);
+    input.value = text;
+  }
+}
+
+// ── Events ───────────────────────────────────────────────────────
+$("auth-btn").addEventListener("click", handleAuth);
+$("u-in").addEventListener("keydown",  e => { if (e.key === "Enter") $("p-in").focus(); });
+$("p-in").addEventListener("keydown",  e => { if (e.key === "Enter") handleAuth(); });
+$("auth-toggle").addEventListener("click", () => setMode(mode === "login" ? "signup" : "login"));
+$("leave-btn").addEventListener("click", leaveChat);
+$("msg-input").addEventListener("input", () => {
+  $("send-btn").disabled = !$("msg-input").value.trim();
+});
+$("msg-input").addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+});
+$("send-btn").addEventListener("click", sendMsg);
+
+// ── Init ─────────────────────────────────────────────────────────
+setTimeout(() => $("u-in").focus(), 100);
+</script>
+</body>
+</html>

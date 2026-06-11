@@ -201,6 +201,18 @@
       display: flex; align-items: center; justify-content: center;
     }
     #send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    #chat-notice {
+      font-size: 12px;
+      color: #FF8E3C;
+      text-align: center;
+      padding: 5px 14px;
+      background: rgba(255,142,60,0.07);
+      border-top: 1px solid rgba(255,142,60,0.12);
+      flex-shrink: 0;
+      display: none;
+    }
+    #chat-notice.show { display: block; }
   </style>
 </head>
 <body>
@@ -254,6 +266,7 @@
     </div>
   </div>
 
+  <div id="chat-notice"></div>
   <div class="bar">
     <input type="text" id="msg-input" placeholder="Type a message…" />
     <button id="send-btn" disabled>↑</button>
@@ -286,6 +299,63 @@ const db = firebase.database();
 const COLORS  = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
 const MAX_MSG = 150;
 
+// ── Profanity Filter ─────────────────────────────────────────────
+const BAD_WORDS = [
+  // Mild
+  "damn","dammit","crap",
+  // Moderate
+  "ass","arse","asshole","assholes","jackass","dumbass","fatass","dipshit","shithead",
+  "bastard","bastards","bitch","bitches","bitchy",
+  "piss","pisses","pissed","pissing",
+  "shit","shits","shitty","shitting","bullshit","horseshit","shitstorm",
+  // Strong
+  "cock","cocks","cocksucker",
+  "cunt","cunts",
+  "dick","dicks","dickhead","dickheads",
+  "fuck","fucks","fucker","fuckers","fucking","fucked","fuckhead","fuckwit",
+  "motherfucker","motherfucking",
+  "pussy","pussies","slut","sluts","slutty",
+  "twat","twats","whore","whores","wank","wanker","wanking",
+  // Slurs
+  "nigger","niggers","nigga","niggas",
+  "faggot","faggots","retard","retards",
+  "kike","kikes","spic","spics",
+  "chink","chinks","gook","gooks",
+  "wetback","coon","coons","tranny","trannies"
+];
+
+function wordToRegex(word) {
+  const map = {
+    a:'[a@4]', e:'[e3]', i:'[i1!]', o:'[o0]', s:'[s$5]',
+    t:'[t7]',  u:'[uü]', c:'[c(]',  g:'[g9]', b:'[b6]',
+    l:'[l1]',  z:'[z2]'
+  };
+  const sep = '[\\s._\\-]*';
+  const pat = word.split('').map(c => map[c] || c).join(sep);
+  return new RegExp('(?<![a-zA-Z0-9])' + pat + '(?![a-zA-Z0-9])', 'gi');
+}
+const FILTERS = BAD_WORDS.map(wordToRegex);
+
+function censorText(text) {
+  let out = text;
+  for (const re of FILTERS) {
+    out = out.replace(re, m => m[0] + '*'.repeat(Math.max(m.length - 1, 2)));
+  }
+  return out;
+}
+
+// ── Spam Protection ──────────────────────────────────────────────
+const SEND_COOLDOWN  = 1200;   // ms min between messages
+const SPAM_WINDOW_MS = 10000;  // rolling window length
+const SPAM_LIMIT     = 7;      // max messages in window
+const DUP_LIMIT      = 2;      // max identical consecutive messages
+
+let lastSendTime = 0;
+let spamWindow   = [];
+let lastMsgText  = "";
+let dupCount     = 0;
+let noticeTimer  = null;
+
 // ── State ────────────────────────────────────────────────────────
 let me       = null;      // { username, color }
 let mode     = "login";
@@ -309,6 +379,14 @@ function nearBottom() {
   return f.scrollHeight - f.scrollTop - f.clientHeight < 100;
 }
 function scrollDown() { const f = $("feed"); f.scrollTop = f.scrollHeight; }
+
+function showChatNotice(msg) {
+  const el = $("chat-notice");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => el.classList.remove("show"), 3000);
+}
 
 // ── Auth ─────────────────────────────────────────────────────────
 function showErr(msg) { const e = $("auth-error"); e.textContent = msg; e.classList.remove("hidden"); }
@@ -379,6 +457,7 @@ function leaveChat() {
   if (msgsRef) { msgsRef.off(); msgsRef = null; }
   seenIds.clear();
   lastUser = null;
+  lastSendTime = 0; spamWindow = []; lastMsgText = ""; dupCount = 0;
   me = null;
   $("chat").classList.add("hidden");
   $("auth").classList.remove("hidden");
@@ -445,24 +524,50 @@ function listenMessages() {
 }
 
 async function sendMsg() {
-  const input = $("msg-input");
-  const text  = input.value.trim();
-  if (!text) return;
+  const input   = $("msg-input");
+  const rawText = input.value.trim();
+  if (!rawText) return;
 
+  const now = Date.now();
+
+  // ── Cooldown ─────────────────────────────────────────────────
+  if (now - lastSendTime < SEND_COOLDOWN) {
+    const secs = ((SEND_COOLDOWN - (now - lastSendTime)) / 1000).toFixed(1);
+    showChatNotice(`⏱ Slow down — wait ${secs}s`);
+    return;
+  }
+
+  // ── Rolling window ───────────────────────────────────────────
+  spamWindow = spamWindow.filter(t => now - t < SPAM_WINDOW_MS);
+  if (spamWindow.length >= SPAM_LIMIT) {
+    showChatNotice("🚫 Too many messages. Take a short break.");
+    return;
+  }
+
+  // ── Duplicate check ──────────────────────────────────────────
+  if (rawText === lastMsgText) {
+    if (++dupCount >= DUP_LIMIT) { showChatNotice("🔁 Don't repeat yourself."); return; }
+  } else {
+    dupCount = 0;
+    lastMsgText = rawText;
+  }
+
+  // ── Censor profanity ─────────────────────────────────────────
+  const text = censorText(rawText);
+
+  // ── Send ─────────────────────────────────────────────────────
   input.value = "";
-  $("send-btn").disabled = true;
+  lastSendTime = now;
+  spamWindow.push(now);
 
+  const msgId = uid();
   try {
-    await db.ref("messages/" + uid()).set({
-      id:       uid(),
-      username: me.username,
-      color:    me.color,
-      text,
-      ts:       Date.now()
+    await db.ref("messages/" + msgId).set({
+      id: msgId, username: me.username, color: me.color, text, ts: Date.now()
     });
   } catch (err) {
     console.error("Send failed:", err);
-    input.value = text;
+    input.value = rawText;
   }
 }
 

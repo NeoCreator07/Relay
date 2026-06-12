@@ -172,10 +172,17 @@
     .psect{margin-bottom:14px}
     .plbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
 
-    /* Settings popup */
-    #settings-popup{bottom:56px;left:12px;width:240px;z-index:150}
-    .bgopts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+    /* Settings popup — anchored below the top-left gear */
+    #settings-popup{top:52px;left:8px;width:240px;z-index:150}
+    /* Full profile footer clickable */
+    .sb-foot{padding:10px 12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer;transition:background .15s}
+    .sb-foot:hover{background:rgba(255,255,255,.05)}
+    /* Sidebar backdrop — covers main area when sidebar is open on narrow screens */
+    #sb-backdrop{position:fixed;inset:0;z-index:4;display:none;background:transparent;cursor:pointer}
+    #sb-backdrop.show{display:block}
     .bgopt{border:2px solid transparent;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;
+      font-size:11px;background:rgba(255,255,255,.05);transition:border-color .15s,background .15s}
+    .bgopts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
       font-size:11px;background:rgba(255,255,255,.05);transition:border-color .15s,background .15s}
     .bgopt:hover{background:rgba(255,255,255,.09)}
     .bgopt.active{border-color:var(--accentl);background:rgba(91,79,232,.15)}
@@ -233,7 +240,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 70</div>
+    <div class="aver">VERSION 72</div>
     <p id="auth-tagline" class="hidden"></p><!-- populated by JS -->
     <p id="auth-tag2" style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.4">Welcome back.</p>
     <label class="flbl" for="u-in">Username</label>
@@ -256,22 +263,27 @@
   <div id="sidebar">
     <div class="sb-head">
       <span class="sb-title">Relay</span>
-      <button class="ibtn" id="sb-close" title="Close sidebar">✕</button>
+      <div style="display:flex;gap:4px;align-items:center">
+        <button class="ibtn" id="settings-btn" title="Settings">⚙</button>
+        <button class="ibtn" id="sb-close" title="Close sidebar">✕</button>
+      </div>
     </div>
     <div class="sb-search">
       <input id="room-search" placeholder="Search rooms…"/>
       <button class="addbtn" id="create-room-btn" title="Create room">+</button>
     </div>
     <div id="room-list"></div>
-    <div class="sb-foot">
+    <div class="sb-foot" id="profile-card" title="Edit profile">
       <div class="pavatar" id="my-avatar"></div>
       <div class="pinfo" id="my-pinfo">
         <div class="puname" id="my-name"></div>
         <div class="psub">Edit profile</div>
       </div>
-      <button class="ibtn" id="settings-btn" title="Settings">⚙</button>
     </div>
   </div>
+
+  <!-- SIDEBAR BACKDROP — tap to close sidebar -->
+  <div id="sb-backdrop"></div>
 
   <!-- MAIN -->
   <div id="main">
@@ -401,7 +413,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 70;
+const VERSION   = 72;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -964,8 +976,13 @@ $("u-in").addEventListener("keydown",e=>{if(e.key==="Enter")$("p-in").focus()});
 $("p-in").addEventListener("keydown",e=>{if(e.key==="Enter")handleAuth()});
 $("auth-toggle").addEventListener("click",()=>setAuthMode(authMode==="login"?"signup":"login"));
 
-$("sb-toggle").addEventListener("click",()=>$("sidebar").classList.toggle("closed"));
-$("sb-close").addEventListener("click",()=>$("sidebar").classList.add("closed"));
+$("sb-toggle").addEventListener("click",()=>{
+  const isOpen=!$("sidebar").classList.contains("closed");
+  if(isOpen){$("sidebar").classList.add("closed");$("sb-backdrop").classList.remove("show");}
+  else{$("sidebar").classList.remove("closed");$("sb-backdrop").classList.add("show");}
+});
+$("sb-close").addEventListener("click",()=>{$("sidebar").classList.add("closed");$("sb-backdrop").classList.remove("show");});
+$("sb-backdrop").addEventListener("click",()=>{$("sidebar").classList.add("closed");$("sb-backdrop").classList.remove("show");});
 
 $("settings-btn").addEventListener("click",e=>{e.stopPropagation();toggleSettings()});
 $("signout-btn").addEventListener("click",signOut);
@@ -982,8 +999,7 @@ $("join-code").addEventListener("keydown",e=>{if(e.key==="Enter"&&joiningRoom)jo
 
 $("pview-close").addEventListener("click",()=>closeModal("pview-popup"));
 $("edit-close").addEventListener("click",()=>closeModal("edit-popup"));
-$("my-avatar").addEventListener("click",openEditProfile);
-$("my-pinfo").addEventListener("click",openEditProfile);
+$("profile-card").addEventListener("click",openEditProfile);
 $("save-profile").addEventListener("click",saveProfile);
 
 $("msg-input").addEventListener("input",function(){

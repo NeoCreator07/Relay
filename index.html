@@ -466,10 +466,7 @@ const rColor=()=>COLORS[Math.floor(Math.random()*COLORS.length)];
 const fmtT=ts=>new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 
-async function sha256(s){
-  const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
-}
+// Password stored as plain text (no encryption)
 function fbRace(p,ms=10000){
   return Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error("timeout")),ms))]);
 }
@@ -531,17 +528,17 @@ async function handleAuth(){
   if(p.length<4)return authErr("Password must be at least 4 characters.");
   const btn=$("auth-btn");btn.disabled=true;btn.textContent="…";clearAuthErr();
   try{
-    const hash=await sha256(p),ref=db.ref("users/"+u),snap=await fbRace(ref.get(),6000);
+    const ref=db.ref("users/"+u),snap=await fbRace(ref.get(),6000);
     if(authMode==="signup"){
       if(snap.exists())return authErr("Username already taken.");
       const color=rColor();
-      await fbRace(ref.set({username:u,passwordHash:hash,color,displayName:u,photoURL:null}),6000);
+      await fbRace(ref.set({username:u,password:p,color,displayName:u,photoURL:null}),6000);
       me={username:u,color,displayName:u,photoURL:null};
       saveSession();enterApp();
     }else{
       if(!snap.exists())return authErr("No account found.");
       const d=snap.val();
-      if(d.passwordHash!==hash)return authErr("Incorrect password.");
+      if(d.password!==p)return authErr("Incorrect password.");
       me={username:d.username,color:d.color,displayName:d.displayName||d.username,photoURL:d.photoURL||null};
       saveSession();enterApp();
     }
@@ -682,7 +679,7 @@ async function handleCreateRoom(){
   errEl.classList.add("hidden");
   const id=name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")+"-"+uid().slice(0,5);
   const room={id,name,createdBy:me.username,createdAt:Date.now(),hasPassword:!!code};
-  if(code)await db.ref("roomPasswords/"+id).set({hash:await sha256(code)});
+  if(code)await db.ref("roomPasswords/"+id).set({password:code});
   await db.ref("rooms/"+id).set(room);
   await db.ref("userRooms/"+me.username+"/"+id).set(true);
   roomsMap[id]=room;renderRooms();selectRoom(id);
@@ -701,9 +698,8 @@ function initiateJoin(room){
 async function joinRoom(room,code){
   if(!room)return;
   if(room.hasPassword&&code!==null){
-    const hash=await sha256(code);
     const snap=await db.ref("roomPasswords/"+room.id).get();
-    if(!snap.exists()||snap.val().hash!==hash){
+    if(!snap.exists()||snap.val().password!==code){
       $("join-err").textContent="Incorrect code.";$("join-err").classList.remove("hidden");return;
     }
   }

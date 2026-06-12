@@ -43,10 +43,10 @@
 
     /* ── App layout ── */
     #app{position:fixed;inset:0;z-index:5;display:flex}
-    #sidebar{width:260px;flex-shrink:0;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    #sidebar{width:130px;flex-shrink:0;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
       border-right:1px solid var(--border);display:flex;flex-direction:column;
-      transition:width .25s ease,opacity .25s ease;overflow:hidden}
-    #sidebar.closed{width:0;opacity:0}
+      transition:width .25s ease;overflow:hidden}
+    #sidebar.closed{width:0}
     .sb-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
     .sb-title{font-size:17px;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
     .ibtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:5px;
@@ -141,9 +141,11 @@
     #reply-text{flex:1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* ── Bar ── */
-    .cbar{display:flex;align-items:flex-end;gap:8px;padding:10px 14px;
-      background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-      border-top:1px solid var(--border);flex-shrink:0}
+    .cbar{display:flex;align-items:flex-end;gap:8px;padding:8px 10px;
+      margin:0 10px 10px;border-radius:18px;
+      background:rgba(14,14,24,.95);border:1px solid var(--border2);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      box-shadow:0 4px 28px rgba(0,0,0,.5);flex-shrink:0}
     .awrap{position:relative}
     #attach-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);
       border:1px solid var(--border2);color:var(--muted);font-size:20px;cursor:pointer;
@@ -185,10 +187,14 @@
     .sb-foot{padding:10px 12px;border-top:1px solid var(--border);display:flex;align-items:center;
       gap:10px;flex-shrink:0;cursor:pointer;transition:background .15s}
     .sb-foot:hover{background:rgba(255,255,255,.05)}
-    /* Drag handle */
-    #sb-handle{position:absolute;top:0;width:8px;height:100%;cursor:col-resize;z-index:6;
-      background:transparent;transition:background .15s}
-    #sb-handle:hover,#sb-handle.dragging{background:rgba(91,79,232,.35)}
+    /* Caret toggle button */
+    #sb-caret{position:absolute;top:50%;left:130px;transform:translateY(-50%);
+      width:14px;height:40px;background:var(--glass2);border:1px solid var(--border2);
+      border-left:none;border-radius:0 7px 7px 0;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      font-size:13px;color:var(--muted);z-index:7;
+      transition:left .25s ease,color .15s,background .15s;user-select:none}
+    #sb-caret:hover{color:var(--text);background:rgba(255,255,255,.07)}
     /* Admin popup */
     #admin-popup{top:50%;left:50%;transform:translate(-50%,-50%);
       width:min(380px,calc(100vw - 32px));max-height:85vh;overflow-y:auto}
@@ -299,8 +305,8 @@
     </div>
   </div>
 
-  <!-- DRAG HANDLE — drag left edge of main area to resize sidebar -->
-  <div id="sb-handle" title="Drag to resize"></div>
+  <!-- CARET — click to open/close sidebar -->
+  <div id="sb-caret">‹</div>
 
   <!-- MAIN -->
   <div id="main">
@@ -640,7 +646,7 @@ async function enterApp(){
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
   refreshMyProfile();
-  initHandle();
+  initCaret();
   await ensureGeneral();
   await loadMyRooms();
   if(!curRoom)selectRoom("general");
@@ -994,11 +1000,25 @@ $("photo-input").addEventListener("change",async e=>{
   $("ea-av").innerHTML='<img src="'+d+'" />';$("ea-av")._pending=d;
 });
 async function saveProfile(){
-  const color=$("col-pick").value,pending=$("ea-av")._pending;
-  const upd={color};if(pending)upd.photoURL=pending;
-  await db.ref("users/"+me.username).update(upd);
-  me.color=color;if(pending)me.photoURL=pending;
-  saveSession();refreshMyProfile();closeModal("edit-popup");
+  const color=$("col-pick").value;
+  const pending=$("ea-av")._pending;
+  try{
+    const snap=await fbRace(db.ref("users/"+me.username).get(),5000);
+    const current=snap.exists()?snap.val():{};
+    const updated={...current,color};
+    if(pending)updated.photoURL=pending;
+    await fbRace(db.ref("users/"+me.username).set(updated),5000);
+    me.color=color;
+    if(pending)me.photoURL=pending;
+    saveSession();refreshMyProfile();closeModal("edit-popup");
+  }catch(err){
+    console.error("saveProfile:",err);
+    if(err.code==="PERMISSION_DENIED"){
+      alert("Save failed: Firebase rules are blocking this.\n\nIn Firebase → Realtime Database → Rules, change the users rule to:\n".write": true");
+    }else{
+      alert("Save failed: "+(err.message||"unknown error"));
+    }
+  }
 }
 
 // ══════════════════════════════════════════════════
@@ -1028,64 +1048,20 @@ $("u-in").addEventListener("keydown",e=>{if(e.key==="Enter")$("p-in").focus()});
 $("p-in").addEventListener("keydown",e=>{if(e.key==="Enter")handleAuth()});
 $("auth-toggle").addEventListener("click",()=>setAuthMode(authMode==="login"?"signup":"login"));
 
-// ── Sidebar drag-to-resize ──────────────────────────────────────
-const SB_MIN = 60, SB_DEFAULT = 260, SB_SNAP_OPEN = 140;
-let sbDragging = false, sbStartX = 0, sbStartW = 0;
+// ── Sidebar caret toggle ────────────────────────────────────────
+const SB_W = 130;
 
-function setSbWidth(w) {
-  const sb = $("sidebar"), handle = $("sb-handle");
-  if (w < SB_MIN) {
-    sb.style.width = "0px"; sb.style.opacity = "0";
-    handle.style.left = "0px";
-  } else {
-    const clamped = Math.max(SB_SNAP_OPEN, Math.min(480, w));
-    sb.style.width = clamped + "px"; sb.style.opacity = "1";
-    handle.style.left = clamped + "px";
-  }
+function toggleSidebar() {
+  const isOpen = !$("sidebar").classList.contains("closed");
+  $("sidebar").classList.toggle("closed");
+  $("sb-caret").style.left = (isOpen ? 0 : SB_W) + "px";
+  $("sb-caret").textContent = isOpen ? "›" : "‹";
 }
-
-function initHandle() {
-  const w = $("sidebar").offsetWidth || SB_DEFAULT;
-  $("sb-handle").style.left = w + "px";
+function initCaret() {
+  $("sb-caret").style.left = SB_W + "px";
+  $("sb-caret").textContent = "‹";
 }
-
-$("sb-handle").addEventListener("mousedown", e => {
-  sbDragging = true; sbStartX = e.clientX;
-  sbStartW = $("sidebar").offsetWidth;
-  $("sb-handle").classList.add("dragging");
-  $("sidebar").style.transition = "none";
-  document.body.style.cursor = "col-resize";
-  e.preventDefault();
-});
-$("sb-handle").addEventListener("touchstart", e => {
-  sbDragging = true; sbStartX = e.touches[0].clientX;
-  sbStartW = $("sidebar").offsetWidth;
-  $("sidebar").style.transition = "none";
-  e.preventDefault();
-}, {passive:false});
-
-document.addEventListener("mousemove", e => {
-  if (!sbDragging) return;
-  setSbWidth(sbStartW + (e.clientX - sbStartX));
-});
-document.addEventListener("touchmove", e => {
-  if (!sbDragging) return;
-  setSbWidth(sbStartW + (e.touches[0].clientX - sbStartX));
-  e.preventDefault();
-}, {passive:false});
-
-function endDrag() {
-  if (!sbDragging) return;
-  sbDragging = false;
-  $("sb-handle").classList.remove("dragging");
-  $("sidebar").style.transition = "";
-  document.body.style.cursor = "";
-  // Snap: if ended below snap threshold, close fully; if above, open to at least SB_SNAP_OPEN
-  const w = $("sidebar").offsetWidth;
-  if (w < SB_MIN) setSbWidth(0);
-}
-document.addEventListener("mouseup", endDrag);
-document.addEventListener("touchend", endDrag);
+$("sb-caret").addEventListener("click", toggleSidebar);
 
 // ── Triple-tap logo → admin panel ──────────────────────────────
 let tapCnt = 0, tapTmr = null;

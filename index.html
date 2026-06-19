@@ -259,7 +259,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 79</div>
+    <div class="aver">VERSION 80</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -468,7 +468,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 79;
+const VERSION   = 80;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -610,10 +610,16 @@ async function handleAuth(){
       saveSession();enterApp();
     }
   }catch(err){
-    if(err.message==="timeout")authErr("Connection timed out. Check Firebase rules.");
-    else if(err.code==="PERMISSION_DENIED")authErr("Permission denied. Update Firebase rules.");
-    else authErr("Error: "+(err.message||"unknown"));
-    console.error(err);
+    const code = err.code || err.message || "unknown";
+    if(code.includes("timeout") || err.message==="timeout")
+      authErr("⏱ Timed out connecting to Firebase.\nCheck: Database rules are open (.read/.write = true)");
+    else if(code==="PERMISSION_DENIED")
+      authErr("🔒 Firebase blocked the request.\nFix: Set rules to .read: true, .write: true");
+    else if(code.includes("network") || code.includes("fetch"))
+      authErr("📡 Network error — cannot reach Firebase.\nCheck your internet connection.");
+    else
+      authErr("❌ Firebase error: " + code + "\nCheck the browser console (F12) for details.");
+    console.error("Auth error:",err);
   }finally{
     btn.disabled=false;btn.textContent=authMode==="login"?"Sign in":"Create account";
   }
@@ -1180,39 +1186,37 @@ function setFbStatus(ok, msg) {
   setBg(localStorage.getItem("rbg")||"none");
   const btn=$("auth-btn");
   btn.disabled=true; btn.textContent="Connecting…";
-  setFbStatus(null, "Checking Firebase…");
 
-  // Test Firebase connectivity first
+  // Just check SDK loaded — don't make a network call here, it hangs
   try {
-    await fbRace(db.ref("rooms/general").get(), 4000);
-    setFbStatus(true, "Firebase connected");
+    if (firebase && db) setFbStatus(true, "Firebase ready");
+    else setFbStatus(false, "Firebase SDK failed to load");
   } catch(e) {
-    setFbStatus(false, e.code==="PERMISSION_DENIED"
-      ? "Firebase connected — update database rules"
-      : "Cannot reach Firebase — check config & rules");
+    setFbStatus(false, "Firebase SDK error");
   }
 
-  // Hard failsafe — if anything hangs, unlock the form after 5s
+  // Hard failsafe
   const failsafe=setTimeout(()=>{
     if(btn.disabled){
       btn.disabled=false; btn.textContent="Sign in";
+      setFbStatus(null, "Timed out — try signing in");
       try{const s=JSON.parse(localStorage.getItem("rs")||"null");if(s&&s.u)$("u-in").value=s.u;}catch(_){}
     }
-  },5000);
+  },4000);
 
   try{
     const ok=await tryAutoLogin();
+    clearTimeout(failsafe);
     if(ok){
-      clearTimeout(failsafe);
       await enterApp();
     }else{
-      clearTimeout(failsafe);
       btn.disabled=false; btn.textContent="Sign in";
       setTimeout(()=>{if(!$("u-in").value)$("u-in").focus();else $("p-in").focus();},100);
     }
   }catch(e){
     clearTimeout(failsafe);
     btn.disabled=false; btn.textContent="Sign in";
+    setFbStatus(false, "Init error — see console");
     console.error("Init error:",e);
   }
 })();

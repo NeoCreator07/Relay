@@ -188,13 +188,11 @@
       gap:10px;flex-shrink:0;cursor:pointer;transition:background .15s}
     .sb-foot:hover{background:rgba(255,255,255,.05)}
     /* Caret toggle button */
-    #sb-caret{position:absolute;top:50%;left:130px;transform:translateY(-50%);
-      width:14px;height:40px;background:var(--glass2);border:1px solid var(--border2);
-      border-left:none;border-radius:0 7px 7px 0;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      font-size:13px;color:var(--muted);z-index:7;
-      transition:left .25s ease,color .15s,background .15s;user-select:none}
-    #sb-caret:hover{color:var(--text);background:rgba(255,255,255,.07)}
+    #sb-caret{width:16px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;font-size:13px;color:var(--muted);
+      background:var(--glass2);border-right:1px solid var(--border2);
+      user-select:none;transition:color .15s,background .15s;z-index:7}
+    #sb-caret:hover{color:var(--text);background:rgba(255,255,255,.08)}
     /* Admin popup */
     #admin-popup{top:50%;left:50%;transform:translate(-50%,-50%);
       width:min(380px,calc(100vw - 32px));max-height:85vh;overflow-y:auto}
@@ -261,19 +259,19 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 74</div>
-    <p id="auth-tagline" class="hidden"></p><!-- populated by JS -->
+    <div class="aver">VERSION 79</div>
+    <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
+      <span id="fb-dot" style="font-size:10px">●</span>
+      <span id="fb-msg">Checking connection…</span>
+    </div>
     <p id="auth-tag2" style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.4">Welcome back.</p>
     <label class="flbl" for="u-in">Username</label>
     <input id="u-in" class="finp" type="text" placeholder="yourname" autocapitalize="none" autocomplete="username"/>
     <label class="flbl" for="p-in">Password</label>
     <input id="p-in" class="finp" type="password" placeholder="••••••••" autocomplete="current-password"/>
-    <p id="auth-error" class="hidden"></p>
+    <p id="auth-error" class="hidden" style="background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:9px 12px;font-size:13px;color:#FF6B6B;margin-bottom:12px;line-height:1.5"></p>
     <button class="bprim" id="auth-btn">Sign in</button>
     <p id="auth-footer"><span id="ftxt">New to Relay? </span><button id="auth-toggle">Create account</button></p>
-    <p id="auth-hint" style="margin-top:12px;font-size:11px;color:#3A3A52;text-align:center;line-height:1.5">
-      If sign-in hangs, check your Firebase<br>Realtime Database rules are set to <strong style="color:#4A4A62">test mode</strong>.
-    </p>
   </div>
 </div>
 
@@ -470,7 +468,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 74;
+const VERSION   = 79;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -494,13 +492,13 @@ const VOPTS = {
 
 // ── Firebase ──
 const firebaseConfig = {
-  apiKey:"AIzaSyBZS9SvI2EMoC29t7jYUKMjgQPyU7MXjn8",
-  authDomain:"talk2-65219.firebaseapp.com",
-  databaseURL:"https://talk2-65219-default-rtdb.firebaseio.com",
-  projectId:"talk2-65219",
-  storageBucket:"talk2-65219.firebasestorage.app",
-  messagingSenderId:"438093450002",
-  appId:"1:438093450002:web:b13263325abbeb50bfc1cb"
+  apiKey:"AIzaSyCzN-u60wcQBPLXEGme6S2sLMV1vdhx_TY",
+  authDomain:"relay-87573.firebaseapp.com",
+  databaseURL:"https://relay-87573-default-rtdb.firebaseio.com",
+  projectId:"relay-87573",
+  storageBucket:"relay-87573.firebasestorage.app",
+  messagingSenderId:"43598831902",
+  appId:"1:43598831902:web:1c25ca635fb470bbfb290f"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -1054,11 +1052,9 @@ const SB_W = 130;
 function toggleSidebar() {
   const isOpen = !$("sidebar").classList.contains("closed");
   $("sidebar").classList.toggle("closed");
-  $("sb-caret").style.left = (isOpen ? 0 : SB_W) + "px";
   $("sb-caret").textContent = isOpen ? "›" : "‹";
 }
 function initCaret() {
-  $("sb-caret").style.left = SB_W + "px";
   $("sb-caret").textContent = "‹";
 }
 $("sb-caret").addEventListener("click", toggleSidebar);
@@ -1172,15 +1168,34 @@ document.addEventListener("click",e=>{
 // ══════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+function setFbStatus(ok, msg) {
+  const dot = $("fb-dot"), txt = $("fb-msg");
+  dot.style.color = ok === true ? "#6BCB77" : ok === false ? "#FF6B6B" : "#FFD93D";
+  txt.textContent = msg;
+}
+
 (async function(){
   setBg(localStorage.getItem("rbg")||"none");
   const btn=$("auth-btn");
-  btn.disabled=true;btn.textContent="Connecting…";
+  btn.disabled=true; btn.textContent="Connecting…";
+  setFbStatus(null, "Checking Firebase…");
+
+  // Test Firebase connectivity first
+  try {
+    await fbRace(db.ref("rooms/general").get(), 4000);
+    setFbStatus(true, "Firebase connected");
+  } catch(e) {
+    setFbStatus(false, e.code==="PERMISSION_DENIED"
+      ? "Firebase connected — update database rules"
+      : "Cannot reach Firebase — check config & rules");
+  }
 
   // Hard failsafe — if anything hangs, unlock the form after 5s
   const failsafe=setTimeout(()=>{
     if(btn.disabled){
-      btn.disabled=false;btn.textContent="Sign in";
+      btn.disabled=false; btn.textContent="Sign in";
       try{const s=JSON.parse(localStorage.getItem("rs")||"null");if(s&&s.u)$("u-in").value=s.u;}catch(_){}
     }
   },5000);
@@ -1192,12 +1207,12 @@ document.addEventListener("click",e=>{
       await enterApp();
     }else{
       clearTimeout(failsafe);
-      btn.disabled=false;btn.textContent="Sign in";
+      btn.disabled=false; btn.textContent="Sign in";
       setTimeout(()=>{if(!$("u-in").value)$("u-in").focus();else $("p-in").focus();},100);
     }
   }catch(e){
     clearTimeout(failsafe);
-    btn.disabled=false;btn.textContent="Sign in";
+    btn.disabled=false; btn.textContent="Sign in";
     console.error("Init error:",e);
   }
 })();

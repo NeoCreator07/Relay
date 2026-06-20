@@ -96,6 +96,12 @@
 
     /* ── Messages ── */
     .mrow{display:flex;margin-bottom:1px;position:relative}
+    .mavatar-wrap{width:38px;flex-shrink:0;display:flex;align-items:flex-end}
+    .mavatar{width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:700;color:#fff;cursor:pointer;transition:opacity .12s}
+    .mavatar:hover{opacity:.85}
+    .mavatar img{width:100%;height:100%;object-fit:cover;display:block}
     .mrow.mine{justify-content:flex-end}
     .mrow.theirs{justify-content:flex-start}
     .mgrp{max-width:72%;display:flex;flex-direction:column}
@@ -259,7 +265,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 82</div>
+    <div class="aver">VERSION 83</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -482,7 +488,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 82;
+const VERSION   = 83;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -800,6 +806,22 @@ async function joinRoom(room,code){
 // ══════════════════════════════════════════════════
 //  MESSAGES
 // ══════════════════════════════════════════════════
+// ── Profile photo cache (avoids refetching per message) ─────────
+const profilePhotoCache = {};
+function fetchProfilePhoto(username, onReady) {
+  if (Object.prototype.hasOwnProperty.call(profilePhotoCache, username)) {
+    onReady(profilePhotoCache[username]);
+    return;
+  }
+  db.ref("users/" + username + "/photoURL").get()
+    .then(snap => {
+      const url = snap.exists() ? snap.val() : null;
+      profilePhotoCache[username] = url;
+      onReady(url);
+    })
+    .catch(() => { profilePhotoCache[username] = null; onReady(null); });
+}
+
 function appendMsg(msg){
   const fe=$("feed-empty");if(fe)fe.remove();
   const feed=$("feed"),atBot=nearBot();
@@ -818,6 +840,27 @@ function appendMsg(msg){
     sn.textContent=msg.username;sn.style.color=msg.color||"#7C6FFF";
     sn.addEventListener("click",()=>showProfile(msg.username));
     grp.appendChild(sn);
+  }
+
+  // Avatar — only for other people's messages, shown once per group
+  if(!mine){
+    const avWrap=document.createElement("div");avWrap.className="mavatar-wrap";
+    if(showSender){
+      const av=document.createElement("div");av.className="mavatar";
+      av.style.background=msg.color||"#5B4FE8";
+      av.textContent=(msg.username||"?")[0].toUpperCase();
+      av.title=msg.username;
+      av.addEventListener("click",()=>showProfile(msg.username));
+      avWrap.appendChild(av);
+      fetchProfilePhoto(msg.username, url=>{
+        if(url){
+          av.innerHTML="";av.style.background="transparent";
+          const img=document.createElement("img");img.src=url;img.alt=msg.username;
+          av.appendChild(img);
+        }
+      });
+    }
+    row.appendChild(avWrap);
   }
 
   if(msg.replyTo){

@@ -1032,7 +1032,7 @@ async function saveProfile(){
   }catch(err){
     console.error("saveProfile:",err);
     if(err.code==="PERMISSION_DENIED"){
-      alert("Save failed: Firebase rules are blocking this.\n\nIn Firebase → Realtime Database → Rules, change the users rule to:\n".write": true");
+      alert("Save failed: Firebase rules are blocking this.\n\nIn Firebase \u2192 Realtime Database \u2192 Rules, change the users rule to:\n\".write\": true");
     }else{
       alert("Save failed: "+(err.message||"unknown error"));
     }

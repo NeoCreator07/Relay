@@ -43,7 +43,7 @@
 
     /* ── App layout ── */
     #app{position:fixed;inset:0;z-index:5;display:flex}
-    #sidebar{width:130px;flex-shrink:0;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    #sidebar{width:260px;flex-shrink:0;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
       border-right:1px solid var(--border);display:flex;flex-direction:column;
       transition:width .25s ease;overflow:hidden}
     #sidebar.closed{width:0}
@@ -259,7 +259,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 81</div>
+    <div class="aver">VERSION 82</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -482,7 +482,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 81;
+const VERSION   = 82;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -1067,7 +1067,7 @@ $("p-in").addEventListener("keydown",e=>{if(e.key==="Enter")handleAuth()});
 $("auth-toggle").addEventListener("click",()=>setAuthMode(authMode==="login"?"signup":"login"));
 
 // ── Sidebar caret toggle ────────────────────────────────────────
-const SB_W = 130;
+const SB_W = 260;
 
 function toggleSidebar() {
   const isOpen = !$("sidebar").classList.contains("closed");

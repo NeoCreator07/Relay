@@ -4,14 +4,17 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Relay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#000000;--surface:#1C1C1E;--surface2:#2C2C2E;
-      --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.16);
-      --text:#FFFFFF;--muted:rgba(235,235,245,.6);--muted2:rgba(235,235,245,.3);
+      --bg:#000000;--surface:#0A0A0A;--surface2:#141414;
+      --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+      --text:#FFFFFF;--muted:rgba(255,255,255,.55);--muted2:rgba(255,255,255,.3);
       --accent:#0A84FF;--accentl:#409CFF;
-      --danger:#FF453A;--thembbl:#262628;--mybbl:#0A84FF;
+      --danger:#FF453A;--thembbl:#111111;--mybbl:#0A84FF;
       --ease:cubic-bezier(.25,.1,.25,1);
       --accent-r:10;--accent-g:132;--accent-b:255;
       --surface-r:28;--surface-g:28;--surface-b:30;
@@ -19,17 +22,17 @@
     html[data-theme="light"]{
       --bg:#F2F2F7;--surface:#FFFFFF;--surface2:#E5E5EA;
       --border:rgba(60,60,67,.13);--border2:rgba(60,60,67,.22);
-      --text:#000000;--muted:rgba(60,60,67,.6);--muted2:rgba(60,60,67,.3);
+      --text:#000000;--muted:rgba(0,0,0,.5);--muted2:rgba(0,0,0,.3);
       --accent:#007AFF;--accentl:#3399FF;
       --danger:#FF3B30;--thembbl:#E9E9EB;--mybbl:#007AFF;
       --accent-r:0;--accent-g:122;--accent-b:255;
       --surface-r:255;--surface-g:255;--surface-b:255;
     }
     html,body{height:100%;
-      font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      font-family:'Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
       background:var(--bg);color:var(--text);overflow:hidden;
       -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    button,input,textarea{font-family:inherit}
+    button,input,textarea{font-family:'Roboto',inherit}
     .hidden{display:none!important}
 
     /* ── Vanta bg ── */
@@ -236,12 +239,15 @@
     #logo-img{width:100%;height:100%;object-fit:cover;display:block}
     #logo-fb{width:100%;height:100%;display:none;align-items:center;justify-content:center;
       font-weight:700;font-size:13px;color:#fff;letter-spacing:0;background:var(--accent);border-radius:50%}
-    /* Caret toggle button */
-    #sb-caret{width:18px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;
-      justify-content:center;font-size:13px;color:var(--muted);
-      background:var(--surface);border-right:1px solid var(--border2);
-      user-select:none;transition:color .15s var(--ease),background .15s var(--ease);z-index:7}
-    #sb-caret:hover{color:var(--text);background:var(--surface2)}
+    /* Sidebar drag handle */
+    #sb-handle{width:5px;flex-shrink:0;cursor:col-resize;background:transparent;z-index:7;
+      transition:background .2s var(--ease);user-select:none}
+    #sb-handle:hover{background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.35)}
+    /* When sidebar is closed, handle becomes a thin visible strip at left edge */
+    #sidebar.closed+#sb-handle{cursor:pointer;
+      background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.18)}
+    #sidebar.closed+#sb-handle:hover{
+      background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4)}
     /* Admin popup */
     #admin-popup{top:50%;left:50%;transform:translate(-50%,-50%);
       width:min(380px,calc(100vw - 32px));max-height:85vh;overflow-y:auto}
@@ -333,7 +339,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 86</div>
+    <div class="aver">VERSION 87</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -377,8 +383,8 @@
     </div>
   </div>
 
-  <!-- CARET — click to open/close sidebar -->
-  <div id="sb-caret">‹</div>
+  <!-- HANDLE — drag to resize, click to hide, click left edge to show -->
+  <div id="sb-handle"></div>
 
   <!-- MAIN -->
   <div id="main">
@@ -565,7 +571,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 86;
+const VERSION   = 87;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -1200,18 +1206,66 @@ $("u-in").addEventListener("keydown",e=>{if(e.key==="Enter")$("p-in").focus()});
 $("p-in").addEventListener("keydown",e=>{if(e.key==="Enter")handleAuth()});
 $("auth-toggle").addEventListener("click",()=>setAuthMode(authMode==="login"?"signup":"login"));
 
-// ── Sidebar caret toggle ────────────────────────────────────────
-const SB_W = 260;
+// ── Sidebar drag / click / peek ─────────────────────────────────
+const SB_DEFAULT = 260;
+const SB_MIN     = 40;   // collapse if dragged below this
 
-function toggleSidebar() {
-  const isOpen = !$("sidebar").classList.contains("closed");
-  $("sidebar").classList.toggle("closed");
-  $("sb-caret").textContent = isOpen ? "›" : "‹";
+let sbDragging    = false;
+let sbMoved       = false;
+let sbStartX      = 0;
+let sbStartW      = 0;
+
+function getSbW(){ return $("sidebar").offsetWidth; }
+
+function closeSidebar(){
+  const sb=$("sidebar");
+  sb.style.transition="";
+  sb.style.width="";
+  sb.classList.add("closed");
 }
-function initCaret() {
-  $("sb-caret").textContent = "‹";
+function openSidebar(w){
+  const sb=$("sidebar");
+  sb.classList.remove("closed");
+  sb.style.width=(w||SB_DEFAULT)+"px";
 }
-$("sb-caret").addEventListener("click", toggleSidebar);
+function initCaret(){}  // no-op kept so enterApp() call doesn't break
+
+function startDrag(clientX){
+  sbDragging=true; sbMoved=false;
+  sbStartX=clientX; sbStartW=getSbW();
+  $("sidebar").style.transition="none";
+  document.body.style.cursor="col-resize";
+}
+function duringDrag(clientX){
+  if(!sbDragging) return;
+  const diff=clientX-sbStartX;
+  if(Math.abs(diff)>4) sbMoved=true;
+  const w=sbStartW+diff;
+  if(w<SB_MIN){ $("sidebar").style.width="0px"; }
+  else { $("sidebar").classList.remove("closed"); $("sidebar").style.width=Math.min(520,w)+"px"; }
+}
+function endDrag(){
+  if(!sbDragging) return;
+  sbDragging=false;
+  document.body.style.cursor="";
+  $("sidebar").style.transition="";
+  if(!sbMoved){
+    // It was a click — toggle
+    if(sbStartW>SB_MIN) closeSidebar();
+    else openSidebar();
+  } else {
+    // Snap closed if dragged too small
+    if(getSbW()<SB_MIN) closeSidebar();
+    else { $("sidebar").classList.remove("closed"); }
+  }
+}
+
+$("sb-handle").addEventListener("mousedown", e=>{ e.preventDefault(); startDrag(e.clientX); });
+$("sb-handle").addEventListener("touchstart",e=>{ e.preventDefault(); startDrag(e.touches[0].clientX); },{passive:false});
+document.addEventListener("mousemove", e=>{ duringDrag(e.clientX); });
+document.addEventListener("touchmove", e=>{ if(sbDragging){e.preventDefault();duringDrag(e.touches[0].clientX);}},{passive:false});
+document.addEventListener("mouseup",  endDrag);
+document.addEventListener("touchend", endDrag);
 
 // ── Triple-tap logo → admin panel ──────────────────────────────
 let tapCnt = 0, tapTmr = null;

@@ -241,7 +241,7 @@
       text-transform:uppercase;margin-bottom:8px}
 
     /* Settings popup — anchored below the top-left gear */
-    #settings-popup{top:52px;left:8px;width:250px;z-index:150}
+    #settings-popup{top:52px;left:8px;width:270px;z-index:150}
     /* Logo tap zone */
     #logo-tap{width:30px;height:30px;border-radius:50%;background:none;
       display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
@@ -350,7 +350,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 93</div>
+    <div class="aver">VERSION 94</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -491,6 +491,17 @@
       <div class="bgopt" data-bg="net"><span class="bgico">🔗</span>Net</div>
       <div class="bgopt" data-bg="fog"><span class="bgico">🌫</span>Fog</div>
       <div class="bgopt" data-bg="dots"><span class="bgico">✦</span>Dots</div>
+      <div class="bgopt" data-bg="rings"><span class="bgico">💍</span>Rings</div>
+      <div class="bgopt" data-bg="globe"><span class="bgico">🌐</span>Globe</div>
+      <div class="bgopt" data-bg="cells"><span class="bgico">🔬</span>Cells</div>
+      <div class="bgopt" data-bg="halo"><span class="bgico">🌟</span>Halo</div>
+      <div class="bgopt" data-bg="topology"><span class="bgico">〰</span>Topo</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+      <input type="color" id="vanta-color" value="#5B4FE8"
+        style="width:36px;height:28px;border:none;background:none;cursor:pointer;border-radius:6px;padding:0"/>
+      <span style="font-size:12px;color:var(--muted)">Accent color</span>
+      <code id="vanta-hex" style="font-size:11px;color:var(--muted2)">#5B4FE8</code>
     </div>
   </div>
   <div class="psect">
@@ -590,7 +601,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 93;
+const VERSION   = 94;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -598,19 +609,45 @@ const EMOJIS    = ["👍","❤️","😂","😮","😢","🔥"];
 const EKEYS     = {"👍":"thu","❤️":"hrt","😂":"lol","😮":"wow","😢":"sad","🔥":"fir"};
 const KTEMOJI   = Object.fromEntries(Object.entries(EKEYS).map(([k,v])=>[v,k]));
 const VCDNS = {
-  birds:"https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.birds.min.js",
-  waves:"https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js",
-  net:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js",
-  fog:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.fog.min.js",
-  dots: "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.dots.min.js",
+  birds:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.birds.min.js",
+  waves:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js",
+  net:    "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js",
+  fog:    "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.fog.min.js",
+  dots:   "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.dots.min.js",
+  rings:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.rings.min.js",
+  globe:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.globe.min.js",
+  cells:  "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.cells.min.js",
+  halo:   "https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.halo.min.js",
+  topology:"https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.topology.min.js",
 };
-const VOPTS = {
-  birds:{el:"#vbg",color1:0x5B4FE8,color2:0x4ECDC4,birdSize:1.2,wingSpan:25,speedFactor:1,quantity:3,backgroundColor:0x0a0a10},
-  waves:{el:"#vbg",color:0x1a1a3e,shininess:30,waveHeight:10,waveSpeed:.75,zoom:.9},
-  net:  {el:"#vbg",color:0x5B4FE8,backgroundColor:0x0a0a10,points:10,maxDistance:20,spacing:15},
-  fog:  {el:"#vbg",highlightColor:0x5B4FE8,midtoneColor:0x1a1a3e,lowlightColor:0x0a0a10,baseColor:0x050508,blurFactor:.6,speed:1},
-  dots: {el:"#vbg",color:0x5B4FE8,color2:0x4ECDC4,backgroundColor:0x0a0a10,size:3,spacing:25},
+
+// Default color per effect — user can override via color wheel
+const VDEFAULT_COLOR = {
+  birds:"#5B4FE8", waves:"#1a1a3e", net:"#5B4FE8", fog:"#5B4FE8",
+  dots:"#5B4FE8",  rings:"#5B4FE8", globe:"#5B4FE8", cells:"#5B4FE8",
+  halo:"#5B4FE8",  topology:"#5B4FE8",
 };
+
+function hexToInt(hex){ return parseInt(hex.replace("#",""),16); }
+
+function buildVOpts(name, color){
+  const c  = hexToInt(color||VDEFAULT_COLOR[name]||"#5B4FE8");
+  const bg = 0x000000;
+  const opts = { el:"#vbg" };
+  switch(name){
+    case "birds":    return {...opts,color1:c,color2:hexToInt("#4ECDC4"),birdSize:1.2,wingSpan:25,speedFactor:1,quantity:3,backgroundColor:bg};
+    case "waves":    return {...opts,color:c,shininess:30,waveHeight:10,waveSpeed:.75,zoom:.9};
+    case "net":      return {...opts,color:c,backgroundColor:bg,points:10,maxDistance:20,spacing:15};
+    case "fog":      return {...opts,highlightColor:c,midtoneColor:c>>1,lowlightColor:bg,baseColor:0x050508,blurFactor:.6,speed:1};
+    case "dots":     return {...opts,color:c,color2:hexToInt("#4ECDC4"),backgroundColor:bg,size:3,spacing:25};
+    case "rings":    return {...opts,color:c,backgroundColor:bg};
+    case "globe":    return {...opts,color:c,color2:hexToInt("#4ECDC4"),backgroundColor:bg,size:1.2};
+    case "cells":    return {...opts,color1:c,color2:0x000000,size:1.5,speed:1};
+    case "halo":     return {...opts,backgroundColor:bg,baseColor:c,amplitudeFactor:1.5,size:1.5,xOffset:.2};
+    case "topology": return {...opts,color:c,backgroundColor:bg};
+    default:         return {...opts,color:c,backgroundColor:bg};
+  }
+}
 
 // ── Firebase ──
 const firebaseConfig = {
@@ -769,9 +806,14 @@ function toggleTheme(){
 // ══════════════════════════════════════════════════
 //  VANTA
 // ══════════════════════════════════════════════════
-async function setBg(name){
-  localStorage.setItem("rbg",name);
+async function setBg(name, color){
+  localStorage.setItem("rbg", name);
+  if(color) localStorage.setItem("rvcolor", color);
   document.querySelectorAll(".bgopt").forEach(el=>el.classList.toggle("active",el.dataset.bg===name));
+  // Sync color wheel to current color
+  const col = color || localStorage.getItem("rvcolor") || VDEFAULT_COLOR[name] || "#5B4FE8";
+  const cw = $("vanta-color"); if(cw){ cw.value=col; }
+  const ch = $("vanta-hex");   if(ch){ ch.textContent=col; }
   if(vInst){vInst.destroy();vInst=null}
   if(name==="none"||!VCDNS[name])return;
   try{
@@ -780,7 +822,7 @@ async function setBg(name){
       vLoaded[name]=true;
     }
     const fn=window.VANTA&&window.VANTA[name.toUpperCase()];
-    if(fn)vInst=fn(VOPTS[name]);
+    if(fn)vInst=fn(buildVOpts(name, col));
   }catch(e){console.warn("Vanta failed:",e)}
 }
 
@@ -1354,8 +1396,19 @@ $("del-chat-btn").addEventListener("click", async () => {
   const roomName=(roomsMap[roomId]||{name:roomId}).name;
   if(!confirm("Delete ALL messages in '"+roomName+"'? Cannot be undone."))return;
   try{
+    // Stop listener FIRST so stale child_added events cannot replay deleted messages
+    if(msgsRef){msgsRef.off();msgsRef=null;}
     await db.ref("messages/"+roomId).remove();
-    if(curRoom===roomId){$("feed").innerHTML='<div id="feed-empty">No messages yet — say something!</div>';seenIds.clear();lastMsgUser=null;msgEls={};}
+    seenIds.clear();lastMsgUser=null;msgEls={};
+    if(curRoom===roomId){
+      $("feed").innerHTML='<div id="feed-empty">No messages yet — say something!</div>';
+      // Restart listener cleanly after deletion settles
+      setTimeout(()=>{
+        msgsRef=db.ref("messages/"+roomId).orderByChild("ts").limitToLast(MAX_MSG);
+        msgsRef.on("child_added",s=>{const m=s.val();if(seenIds.has(m.id))return;seenIds.add(m.id);appendMsg(m)});
+        msgsRef.on("child_changed",s=>{const m=s.val();if(msgEls[m.id])updateRxns(m)});
+      },400);
+    }
     alert("Messages cleared!");
   }catch(e){alert("Failed: "+e.message);}
 });
@@ -1414,6 +1467,21 @@ $("settings-btn").addEventListener("click",e=>{e.stopPropagation();toggleSetting
 $("signout-btn").addEventListener("click",signOut);
 $("theme-toggle").addEventListener("click",toggleTheme);
 document.querySelectorAll(".bgopt").forEach(el=>el.addEventListener("click",()=>setBg(el.dataset.bg)));
+// Color wheel — re-apply current background with new color
+document.addEventListener("change",e=>{
+  if(e.target.id==="vanta-color"){
+    const hex=e.target.value;
+    const ch=$("vanta-hex"); if(ch) ch.textContent=hex;
+    const cur=localStorage.getItem("rbg")||"none";
+    if(cur!=="none") setBg(cur,hex);
+  }
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="vanta-color"){
+    const hex=e.target.value;
+    const ch=$("vanta-hex"); if(ch) ch.textContent=hex;
+  }
+});
 
 $("create-room-btn").addEventListener("click",()=>{closeAllModals();openModal("create-popup")});
 $("create-close").addEventListener("click",()=>closeModal("create-popup"));
@@ -1475,7 +1543,7 @@ function setFbStatus(ok, msg) {
 
 (async function(){
   applyTheme(localStorage.getItem("rtheme")||"dark");
-  setBg(localStorage.getItem("rbg")||"none");
+  setBg(localStorage.getItem("rbg")||"none", localStorage.getItem("rvcolor")||null);
   const btn=$("auth-btn");
   btn.disabled=true; btn.textContent="Connecting…";
 

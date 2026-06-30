@@ -167,7 +167,7 @@
     .bbl.hr{border-top-left-radius:6px;border-top-right-radius:6px}
     .btxt{flex:1;white-space:pre-wrap}
     .btime{font-size:11px;opacity:.55;white-space:nowrap;flex-shrink:0;padding-bottom:1px}
-    .bbl img{max-width:230px;max-height:190px;border-radius:14px;display:block}
+    .bbl img{max-width:320px;max-height:280px;border-radius:14px;display:block}
     .rxns{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
     .rbadge{display:flex;align-items:center;gap:3px;background:var(--surface2);
       border:1px solid var(--border2);border-radius:12px;padding:3px 8px;
@@ -330,6 +330,47 @@
       transition:opacity .15s var(--ease)}
     .gitem img{width:100%;height:100%;object-fit:cover;display:block}
     .gitem:hover{opacity:.82}
+
+    /* ══════════════════════════════════════════════════
+       MOBILE MODE — applied when html.mobile-mode is set
+       ══════════════════════════════════════════════════ */
+    html.mobile-mode #sidebar{
+      position:fixed;top:0;left:0;bottom:0;z-index:20;
+      width:82vw;max-width:320px;
+      transform:translateX(-100%);transition:transform .28s var(--ease);
+    }
+    html.mobile-mode #sidebar:not(.closed){transform:translateX(0)}
+    html.mobile-mode #sidebar.closed{width:82vw;max-width:320px}
+    html.mobile-mode #sb-handle{
+      position:fixed;top:0;left:0;bottom:0;width:14px;z-index:19;background:transparent;
+    }
+    html.mobile-mode #mobile-backdrop{display:none;position:fixed;inset:0;z-index:18;
+      background:rgba(0,0,0,.45);backdrop-filter:blur(2px)}
+    html.mobile-mode #sidebar:not(.closed) ~ #mobile-backdrop{display:block}
+    html.mobile-mode #main{width:100%}
+    html.mobile-mode .chat-hdr{padding:14px 16px}
+    html.mobile-mode #room-title{font-size:18px}
+    html.mobile-mode .ibtn{width:38px;height:38px;font-size:17px}
+    html.mobile-mode .addbtn{width:40px;height:40px;font-size:22px}
+    html.mobile-mode .mdot{width:34px;height:34px;font-size:15px}
+    html.mobile-mode #attach-btn{width:42px;height:42px;font-size:22px}
+    html.mobile-mode #send-btn{width:42px;height:42px;font-size:18px}
+    html.mobile-mode #msg-input{font-size:16px;padding:12px 16px;min-height:44px}
+    html.mobile-mode .cbar{margin:0 8px 8px;padding:8px}
+    html.mobile-mode .bbl{font-size:16px;padding:11px 15px}
+    html.mobile-mode .ritem{padding:13px 14px}
+    html.mobile-mode .rlabel{font-size:16px}
+    html.mobile-mode .sb-foot{padding:14px}
+    html.mobile-mode .pavatar{width:40px;height:40px}
+    html.mobile-mode .popup{width:min(92vw,360px)!important}
+    html.mobile-mode #gif-picker{width:92vw}
+    html.mobile-mode .mavatar,html.mobile-mode .mavatar-wrap{width:36px}
+    html.mobile-mode #mobile-hamburger{
+      display:flex;width:36px;height:36px;border-radius:50%;background:none;border:none;
+      color:var(--accent);font-size:19px;align-items:center;justify-content:center;
+      cursor:pointer;flex-shrink:0;margin-right:4px
+    }
+    #mobile-hamburger{display:none}
   </style>
   <script>
     // Apply saved theme before paint to avoid a flash of the wrong appearance
@@ -350,7 +391,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 94</div>
+    <div class="aver">VERSION 95</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -400,12 +441,14 @@
 
   <!-- HANDLE — drag to resize, click to hide, click left edge to show -->
   <div id="sb-handle"></div>
+  <div id="mobile-backdrop"></div>
 
   <!-- MAIN -->
   <div id="main">
     <div id="no-room">Select a room to start chatting</div>
     <div id="chat-area" class="hidden">
       <div class="chat-hdr">
+        <button id="mobile-hamburger" title="Menu">☰</button>
         <span id="room-title"></span>
       </div>
       <div id="feed"><div id="feed-empty">No messages yet — say something!</div></div>
@@ -601,7 +644,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 94;
+const VERSION   = 95;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -690,6 +733,12 @@ const $=id=>document.getElementById(id);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const rColor=()=>COLORS[Math.floor(Math.random()*COLORS.length)];
 const fmtT=ts=>new Date(ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+function fmtFullT(ts){
+  const d=new Date(ts);
+  const time=d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+  const month=d.toLocaleDateString([],{month:"long"});
+  return time+" "+month+" "+d.getDate();
+}
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 
 // Password stored as plain text (no encryption)
@@ -835,6 +884,9 @@ async function enterApp(){
   refreshMyProfile();
   initCaret();
   initPresence();
+  if(document.documentElement.classList.contains("mobile-mode")){
+    $("sidebar").classList.add("closed");
+  }
   await ensureGeneral();
   await loadMyRooms();
   if(!curRoom)selectRoom("general");
@@ -956,7 +1008,11 @@ async function selectRoom(id){
   msgsRef=db.ref("messages/"+id).orderByChild("ts").limitToLast(MAX_MSG);
   msgsRef.on("child_added",s=>{const m=s.val();if(seenIds.has(m.id))return;seenIds.add(m.id);appendMsg(m)});
   msgsRef.on("child_changed",s=>{const m=s.val();if(msgEls[m.id])updateRxns(m)});
-  setTimeout(()=>$("msg-input").focus(),60);
+  if(document.documentElement.classList.contains("mobile-mode")){
+    $("sidebar").classList.add("closed"); // auto-hide sidebar on mobile after picking a room
+  }else{
+    setTimeout(()=>$("msg-input").focus(),60);
+  }
 }
 
 // ── Room search — instant client-side filter (all rooms already loaded) ──
@@ -1079,7 +1135,7 @@ function appendMsg(msg){
     const txt=document.createElement("span");txt.className="btxt";txt.textContent=msg.text||"";
     bbl.appendChild(txt);
   }
-  const ts=document.createElement("span");ts.className="btime";ts.textContent=fmtT(msg.ts);
+  const ts=document.createElement("span");ts.className="btime";ts.textContent=fmtFullT(msg.ts);ts.title=fmtFullT(msg.ts);
   bbl.appendChild(ts);
 
   // 3-dot
@@ -1210,15 +1266,17 @@ $("gif-close").addEventListener("click",closeGif);
 // ══════════════════════════════════════════════════
 //  IMAGE UPLOAD
 // ══════════════════════════════════════════════════
-async function compressImg(file,maxDim=400,q=.7){
+async function compressImg(file,maxDim=1600,q=.88){
   return new Promise(res=>{
     const reader=new FileReader();
     reader.onload=e=>{
       const img=new Image();
       img.onload=()=>{
         const s=Math.min(maxDim/img.width,maxDim/img.height,1);
-        const c=document.createElement("canvas");c.width=img.width*s;c.height=img.height*s;
-        c.getContext("2d").drawImage(img,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",q));
+        const c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+        const ctx=c.getContext("2d");
+        ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+        ctx.drawImage(img,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",q));
       };img.src=e.target.result;
     };reader.readAsDataURL(file);
   });
@@ -1466,7 +1524,10 @@ $("list-rooms-btn").addEventListener("click", () => {
 $("settings-btn").addEventListener("click",e=>{e.stopPropagation();toggleSettings()});
 $("signout-btn").addEventListener("click",signOut);
 $("theme-toggle").addEventListener("click",toggleTheme);
-document.querySelectorAll(".bgopt").forEach(el=>el.addEventListener("click",()=>setBg(el.dataset.bg)));
+document.querySelectorAll(".bgopt").forEach(el=>el.addEventListener("click",()=>{
+  localStorage.setItem("rbg", el.dataset.bg);
+  location.reload();
+}));
 // Color wheel — re-apply current background with new color
 document.addEventListener("change",e=>{
   if(e.target.id==="vanta-color"){
@@ -1540,6 +1601,31 @@ function setFbStatus(ok, msg) {
   dot.style.color = ok === true ? "#6BCB77" : ok === false ? "#FF6B6B" : "#FFD93D";
   txt.textContent = msg;
 }
+
+// ══════════════════════════════════════════════════
+//  MOBILE MODE
+// ══════════════════════════════════════════════════
+function detectMobile(){
+  const ua = navigator.userAgent || navigator.vendor || "";
+  const uaMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  const touchPrimary = window.matchMedia && window.matchMedia("(pointer:coarse)").matches;
+  const narrow = window.innerWidth <= 820;
+  return uaMobile || (touchPrimary && narrow);
+}
+function applyMobileMode(){
+  const isMobile = detectMobile();
+  document.documentElement.classList.toggle("mobile-mode", isMobile);
+  return isMobile;
+}
+applyMobileMode();
+window.addEventListener("resize", ()=>{ applyMobileMode(); });
+
+$("mobile-hamburger").addEventListener("click", ()=>{
+  $("sidebar").classList.toggle("closed");
+});
+$("mobile-backdrop").addEventListener("click", ()=>{
+  $("sidebar").classList.add("closed");
+});
 
 (async function(){
   applyTheme(localStorage.getItem("rtheme")||"dark");

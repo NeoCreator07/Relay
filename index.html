@@ -391,7 +391,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 95</div>
+    <div class="aver">VERSION 96</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -644,7 +644,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 95;
+const VERSION   = 96;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -738,6 +738,26 @@ function fmtFullT(ts){
   const time=d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
   const month=d.toLocaleDateString([],{month:"long"});
   return time+" "+month+" "+d.getDate();
+}
+
+// ── Draft persistence (per-room typed text + last open room) ────
+function loadDrafts(){
+  try{ return JSON.parse(localStorage.getItem("rdrafts")||"{}"); }catch(_){ return {}; }
+}
+function saveDraft(roomId, text){
+  if(!roomId) return;
+  const drafts=loadDrafts();
+  if(text){ drafts[roomId]=text; } else { delete drafts[roomId]; }
+  try{ localStorage.setItem("rdrafts", JSON.stringify(drafts)); }catch(_){}
+}
+function getDraft(roomId){
+  if(!roomId) return "";
+  return loadDrafts()[roomId] || "";
+}
+function autoresizeInput(){
+  const el=$("msg-input");
+  el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,120)+"px";
+  $("send-btn").disabled=!el.value.trim();
 }
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 
@@ -889,7 +909,12 @@ async function enterApp(){
   }
   await ensureGeneral();
   await loadMyRooms();
-  if(!curRoom)selectRoom("general");
+  if(!curRoom){
+    let lastRoom=null;
+    try{ lastRoom=localStorage.getItem("rlastroom"); }catch(_){}
+    if(lastRoom && roomsMap[lastRoom]) selectRoom(lastRoom);
+    else selectRoom("general");
+  }
 }
 
 // ══════════════════════════════════════════════════
@@ -988,6 +1013,11 @@ function renderRooms(filter){
 }
 
 async function selectRoom(id){
+  // Save the draft of the room we're leaving before switching away
+  if(curRoom && curRoom!==id){
+    saveDraft(curRoom, $("msg-input").value.trim());
+  }
+
   if(msgsRef){msgsRef.off();msgsRef=null}
   seenIds.clear();lastMsgUser=null;msgEls={};
   const room=roomsMap[id];
@@ -1001,6 +1031,7 @@ async function selectRoom(id){
   }
 
   curRoom=id;renderRooms();
+  try{ localStorage.setItem("rlastroom", id); }catch(_){}
   $("room-title").textContent=(room||{name:id}).name;
   $("no-room").classList.add("hidden");
   $("chat-area").classList.remove("hidden");
@@ -1008,6 +1039,12 @@ async function selectRoom(id){
   msgsRef=db.ref("messages/"+id).orderByChild("ts").limitToLast(MAX_MSG);
   msgsRef.on("child_added",s=>{const m=s.val();if(seenIds.has(m.id))return;seenIds.add(m.id);appendMsg(m)});
   msgsRef.on("child_changed",s=>{const m=s.val();if(msgEls[m.id])updateRxns(m)});
+
+  // Restore any saved draft for this room
+  const draft=getDraft(id);
+  $("msg-input").value=draft;
+  autoresizeInput();
+
   if(document.documentElement.classList.contains("mobile-mode")){
     $("sidebar").classList.add("closed"); // auto-hide sidebar on mobile after picking a room
   }else{
@@ -1181,12 +1218,13 @@ async function sendMsg(){
   if(raw===lastTxt){if(++dCnt>=DLIMIT){notice("🔁 Don't repeat yourself.");return}}else{dCnt=0;lastTxt=raw}
   const text=censor(raw);
   inp.value="";inp.style.height="auto";$("send-btn").disabled=true;
+  saveDraft(curRoom, ""); // clear saved draft once the message is actually sent
   lastSend=now;sWin.push(now);
   const id=uid();
   const msg={id,username:me.username,color:me.color,text,ts:Date.now(),type:"text"};
   if(replyTo){msg.replyTo=replyTo;cancelReply()}
   try{await db.ref("messages/"+curRoom+"/"+id).set(msg)}
-  catch(err){console.error(err);inp.value=raw;$("send-btn").disabled=false}
+  catch(err){console.error(err);inp.value=raw;$("send-btn").disabled=false;saveDraft(curRoom, raw);}
 }
 
 async function sendGif(url){
@@ -1558,9 +1596,11 @@ $("edit-close").addEventListener("click",()=>closeModal("edit-popup"));
 $("profile-card").addEventListener("click",openEditProfile);
 $("save-profile").addEventListener("click",saveProfile);
 
+let draftSaveTimer=null;
 $("msg-input").addEventListener("input",function(){
-  this.style.height="auto";this.style.height=Math.min(this.scrollHeight,120)+"px";
-  $("send-btn").disabled=!this.value.trim();
+  autoresizeInput();
+  clearTimeout(draftSaveTimer);
+  draftSaveTimer=setTimeout(()=>saveDraft(curRoom, this.value.trim()), 250);
 });
 $("msg-input").addEventListener("keydown",e=>{
   if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMsg()}

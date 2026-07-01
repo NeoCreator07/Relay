@@ -75,8 +75,9 @@
       border-right:1px solid var(--border);display:flex;flex-direction:column;
       transition:width .3s var(--ease);overflow:hidden;border-radius:0}
     #sidebar.closed{width:0}
-    .sb-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 14px;
+    .sb-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px;
       flex-shrink:0}
+    
     .sb-title{font-size:19px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
     .ibtn{background:none;border:none;color:var(--accent);cursor:pointer;font-size:15px;
       width:30px;height:30px;display:flex;align-items:center;justify-content:center;
@@ -84,7 +85,7 @@
       font-family:inherit;flex-shrink:0}
     .ibtn:hover{background:var(--surface2)}
     .ibtn:active{transform:scale(.9)}
-    .sb-search{display:flex;align-items:center;gap:8px;padding:12px 14px;flex-shrink:0}
+    .sb-search{display:flex;align-items:center;gap:8px;padding:6px 14px 10px;flex-shrink:0}
     #room-search{flex:1;background:var(--surface2);border:none;border-radius:10px;
       padding:8px 12px;font-size:14px;color:var(--text);outline:none;font-family:inherit}
     #room-search::placeholder{color:var(--muted2)}
@@ -259,9 +260,15 @@
       background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.18)}
     #sidebar.closed+#sb-handle:hover{
       background:rgba(var(--accent-r),var(--accent-g),var(--accent-b),.4)}
-    /* Admin popup */
+    /* Admin + About popup */
     #admin-popup{top:50%;left:50%;transform:translate(-50%,-50%);
       width:min(380px,calc(100vw - 32px));max-height:85vh;overflow-y:auto}
+    #about-popup{top:50%;left:50%;transform:translate(-50%,-50%);
+      width:min(360px,calc(100vw - 32px));max-height:85vh;overflow-y:auto}
+    .about-link{display:flex;align-items:center;gap:12px;padding:10px 14px;
+      background:var(--surface2);border-radius:14px;text-decoration:none;
+      margin-bottom:8px;transition:background .15s var(--ease)}
+    .about-link:hover{background:var(--border2)}
     .admin-link{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface2);
       border-radius:12px;color:var(--accent);text-decoration:none;font-size:14px;
       margin-bottom:6px;transition:background .15s var(--ease)}
@@ -371,6 +378,68 @@
       cursor:pointer;flex-shrink:0;margin-right:4px
     }
     #mobile-hamburger{display:none}
+
+    /* ── Discord-style Icon Rail ── */
+    #icon-rail{width:72px;flex-shrink:0;background:var(--bg);display:flex;flex-direction:column;
+      align-items:center;padding:10px 0;gap:6px;overflow-y:auto;overflow-x:hidden;z-index:6}
+    #icon-rail::-webkit-scrollbar{width:0}
+    .rail-sep{width:32px;height:2px;background:var(--border2);border-radius:2px;margin:2px 0;flex-shrink:0}
+    .rail-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;flex-shrink:0;font-size:18px;font-weight:700;color:#fff;
+      transition:border-radius .2s var(--ease),opacity .15s var(--ease),background .15s var(--ease);
+      position:relative;overflow:hidden;user-select:none}
+    .rail-icon img{width:100%;height:100%;object-fit:cover}
+    .rail-icon:hover{border-radius:16px;opacity:1!important}
+    .rail-icon.active{border-radius:16px}
+    .rail-icon.active::before{content:'';position:absolute;left:-6px;top:50%;transform:translateY(-50%);
+      width:4px;border-radius:0 4px 4px 0;background:#fff;height:40%}
+    .rail-icon.home-icon{background:var(--accent);font-size:20px}
+    .rail-icon.dm-unread::after{content:'';position:absolute;top:4px;right:4px;
+      width:10px;height:10px;border-radius:50%;background:#FF453A;border:2px solid var(--bg)}
+    .rail-add{width:48px;height:48px;border-radius:50%;background:var(--surface2);border:none;color:#34C759;
+      font-size:24px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+      transition:border-radius .2s var(--ease),background .15s var(--ease)}
+    .rail-add:hover{border-radius:16px;background:rgba(52,199,89,.18)}
+
+    /* ── Friends system ── */
+    #friends-popup{top:50%;left:50%;transform:translate(-50%,-50%);
+      width:min(380px,calc(100vw - 32px));max-height:85vh;overflow-y:auto}
+    .ftab-row{display:flex;gap:6px;margin-bottom:16px}
+    .ftab{flex:1;background:var(--surface2);border:none;border-radius:10px;padding:9px 6px;
+      font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit;
+      transition:background .15s var(--ease),color .15s var(--ease)}
+    .ftab.active{background:var(--accent);color:#fff}
+    .fuser-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;
+      background:var(--surface2);margin-bottom:6px;transition:background .15s var(--ease)}
+    .fuser-row:hover{background:var(--border2)}
+    .fuser-av{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+      justify-content:center;font-size:14px;font-weight:700;color:#fff;overflow:hidden}
+    .fuser-av img{width:100%;height:100%;object-fit:cover}
+    .fuser-name{flex:1;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .fuser-btns{display:flex;gap:6px;flex-shrink:0}
+    .fsmall-btn{background:none;border:1px solid var(--border2);border-radius:8px;padding:4px 10px;
+      font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s var(--ease)}
+    .fsmall-btn.accent{background:var(--accent);border-color:var(--accent);color:#fff}
+    .fsmall-btn.danger{border-color:var(--danger);color:var(--danger)}
+    .fsmall-btn:hover{background:var(--surface2)}
+    .fsmall-btn.accent:hover{opacity:.85;background:var(--accent)}
+    .fsmall-btn.danger:hover{background:rgba(255,69,58,.12)}
+    .fadd-row{display:flex;gap:8px;margin-bottom:16px}
+
+    /* ── DMs panel in sidebar ── */
+    .sb-dm-hdr{font-size:12px;font-weight:700;color:var(--muted2);letter-spacing:.06em;
+      text-transform:uppercase;padding:8px 14px 4px}
+    .dm-item{display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;
+      border-radius:12px;margin:2px 8px;transition:background .15s var(--ease)}
+    .dm-item:hover{background:var(--surface2)}
+    .dm-item.active{background:rgba(10,132,255,.18)}
+    .dm-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+      justify-content:center;font-size:13px;font-weight:700;color:#fff;overflow:hidden;flex-shrink:0}
+    .dm-av img{width:100%;height:100%;object-fit:cover}
+    .dm-name{flex:1;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .dm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .dm-dot.on{background:#34C759}
+    .dm-dot.off{background:transparent}
   </style>
   <script>
     // Apply saved theme before paint to avoid a flash of the wrong appearance
@@ -391,7 +460,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 98</div>
+    <div class="aver">VERSION 101</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -410,6 +479,18 @@
 <!-- APP -->
 <div id="app" class="hidden">
 
+  <!-- ICON RAIL -->
+  <div id="icon-rail">
+    <!-- Home / DMs -->
+    <div class="rail-icon home-icon active" id="rail-home" title="Direct Messages">💬</div>
+    <div class="rail-sep"></div>
+    <!-- Server icons rendered by JS -->
+    <div id="rail-servers"></div>
+    <div class="rail-sep"></div>
+    <!-- Add room -->
+    <button class="rail-add" id="rail-add-btn" title="Create Room">+</button>
+  </div>
+
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="sb-head">
@@ -423,11 +504,16 @@
     </div>
     <div class="sb-search">
       <input id="room-search" placeholder="Search rooms…"/>
-      <button class="addbtn" id="create-room-btn" title="Create room">+</button>
     </div>
-    <div id="room-list"></div>
-    <div id="online-section">
-      <div class="online-hdr">Online</div>
+    <!-- Server view -->
+    <div id="server-view">
+      <div id="room-list"></div>
+    </div>
+    <!-- DM view -->
+    <div id="dm-view" class="hidden">
+      <div class="sb-dm-hdr">Direct Messages</div>
+      <div id="dm-list"></div>
+      <div class="sb-dm-hdr" style="margin-top:8px">Online</div>
       <div id="online-list"></div>
     </div>
     <div class="sb-foot" id="profile-card" title="Edit profile">
@@ -469,6 +555,86 @@
         <textarea id="msg-input" placeholder="Message… (Shift+Enter for new line)" rows="1"></textarea>
         <input type="file" id="img-input" accept="image/*" style="display:none"/>
         <button id="send-btn" disabled>↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FRIENDS POPUP -->
+<div id="friends-popup" class="popup hidden">
+  <button class="pclose" id="friends-close">✕</button>
+  <div class="ptitle">Friends</div>
+  <div class="ftab-row">
+    <button class="ftab active" data-ftab="friends">Friends</button>
+    <button class="ftab" data-ftab="requests">Requests <span id="req-badge" style="display:none;background:var(--danger);color:#fff;border-radius:50%;padding:0 5px;font-size:11px;margin-left:3px"></span></button>
+    <button class="ftab" data-ftab="add">Add Friend</button>
+  </div>
+
+  <!-- Friends list -->
+  <div id="ftab-friends">
+    <div id="friends-list"><p style="color:var(--muted);font-size:14px">No friends yet. Add someone!</p></div>
+  </div>
+
+  <!-- Requests -->
+  <div id="ftab-requests" class="hidden">
+    <div id="requests-list"><p style="color:var(--muted);font-size:14px">No pending requests.</p></div>
+  </div>
+
+  <!-- Add friend -->
+  <div id="ftab-add" class="hidden">
+    <div class="fadd-row">
+      <input id="friend-username-in" class="finp" placeholder="Enter username…" style="margin:0;flex:1"/>
+      <button class="bprim" id="send-friend-req-btn" style="margin:0;width:auto;padding:10px 16px">Send</button>
+    </div>
+    <p id="friend-req-msg" style="font-size:13px;margin-top:6px;display:none"></p>
+  </div>
+</div>
+
+<!-- ABOUT POPUP -->
+<div id="about-popup" class="popup hidden">
+  <button class="pclose" id="about-close">✕</button>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+    <div id="about-logo" style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0"></div>
+    <div>
+      <div style="font-size:20px;font-weight:700;letter-spacing:-.02em">Relay</div>
+      <div style="font-size:11px;color:var(--muted2);letter-spacing:.04em">VERSION <span id="about-ver"></span></div>
+    </div>
+  </div>
+
+  <p style="font-size:14px;line-height:1.6;color:var(--muted);margin-bottom:20px">
+    A real-time group chat app — single HTML file, no backend server, no build step.
+    Create rooms, send messages, react, reply, share GIFs and images, and customise your profile.
+    Powered by Firebase Realtime Database.
+  </p>
+
+  <div class="psect">
+    <div class="plbl">Repositories</div>
+    <a class="about-link" href="https://github.com/NeoCreator07/Relay" target="_blank">
+      <span style="font-size:16px">🐙</span>
+      <div>
+        <div style="font-weight:600;font-size:13px">Relay</div>
+        <div style="font-size:11px;color:var(--muted2)">github.com/NeoCreator07/Relay · ✅ Working</div>
+      </div>
+    </a>
+    <a class="about-link" href="https://github.com/NeoCreator07/Relay-Messaging" target="_blank">
+      <span style="font-size:16px">🐙</span>
+      <div>
+        <div style="font-weight:600;font-size:13px">Relay Messaging</div>
+        <div style="font-size:11px;color:var(--muted2)">github.com/NeoCreator07/Relay-Messaging · ⚠️ Broken</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="psect" style="margin-bottom:0">
+    <div class="plbl">Contact</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:14px">
+      <span style="font-size:16px">✉️</span>
+      <div>
+        <a href="mailto:afakegmail.retract608@simplelogin.com"
+           style="font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;word-break:break-all">
+          afakegmail.retract608@simplelogin.com
+        </a>
+        <div style="font-size:11px;color:var(--muted2);margin-top:2px">not a fake email</div>
       </div>
     </div>
   </div>
@@ -644,7 +810,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 98;
+const VERSION   = 101;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -783,6 +949,54 @@ function fbRace(p,ms=10000){
 
 function nearBot(){const f=$("feed");return f.scrollHeight-f.scrollTop-f.clientHeight<100}
 function scrollBot(){const f=$("feed");f.scrollTop=f.scrollHeight}
+
+// ── Link detection + embed rendering ────────────────────────────
+const URL_RE=/(https?:\/\/[-\w@:%+.~#?&/=]+[-\w@:%+~#?&/=])/g;
+const IMG_RE=/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i;
+const YT_RE=/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i;
+
+function linkify(container, text){
+  const parts=text.split(URL_RE);
+  const embeds=[];
+  parts.forEach(part=>{
+    if(URL_RE.test(part)){
+      URL_RE.lastIndex=0;
+      const a=document.createElement("a");
+      a.href=part; a.target="_blank"; a.rel="noopener noreferrer";
+      a.textContent=part;
+      a.style.cssText="color:inherit;opacity:.85;word-break:break-all;text-decoration:underline;text-underline-offset:2px";
+      a.addEventListener("click",e=>e.stopPropagation());
+      container.appendChild(a);
+      embeds.push(part);
+    } else if(part){
+      container.appendChild(document.createTextNode(part));
+    }
+  });
+  URL_RE.lastIndex=0;
+  // Render embeds below the text
+  embeds.forEach(url=>{
+    const ytm=url.match(YT_RE);
+    if(ytm){
+      // YouTube embed
+      const wrap=document.createElement("div");
+      wrap.style.cssText="margin-top:8px;border-radius:14px;overflow:hidden;max-width:320px";
+      const iframe=document.createElement("iframe");
+      iframe.src="https://www.youtube.com/embed/"+ytm[1];
+      iframe.style.cssText="width:320px;height:180px;border:none;display:block";
+      iframe.allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture";
+      iframe.allowFullscreen=true;
+      wrap.appendChild(iframe);
+      container.appendChild(wrap);
+    } else if(IMG_RE.test(url.split("?")[0])){
+      // Direct image link
+      const img=document.createElement("img");
+      img.src=url; img.alt="Image"; img.loading="lazy";
+      img.style.cssText="display:block;max-width:300px;max-height:240px;border-radius:12px;margin-top:8px;cursor:pointer";
+      img.addEventListener("click",e=>{e.stopPropagation();window.open(url,"_blank");});
+      container.appendChild(img);
+    }
+  });
+}
 
 function notice(msg){
   const el=$("chat-notice");el.textContent=msg;el.classList.add("show");
@@ -1183,7 +1397,7 @@ function appendMsg(msg){
 
   if(msg.replyTo){
     const q=document.createElement("div");q.className="rquote";
-    q.textContent="↩ "+msg.replyTo.username+": "+msg.replyTo.text;
+    q.textContent="↩ "+msg.replyTo.username+": "+(msg.replyTo.text||"").replace(URL_RE,"[link]");
     grp.appendChild(q);
   }
 
@@ -1196,7 +1410,8 @@ function appendMsg(msg){
     img.alt=msg.type==="gif"?"GIF":"Image";img.loading="lazy";
     bbl.appendChild(img);
   }else{
-    const txt=document.createElement("span");txt.className="btxt";txt.textContent=msg.text||"";
+    const txt=document.createElement("span");txt.className="btxt";
+    linkify(txt, msg.text||"");
     bbl.appendChild(txt);
   }
   const ts=document.createElement("span");ts.className="btime";ts.textContent=fmtFullT(msg.ts);ts.title=fmtFullT(msg.ts);
@@ -1498,10 +1713,15 @@ $("logo-tap").addEventListener("click", () => {
   clearTimeout(tapTmr);
   tapTmr = setTimeout(() => tapCnt = 0, 700);
   if (tapCnt >= 3) { tapCnt = 0; $("admin-ver").textContent = VERSION; openModal("admin-popup"); }
+  else if (tapCnt === 1) { tapTmr = setTimeout(() => { if(tapCnt===1){ tapCnt=0; openModal("about-popup"); } }, 300); }
 });
 
 // ── Admin functions ─────────────────────────────────────────────
 $("admin-close").addEventListener("click", () => closeModal("admin-popup"));
+$("about-close").addEventListener("click", () => closeModal("about-popup"));
+
+// Populate about popup when opened
+
 
 function populateAdminRooms(){
   const rooms=Object.values(roomsMap);
@@ -1511,7 +1731,16 @@ function populateAdminRooms(){
   });
 }
 const _origOpenModal=openModal;
-openModal=function(id){_origOpenModal(id);if(id==="admin-popup"){$("admin-ver").textContent=VERSION;populateAdminRooms();}};
+openModal=function(id){
+  _origOpenModal(id);
+  if(id==="admin-popup"){ $("admin-ver").textContent=VERSION; populateAdminRooms(); }
+  if(id==="about-popup"){
+    $("about-ver").textContent=VERSION;
+    const logoImg=$("logo-img");const al=$("about-logo");
+    if(logoImg&&logoImg.src){al.innerHTML='<img src="'+logoImg.src+'" style="width:100%;height:100%;object-fit:contain">';}
+    else{al.style.background="var(--accent)";al.textContent="R";}
+  }
+};
 
 $("del-chat-btn").addEventListener("click", async () => {
   const sel=$("del-room-sel"), roomId=sel?sel.value:'';

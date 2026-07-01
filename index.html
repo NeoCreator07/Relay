@@ -24,9 +24,9 @@
       --bg:#F2F2F7;--surface:#FFFFFF;--surface2:#E5E5EA;
       --border:rgba(60,60,67,.13);--border2:rgba(60,60,67,.22);
       --text:#000000;--muted:rgba(0,0,0,.5);--muted2:rgba(0,0,0,.3);
-      --accent:#007AFF;--accentl:#3399FF;
-      --danger:#FF3B30;--thembbl:#E9E9EB;--mybbl:#007AFF;
-      --accent-r:0;--accent-g:122;--accent-b:255;
+      --accent:#5B4FE8;--accentl:#7C6FFF;
+      --danger:#FF3B30;--thembbl:#E5E3FA;--mybbl:#5B4FE8;
+      --accent-r:91;--accent-g:79;--accent-b:232;
       --surface-r:255;--surface-g:255;--surface-b:255;
     }
     html,body{height:100%;
@@ -460,7 +460,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 101</div>
+    <div class="aver">VERSION 103</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -810,7 +810,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 101;
+const VERSION   = 103;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -1133,6 +1133,7 @@ async function enterApp(){
   refreshMyProfile();
   initCaret();
   initPresence();
+  initFriends();
   if(document.documentElement.classList.contains("mobile-mode")){
     $("sidebar").classList.add("closed");
   }
@@ -1144,6 +1145,118 @@ async function enterApp(){
     if(lastRoom && roomsMap[lastRoom]) selectRoom(lastRoom);
     else selectRoom("general");
   }
+}
+
+// ══════════════════════════════════════════════════
+//  FRIENDS SYSTEM
+// ══════════════════════════════════════════════════
+let friendsCache={}, pendingCache={};
+
+function initFriends(){
+  if(!me) return;
+  // Listen for accepted friends
+  db.ref("friends/"+me.username).on("value", snap=>{
+    friendsCache={};
+    if(snap.exists()) snap.forEach(c=>{ friendsCache[c.key]=c.val(); });
+    renderFriends();
+  });
+  // Listen for incoming requests
+  db.ref("friendRequests/"+me.username).on("value", snap=>{
+    pendingCache={};
+    if(snap.exists()) snap.forEach(c=>{ pendingCache[c.key]=c.val(); });
+    renderFriends();
+    // Show badge on home icon
+    const count = Object.keys(pendingCache).length;
+    const badge = $("home-badge");
+    if(badge){ badge.textContent=count; badge.style.display=count>0?"flex":"none"; }
+  });
+}
+
+function renderFriends(){
+  const fl=$("friends-list"); if(!fl) return;
+  fl.innerHTML="";
+  const pending=Object.entries(pendingCache);
+  const friends=Object.entries(friendsCache);
+  if(pending.length===0 && friends.length===0){
+    fl.innerHTML='<p style="color:var(--muted);font-size:14px;padding:8px 0">No friends yet. Add someone below!</p>';
+    return;
+  }
+  // Pending requests first
+  pending.forEach(([from, data])=>{
+    const row=document.createElement("div");
+    row.style.cssText="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)";
+    row.innerHTML='<div style="flex:1"><span style="font-size:14px;font-weight:600">'+esc(from)+'</span>'
+      +'<span style="font-size:11px;color:var(--muted);margin-left:6px">wants to be friends</span></div>'
+      +'<button class="bprim" style="margin:0;padding:6px 12px;font-size:12px;border-radius:8px;width:auto" data-accept="'+esc(from)+'">✓</button>'
+      +'<button class="bprim" style="margin:0;padding:6px 12px;font-size:12px;border-radius:8px;width:auto;background:rgba(255,69,58,.18);color:var(--danger);border:none" data-decline="'+esc(from)+'">✕</button>';
+    row.querySelector("[data-accept]").addEventListener("click",()=>acceptFriend(from));
+    row.querySelector("[data-decline]").addEventListener("click",()=>declineFriend(from));
+    fl.appendChild(row);
+  });
+  // Friends list
+  friends.forEach(([username, data])=>{
+    const isOnline = data.online;
+    const row=document.createElement("div");
+    row.style.cssText="display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer";
+    row.innerHTML='<span style="width:8px;height:8px;border-radius:50%;flex-shrink:0;background:'+(isOnline?"#34C759":"var(--muted2)")+';display:inline-block"></span>'
+      +'<span style="font-size:14px;font-weight:500;flex:1">'+esc(data.displayName||username)+'</span>'
+      +'<button style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:12px;padding:4px 8px;border-radius:6px" data-unfriend="'+esc(username)+'">Remove</button>';
+    row.querySelector("[data-unfriend]").addEventListener("click",e=>{e.stopPropagation();removeFriend(username);});
+    row.addEventListener("click",()=>showProfile(username));
+    fl.appendChild(row);
+  });
+}
+
+async function sendFriendRequest(){
+  const inp=$("friend-username-in");
+  const target=inp.value.trim().toLowerCase();
+  const msg=$("friend-req-msg");
+  msg.style.display="block"; msg.style.color="var(--muted)"; msg.textContent="Sending…";
+  if(!target){ msg.style.color="var(--danger)"; msg.textContent="Enter a username."; return; }
+  if(target===me.username){ msg.style.color="var(--danger)"; msg.textContent="You can't friend yourself!"; return; }
+  if(friendsCache[target]){ msg.style.color="var(--danger)"; msg.textContent="Already friends!"; return; }
+  try{
+    const snap=await fbRace(db.ref("users/"+target).get(),4000);
+    if(!snap.exists()){ msg.style.color="var(--danger)"; msg.textContent="User not found."; return; }
+    await db.ref("friendRequests/"+target+"/"+me.username).set({
+      from: me.username, displayName: me.displayName||me.username,
+      color: me.color, ts: Date.now()
+    });
+    inp.value=""; msg.style.color="#34C759"; msg.textContent="Friend request sent!";
+    setTimeout(()=>{ msg.style.display="none"; }, 3000);
+  }catch(e){ msg.style.color="var(--danger)"; msg.textContent="Error: "+e.message; }
+}
+
+async function acceptFriend(fromUser){
+  try{
+    // Get friend's profile
+    const snap=await db.ref("users/"+fromUser).get();
+    const d=snap.exists()?snap.val():{};
+    // Get online status
+    const ps=await db.ref("presence/"+fromUser).get();
+    const online=ps.exists()?ps.val().online:false;
+    // Write both directions
+    await db.ref("friends/"+me.username+"/"+fromUser).set({
+      displayName:d.displayName||fromUser, color:d.color||"#7C6FFF", online, since:Date.now()
+    });
+    await db.ref("friends/"+fromUser+"/"+me.username).set({
+      displayName:me.displayName||me.username, color:me.color, online:true, since:Date.now()
+    });
+    // Remove request
+    await db.ref("friendRequests/"+me.username+"/"+fromUser).remove();
+  }catch(e){ console.error(e); }
+}
+
+async function declineFriend(fromUser){
+  try{ await db.ref("friendRequests/"+me.username+"/"+fromUser).remove(); }catch(e){}
+}
+
+async function removeFriend(target){
+  if(!confirm("Remove "+target+" as a friend?")) return;
+  try{
+    await db.ref("friends/"+me.username+"/"+target).remove();
+    await db.ref("friends/"+target+"/"+me.username).remove();
+  }catch(e){ console.error(e); }
 }
 
 // ══════════════════════════════════════════════════
@@ -1228,6 +1341,7 @@ async function loadMyRooms(){
 //  ROOMS
 // ══════════════════════════════════════════════════
 function renderRooms(filter){
+  // Render sidebar channel list
   const list=$("room-list");list.innerHTML="";
   let all=Object.values(roomsMap);
   if(filter) all=all.filter(r=>r.name.toLowerCase().includes(filter.toLowerCase()));
@@ -1238,6 +1352,38 @@ function renderRooms(filter){
       +(room.hasPassword?'<span style="font-size:11px;color:var(--muted)">🔒</span>':"");
     item.addEventListener("click",()=>selectRoom(room.id));
     list.appendChild(item);
+  });
+  // Also render icon rail server icons (all rooms, no filter)
+  renderRailServers();
+}
+
+function renderRailServers(){
+  const rail=$("rail-servers");
+  if(!rail) return;
+  rail.innerHTML="";
+  Object.values(roomsMap).forEach(room=>{
+    const ic=document.createElement("div");
+    ic.className="rail-icon"+(room.id===curRoom?" active":"");
+    ic.title=room.name;
+    ic.setAttribute("data-rid", room.id);
+    // First letter as icon
+    const letter=document.createElement("span");
+    letter.textContent=room.name[0].toUpperCase();
+    ic.appendChild(letter);
+    if(room.hasPassword){
+      const lk=document.createElement("span");
+      lk.style.cssText="position:absolute;bottom:2px;right:2px;font-size:8px";
+      lk.textContent="🔒";
+      ic.appendChild(lk);
+    }
+    ic.addEventListener("click",()=>{
+      // Switch sidebar to server view and select room
+      $("server-view").classList.remove("hidden");
+      $("dm-view").classList.add("hidden");
+      $("rail-home").classList.remove("active");
+      selectRoom(room.id);
+    });
+    rail.appendChild(ic);
   });
 }
 
@@ -1262,6 +1408,10 @@ async function selectRoom(id){
   }
 
   curRoom=id;renderRooms();
+  // Highlight active rail icon
+  document.querySelectorAll("#rail-servers .rail-icon").forEach(el=>{
+    el.classList.toggle("active", el.getAttribute("data-rid")===id);
+  });
   try{ localStorage.setItem("rlastroom", id); }catch(_){}
   $("room-title").textContent=(room||{name:id}).name;
   $("no-room").classList.add("hidden");
@@ -1839,6 +1989,30 @@ document.addEventListener("input",e=>{
 });
 
 $("create-room-btn").addEventListener("click",()=>{closeAllModals();openModal("create-popup")});
+$("rail-add-btn").addEventListener("click",()=>{closeAllModals();openModal("create-popup")});
+// Friends popup wiring
+if($("friends-close")) $("friends-close").addEventListener("click",()=>closeModal("friends-popup"));
+if($("send-friend-req-btn")) $("send-friend-req-btn").addEventListener("click",sendFriendRequest);
+if($("friend-username-in")) $("friend-username-in").addEventListener("keydown",e=>{if(e.key==="Enter")sendFriendRequest();});
+document.querySelectorAll(".ftab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".ftab").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab=btn.dataset.ftab;
+    document.querySelectorAll("#friends-popup [id^='ftab-']").forEach(el=>el.classList.add("hidden"));
+    const target=$("ftab-"+tab);
+    if(target) target.classList.remove("hidden");
+  });
+});
+$("rail-home").addEventListener("click",()=>{
+  $("rail-home").classList.toggle("active");
+  const goHome = $("rail-home").classList.contains("active");
+  $("dm-view").classList.toggle("hidden", !goHome);
+  $("server-view").classList.toggle("hidden", goHome);
+  // Deactivate server icons
+  document.querySelectorAll("#rail-servers .rail-icon").forEach(el=>el.classList.remove("active"));
+  if(goHome) openModal("friends-popup");
+});
 $("create-close").addEventListener("click",()=>closeModal("create-popup"));
 $("create-submit").addEventListener("click",handleCreateRoom);
 $("new-rname").addEventListener("keydown",e=>{if(e.key==="Enter")handleCreateRoom()});
@@ -1859,7 +2033,8 @@ $("msg-input").addEventListener("input",function(){
   draftSaveTimer=setTimeout(()=>saveDraft(curRoom, this.value.trim()), 250);
 });
 $("msg-input").addEventListener("keydown",e=>{
-  if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMsg()}
+  if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMsg();}
+  // Shift+Enter inserts a newline - handled naturally by textarea
 });
 $("send-btn").addEventListener("click",sendMsg);
 $("reply-cancel").addEventListener("click",cancelReply);

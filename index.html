@@ -460,7 +460,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 103</div>
+    <div class="aver">VERSION 104</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -810,7 +810,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 103;
+const VERSION   = 104;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -1013,19 +1013,36 @@ function closeAllModals(){
 // ══════════════════════════════════════════════════
 //  SESSION
 // ══════════════════════════════════════════════════
-function saveSession(){localStorage.setItem("rs",JSON.stringify({u:me.username,c:me.color}))}
+function saveSession(){
+  if(!me) return;
+  // Store all user data locally — no Firebase fetch needed on reload
+  localStorage.setItem("rs",JSON.stringify({
+    u:me.username, c:me.color,
+    d:me.displayName||me.username,
+    p:me.photoURL||null
+  }));
+}
 function clearSession(){localStorage.removeItem("rs")}
 async function tryAutoLogin(){
   try{
     const s=JSON.parse(localStorage.getItem("rs")||"null");
-    if(!s)return false;
-    const snap=await fbRace(db.ref("users/"+s.u).get(),3000);
-    if(!snap.exists()){clearSession();return false}
-    const d=snap.val();
-    me={username:d.username,color:d.color,displayName:d.displayName||d.username,photoURL:d.photoURL||null};
+    if(!s||!s.u) return false;
+    // Restore from local cache immediately — no network call needed
+    me={username:s.u, color:s.c||"#5B4FE8",
+        displayName:s.d||s.u, photoURL:s.p||null};
+    // Silently refresh from Firebase in background (no await, non-blocking)
+    db.ref("users/"+s.u).get().then(snap=>{
+      if(!snap.exists()){ clearSession(); return; }
+      const d=snap.val();
+      me.color=d.color||me.color;
+      me.displayName=d.displayName||me.displayName;
+      me.photoURL=d.photoURL||me.photoURL;
+      saveSession();
+      // Refresh profile card if already in app
+      if($("my-name")) refreshMyProfile();
+    }).catch(()=>{/* ignore, use cached data */});
     return true;
   }catch(e){
-    // Pre-fill username from saved session so user can retry manually
     try{const s=JSON.parse(localStorage.getItem("rs")||"null");if(s&&s.u)$("u-in").value=s.u;}catch(_){}
     return false;
   }
@@ -1130,6 +1147,9 @@ async function setBg(name, color){
 async function enterApp(){
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
+  // Restore user's chosen background (may differ from the random login one)
+  const _userBg=localStorage.getItem("rbg")||"none";
+  setBg(_userBg, localStorage.getItem("rvcolor")||null);
   refreshMyProfile();
   initCaret();
   initPresence();
@@ -2100,11 +2120,18 @@ $("mobile-backdrop").addEventListener("click", ()=>{
 
 (async function(){
   applyTheme(localStorage.getItem("rtheme")||"dark");
-  setBg(localStorage.getItem("rbg")||"none", localStorage.getItem("rvcolor")||null);
+  // Login screen: show a random Vanta bg for visual flair
+  // (enterApp() will replace it with the user's saved preference)
+  const _savedBg = localStorage.getItem("rbg");
+  if(!_savedBg || _savedBg==="none"){
+    const _bgKeys=Object.keys(VCDNS);
+    const _randBg=_bgKeys[Math.floor(Math.random()*_bgKeys.length)];
+    setBg(_randBg, localStorage.getItem("rvcolor")||null);
+  } else {
+    setBg(_savedBg, localStorage.getItem("rvcolor")||null);
+  }
   const btn=$("auth-btn");
-  btn.disabled=true; btn.textContent="Connecting…";
-
-  // Just check SDK loaded — don't make a network call here, it hangs
+  // Check SDK silently — no UI lock
   try {
     if (firebase && db) setFbStatus(true, "Firebase ready");
     else setFbStatus(false, "Firebase SDK failed to load");
@@ -2112,14 +2139,15 @@ $("mobile-backdrop").addEventListener("click", ()=>{
     setFbStatus(false, "Firebase SDK error");
   }
 
-  // Hard failsafe
+  // Try instant local-cache auto-login (no network needed)
+  btn.disabled=true; btn.textContent="Connecting…";
   const failsafe=setTimeout(()=>{
     if(btn.disabled){
       btn.disabled=false; btn.textContent="Sign in";
-      setFbStatus(null, "Timed out — try signing in");
+      setFbStatus(null, "Ready");
       try{const s=JSON.parse(localStorage.getItem("rs")||"null");if(s&&s.u)$("u-in").value=s.u;}catch(_){}
     }
-  },4000);
+  },2000);
 
   try{
     const ok=await tryAutoLogin();

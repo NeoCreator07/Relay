@@ -90,7 +90,7 @@
       padding:8px 12px;font-size:14px;color:var(--text);outline:none;font-family:inherit}
     #room-search::placeholder{color:var(--muted2)}
 
-    #room-list{flex:1;overflow-y:auto;padding:6px 0}
+    #room-list{flex:1;overflow-y:auto;padding:6px 0;min-height:0}
     #room-list::-webkit-scrollbar{width:3px}
     #room-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
     .ritem{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;
@@ -136,7 +136,7 @@
       font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:opacity .15s var(--ease)}
     .mavatar:hover{opacity:.8}
     .mavatar img{width:100%;height:100%;object-fit:cover;display:block}
-    #online-section{flex-shrink:0;border-top:1px solid var(--border);max-height:150px;overflow-y:auto}
+    #online-section{flex-shrink:0;border-top:1px solid var(--border);max-height:160px;overflow-y:auto;margin-top:auto}
     #online-section::-webkit-scrollbar{width:3px}
     #online-section::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
     .online-hdr{font-size:10px;font-weight:700;color:var(--muted2);letter-spacing:.08em;
@@ -420,6 +420,24 @@
     .dm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
     .dm-dot.on{background:#34C759}
     .dm-dot.off{background:transparent}
+    /* ── Link embed preview card ── */
+    .link-embed{display:flex;gap:0;margin-top:8px;max-width:360px;
+      background:var(--surface2);border-radius:8px;overflow:hidden;
+      border:1px solid var(--border2);cursor:pointer;text-decoration:none;
+      transition:background .15s var(--ease)}
+    .link-embed:hover{background:var(--border2)}
+    .le-bar{width:4px;flex-shrink:0;background:var(--accent)}
+    .le-body{padding:10px 12px;flex:1;min-width:0}
+    .le-site{font-size:11px;color:var(--muted);margin-bottom:3px;
+      display:flex;align-items:center;gap:5px}
+    .le-favicon{width:14px;height:14px;border-radius:2px}
+    .le-title{font-size:14px;font-weight:600;color:var(--accent);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+    .le-desc{font-size:12px;color:var(--muted);line-height:1.4;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .le-img{width:80px;flex-shrink:0;object-fit:cover;background:var(--surface)}
+    .le-loading{font-size:11px;color:var(--muted2);margin-top:6px;padding:6px 10px;
+      background:var(--surface2);border-radius:8px;border:1px solid var(--border)}
   </style>
   <script>
     // Apply saved theme before paint to avoid a flash of the wrong appearance
@@ -440,7 +458,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 106</div>
+    <div class="aver">VERSION 108</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -776,7 +794,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 106;
+const VERSION   = 108;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -921,9 +939,52 @@ const URL_RE=/(https?:\/\/[-\w@:%+.~#?&/=]+[-\w@:%+~#?&/=])/g;
 const IMG_RE=/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i;
 const YT_RE=/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i;
 
+const previewCache={};
+async function fetchPreview(url){
+  if(previewCache[url]!==undefined) return previewCache[url];
+  previewCache[url]=null;
+  try{
+    const res=await fetch("https://api.microlink.io/?url="+encodeURIComponent(url)+"&screenshot=false&audio=false&video=false&palette=false");
+    const j=await res.json();
+    if(j.status==="success"){ previewCache[url]=j.data; return j.data; }
+  }catch(_){}
+  previewCache[url]=false; return null;
+}
+
+function buildEmbedCard(url,data){
+  const card=document.createElement("a");
+  card.className="link-embed"; card.href=url; card.target="_blank"; card.rel="noopener noreferrer";
+  card.addEventListener("click",e=>e.stopPropagation());
+  const bar=document.createElement("div"); bar.className="le-bar";
+  const body=document.createElement("div"); body.className="le-body";
+  const site=document.createElement("div"); site.className="le-site";
+  if(data.logo&&data.logo.url){
+    const fav=document.createElement("img"); fav.className="le-favicon";
+    fav.src=data.logo.url; fav.onerror=()=>fav.remove(); site.appendChild(fav);
+  }
+  const host=document.createElement("span");
+  try{ host.textContent=new URL(url).hostname; }catch(_){ host.textContent=url; }
+  site.appendChild(host);
+  const title=document.createElement("div"); title.className="le-title";
+  title.textContent=(data.title||url).slice(0,80);
+  body.appendChild(site); body.appendChild(title);
+  if(data.description){
+    const desc=document.createElement("div"); desc.className="le-desc";
+    desc.textContent=data.description.slice(0,140); body.appendChild(desc);
+  }
+  card.appendChild(bar); card.appendChild(body);
+  const imgUrl=data.image&&data.image.url;
+  if(imgUrl){
+    const img=document.createElement("img"); img.className="le-img";
+    img.src=imgUrl; img.alt=""; img.loading="lazy"; img.onerror=()=>img.remove();
+    card.appendChild(img);
+  }
+  return card;
+}
+
 function linkify(container, text){
   const parts=text.split(URL_RE);
-  const embeds=[];
+  const urls=[];
   parts.forEach(part=>{
     if(URL_RE.test(part)){
       URL_RE.lastIndex=0;
@@ -931,35 +992,37 @@ function linkify(container, text){
       a.href=part; a.target="_blank"; a.rel="noopener noreferrer";
       a.textContent=part;
       a.style.cssText="color:inherit;opacity:.85;word-break:break-all;text-decoration:underline;text-underline-offset:2px";
-      a.addEventListener("click",e=>e.stopPropagation());
-      container.appendChild(a);
-      embeds.push(part);
+      a.addEventListener("click",e=>e.stopPropagation()); container.appendChild(a); urls.push(part);
     } else if(part){
       container.appendChild(document.createTextNode(part));
     }
   });
   URL_RE.lastIndex=0;
-  // Render embeds below the text
-  embeds.forEach(url=>{
+  urls.forEach(url=>{
     const ytm=url.match(YT_RE);
     if(ytm){
-      // YouTube embed
       const wrap=document.createElement("div");
       wrap.style.cssText="margin-top:8px;border-radius:14px;overflow:hidden;max-width:320px";
       const iframe=document.createElement("iframe");
       iframe.src="https://www.youtube.com/embed/"+ytm[1];
       iframe.style.cssText="width:320px;height:180px;border:none;display:block";
       iframe.allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture";
-      iframe.allowFullscreen=true;
-      wrap.appendChild(iframe);
-      container.appendChild(wrap);
+      iframe.allowFullscreen=true; wrap.appendChild(iframe); container.appendChild(wrap);
     } else if(IMG_RE.test(url.split("?")[0])){
-      // Direct image link
       const img=document.createElement("img");
       img.src=url; img.alt="Image"; img.loading="lazy";
       img.style.cssText="display:block;max-width:300px;max-height:240px;border-radius:12px;margin-top:8px;cursor:pointer";
       img.addEventListener("click",e=>{e.stopPropagation();window.open(url,"_blank");});
       container.appendChild(img);
+    } else {
+      const stub=document.createElement("div"); stub.className="le-loading";
+      try{ stub.textContent="Loading preview for "+new URL(url).hostname+"…"; }
+      catch(_){ stub.textContent="Loading preview…"; }
+      container.appendChild(stub);
+      fetchPreview(url).then(data=>{
+        if(data){ stub.replaceWith(buildEmbedCard(url,data)); }
+        else { stub.remove(); }
+      });
     }
   });
 }

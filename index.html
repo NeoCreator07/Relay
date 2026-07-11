@@ -518,27 +518,12 @@
     </div>
     <p id="auth-tag2" style="color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.4">Welcome back.</p>
     <label class="flbl" for="u-in">Username</label>
-    <input id="u-in" class="finp" type="text" placeholder="e.g. jacob" autocapitalize="none" autocomplete="username"/>
-    <!-- Display name field — only shown during signup -->
-    <div id="dn-wrap" style="display:none">
-      <label class="flbl" for="dn-in">Display Name <span style="font-weight:400;text-transform:none;color:var(--muted2)">(shown to others)</span></label>
-      <input id="dn-in" class="finp" placeholder="e.g. Jacob" autocomplete="off"/>
-    </div>
+    <input id="u-in" class="finp" type="text" placeholder="yourname" autocapitalize="none" autocomplete="username"/>
     <label class="flbl" for="p-in">Password</label>
     <input id="p-in" class="finp" type="password" placeholder="••••••••" autocomplete="current-password"/>
-    <!-- Rules acceptance — only shown during signup -->
-    <div id="rules-wrap" style="display:none;margin-bottom:12px;font-size:12px;color:var(--muted);line-height:1.5;background:var(--surface2);border-radius:10px;padding:9px 12px">
-      <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer">
-        <input type="checkbox" id="rules-check" style="margin-top:2px;accent-color:var(--accent);flex-shrink:0"/>
-        <span>I have read and agree to the <button id="view-rules-btn" style="background:none;border:none;color:var(--accent);font-size:12px;cursor:pointer;padding:0;font-family:inherit;text-decoration:underline">Community Rules</button></span>
-      </label>
-    </div>
     <p id="auth-error" class="hidden" style="background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:9px 12px;font-size:13px;color:#FF6B6B;margin-bottom:12px;line-height:1.5"></p>
     <button class="bprim" id="auth-btn">Sign in</button>
     <p id="auth-footer"><span id="ftxt">New to Relay? </span><button id="auth-toggle">Create account</button></p>
-    <p style="text-align:center;margin-top:8px;font-size:11px;color:var(--muted2)">
-      <button id="view-rules-btn2" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;font-family:inherit">📖 View Community Rules</button>
-    </p>
   </div>
 </div>
 
@@ -1258,14 +1243,6 @@ function setAuthMode(m){
   $("auth-btn").textContent=l?"Sign in":"Create account";
   $("ftxt").textContent=l?"New to Relay? ":"Already have an account? ";
   $("auth-toggle").textContent=l?"Create account":"Sign in";
-  // Show display name + rules only on signup
-  $("dn-wrap").style.display=l?"none":"block";
-  $("rules-wrap").style.display=l?"none":"block";
-  if(!l && !$("dn-in").value){
-    // Pre-fill display name from username if they typed one
-    const u=$("u-in").value.trim();
-    if(u) $("dn-in").value=u.charAt(0).toUpperCase()+u.slice(1);
-  }
   clearAuthErr();
 }
 async function handleAuth(){
@@ -1279,22 +1256,9 @@ async function handleAuth(){
     const ref=db.ref("users/"+u),snap=await fbRace(ref.get(),6000);
     if(authMode==="signup"){
       if(snap.exists())return authErr("Username already taken.");
-      // Display name validation
-      const dn=($("dn-in").value.trim()||u.charAt(0).toUpperCase()+u.slice(1)).slice(0,32);
-      if(dn.length<2)return authErr("Display name must be at least 2 characters.");
-      // Rules acceptance
-      if(!$("rules-check").checked)return authErr("Please read and accept the Community Rules to continue.");
-      // Check for copycat display name (case-insensitive match against existing usernames)
-      try{
-        const dnLower=dn.toLowerCase();
-        // Check if display name matches another username
-        const dnSnap=await fbRace(db.ref("users/"+dnLower.replace(/[^a-z0-9_]/g,"")||"__").get(),4000);
-        if(dnSnap.exists()&&dnLower.replace(/[^a-z0-9_]/g,"")!==u)
-          return authErr("Display name is too similar to an existing username. Choose something unique.");
-      }catch(_){}
       const color=rColor();
-      await fbRace(ref.set({username:u,password:p,color,displayName:dn,photoURL:null}),6000);
-      me={username:u,color,displayName:dn,photoURL:null};
+      await fbRace(ref.set({username:u,password:p,color,displayName:u,photoURL:null}),6000);
+      me={username:u,color,displayName:u,photoURL:null};
       saveSession();enterApp();
     }else{
       if(!snap.exists())return authErr("No account found.");
@@ -2096,8 +2060,7 @@ function signOut(){
 //  EVENTS
 // ══════════════════════════════════════════════════
 $("auth-btn").addEventListener("click",handleAuth);
-$("u-in").addEventListener("keydown",e=>{if(e.key==="Enter"){if(authMode==="signup"&&!$("dn-in").value){const v=$("u-in").value.trim();$("dn-in").value=v?v.charAt(0).toUpperCase()+v.slice(1):"";$("dn-in").focus();}else $("p-in").focus();}});
-$("dn-in").addEventListener("keydown",e=>{if(e.key==="Enter")$("p-in").focus()});
+$("u-in").addEventListener("keydown",e=>{if(e.key==="Enter")$("p-in").focus()});
 $("p-in").addEventListener("keydown",e=>{if(e.key==="Enter")handleAuth()});
 $("auth-toggle").addEventListener("click",()=>setAuthMode(authMode==="login"?"signup":"login"));
 
@@ -2275,8 +2238,6 @@ $("list-rooms-btn").addEventListener("click", () => {
 $("settings-btn").addEventListener("click",e=>{e.stopPropagation();toggleSettings()});
 $("rules-btn").addEventListener("click",()=>openModal("rules-popup"));
 $("rules-close").addEventListener("click",()=>closeModal("rules-popup"));
-$("view-rules-btn").addEventListener("click",()=>openModal("rules-popup"));
-$("view-rules-btn2").addEventListener("click",()=>openModal("rules-popup"));
 $("signout-btn").addEventListener("click",signOut);
 $("theme-toggle").addEventListener("click",toggleTheme);
 document.querySelectorAll(".bgopt").forEach(el=>el.addEventListener("click",()=>{

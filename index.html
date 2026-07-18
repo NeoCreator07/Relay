@@ -47,18 +47,17 @@
     /* ── Auth ── */
     #auth{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center}
     .acard{background:rgba(var(--surface-r),var(--surface-g),var(--surface-b),.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-      border:1px solid var(--border2);border-radius:28px;padding:32px 28px;width:min(340px,calc(100vw - 32px))}
-    .alogo{font-size:28px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
-    .aver{font-size:11px;color:var(--muted2);letter-spacing:.03em;margin-bottom:22px}
-    #auth-tagline{color:var(--muted);font-size:15px;margin-bottom:20px;line-height:1.4}
-    .flbl{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;
+      border:1px solid var(--border2);border-radius:28px;padding:44px 40px;width:min(420px,calc(100vw - 32px))}
+    .alogo{font-size:34px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+    .aver{font-size:12px;color:var(--muted2);letter-spacing:.03em;margin-bottom:26px}
+    #auth-tagline{color:var(--muted);font-size:16px;margin-bottom:22px;line-height:1.4}
+    .flbl{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:7px;
       letter-spacing:.03em;text-transform:uppercase}
     .finp{width:100%;background:var(--surface2);border:1.5px solid transparent;border-radius:16px;
-      padding:12px 14px;font-size:15px;color:var(--text);outline:none;font-family:inherit;
-      margin-bottom:12px;transition:border-color .2s var(--ease)}
+      padding:14px 16px;font-size:16px;color:var(--text);outline:none;font-family:inherit;
+      margin-bottom:14px;transition:border-color .2s var(--ease)}
     .finp:focus{border-color:var(--accent)}
-    #auth-error{color:var(--danger);font-size:13px;margin-bottom:10px;line-height:1.4;
-      background:rgba(255,69,58,.12);padding:9px 12px;border-radius:10px}
+    #auth-error{color:#FF6B6B;font-size:13px;margin-bottom:12px;line-height:1.5;background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:9px 12px;display:none}
     .bprim{width:100%;background:var(--accent);border:none;border-radius:18px;padding:14px;font-size:16px;
       font-weight:600;color:#fff;cursor:pointer;font-family:inherit;margin-bottom:16px;
       transition:opacity .15s var(--ease),transform .1s var(--ease)}
@@ -283,6 +282,16 @@
     /* iOS-style toggle switch */
     .trow{display:flex;align-items:center;justify-content:space-between}
     .tlabel{font-size:14px;font-weight:500;color:var(--text)}
+    /* Scale slider */
+    .scale-row{display:flex;flex-direction:column;gap:6px}
+    .scale-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted2)}
+    input[type=range]#scale-slider{
+      width:100%;accent-color:var(--accent);height:4px;border-radius:2px;cursor:pointer;
+      appearance:none;-webkit-appearance:none;background:var(--surface2);outline:none}
+    input[type=range]#scale-slider::-webkit-slider-thumb{
+      -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+      background:var(--accent);cursor:pointer;border:2px solid var(--bg);
+      box-shadow:0 0 0 1px var(--accent)}
     .ios-switch{width:50px;height:30px;border-radius:999px;background:var(--surface2);
       border:none;position:relative;cursor:pointer;padding:0;flex-shrink:0;
       transition:background .2s var(--ease)}
@@ -511,7 +520,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 112</div>
+    <div class="aver">VERSION 117</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -521,7 +530,7 @@
     <input id="u-in" class="finp" type="text" placeholder="yourname" autocapitalize="none" autocomplete="username"/>
     <label class="flbl" for="p-in">Password</label>
     <input id="p-in" class="finp" type="password" placeholder="••••••••" autocomplete="current-password"/>
-    <p id="auth-error" class="hidden" style="background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:9px 12px;font-size:13px;color:#FF6B6B;margin-bottom:12px;line-height:1.5"></p>
+    <p id="auth-error" style="display:none"></p>
     <button class="bprim" id="auth-btn">Sign in</button>
     <p id="auth-footer"><span id="ftxt">New to Relay? </span><button id="auth-toggle">Create account</button></p>
   </div>
@@ -530,7 +539,7 @@
 <!-- APP -->
 <div id="app" class="hidden">
 
-  <!-- SIDEBAR  <!-- SIDEBAR -->
+  <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="sb-head">
       <!-- Logo: tap 3× for admin panel. Replace img src with your own image URL -->
@@ -539,7 +548,10 @@
         <div id="logo-fb">R</div>
       </div>
       <span class="sb-title">Relay</span>
-      <button class="ibtn" id="settings-btn" title="Settings">⚙</button>
+      <div style="display:flex;gap:2px">
+        <button class="ibtn" id="rules-btn" title="Community Rules">📖</button>
+        <button class="ibtn" id="settings-btn" title="Settings">⚙</button>
+      </div>
     </div>
     <div class="sb-search">
       <input id="room-search" placeholder="Search rooms…"/>
@@ -550,7 +562,7 @@
       <div id="room-list"></div>
     </div>
     <div id="online-section">
-      <div class="online-hdr">Online</div>
+      <div class="online-hdr">People</div>
       <div id="online-list"></div>
     </div>
     <div class="sb-foot" id="profile-card" title="Edit profile">
@@ -727,16 +739,64 @@
   </div>
 </div>
 
+<!-- RULES POPUP -->
+<div id="rules-popup" class="popup hidden" style="max-height:80vh;overflow-y:auto;width:min(400px,calc(100vw - 32px));top:50%;left:50%;transform:translate(-50%,-50%)">
+  <button class="pclose" id="rules-close">✕</button>
+  <div class="ptitle">📖 Community Rules</div>
+  <div style="font-size:13px;line-height:1.7;color:var(--muted)">
+
+    <div style="background:var(--surface2);border-radius:12px;padding:12px 14px;margin-bottom:14px;color:var(--text);font-size:12px">
+      By using Relay you agree to these rules. Violations may result in account removal.
+    </div>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">1. Be Respectful</p>
+    <p style="margin-bottom:14px">Treat all users with respect. No harassment, bullying, hate speech, discrimination, or threats toward any person — regardless of race, gender, religion, nationality, or background.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">2. No Impersonation</p>
+    <p style="margin-bottom:14px">Do not use a display name or profile picture designed to impersonate another user, public figure, or Relay staff. Copycat accounts attempting to deceive others will be removed.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">3. No Spam or Flooding</p>
+    <p style="margin-bottom:14px">Do not send repeated messages, flood chat with meaningless content, or use bots to automate messages. Rate limits are enforced automatically.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">4. Keep It Legal</p>
+    <p style="margin-bottom:14px">Do not share illegal content, pirated material, malware, exploits, or anything that violates applicable law. This includes links to harmful or illegal sites.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">5. No NSFW Content</p>
+    <p style="margin-bottom:14px">Do not share explicit, graphic, or adult-only content in any room unless the room is explicitly designated for it and all participants are adults.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">6. Protect Privacy</p>
+    <p style="margin-bottom:14px">Do not share personal information about others without their consent — including real names, addresses, phone numbers, or photos. Do not attempt to dox anyone.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">7. No Account Abuse</p>
+    <p style="margin-bottom:14px">Do not create multiple accounts to evade bans, inflate online counts, or manipulate chat. One account per person.</p>
+
+    <p style="font-weight:700;color:var(--text);margin-bottom:6px;font-size:14px">8. Report Don't Retaliate</p>
+    <p style="margin-bottom:14px">If someone breaks the rules, use the admin tools or contact the admins instead of retaliating. Taking matters into your own hands makes things worse.</p>
+
+    <div style="background:rgba(91,79,232,.1);border:1px solid rgba(91,79,232,.25);border-radius:12px;padding:12px 14px;margin-top:4px;font-size:12px;color:var(--text)">
+      These rules are enforced client-side and by admins. The admin panel is accessible to moderators and the profanity filter is always active.
+    </div>
+  </div>
+</div>
+
 <!-- SETTINGS POPUP -->
 <div id="settings-popup" class="popup hidden">
   <div class="ptitle">Settings</div>
   <div class="psect">
     <div class="plbl">Appearance</div>
-    <div class="trow">
+    <div class="trow" style="margin-bottom:14px">
       <span class="tlabel">Dark Mode</span>
       <button id="theme-toggle" class="ios-switch on" role="switch" aria-checked="true">
         <span class="ios-switch-knob"></span>
       </button>
+    </div>
+    <div class="trow" style="margin-bottom:6px">
+      <span class="tlabel">GUI Scale</span>
+      <span id="scale-val" style="font-size:12px;color:var(--muted);font-weight:600">100%</span>
+    </div>
+    <div class="scale-row">
+      <input type="range" id="scale-slider" min="75" max="150" step="5" value="100"/>
+      <div class="scale-labels"><span>75%</span><span>100%</span><span>150%</span></div>
     </div>
   </div>
   <div class="psect">
@@ -797,6 +857,7 @@
   <div class="pvavatar" id="pv-av"></div>
   <div class="pvname" id="pv-name"></div>
   <div class="pvuser" id="pv-user"></div>
+  <div id="pv-actions" style="margin-top:16px;display:flex;flex-direction:column;gap:8px"></div>
 </div>
 
 <!-- EDIT PROFILE -->
@@ -858,7 +919,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 112;
+const VERSION   = 117;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -1146,7 +1207,7 @@ function notice(msg){
 function openModal(id){$(id).classList.remove("hidden");$("overlay").classList.add("show")}
 function closeModal(id){$(id).classList.add("hidden");$("overlay").classList.remove("show")}
 function closeAllModals(){
-  ["create-popup","join-popup","pview-popup","edit-popup"].forEach(id=>$(id).classList.add("hidden"));
+  ["create-popup","join-popup","pview-popup","edit-popup","rules-popup"].forEach(id=>$(id).classList.add("hidden"));
   $("overlay").classList.remove("show");
 }
 
@@ -1191,8 +1252,8 @@ async function tryAutoLogin(){
 // ══════════════════════════════════════════════════
 //  AUTH
 // ══════════════════════════════════════════════════
-function authErr(m){const e=$("auth-error");e.textContent=m;e.classList.remove("hidden")}
-function clearAuthErr(){$("auth-error").classList.add("hidden")}
+function authErr(m){const e=$("auth-error");if(!e)return;e.textContent=m;e.style.display="block";e.classList.remove("hidden")}
+function clearAuthErr(){const e=$("auth-error");if(e){e.style.display="none";e.classList.add("hidden")}}
 function setAuthMode(m){
   authMode=m;const l=m==="login";
   $("auth-tag2").textContent=l?"Welcome back.":"Create your account.";
@@ -1237,6 +1298,27 @@ async function handleAuth(){
   }finally{
     btn.disabled=false;btn.textContent=authMode==="login"?"Sign in":"Create account";
   }
+}
+
+// ══════════════════════════════════════════════════
+//  GUI SCALE
+// ══════════════════════════════════════════════════
+function applyScale(pct){
+  const v=Math.min(150,Math.max(75,parseInt(pct)||100));
+  const s=(v/100).toFixed(3);
+  // Apply to both auth and app separately so clicks always register correctly
+  ["auth","app"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.style.transform="scale("+s+")";
+      el.style.transformOrigin="top left";
+      el.style.width=(100/parseFloat(s))+"%";
+      el.style.height=(100/parseFloat(s))+"%";
+    }
+  });
+  localStorage.setItem("rscale",v);
+  const sl=$("scale-slider"); if(sl) sl.value=v;
+  const lbl=$("scale-val"); if(lbl) lbl.textContent=v+"%";
 }
 
 // ══════════════════════════════════════════════════
@@ -1426,12 +1508,25 @@ function initPresence(){
   const ref=db.ref("presence/"+me.username);
   ref.set({online:true,color:me.color,displayName:me.displayName||me.username,photoURL:me.photoURL||null});
   ref.onDisconnect().update({online:false});
-  // Real-time listener updates the sidebar list
   db.ref("presence").on("value",snap=>{
-    const users={};
-    if(snap.exists()) snap.forEach(child=>{users[child.key]=child.val();});
-    renderOnlineUsers(users);
+    window._presenceData={};
+    if(snap.exists()) snap.forEach(child=>{ window._presenceData[child.key]=child.val(); });
+    loadAllUsersForSidebar();
   });
+}
+
+async function loadAllUsersForSidebar(){
+  try{
+    const snap=await db.ref("users").get();
+    const all={};
+    if(snap.exists()) snap.forEach(child=>{
+      const d=child.val();
+      const pres=(window._presenceData||{})[child.key]||{};
+      all[child.key]={username:child.key,displayName:d.displayName||child.key,
+        color:d.color||"#5B4FE8",photoURL:d.photoURL||null,online:!!pres.online};
+    });
+    renderOnlineUsers(all);
+  }catch(e){console.warn(e);}
 }
 
 function renderOnlineUsers(users){
@@ -1888,8 +1983,58 @@ async function showProfile(username){
     const avEl=$("pv-av");
     if(d.photoURL){avEl.innerHTML='<img src="'+d.photoURL+'" />';}
     else{avEl.style.background=d.color||"#5B4FE8";avEl.textContent=(d.displayName||username)[0].toUpperCase();}
-    $("pv-name").textContent=d.displayName||username;$("pv-name").style.color=d.color||"var(--text)";
-    $("pv-user").textContent="@"+username;openModal("pview-popup");
+    $("pv-name").textContent=d.displayName||username;
+    $("pv-name").style.color=d.color||"var(--text)";
+    $("pv-user").textContent="@"+username;
+
+    const actions=$("pv-actions");
+    actions.innerHTML="";
+
+    if(username===me.username){
+      const editBtn=document.createElement("button");
+      editBtn.className="bprim"; editBtn.textContent="Edit Profile"; editBtn.style.margin="0";
+      editBtn.addEventListener("click",()=>{ closeModal("pview-popup"); openEditProfile(); });
+      actions.appendChild(editBtn);
+    } else {
+      const alreadyFriend=!!friendsCache[username];
+      const pendingIn=!!(pendingCache&&pendingCache[username]);
+
+      if(alreadyFriend){
+        const btn=document.createElement("button");
+        btn.className="bprim"; btn.style.cssText="margin:0;background:rgba(52,199,89,.15);color:#34C759;border:1px solid rgba(52,199,89,.3)";
+        btn.textContent="\u2713 Friends";
+        btn.addEventListener("click",async()=>{
+          if(!confirm("Remove "+username+" as a friend?")) return;
+          await removeFriend(username); closeModal("pview-popup");
+        });
+        actions.appendChild(btn);
+      } else if(pendingIn){
+        const acc=document.createElement("button");
+        acc.className="bprim"; acc.textContent="Accept Friend Request"; acc.style.margin="0";
+        acc.addEventListener("click",async()=>{ await acceptFriend(username); closeModal("pview-popup"); });
+        const dec=document.createElement("button");
+        dec.className="bprim"; dec.style.cssText="margin:0;background:rgba(255,69,58,.15);color:var(--danger);border:1px solid rgba(255,69,58,.3)";
+        dec.textContent="Decline";
+        dec.addEventListener("click",async()=>{ await declineFriend(username); closeModal("pview-popup"); });
+        actions.appendChild(acc); actions.appendChild(dec);
+      } else {
+        const addBtn=document.createElement("button");
+        addBtn.className="bprim"; addBtn.textContent="+ Add Friend"; addBtn.style.margin="0";
+        addBtn.addEventListener("click",async()=>{
+          addBtn.textContent="Sending\u2026"; addBtn.disabled=true;
+          try{
+            await db.ref("friendRequests/"+username+"/"+me.username).set({
+              from:me.username, displayName:me.displayName||me.username, color:me.color, ts:Date.now()
+            });
+            addBtn.textContent="\u2713 Request Sent";
+            addBtn.style.cssText="margin:0;background:rgba(52,199,89,.15);color:#34C759;border:1px solid rgba(52,199,89,.3)";
+          }catch(err){ addBtn.textContent="Failed \u2014 try again"; addBtn.disabled=false; }
+        });
+        actions.appendChild(addBtn);
+      }
+    }
+
+    openModal("pview-popup");
   }catch(e){console.error(e)}
 }
 
@@ -2129,6 +2274,9 @@ $("list-rooms-btn").addEventListener("click", () => {
 });
 
 $("settings-btn").addEventListener("click",e=>{e.stopPropagation();toggleSettings()});
+$("scale-slider").addEventListener("input",e=>applyScale(e.target.value));
+$("rules-btn").addEventListener("click",()=>openModal("rules-popup"));
+$("rules-close").addEventListener("click",()=>closeModal("rules-popup"));
 $("signout-btn").addEventListener("click",signOut);
 $("theme-toggle").addEventListener("click",toggleTheme);
 document.querySelectorAll(".bgopt").forEach(el=>el.addEventListener("click",()=>{
@@ -2498,6 +2646,7 @@ $("mobile-backdrop").addEventListener("click", ()=>{
 
 (async function(){
   applyTheme(localStorage.getItem("rtheme")||"dark");
+  applyScale(localStorage.getItem("rscale")||"100");
   // Login screen: show a random Vanta bg for visual flair
   // (enterApp() will replace it with the user's saved preference)
   const _savedBg = localStorage.getItem("rbg");

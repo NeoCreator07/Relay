@@ -520,7 +520,7 @@
 <div id="auth">
   <div class="acard">
     <div class="alogo">Relay</div>
-    <div class="aver">VERSION 117</div>
+    <div class="aver">VERSION 118</div>
     <div id="fb-status" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-bottom:16px">
       <span id="fb-dot" style="font-size:10px">●</span>
       <span id="fb-msg">Checking connection…</span>
@@ -919,7 +919,7 @@
 // ══════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════
-const VERSION   = 117;
+const VERSION   = 118;
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_MSG   = 100;
 const COLORS    = ["#7C6FFF","#FF6B9D","#4ECDC4","#FFD93D","#6BCB77","#FF8E3C","#C77DFF","#00B4D8"];
@@ -1305,17 +1305,9 @@ async function handleAuth(){
 // ══════════════════════════════════════════════════
 function applyScale(pct){
   const v=Math.min(150,Math.max(75,parseInt(pct)||100));
-  const s=(v/100).toFixed(3);
-  // Apply to both auth and app separately so clicks always register correctly
-  ["auth","app"].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){
-      el.style.transform="scale("+s+")";
-      el.style.transformOrigin="top left";
-      el.style.width=(100/parseFloat(s))+"%";
-      el.style.height=(100/parseFloat(s))+"%";
-    }
-  });
+  // ONLY scale #app — never touch #auth so login clicks always work
+  const app=document.getElementById("app");
+  if(app) app.style.zoom=(v/100).toString();
   localStorage.setItem("rscale",v);
   const sl=$("scale-slider"); if(sl) sl.value=v;
   const lbl=$("scale-val"); if(lbl) lbl.textContent=v+"%";
@@ -1369,6 +1361,7 @@ async function setBg(name, color){
 async function enterApp(){
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
+  applyScale(localStorage.getItem("rscale")||"100");
   // Restore user's chosen background (may differ from the random login one)
   const _userBg=localStorage.getItem("rbg")||"none";
   setBg(_userBg, localStorage.getItem("rvcolor")||null);
@@ -2646,7 +2639,7 @@ $("mobile-backdrop").addEventListener("click", ()=>{
 
 (async function(){
   applyTheme(localStorage.getItem("rtheme")||"dark");
-  applyScale(localStorage.getItem("rscale")||"100");
+  // Scale applied after login so it never affects the login screen
   // Login screen: show a random Vanta bg for visual flair
   // (enterApp() will replace it with the user's saved preference)
   const _savedBg = localStorage.getItem("rbg");

@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relay — comms</title>
+<title>Relay</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E8B04B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7.1 8.1a7.4 7.4 0 0 1 9.8 0'/%3E%3Cpath d='M9.7 11.5a3.6 3.6 0 0 1 4.6 0'/%3E%3Ccircle cx='12' cy='15.1' r='1.3' fill='%23E8B04B' stroke='none'/%3E%3Cpath d='M12 16.4v4.4'/%3E%3C/svg%3E">
+<script>document.documentElement.dataset.theme = localStorage.getItem('relay_theme') || 'dark';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,6 +18,12 @@
   --bad:#E0563F; --ok:#63BE8A;
   --mono:'IBM Plex Mono',ui-monospace,monospace;
   --sans:'Archivo',sans-serif;
+}
+html[data-theme=light]{
+  --bg:#F1EFE9; --panel:#FAF8F2; --panel2:#EDE9DE; --panel3:#E5E0D2;
+  --line:#DBD5C6; --line2:#C9C2B0;
+  --text:#23251F; --muted:#6E746A; --faint:#9CA093;
+  --acc:#A07311; --acc-ink:#FFFDF4;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
@@ -54,13 +61,11 @@ a:hover{text-decoration:underline}
 
 /* ---------- auth ---------- */
 .auth{display:grid;grid-template-columns:1.05fr .95fr;height:100vh}
-.auth-brand{background:#0D100E;border-right:1px solid var(--line);display:grid;place-items:center}
+.auth-brand{background:var(--panel);border-right:1px solid var(--line);display:grid;place-items:center}
 .auth-brand-inner{width:min(420px,82%)}
 .logo-lg{display:flex;align-items:center;gap:14px}
 .logo-lg .mark svg{width:46px;height:46px;color:var(--acc);display:block}
 .logo-lg .word{font-weight:800;font-size:30px;letter-spacing:.16em}
-.tagline{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
-.tagline b{color:var(--acc);font-weight:400}
 .auth-form-wrap{display:grid;place-items:center;padding:24px;background:var(--bg)}
 .auth-form{width:min(380px,100%)}
 .auth-form h1{font-size:24px;font-weight:700}
@@ -70,10 +75,14 @@ a:hover{text-decoration:underline}
 .err{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--bad);min-height:18px;line-height:1.5}
 .auth-form .btn.acc{width:100%;margin-top:10px;justify-content:center;padding:11px;font-size:14px}
 .auth-switch{margin-top:18px;font-size:13px;color:var(--muted);text-align:center}
+.auth-foot{margin-top:26px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;text-align:left}
 
 /* ---------- app frame ---------- */
-.app{display:grid;grid-template-columns:262px minmax(0,1fr) 230px;height:100vh}
-.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.app{display:grid;grid-template-columns:262px minmax(0,1fr);height:100vh}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.logo-row{display:flex;align-items:center;flex:none;border-bottom:1px solid var(--line)}
+.logo-row .logo-btn{flex:1}
+.logo-row>.icon-btn{margin-right:10px}
 .logo-btn{display:flex;align-items:center;gap:10px;padding:16px 16px 13px;user-select:none;cursor:pointer;position:relative;min-height:48px}
 .logo-btn .mark svg{width:20px;height:20px;color:var(--muted);display:block;transition:color .15s}
 .logo-btn:hover .mark svg{color:var(--acc)}
@@ -82,17 +91,25 @@ a:hover{text-decoration:underline}
 .svc-line.ok{color:var(--ok)} .svc-line.bad{color:var(--bad)}
 .logo-btn.shake{animation:shake .4s}
 @keyframes shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-.me-chip{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.side-foot{flex:none;border-top:1px solid var(--line)}
+.me-chip{display:flex;align-items:center;gap:10px;padding:10px 14px}
 .ava{display:grid;place-items:center;border-radius:6px;font-weight:700;color:#10130F;user-select:none;flex:none}
 .me-chip .ava{width:32px;height:32px;font-size:14px}
 .me-chip .who{min-width:0;flex:1}
 .me-chip .who b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .me-chip .who b svg{width:11px;height:11px;color:var(--acc);margin-left:4px;vertical-align:-1px}
 .me-chip .who span{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--ok);text-transform:uppercase}
+.color-row{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.color-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-right:2px}
+.swatch{width:20px;height:20px;border-radius:5px;border:1px solid rgba(0,0,0,.35);cursor:pointer;flex:none}
+.swatch:hover{transform:scale(1.15)}
+input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2);border-radius:5px;background:none;cursor:pointer}
 .sec{padding:10px 10px 12px}
 .sec+.sec{border-top:1px solid var(--line)}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:2px 6px 8px}
-.sec-h span{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.sec-h span.t{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.sec-h .btns{display:flex;gap:2px}
 .sec-h .icon-btn{width:22px;height:22px}
 .sec-h .icon-btn svg{width:13px;height:13px}
 .side-list{list-style:none}
@@ -102,8 +119,9 @@ a:hover{text-decoration:underline}
 .side-list .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
 .side-list li svg{width:13px;height:13px;flex:none;opacity:.55}
 .side-list .sub{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--acc);letter-spacing:.1em}
-.side-list .lk{margin-left:auto}
-.side-list .lk svg{width:11px;height:11px}
+.side-list .hid{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--faint);letter-spacing:.1em}
+.side-list .lk{display:inline-flex;flex:none;color:var(--muted)}
+.side-list .lk svg{width:11px;height:11px;opacity:1}
 .rdot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
 .pdot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
 .pdot.on{background:var(--ok)}
@@ -116,7 +134,9 @@ a:hover{text-decoration:underline}
 .empty{font-family:var(--mono);font-size:11px;color:var(--faint);padding:10px 12px;border:1px dashed var(--line);border-radius:7px;line-height:1.6}
 
 /* ---------- main ---------- */
-.main{display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+.main{display:flex;flex-direction:column;min-width:0;position:relative;background:var(--bg)}
+#vantaBg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.chat-head,.msgs,.composer,.upbar{position:relative;z-index:1}
 .chat-head{display:flex;align-items:center;gap:14px;height:58px;padding:0 18px;border-bottom:1px solid var(--line);flex:none}
 .chat-head h2{font-size:15.5px;font-weight:700}
 .chat-head h2 .hash{color:var(--acc);font-weight:600;margin-right:2px}
@@ -126,33 +146,52 @@ a:hover{text-decoration:underline}
 #sideToggle{display:none}
 .msgs{flex:1;overflow-y:auto;padding:16px 20px 20px}
 .msg{display:flex;gap:11px;padding:6px 8px;border-radius:8px;margin-bottom:2px}
-.msg:hover{background:rgba(234,231,222,.014)}
+.msg:hover{background:rgba(128,128,128,.05)}
 .msg .ava{width:30px;height:30px;font-size:12px;margin-top:2px}
 .msg .mc{min-width:0}
 .msg .mh{display:flex;align-items:baseline;gap:9px}
 .msg .mh .name{font-size:13px;font-weight:600}
-.msg.me .mh .name{color:var(--acc)}
 .msg .mh .time{font-family:var(--mono);font-size:9.5px;color:var(--faint)}
 .msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word}
 .msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:7px;border:1px solid var(--line);background:var(--panel)}
+
+/* ---------- uploads / embeds ---------- */
+.upbar{padding:8px 18px;border-top:1px solid var(--line);flex:none}
+.up-info{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-bottom:6px;gap:10px}
+.up-info span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.up-x{color:var(--muted)} .up-x svg{width:12px;height:12px}
+.up-track{height:4px;border-radius:4px;background:var(--panel2);overflow:hidden}
+.up-fill{height:100%;width:0;background:var(--acc);transition:width .2s}
+.file-card{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 12px;margin-top:6px;max-width:100%;text-decoration:none;color:var(--text)}
+.file-card:hover{border-color:var(--acc);text-decoration:none}
+.fic{color:var(--acc);display:inline-flex} .fic svg{width:18px;height:18px}
+.fc-b{min-width:0;display:flex;flex-direction:column}
+.fc-b b{font-size:12.5px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fc-b i{font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:2px}
+.dl{color:var(--muted)} .dl svg{width:15px;height:15px}
+.embed{margin-top:6px;max-width:380px}
+.embed-img{display:block;max-width:min(380px,100%);max-height:380px;border-radius:7px;border:1px solid var(--line);background:var(--panel)}
+.embed-vid{display:block;width:100%;max-width:380px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:7px;background:#000}
+.embed-sm{display:block;width:100%;max-width:380px;height:152px;border:1px solid var(--line);border-radius:7px;background:var(--panel)}
+.embed-card{display:flex;gap:10px;border:1px solid var(--line);border-radius:7px;padding:8px;background:var(--panel);text-decoration:none;color:var(--text);align-items:center}
+.embed-card:hover{border-color:var(--acc);text-decoration:none}
+.embed-card img{width:64px;height:64px;object-fit:cover;border-radius:5px;flex:none}
+.ec-t{min-width:0;display:flex;flex-direction:column;gap:3px}
+.ec-t b{font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ec-t span{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 .composer{display:flex;gap:10px;align-items:center;padding:12px 18px;border-top:1px solid var(--line);flex:none}
 .composer input{flex:1;padding:11px 13px;border-radius:8px;background:var(--panel)}
-.gif-btn{flex:none;font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.1em;border:1px solid var(--line2);border-radius:7px;padding:0 11px;height:40px;color:var(--muted);transition:.15s}
+.gif-btn{flex:none;font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.1em;border:1px solid var(--line2);border-radius:7px;padding:0 11px;height:40px;color:var(--muted);display:inline-flex;align-items:center;transition:.15s}
 .gif-btn:hover{border-color:var(--acc);color:var(--acc)}
+.gif-btn svg{width:14px;height:14px}
 .send{flex:none;width:40px;height:40px;border-radius:8px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center}
 .send:hover{background:#F3C063}
 .send svg{width:17px;height:17px}
-.rail{background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;padding:12px 10px}
-.rail .sec-h{padding:4px 8px 10px}
-.rail-list{list-style:none}
-.rail-list li{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;font-size:12.5px;color:var(--muted)}
-.rail-list li:hover{background:var(--panel2);color:var(--text)}
-.rail-list .ip{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--faint)}
 
 /* ---------- admin drawer ---------- */
 .drawer-wrap{position:fixed;inset:0;z-index:90}
 .drawer-ovl{position:absolute;inset:0;background:rgba(6,8,7,.64)}
-.drawer{position:absolute;top:0;right:0;bottom:0;width:min(750px,96vw);background:#0F1211;border-left:1px solid var(--line2);display:flex;flex-direction:column;transform:translateX(102%);transition:transform .3s cubic-bezier(.22,.85,.25,1)}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:min(750px,96vw);background:var(--panel);border-left:1px solid var(--line2);display:flex;flex-direction:column;transform:translateX(102%);transition:transform .3s cubic-bezier(.22,.85,.25,1)}
 .drawer.open{transform:none}
 .drawer-head{padding:16px 20px 0;border-bottom:1px solid var(--line);flex:none}
 .drawer-title{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--acc)}
@@ -166,12 +205,12 @@ a:hover{text-decoration:underline}
 .pane h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px}
 .pane h4:first-child{margin-top:0}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px}
-.stat{border:1px solid var(--line);border-radius:8px;padding:13px 14px;background:var(--panel)}
+.stat{border:1px solid var(--line);border-radius:8px;padding:13px 14px;background:var(--panel2)}
 .stat b{display:block;font-family:var(--mono);font-size:22px;font-weight:600;color:var(--acc)}
 .stat span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 .mini-row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:9px 2px;font-size:13px}
 .mini-row span{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
-.adm-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:9px;background:var(--panel)}
+.adm-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:9px;background:var(--panel2)}
 .adm-row .info{min-width:0;flex:1}
 .adm-row .info b{font-size:14px}
 .adm-row .sub{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px;letter-spacing:.03em}
@@ -181,7 +220,7 @@ a:hover{text-decoration:underline}
 .ban-form{display:flex;gap:8px;flex-wrap:wrap}
 .ban-form input{padding:8px 10px;font-size:12px}
 .ban-form .ipw{font-family:var(--mono);width:170px;flex:none}
-.ip-user{border:1px solid var(--line);border-radius:8px;padding:11px 13px;margin-bottom:9px;background:var(--panel)}
+.ip-user{border:1px solid var(--line);border-radius:8px;padding:11px 13px;margin-bottom:9px;background:var(--panel2)}
 .ip-user .h{display:flex;align-items:baseline;gap:10px;margin-bottom:9px;flex-wrap:wrap}
 .ip-user .h b{font-size:13.5px}
 .ip-user .h span{font-family:var(--mono);font-size:10px;color:var(--muted)}
@@ -194,7 +233,7 @@ a:hover{text-decoration:underline}
 .chip button{font-family:var(--mono);font-size:9px;letter-spacing:.08em;border-radius:999px;padding:2px 8px;color:var(--bad);border:1px solid rgba(224,86,63,.35);cursor:pointer;background:none}
 .chip button:hover{background:rgba(224,86,63,.12)}
 .chip button.armed{background:var(--bad);color:#160B08}
-.ucard{border:1px solid var(--line2);border-radius:10px;background:var(--panel);padding:16px}
+.ucard{border:1px solid var(--line2);border-radius:10px;background:var(--panel2);padding:16px}
 .uc-head{display:flex;align-items:center;gap:12px}
 .uc-head .ava{width:36px;height:36px;font-size:15px}
 .uc-head b{font-size:16px}
@@ -207,6 +246,14 @@ a:hover{text-decoration:underline}
 .u-meta b{font-family:var(--mono);font-size:12px;font-weight:500}
 .uc-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .uc-acts input{flex:1;min-width:150px;padding:7px 10px;font-size:12px}
+
+/* ---------- settings modal ---------- */
+.seg{display:flex;gap:6px}
+.seg-b{flex:1;border:1px solid var(--line2);border-radius:7px;padding:8px;font-weight:600;font-size:12.5px;color:var(--muted)}
+.seg-b.active{border-color:var(--acc);color:var(--acc);background:rgba(232,176,75,.08)}
+.fx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.fx-b{border:1px solid var(--line2);border-radius:7px;padding:8px 4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fx-b.active{border-color:var(--acc);color:var(--acc);background:rgba(232,176,75,.08)}
 
 /* ---------- toasts / modals / kick ---------- */
 #toasts{position:fixed;right:16px;bottom:16px;z-index:300;display:flex;flex-direction:column;gap:8px}
@@ -221,9 +268,18 @@ a:hover{text-decoration:underline}
 .modal h3{font-size:16px}
 .modal .sub{color:var(--muted);font-size:12.5px;margin-top:5px}
 .modal label{display:block;margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.modal label .opt{text-transform:none;letter-spacing:0;color:var(--faint)}
 .modal label input{margin-top:7px}
+.modal label .opt{text-transform:none;letter-spacing:0;color:var(--faint)}
+.chk{display:flex;align-items:center;gap:9px;margin-top:14px;cursor:pointer;font-size:13px;color:var(--text);text-transform:none;letter-spacing:0;font-family:var(--sans)}
+.chk input{width:15px;height:15px;accent-color:var(--acc);padding:0;flex:none}
 .m-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.srv-results{margin-top:8px;display:flex;flex-direction:column;gap:6px;max-height:250px;overflow-y:auto}
+.srv-r{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:7px;padding:9px 11px;cursor:pointer;background:var(--panel2)}
+.srv-r:hover{border-color:var(--acc)}
+.srv-r b{font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srv-r i{font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.05em;white-space:nowrap}
+.srv-r .lk{color:var(--muted);display:inline-flex;flex:none}
+.srv-r .lk svg{width:12px;height:12px}
 .modal.gif{width:min(900px,94vw);height:min(660px,90vh);display:flex;flex-direction:column;padding:0;overflow:hidden}
 .gif-head{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);flex:none}
 .gif-head .lbl{margin:0;color:var(--acc);flex:none}
@@ -242,7 +298,6 @@ a:hover{text-decoration:underline}
 .kick .btn{margin-top:22px}
 
 /* ---------- responsive ---------- */
-@media(max-width:1180px){.app{grid-template-columns:262px minmax(0,1fr)}.rail{display:none}}
 @media(max-width:880px){
   .app{grid-template-columns:minmax(0,1fr)}
   .side{position:fixed;left:0;top:0;bottom:0;z-index:120;width:280px;transform:translateX(-102%);transition:transform .25s;box-shadow:14px 0 40px rgba(0,0,0,.45)}
@@ -260,18 +315,18 @@ a:hover{text-decoration:underline}
   <div class="auth-brand">
     <div class="auth-brand-inner">
       <div class="logo-lg"><span class="mark" data-icon="mark"></span><span class="word">RELAY</span></div>
-      <p class="tagline"><b>//</b> signal over noise. tactical comms for small crews.</p>
     </div>
   </div>
   <div class="auth-form-wrap">
     <form class="auth-form" id="authForm" autocomplete="off">
       <h1 id="authTitle">Sign in</h1>
-      <p class="sub" id="authSub">Welcome back, operator.</p>
+      <p class="sub" id="authSub">Welcome</p>
       <label>username<input id="fUser" maxlength="16" spellcheck="false" autocomplete="username"></label>
       <label>password<input id="fPass" type="password" autocomplete="current-password"></label>
       <div class="err mono" id="authErr"></div>
       <button class="btn acc" id="authBtn" type="submit">Sign in</button>
       <p class="auth-switch" id="authSwitchWrap">No account? <a id="authSwitch">Register one</a></p>
+      <p class="auth-foot"><b id="loginUsers">—</b> users · <span id="loginVer"></span></p>
     </form>
   </div>
 </section>
@@ -279,27 +334,53 @@ a:hover{text-decoration:underline}
 <!-- ============ APP ============ -->
 <div class="app" id="appView" hidden>
   <aside class="side" id="sideEl">
-    <button class="logo-btn" id="logoBtn" title="Relay">
-      <span class="mark" data-icon="mark"></span><span class="word">RELAY</span>
-      <span class="svc-line mono" id="svcLine"></span>
-    </button>
-    <div class="me-chip">
-      <div class="ava" id="meAva"></div>
-      <div class="who"><b id="meName"></b><span id="meSub">online</span></div>
-      <button class="icon-btn" id="logoutBtn" data-icon="out" title="Sign out"></button>
+    <div class="logo-row">
+      <button class="logo-btn" id="logoBtn" title="Relay">
+        <span class="mark" data-icon="mark"></span><span class="word">RELAY</span>
+        <span class="svc-line mono" id="svcLine"></span>
+      </button>
+      <button class="icon-btn" id="settingsBtn" data-icon="sliders" title="Settings — theme &amp; background"></button>
     </div>
-    <div class="sec">
-      <div class="sec-h"><span>SERVERS</span><button class="icon-btn" id="addServerBtn" data-icon="plus" title="New server"></button></div>
-      <ul class="side-list" id="serverList"></ul>
+    <div class="side-scroll">
+      <div class="sec">
+        <div class="sec-h">
+          <span class="t">SERVERS</span>
+          <span class="btns">
+            <button class="icon-btn" id="searchServerBtn" data-icon="search" title="Search / join servers"></button>
+            <button class="icon-btn" id="addServerBtn" data-icon="plus" title="New server"></button>
+          </span>
+        </div>
+        <ul class="side-list" id="serverList"></ul>
+      </div>
+      <div class="sec">
+        <div class="sec-h"><span class="t" id="dmLabel">DIRECT</span><button class="icon-btn" id="addFriendBtn" data-icon="userPlus" title="Add friend"></button></div>
+        <div class="add-row" id="friendAddRow" hidden><input id="friendInput" placeholder="callsign" maxlength="16" spellcheck="false"><button class="btn" id="friendGo" data-icon="plus"></button></div>
+        <ul class="side-list" id="dmList"></ul>
+      </div>
+      <div class="sec">
+        <div class="sec-h"><span class="t">ONLINE</span></div>
+        <ul class="side-list" id="onlineList"></ul>
+      </div>
     </div>
-    <div class="sec">
-      <div class="sec-h"><span>ROOMS</span><button class="icon-btn" id="addRoomBtn" data-icon="plus" title="New room"></button></div>
-      <ul class="side-list" id="roomList"></ul>
-    </div>
-    <div class="sec">
-      <div class="sec-h"><span id="dmLabel">DIRECT</span><button class="icon-btn" id="addFriendBtn" data-icon="userPlus" title="Add friend"></button></div>
-      <div class="add-row" id="friendAddRow" hidden><input id="friendInput" placeholder="callsign" maxlength="16" spellcheck="false"><button class="btn" id="friendGo" data-icon="plus"></button></div>
-      <ul class="side-list" id="dmList"></ul>
+    <div class="side-foot">
+      <div class="me-chip">
+        <div class="ava" id="meAva"></div>
+        <div class="who"><b id="meName"></b><span id="meSub">online</span></div>
+        <button class="icon-btn" id="colorBtn" data-icon="palette" title="Name color"></button>
+        <button class="icon-btn" id="logoutBtn" data-icon="out" title="Sign out"></button>
+      </div>
+      <div class="color-row" id="colorRow" hidden>
+        <span class="color-lbl">name color</span>
+        <button class="swatch" data-c="#C9A85C" style="background:#C9A85C"></button>
+        <button class="swatch" data-c="#94B48B" style="background:#94B48B"></button>
+        <button class="swatch" data-c="#C58B76" style="background:#C58B76"></button>
+        <button class="swatch" data-c="#87A3A8" style="background:#87A3A8"></button>
+        <button class="swatch" data-c="#A98F9C" style="background:#A98F9C"></button>
+        <button class="swatch" data-c="#9DA47E" style="background:#9DA47E"></button>
+        <button class="swatch" data-c="#E0563F" style="background:#E0563F"></button>
+        <button class="swatch" data-c="#63BE8A" style="background:#63BE8A"></button>
+        <input type="color" id="colorPick" value="#C9A85C" title="Custom color">
+      </div>
     </div>
   </aside>
 
@@ -312,18 +393,20 @@ a:hover{text-decoration:underline}
       </div>
       <div class="right" id="onlinePill"></div>
     </header>
+    <div id="vantaBg"></div>
     <div class="msgs" id="msgs"></div>
+    <div class="upbar" id="upbar" hidden>
+      <div class="up-info"><span id="upName"></span><button class="up-x" id="upCancel" data-icon="x" title="Cancel upload"></button></div>
+      <div class="up-track"><div class="up-fill" id="upFill"></div></div>
+    </div>
     <div class="composer">
+      <button class="gif-btn" id="attachBtn" data-icon="clip" title="Send a file — 1 GB max"></button>
       <button class="gif-btn" id="gifBtn" title="Send a GIF">GIF</button>
-      <input id="msgInput" placeholder="Open a room first…" maxlength="1500" autocomplete="off">
+      <input id="msgInput" placeholder="Open a server first…" maxlength="1500" autocomplete="off">
       <button class="send" id="sendBtn" data-icon="send" title="Send"></button>
+      <input type="file" id="fileInput" hidden>
     </div>
   </main>
-
-  <aside class="rail">
-    <div class="sec-h"><span>ON THE AIR</span></div>
-    <ul class="rail-list" id="railList"></ul>
-  </aside>
 </div>
 
 <!-- ============ ADMIN SERVICE PANEL (triple-click the logo) ============ -->
@@ -407,6 +490,7 @@ a:hover{text-decoration:underline}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, set, get, update, remove, push, onValue, onChildAdded, onChildRemoved, onDisconnect, query, limitToLast, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getStorage, ref as sref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
 /* ================= YOUR KEYS ================= */
@@ -421,10 +505,13 @@ const firebaseConfig = {
   measurementId: "G-1VX8K36M9J"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
-const MAX_IPS = 5; // max tracked IPs per user
+const MAX_IPS = 5;                    // max tracked IPs per user
+const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
+const VERSION = '1.4.0';
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const storage = getStorage(app);
 try{ isSupported().then(ok=>{ if(ok) getAnalytics(app); }).catch(()=>{}); }catch(e){}
 
 /* ================= HELPERS ================= */
@@ -448,13 +535,18 @@ const I = {
   userPlus: SVG('<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.7-3.6 3.4-5.5 6.5-5.5s5.8 1.9 6.5 5.5"/><path d="M19 8v6M16 11h6"/>'),
   out: SVG('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>'),
   menu: SVG('<path d="M4 6h16M4 12h16M4 18h16"/>'),
-  hash: SVG('<path d="M9.5 4L7.5 20M16.5 4l-2 16M4.5 9h15M3.5 15h15"/>'),
   ban: SVG('<circle cx="12" cy="12" r="8.5"/><path d="M6.2 6.2l11.6 11.6"/>'),
+  sliders: SVG('<path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/>'),
+  palette: SVG('<path d="M12 3s6 6.4 6 10.5a6 6 0 0 1-12 0C6 9.4 12 3 12 3z"/>'),
+  clip: SVG('<path d="M21.4 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>'),
+  doc: SVG('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>'),
+  dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
 };
 const icon = n => I[n] || '';
 
 const AVC = ['#C9A85C','#94B48B','#C58B76','#87A3A8','#B7A48D','#A98F9C','#9DA47E','#C0B254'];
 const uColor = u => AVC[[...String(u)].reduce((a,c)=>a+c.charCodeAt(0),0) % AVC.length];
+const nameColor = u => (usersMap[u] && usersMap[u].color) || uColor(u);
 
 function fmtDate(ts){
   if(!ts) return '—';
@@ -467,6 +559,13 @@ function fmtTime(ts){
   const d = new Date(ts), hm = d.toTimeString().slice(0,5);
   return d.toDateString()===new Date().toDateString() ? hm : `${d.toDateString().slice(4,10).toUpperCase()} · ${hm}`;
 }
+function fmtSize(n){
+  if(!n && n!==0) return '';
+  if(n < 1024) return n+' B';
+  if(n < 1048576) return (n/1024).toFixed(1)+' KB';
+  if(n < 1073741824) return (n/1048576).toFixed(1)+' MB';
+  return (n/1073741824).toFixed(2)+' GB';
+}
 async function sha256hex(s){
   try{
     const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
@@ -478,6 +577,7 @@ async function sha256hex(s){
 }
 const randHex = n => [...crypto.getRandomValues(new Uint8Array(Math.ceil(n/2)))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,n);
 async function getV(path){ try{ const s = await get(ref(db,path)); return s.val(); }catch{ return null; } }
+function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 
 function toast(msg, kind='ok'){
   const t = document.createElement('div');
@@ -487,11 +587,81 @@ function toast(msg, kind='ok'){
   t.onclick = kill; setTimeout(kill, 4200);
 }
 
+/* ================= THEME + VANTA BACKGROUND ================= */
+let curTheme = localStorage.getItem('relay_theme') || 'dark';
+let vantaKey = localStorage.getItem('relay_vanta') || 'none';
+let vantaEff = null;
+document.documentElement.dataset.theme = curTheme;
+
+const VANTA_FX = {
+  none:{label:'None'},
+  waves:{label:'Waves',file:'vanta.waves.min.js',fn:'WAVES',
+    dark:{color:0xE8B04B,shininess:35,waveHeight:11,waveSpeed:.7,zoom:.65},
+    light:{color:0xB98A1E,shininess:35,waveHeight:11,waveSpeed:.7,zoom:.65}},
+  net:{label:'Net',file:'vanta.net.min.js',fn:'NET',
+    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C,points:11,maxDistance:26,spacing:18},
+    light:{color:0xA97C10,backgroundColor:0xF1EFE9,points:11,maxDistance:26,spacing:18}},
+  rings:{label:'Rings',file:'vanta.rings.min.js',fn:'RINGS',
+    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C},
+    light:{color:0xA97C10,backgroundColor:0xF1EFE9}},
+  cells:{label:'Cells',file:'vanta.cells.min.js',fn:'CELLS',
+    dark:{color1:0xE8B04B,color2:0x4A5348,size:1.3,speed:1},
+    light:{color1:0xC79A3A,color2:0x9CA08B,size:1.3,speed:1}},
+  dots:{label:'Dots',file:'vanta.dots.min.js',fn:'DOTS',
+    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C,size:2,spacing:36,showLines:false},
+    light:{color:0xA97C10,backgroundColor:0xF1EFE9,size:2,spacing:36,showLines:false}},
+  topology:{label:'Topology',file:'vanta.topology.min.js',fn:'TOPOLOGY',
+    dark:{color:0x4A5348,backgroundColor:0x0B0D0C},
+    light:{color:0xB9B29F,backgroundColor:0xF1EFE9}},
+  trunks:{label:'Trunks',file:'vanta.trunks.min.js',fn:'TRUNKS',
+    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C,spacing:6,chaos:3},
+    light:{color:0xA97C10,backgroundColor:0xF1EFE9,spacing:6,chaos:3}},
+  halo:{label:'Halo',file:'vanta.halo.min.js',fn:'HALO',
+    dark:{baseColor:0xE8B04B,amplitudeFactor:1.2,size:1.15,xOffset:.18,yOffset:.2},
+    light:{baseColor:0xC79A3A,amplitudeFactor:1.2,size:1.15,xOffset:.18,yOffset:.2}},
+  fog:{label:'Fog',file:'vanta.fog.min.js',fn:'FOG',
+    dark:{highlightColor:0xE8B04B,midtoneColor:0x3E4A3F,lowlightColor:0x0B0D0C,baseColor:0x0B0D0C,blurFactor:.5},
+    light:{highlightColor:0xF3E4C2,midtoneColor:0xC9C2AC,lowlightColor:0xF1EFE9,baseColor:0xF1EFE9,blurFactor:.5}},
+  birds:{label:'Birds',file:'vanta.birds.min.js',fn:'BIRDS',
+    dark:{backgroundColor:0x0B0D0C,color1:0xE8B04B,color2:0x8B948C,colorMode:'variance',quantity:3,birdSize:.8,wingSpan:25,speedLimit:4},
+    light:{backgroundColor:0xF1EFE9,color1:0xA97C10,color2:0x9CA08B,colorMode:'variance',quantity:3,birdSize:.8,wingSpan:25,speedLimit:4}},
+  clouds:{label:'Clouds',file:'vanta.clouds.min.js',fn:'CLOUDS',
+    dark:{skyColor:0x161A17,cloudColor:0x2A2F2B,sunColor:0xE8B04B,sunGlareColor:0x8B7434,sunlightColor:0x3E4A3F,speed:1.4},
+    light:{skyColor:0x9EC7DD,cloudColor:0xF7F5EF,sunColor:0xE8B04B,sunGlareColor:0xC9A85C,sunlightColor:0x9CA08B,speed:1.2}},
+};
+
+function setTheme(t){
+  curTheme = (t==='light') ? 'light' : 'dark';
+  localStorage.setItem('relay_theme', curTheme);
+  document.documentElement.dataset.theme = curTheme;
+  if(vantaKey !== 'none') setVanta(vantaKey); // re-tint the background
+}
+async function setVanta(key){
+  vantaKey = VANTA_FX[key] ? key : 'none';
+  localStorage.setItem('relay_vanta', vantaKey);
+  if(vantaEff){ try{ vantaEff.destroy(); }catch{} vantaEff = null; }
+  const bg = $('vantaBg'); bg.innerHTML = '';
+  if(vantaKey === 'none' || !me) return;
+  const fx = VANTA_FX[vantaKey];
+  try{
+    if(!window.THREE) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js');
+    if(!window.THREE) throw 0;
+    if(!window.THREE[fx.fn]) await loadScript(`https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/${fx.file}`);
+    if(!window.THREE[fx.fn]) throw 0;
+    const opts = Object.assign(
+      {el:bg, mouseControls:false, touchControls:false, gyroControls:false},
+      (curTheme==='light') ? fx.light : fx.dark
+    );
+    vantaEff = window.THREE[fx.fn](opts);
+  }catch(e){ toast('Background failed to load.','bad'); }
+}
+
 /* ================= STATE ================= */
 let me=null, myIp=null, kicked=false;
-let serversMap={}, roomsMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, adminMap={}, bannedUsers={}, bannedIps={};
-const cur = {server:null, room:null, dm:null};
-let curPath=null, roomsUns=null, msgUns=[], chOpen=0;
+let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, adminMap={}, bannedUsers={}, bannedIps={}, userRoomsMap={};
+const cur = {server:null, dm:null};
+let curPath=null, msgUns=[], chOpen=0;
+let serverPres=null;
 let clickCount=0, clickTimer=null, drawerOpen=false, activeTab='ovw', lookupUser=null;
 let pwResolve=null;
 
@@ -508,7 +678,6 @@ async function logUserIp(u, ip){
   const raw = (await getV(`users/${u}/ips`)) || {};
   const now = Date.now(), k = ipKey(ip), prev = raw[k];
   raw[k] = { ip, first: prev?.first ?? now, last: now, count: (prev?.count||0)+1 };
-  // prune to the 5 most recently seen
   const top = Object.entries(raw).sort((a,b)=>(b[1].last||0)-(a[1].last||0)).slice(0, MAX_IPS);
   try{ await set(ref(db,`users/${u}/ips`), Object.fromEntries(top)); }catch(e){}
 }
@@ -554,7 +723,6 @@ async function doRegister(u, p, ip){
   // starter server so the new operator lands somewhere real
   const sid = push(ref(db,'servers')).key;
   await set(ref(db,`servers/${sid}`), {name:`${u}-hq`, owner:u, createdAt:now});
-  await set(ref(db,`rooms/${sid}/general`), {name:'general', createdAt:now, by:u});
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
   if(firstAdmin) toast('First operator — service panel unlocked. Triple-click the logo.','ok');
   await enter(u, ip);
@@ -576,15 +744,20 @@ async function tryAutoLogin(){
 async function enter(u, ip){
   me = u; myIp = ip || await getPublicIp();
   $('authView').hidden = true; $('appView').hidden = false;
-  renderMeChip(); resetChannel(); renderServers(); renderRooms(); renderDMs(); renderRail(); updateOnlinePill();
+  renderMeChip(); resetChannel();
+  // presence FIRST (whole-node set would wipe the servers sub-map written by selectServer)
   const pref = ref(db,`presence/${me}`);
   try{
     await onDisconnect(pref).set({online:false, lastSeen:Date.now(), ip:myIp});
-    await set(pref, {online:true, lastSeen:Date.now(), ip:myIp});
+    await update(pref, {online:true, lastSeen:Date.now(), ip:myIp});
   }catch{}
   setInterval(()=>{ if(!kicked) update(pref,{lastSeen:Date.now()}).catch(()=>{}); }, 45000);
+  // joined / unlocked servers (hidden + passcode) — userRooms is reused since rooms are gone
+  onValue(ref(db,`userRooms/${me}`), s=>{ userRoomsMap = s.val()||{}; renderServers(); });
+  renderServers(); renderDMs(); renderOnline(); updateOnlinePill();
   onValue(ref(db,`friends/${me}`), s=>{ friendsMap = s.val()||{}; renderDMs(); });
   onValue(ref(db,`friendRequests/${me}`), s=>{ reqMap = s.val()||{}; renderDMs(); });
+  setVanta(vantaKey);
   $('msgInput').focus();
 }
 function forceLogout(title, detail){
@@ -601,7 +774,7 @@ let authMode = 'login';
 function syncAuthUI(){
   const reg = authMode==='register';
   $('authTitle').textContent = reg ? 'Register' : 'Sign in';
-  $('authSub').textContent = reg ? 'Claim your callsign.' : 'Welcome back, operator.';
+  $('authSub').textContent = reg ? 'Claim your callsign.' : 'Welcome';
   $('authBtn').textContent = reg ? 'Create account' : 'Sign in';
   $('authSwitchWrap').innerHTML = reg ? 'Have an account? <a id="authSwitch">Sign in</a>' : 'No account? <a id="authSwitch">Register one</a>';
   bindSwitch();
@@ -629,11 +802,11 @@ bindSwitch();
 /* ================= CHANNELS & MESSAGES ================= */
 function resetChannel(){
   msgUns.forEach(u=>u && u()); msgUns = [];
-  curPath = null; cur.room = null; cur.dm = null;
+  curPath = null; cur.dm = null;
   $('roomTitle').textContent = '—';
   $('roomMeta').textContent = 'no channel selected';
-  $('msgs').innerHTML = '<div class="empty">Pick a room to start receiving traffic.</div>';
-  $('msgInput').placeholder = 'Open a room first…';
+  $('msgs').innerHTML = '<div class="empty">Pick a server to start receiving traffic.</div>';
+  $('msgInput').placeholder = 'Open a server first…';
 }
 function openChannel(path, name, kind){
   if(curPath === path) return;
@@ -641,7 +814,7 @@ function openChannel(path, name, kind){
   curPath = path; chOpen = Date.now();
   $('msgs').innerHTML = '<div class="empty">No traffic on this channel yet.</div>';
   $('roomTitle').innerHTML = `<span class="hash">${kind==='dm'?'@':'#'}</span>${esc(name)}`;
-  $('roomMeta').textContent = kind==='dm' ? 'direct line' : 'room';
+  $('roomMeta').textContent = kind==='dm' ? 'direct line' : 'server';
   $('msgInput').placeholder = `Message ${kind==='dm'?'@':'#'}${name}`;
   const q = query(ref(db,path), limitToLast(150));
   msgUns.push(onChildAdded(q, s => appendMsg(s.key, s.val())));
@@ -650,24 +823,42 @@ function openChannel(path, name, kind){
     if(!$('msgs').querySelector('.msg')) $('msgs').innerHTML = '<div class="empty">Channel cleared.</div>';
   }));
 }
+function fileCard(m){
+  const isImg = /^image\//.test(m.mime||'');
+  return `${isImg?`<img class="embed-img" style="margin-top:6px" src="${esc(m.url)}" loading="lazy" alt="">`:''}
+    <a class="file-card" href="${esc(m.url)}" target="_blank" rel="noopener">
+      <span class="fic">${icon('doc')}</span>
+      <span class="fc-b"><b>${esc(m.name||'file')}</b><i>${fmtSize(m.size)} · click to open</i></span>
+      <span class="dl">${icon('dl')}</span>
+    </a>`;
+}
 function appendMsg(key, m){
   if(!m || !m.u) return;
   const stick = ($('msgs').scrollTop + $('msgs').clientHeight > $('msgs').scrollHeight - 90) || (Date.now() - chOpen < 1500);
   const es = $('msgs').querySelector('.empty'); if(es) es.remove();
+  let body = '';
+  if(m.type === 'gif'){
+    body = `<img class="gif" src="${esc(m.url)}" width="${m.w||200}" height="${m.h||200}" alt="gif" loading="lazy">`;
+  }else if(m.type === 'file'){
+    body = fileCard(m);
+  }else{
+    const solo = /^https?:\/\/\S+$/i.test((m.text||'').trim());
+    body = `<div class="text">${linkify(esc(m.text))}</div>${solo?`<div class="embed" id="emb-${key}"></div>`:''}`;
+  }
   $('msgs').insertAdjacentHTML('beforeend', `
-    <div class="msg${m.u===me?' me':''}" id="m-${key}">
+    <div class="msg" id="m-${key}">
       <div class="ava" style="background:${uColor(m.u)}">${esc(m.u[0].toUpperCase())}</div>
       <div class="mc">
-        <div class="mh"><span class="name">${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
-        ${m.type==='gif'
-          ? `<img class="gif" src="${esc(m.url)}" width="${m.w||200}" height="${m.h||200}" alt="gif" loading="lazy">`
-          : `<div class="text">${esc(m.text)}</div>`}
+        <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
+        ${body}
       </div>
     </div>`);
   if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
+  const emb = document.getElementById('emb-'+key);
+  if(emb) buildEmbed(emb, m.text.trim());
 }
 function send(){
-  if(!curPath) return toast('Open a room first.','bad');
+  if(!curPath) return toast('Open a server first.','bad');
   const text = $('msgInput').value.trim(); if(!text) return;
   push(ref(db,curPath), {u:me, t:Date.now(), type:'text', text:text.slice(0,1500)})
     .catch(()=>toast('Message failed to send.','bad'));
@@ -676,67 +867,163 @@ function send(){
  $('msgInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); } });
  $('sendBtn').addEventListener('click', send);
 
-/* ================= SIDEBAR: SERVERS / ROOMS / DM ================= */
+/* ================= LINK EMBEDS ================= */
+const URL_RE = /(https?:\/\/[^\s<>"']+)/g;
+const linkify = t => t.replace(URL_RE, m=>`<a href="${m}" target="_blank" rel="noopener">${m}</a>`);
+async function buildEmbed(el, url){
+  try{
+    // direct image link
+    if(/\.(png|jpe?g|gif|webp|avif|svg)([?#]|$)/i.test(url)){
+      el.innerHTML = `<img class="embed-img" src="${esc(url)}" loading="lazy" alt="">`; return;
+    }
+    // known players
+    let mt = url.match(/(?:youtube\.com\/(?:watch\?.*?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
+    if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://www.youtube-nocookie.com/embed/${esc(mt[1])}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
+    mt = url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
+    if(mt){ el.innerHTML = `<iframe class="embed-sm" src="https://open.spotify.com/embed/${esc(mt[1])}/${esc(mt[2])}" allow="encrypted-media" loading="lazy" frameborder="0"></iframe>`; return; }
+    if(/soundcloud\.com\//.test(url)){
+      el.innerHTML = `<iframe class="embed-sm" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=E8B04B&hide_related=true" loading="lazy" frameborder="0"></iframe>`; return;
+    }
+    mt = url.match(/vimeo\.com\/(\d+)/);
+    if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://player.vimeo.com/video/${esc(mt[1])}" allow="autoplay; fullscreen" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
+    // generic preview via noembed (free, CORS-friendly)
+    const r = await fetch('https://noembed.com/embed?url='+encodeURIComponent(url));
+    const j = await r.json();
+    if(j && !j.error && (j.title || j.thumbnail_url)){
+      el.innerHTML = `<a class="embed-card" href="${esc(url)}" target="_blank" rel="noopener">
+        ${j.thumbnail_url?`<img src="${esc(j.thumbnail_url)}" loading="lazy" alt="">`:''}
+        <div class="ec-t"><b>${esc(j.title||url)}</b><span>${esc(j.provider_name||'link')}</span></div></a>`;
+    }
+  }catch{ /* stays a plain link */ }
+}
+
+/* ================= FILE UPLOADS (1 GB per file) ================= */
+let upTask = null;
+ $('attachBtn').onclick = ()=>{ if(!curPath) return toast('Open a server first.','bad'); $('fileInput').click(); };
+ $('fileInput').addEventListener('change', e=>{
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  if(f.size > MAX_FILE) return toast(`Too big — 1 GB max per file (yours: ${fmtSize(f.size)}).`,'bad');
+  if(f.size === 0) return toast('That file is empty.','bad');
+  const safe = f.name.replace(/[^\w.\- ]+/g,'_');
+  const task = uploadBytesResumable(sref(storage, `files/${me}/${Date.now()}_${safe}`), f, {contentType: f.type || 'application/octet-stream'});
+  upTask = task;
+  $('upbar').hidden = false; $('upFill').style.width = '0%'; $('upName').textContent = `${f.name} · 0%`;
+  task.on('state_changed',
+    s=>{ const pct = Math.floor(s.bytesTransferred / s.totalBytes * 100);
+         $('upFill').style.width = pct+'%'; $('upName').textContent = `${f.name} · ${pct}%`; },
+    err=>{ $('upbar').hidden = true; upTask = null; if(err.code !== 'storage/canceled') toast('Upload failed — check Storage rules.','bad'); },
+    async ()=>{
+      try{
+        const url = await getDownloadURL(task.snapshot.ref);
+        await push(ref(db,curPath), {u:me, t:Date.now(), type:'file', url, name:f.name, size:f.size, mime:f.type||''});
+      }catch{ toast('File message failed.','bad'); }
+      $('upbar').hidden = true; upTask = null;
+    });
+});
+ $('upCancel').onclick = ()=>{ if(upTask) upTask.cancel(); $('upbar').hidden = true; };
+
+/* ================= SERVERS: SELECT / GATE / JOIN ================= */
 const closeMobileSide = ()=> $('sideEl').classList.remove('open');
-function selectServer(sid){
+
+function promptPw(what){
+  return new Promise(res=>{
+    pwResolve = res;
+    openModal(`<h3>Passcode required</h3>
+      <p class="sub mono">${esc(what)} is locked.</p>
+      <label>passcode<input type="password" id="mPwIn" autocomplete="off"></label>
+      <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mPwGo">Enter</button></div>`);
+    setTimeout(()=>$('mPwIn')?.focus(), 50);
+  });
+}
+async function gateServer(sid, s){
+  const pw = await promptPw(s.name || 'server');
+  if(pw == null) return false;
+  const stored = await getV(`roomPasswords/${sid}`);
+  const h = stored && (stored.h || stored);
+  if(await sha256hex('server:'+pw) !== h){ toast('Wrong passcode.','bad'); return false; }
+  userRoomsMap[sid] = Date.now();
+  set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=>{});
+  return true;
+}
+async function selectServer(sid, skipAuth){
   if(cur.server === sid) return;
-  cur.server = sid; cur.room = null; cur.dm = null;
-  if(roomsUns) roomsUns();
-  roomsMap = {};
-  resetChannel();
-  roomsUns = onValue(ref(db,`rooms/${sid}`), s=>{ roomsMap = s.val()||{}; renderRooms(); });
-  renderRooms(); renderServers();
-  closeMobileSide();
+  const s = serversMap[sid]; if(!s) return;
+  // passcode gate — owner bypasses, unlocked members skip
+  if(!skipAuth && s.locked && s.owner!==me && !userRoomsMap[sid]){
+    const ok = await gateServer(sid, s);
+    if(!ok) return;
+  }
+  cur.server = sid; cur.dm = null;
+  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+  const r = ref(db, `presence/${me}/servers/${sid}`);
+  try{ onDisconnect(r).remove(); set(r, Date.now()); }catch{}
+  serverPres = r;
+  openChannel(`messages/${sid}`, s.name || 'server', 'server');
+  renderServers(); renderOnline(); updateOnlinePill(); closeMobileSide();
+}
+async function joinServer(sid){
+  const s = serversMap[sid] || await getV(`servers/${sid}`);
+  if(!s) return toast('No server with that ID.','bad');
+  closeModal();
+  if(s.locked && s.owner!==me && !userRoomsMap[sid]){
+    const ok = await gateServer(sid, s);
+    if(!ok) return;
+  }
+  if(s.owner!==me && s.hidden){
+    userRoomsMap[sid] = Date.now();
+    set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=>{});
+  }
+  selectServer(sid, true);
 }
 function renderServers(){
-  const es = Object.entries(serversMap).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
+  const es = Object.entries(serversMap)
+    .sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0))
+    .filter(([sid,s]) => !s.hidden || s.owner===me || userRoomsMap[sid]);
   $('serverList').innerHTML = es.length ? es.map(([sid,s])=>`
     <li data-sid="${sid}" class="${cur.server===sid?'active':''}">
-      <span class="nm">${esc(s.name||'server')}</span>${s.owner===me?'<span class="sub">YOURS</span>':''}
+      <span class="nm">${esc(s.name||'server')}</span>
+      ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
+      ${s.hidden?'<span class="hid">HIDDEN</span>':''}
+      ${s.owner===me?'<span class="sub">YOURS</span>':''}
     </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to raise one.</div></li>`;
   if(!cur.server && es.length){
-    const own = es.find(([,s])=>s.owner===me);
-    selectServer(own ? own[0] : es[0][0]);
+    // auto-select only something already accessible (never prompt on boot)
+    const pick = es.find(([sid,s]) => s.owner===me || !s.locked || userRoomsMap[sid]);
+    if(pick) selectServer(pick[0], true);
   }
-}
-function renderRooms(){
-  const es = Object.entries(roomsMap).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
-  $('roomList').innerHTML = cur.server ? (es.length ? es.map(([rid,r])=>`
-    <li data-rid="${rid}" class="${cur.room===rid?'active':''}">
-      ${icon('hash')}<span class="nm">${esc(r.name||'room')}</span>${r.locked?`<span class="lk">${icon('lock')}</span>`:''}
-    </li>`).join('') : `<li><div class="empty">No rooms yet.</div></li>`) : `<li><div class="empty">Pick a server first.</div></li>`;
-  if(cur.server && !cur.room && !cur.dm){
-    const first = es.find(([,r])=>!r.locked);
-    if(first) tryOpenRoom(first[0]);
-  }
-}
-async function tryOpenRoom(rid){
-  const r = roomsMap[rid]; if(!r || !cur.server) return;
-  if(r.locked){
-    let ok = false;
-    try{ ok = !!(await getV(`userRooms/${me}/${cur.server}/${rid}`)); }catch{}
-    if(!ok){
-      const pw = await promptPw(r.name);
-      if(pw == null) return;
-      const stored = await getV(`roomPasswords/${cur.server}/${rid}`);
-      const h = stored && (stored.h || stored);
-      if(await sha256hex('room:'+pw) !== h) return toast('Wrong passphrase.','bad');
-      set(ref(db,`userRooms/${me}/${cur.server}/${rid}`), Date.now()).catch(()=>{});
-    }
-  }
-  cur.room = rid; cur.dm = null; closeMobileSide();
-  openChannel(`messages/${cur.server}/${rid}`, r.name||'room', 'room');
-  renderRooms();
-}
-function openDm(f){
-  cur.room = null; cur.dm = f; closeMobileSide();
-  openChannel(`messages/_dm/${[me,f].sort().join('--')}`, f, 'dm');
-  renderDMs();
 }
  $('serverList').addEventListener('click', e=>{ const li = e.target.closest('li[data-sid]'); if(li) selectServer(li.dataset.sid); });
- $('roomList').addEventListener('click', e=>{ const li = e.target.closest('li[data-rid]'); if(li) tryOpenRoom(li.dataset.rid); });
 
-/* ================= FRIENDS / REQUESTS / DM ================= */
+/* ================= SERVER SEARCH / JOIN-BY-ID ================= */
+function openSrvSearch(){
+  openModal(`<h3>Find a server</h3>
+    <label>search<input id="srvSearch" placeholder="server name…" spellcheck="false"></label>
+    <div class="srv-results" id="srvResults"></div>
+    <label>join by id <span class="opt">(for hidden servers)</span><input id="joinId" placeholder="paste server id" spellcheck="false"></label>
+    <div class="m-actions"><button class="btn" data-close>Close</button><button class="btn acc" id="joinGo">Join</button></div>`);
+  renderSrvResults('');
+  $('srvSearch').addEventListener('input', ()=>renderSrvResults($('srvSearch').value.trim().toLowerCase()));
+  setTimeout(()=>$('srvSearch')?.focus(), 50);
+}
+function renderSrvResults(q){
+  const all = Object.entries(serversMap)
+    .filter(([sid,s]) => !s.hidden || s.owner===me)              // hidden stays hidden
+    .filter(([sid,s]) => !q || (s.name||'').toLowerCase().includes(q))
+    .sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0))
+    .slice(0, 12);
+  $('srvResults').innerHTML = all.length ? all.map(([sid,s])=>{
+    const n = Object.values(presenceMap).filter(p=>p && p.online && p.servers && p.servers[sid]).length;
+    return `<div class="srv-r" data-join="${sid}">
+      <b>${esc(s.name||'server')}</b>
+      ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
+      <i>${esc(s.owner||'?')} · ${n} online</i>
+    </div>`;
+  }).join('') : '<div class="empty">No servers match.</div>';
+}
+ $('searchServerBtn').onclick = openSrvSearch;
+
+/* ================= FRIENDS / DM ================= */
 async function acceptFriend(f){
   await set(ref(db,`friends/${me}/${f}`), Date.now());
   await set(ref(db,`friends/${f}/${me}`), Date.now());
@@ -765,7 +1052,12 @@ function renderDMs(){
   if(acc){ try{ await acceptFriend(acc.dataset.accept); toast(`${acc.dataset.accept} is on your line.`,'ok'); }catch{} return; }
   const dec = e.target.closest('[data-decline]');
   if(dec){ remove(ref(db,`friendRequests/${me}/${dec.dataset.decline}`)).catch(()=>{}); return; }
-  const li = e.target.closest('[data-dm]'); if(li) openDm(li.dataset.dm);
+  const li = e.target.closest('[data-dm]'); if(!li) return;
+  const f = li.dataset.dm;
+  cur.dm = f; cur.server = null; closeMobileSide();
+  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+  openChannel(`messages/_dm/${[me,f].sort().join('--')}`, f, 'dm');
+  renderDMs(); renderOnline(); updateOnlinePill();
 });
  $('addFriendBtn').onclick = ()=>{ const r = $('friendAddRow'); r.hidden = !r.hidden; if(!r.hidden) $('friendInput').focus(); };
  $('friendGo').onclick = async ()=>{
@@ -785,28 +1077,53 @@ function renderDMs(){
   $('friendInput').value = '';
 };
 
-/* ================= PRESENCE / IDENTITY ================= */
-function renderMeChip(){
+/* ONLINE — people currently in the selected server */
+function serverHere(){
+  if(!cur.server) return [];
+  return Object.entries(presenceMap)
+    .filter(([u,p])=>p && p.online && p.servers && p.servers[cur.server])
+    .sort((a,b)=>a[0].localeCompare(b[0]));
+}
+function renderOnline(){
   if(!me) return;
-  $('meAva').textContent = me[0].toUpperCase();
-  $('meAva').style.background = uColor(me);
-  $('meName').innerHTML = esc(me) + (isAdmin() ? ' ' + icon('shield') : '');
-  $('meSub').textContent = isAdmin() ? 'admin · online' : 'online';
+  const es = serverHere();
+  $('onlineList').innerHTML = cur.server
+    ? (es.length ? es.map(([u,p])=>`
+        <li><span class="pdot on"></span><span class="nm">${esc(u)}</span>${(isAdmin()&&p.ip)?`<span class="ip2">${esc(p.ip)}</span>`:''}</li>`).join('')
+      : `<li><div class="empty">Nobody here but you.</div></li>`)
+    : `<li><div class="empty">Pick a server to see who's in.</div></li>`;
 }
 function updateOnlinePill(){
   if(!me) return;
-  const n = Object.values(presenceMap).filter(p=>p && p.online).length;
+  if(!cur.server){ $('onlinePill').textContent = ''; return; }
+  const n = serverHere().length;
   $('onlinePill').innerHTML = `<b>${n}</b>&nbsp;ONLINE`;
 }
-function renderRail(){
-  if(!me) return;
-  const es = Object.entries(presenceMap).filter(([,p])=>p && p.online).sort((a,b)=>a[0].localeCompare(b[0]));
-  $('railList').innerHTML = es.length ? es.map(([u,p])=>`
-    <li><span class="pdot on"></span><span class="nm">${esc(u)}</span>${(isAdmin() && p.ip) ? `<span class="ip">${esc(p.ip)}</span>` : ''}</li>`).join('')
-    : `<li><div class="empty">Nobody on the air.</div></li>`;
-}
 
-/* ================= MODALS ================= */
+/* ================= PROFILE CARD (bottom) + NAME COLOR ================= */
+function renderMeChip(){
+  if(!me) return;
+  const c = nameColor(me);
+  $('meAva').textContent = me[0].toUpperCase();
+  $('meAva').style.background = uColor(me);
+  $('meName').textContent = me;
+  $('meName').style.color = c;
+  if(isAdmin()) $('meName').insertAdjacentHTML('beforeend', ' '+icon('shield'));
+  $('meSub').textContent = isAdmin() ? 'admin · online' : 'online';
+}
+ $('colorBtn').onclick = ()=>{
+  const row = $('colorRow');
+  row.hidden = !row.hidden;
+  if(!row.hidden) $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(nameColor(me)) ? nameColor(me) : '#C9A85C';
+};
+function setColor(hex){
+  if(!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+  update(ref(db, `users/${me}`), {color:hex}).catch(()=>{});
+}
+document.querySelectorAll('.swatch').forEach(s=>s.onclick = ()=>setColor(s.dataset.c));
+ $('colorPick').addEventListener('change', e=>setColor(e.target.value));
+
+/* ================= MODALS + SETTINGS ================= */
 function openModal(html){ $('modalBox').innerHTML = html; $('modalWrap').hidden = false; }
 function closeModal(){
   if(pwResolve){ const r = pwResolve; pwResolve = null; r(null); }
@@ -817,6 +1134,7 @@ function closeModal(){
   if(e.key !== 'Enter') return;
   if($('mGo')) $('mGo').click();
   else if($('mPwGo')) $('mPwGo').click();
+  else if($('joinGo')) $('joinGo').click();
 });
  $('modalBox').addEventListener('click', async e=>{
   if(e.target.closest('[data-close]')) return closeModal();
@@ -826,59 +1144,70 @@ function closeModal(){
     const v = $('mPwIn').value; closeModal(); if(r) r(v);
     return;
   }
+  const th = e.target.closest('[data-theme-set]');
+  if(th){ setTheme(th.dataset.themeSet); markSettings(); return; }
+  const fx = e.target.closest('[data-fx]');
+  if(fx){ setVanta(fx.dataset.fx); markSettings(); return; }
+  const jr = e.target.closest('[data-join]');
+  if(jr){ joinServer(jr.dataset.join); return; }
+  const jg = e.target.closest('#joinGo');
+  if(jg){
+    const id = ($('joinId').value||'').trim();
+    if(!id) return toast('Paste a server ID first.','bad');
+    await joinServer(id);
+    return;
+  }
   const go = e.target.closest('#mGo'); if(!go) return;
-  const kind = go.dataset.kind;
   const name = ($('mName').value || '').trim().replace(/^#/,'');
   if(!name) return toast('Give it a name.','bad');
+  const pwv = ($('mPw') && $('mPw').value) || '';
+  const hidden = !!($('mHidden') && $('mHidden').checked);
   go.disabled = true;
-  try{
-    if(kind === 'server'){
+  (async ()=>{
+    try{
       const sid = push(ref(db,'servers')).key;
-      await set(ref(db,`servers/${sid}`), {name, owner:me, createdAt:Date.now()});
-      await set(ref(db,`rooms/${sid}/general`), {name:'general', createdAt:Date.now(), by:me});
-      closeModal(); selectServer(sid); toast('Server raised.','ok');
-    }else{
-      if(!cur.server) return toast('Pick a server first.','bad');
-      const sid = cur.server, pwv = ($('mPw') && $('mPw').value) || '';
-      const rid = push(ref(db,`rooms/${sid}`)).key;
-      await set(ref(db,`rooms/${sid}/${rid}`), {name, createdAt:Date.now(), by:me, locked:!!pwv});
-      if(pwv) await set(ref(db,`roomPasswords/${sid}/${rid}`), {h: await sha256hex('room:'+pwv), set:Date.now()});
-      closeModal(); toast('Room dug.','ok'); tryOpenRoom(rid);
-    }
-  }catch(err){ toast((err && err.message) || 'Failed.','bad'); go.disabled = false; }
+      const sObj = {name, owner:me, createdAt:Date.now()};
+      if(pwv) sObj.locked = true;
+      if(hidden) sObj.hidden = true;
+      await set(ref(db,`servers/${sid}`), sObj);
+      if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
+      if(hidden) toast(`Server raised — ID ${sid} (share it to invite).`,'ok');
+      else toast('Server raised.','ok');
+      closeModal(); selectServer(sid, true);
+    }catch(err){ toast((err && err.message) || 'Failed.','bad'); go.disabled = false; }
+  })();
 });
-function promptPw(roomName){
-  return new Promise(res=>{
-    pwResolve = res;
-    openModal(`<h3>Locked room</h3>
-      <p class="sub mono">#${esc(roomName)} needs its passphrase.</p>
-      <label>passphrase<input type="password" id="mPwIn" autocomplete="off"></label>
-      <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mPwGo">Unlock</button></div>`);
-    setTimeout(()=>$('mPwIn')?.focus(), 50);
-  });
-}
  $('addServerBtn').onclick = ()=>{
   openModal(`<h3>New server</h3>
-    <p class="sub">Your own corner of the relay — rooms, passphrases, the lot.</p>
+    <p class="sub">Your own corner of the relay.</p>
     <label>server name<input id="mName" maxlength="24" placeholder="night-ops" spellcheck="false"></label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mGo" data-kind="server">Raise server</button></div>`);
+    <label>passcode <span class="opt">(optional — gates entry)</span><input id="mPw" type="password" autocomplete="new-password"></label>
+    <label class="chk"><input type="checkbox" id="mHidden"> hidden — joinable only by ID</label>
+    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mGo">Raise server</button></div>`);
   setTimeout(()=>$('mName')?.focus(), 50);
 };
- $('addRoomBtn').onclick = ()=>{
-  if(!cur.server) return toast('Pick a server first.','bad');
-  openModal(`<h3>New room</h3>
-    <p class="sub">Dig a channel under ${esc((serversMap[cur.server]||{}).name || 'this server')}.</p>
-    <label>room name<input id="mName" maxlength="24" placeholder="ops-desk" spellcheck="false"></label>
-    <label>passphrase <span class="opt">(optional — locks the room)</span><input id="mPw" type="password" autocomplete="new-password"></label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mGo" data-kind="room">Dig room</button></div>`);
-  setTimeout(()=>$('mName')?.focus(), 50);
+ $('settingsBtn').onclick = ()=>{
+  openModal(`<h3>Settings</h3>
+    <label>theme</label>
+    <div class="seg">
+      <button class="seg-b" data-theme-set="dark">Dark</button>
+      <button class="seg-b" data-theme-set="light">Light</button>
+    </div>
+    <label>chat background</label>
+    <div class="fx-grid">${Object.entries(VANTA_FX).map(([k,v])=>`<button class="fx-b" data-fx="${k}">${v.label}</button>`).join('')}</div>
+    <p class="sub mono" style="margin-top:16px">relay v${VERSION}</p>
+    <div class="m-actions"><button class="btn acc" data-close>Done</button></div>`);
+  markSettings();
 };
+function markSettings(){
+  document.querySelectorAll('.seg-b').forEach(b=>b.classList.toggle('active', b.dataset.themeSet===curTheme));
+  document.querySelectorAll('.fx-b').forEach(b=>b.classList.toggle('active', b.dataset.fx===vantaKey));
+}
 
 /* ================= GIPHY ================= */
 function openGif(){
-  if(!curPath) return toast('Open a room first.','bad');
-  $('gifWrap').hidden = false;
-  loadGifs('');
+  if(!curPath) return toast('Open a server first.','bad');
+  $('gifWrap').hidden = false; loadGifs('');
 }
 function closeGif(){ $('gifWrap').hidden = true; $('gifSearch').value = ''; }
  $('gifBtn').onclick = openGif;
@@ -968,8 +1297,6 @@ function refreshPanes(){
   else if(activeTab==='net') renderNet();
   else if(activeTab==='usr' && lookupUser) renderLookup(lookupUser);
 }
-
-/* two-step confirm for destructive buttons */
 function arm(btn, fn){
   if(btn.dataset.armed){
     clearTimeout(+btn.dataset.armed); delete btn.dataset.armed;
@@ -982,7 +1309,6 @@ function arm(btn, fn){
     delete btn.dataset.armed; btn.classList.remove('armed'); btn.textContent = btn.dataset.label;
   }, 2600);
 }
-
 function renderOverview(){
   const onl = Object.values(presenceMap).filter(p=>p && p.online).length;
   $('admStats').innerHTML = `
@@ -996,21 +1322,16 @@ function renderOverview(){
     ? recent.map(([u,v])=>`<div class="mini-row"><b>${esc(u)}</b><span>${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}</span></div>`).join('')
     : '<div class="empty">No accounts yet.</div>';
 }
-async function renderAdminServers(){
-  $('admSrvList').innerHTML = '<div class="empty">loading…</div>';
-  let roomsTree = {};
-  try{ roomsTree = (await get(ref(db,'rooms'))).val() || {}; }catch{}
+function renderAdminServers(){
   const es = Object.entries(serversMap).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
-  $('admSrvList').innerHTML = es.length ? es.map(([sid,s])=>{
-    const n = Object.keys(roomsTree[sid]||{}).length;
-    return `<div class="adm-row">
+  $('admSrvList').innerHTML = es.length ? es.map(([sid,s])=>`
+    <div class="adm-row">
       <div class="info"><b>${esc(s.name||'server')}</b>
-        <div class="sub">owner ${esc(s.owner||'?')} · ${n} rooms · since ${fmtDate(s.createdAt)}</div></div>
+        <div class="sub">owner ${esc(s.owner||'?')} · since ${fmtDate(s.createdAt)}${s.locked?' · locked':''}${s.hidden?' · hidden':''} · id ${sid}</div></div>
       <div class="acts">
         <button class="btn" data-act="clear-srv" data-sid="${sid}">CLEAR MSGS</button>
         <button class="btn danger" data-act="del-srv" data-sid="${sid}">DELETE</button>
-      </div></div>`;
-  }).join('') : '<div class="empty">No servers exist.</div>';
+      </div></div>`).join('') : '<div class="empty">No servers exist.</div>';
 }
 function chipHTML(p, curIp){
   const ip = p.ip || '—';
@@ -1048,12 +1369,12 @@ async function renderLookup(u){
   const pres = presenceMap[u] || {};
   let fr = {};
   try{ fr = (await get(ref(db,`friends/${u}`))).val() || {}; }catch{}
-  const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
+  const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a[1]?0:a.last||0));
   box.innerHTML = `
     <div class="ucard">
       <div class="uc-head">
         <div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>
-        <div><b>${esc(u)}</b>
+        <div><b style="color:${nameColor(u)}">${esc(u)}</b>
           <div class="st">${pres.online ? `<span style="color:var(--ok)">ONLINE</span> · ip ${esc(pres.ip||'?')}` : 'OFFLINE'}</div></div>
         ${bannedUsers[u] ? '<span class="tagb">BANNED</span>' : ''}
       </div>
@@ -1096,12 +1417,15 @@ async function admDeleteServer(sid){
   if(!sid) return;
   try{
     await remove(ref(db,`messages/${sid}`));
-    await remove(ref(db,`rooms/${sid}`));
-    await remove(ref(db,`roomPasswords/${sid}`));
+    await remove(ref(db,`roomPasswords/${sid}`));   // server passcode
     await remove(ref(db,`servers/${sid}`));
-    Object.keys(usersMap).forEach(u=>{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=>{}); });
-    if(cur.server === sid){ cur.server = null; resetChannel(); roomsMap = {}; if(roomsUns) roomsUns(); renderRooms(); }
-    renderServers();
+    Object.keys(usersMap).forEach(u=>{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=>{}); }); // unlocks + hidden memberships
+    Object.entries(presenceMap).forEach(([u,p])=>{ if(p && p.servers && p.servers[sid]) remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=>{}); });
+    if(cur.server === sid){
+      if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+      cur.server = null; resetChannel();
+    }
+    renderServers(); renderOnline(); updateOnlinePill();
     toast('Server deleted.','ok');
     renderAdminServers(); renderOverview();
   }catch{ toast('Delete failed.','bad'); }
@@ -1173,14 +1497,15 @@ onValue(ref(db,'servers'), s=>{
 });
 onValue(ref(db,'users'), s=>{
   usersMap = s.val()||{};
+  const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;   // login page stat
   if(me){
     if(!usersMap[me]) return forceLogout('ACCOUNT DELETED', 'your record was removed by an administrator');
-    refreshPanes();
+    renderMeChip(); refreshPanes();
   }
 });
 onValue(ref(db,'presence'), s=>{
   presenceMap = s.val()||{};
-  if(me){ renderRail(); updateOnlinePill(); renderDMs(); }
+  if(me){ renderOnline(); updateOnlinePill(); renderDMs(); refreshPanes(); }
 });
 onValue(ref(db,'config/admins'), s=>{
   adminMap = s.val()||{};
@@ -1201,6 +1526,7 @@ onValue(ref(db,'config/bannedIps'), s=>{
 /* ================= MISC BINDINGS ================= */
  $('logoutBtn').onclick = async ()=>{
   try{
+    if(serverPres) await remove(serverPres);
     await update(ref(db,`users/${me}`), {sessToken:null});
     await update(ref(db,`presence/${me}`), {online:false, lastSeen:Date.now()});
   }catch{}
@@ -1218,6 +1544,7 @@ document.addEventListener('keydown', e=>{
 
 /* ================= BOOT ================= */
 document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
+ $('loginVer').textContent = 'relay v'+VERSION;
 (async function boot(){
   await tryAutoLogin();
 })();

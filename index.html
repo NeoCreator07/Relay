@@ -88,7 +88,7 @@ a:hover{text-decoration:underline}
 .app{height:100vh}
 .side{position:fixed;top:0;left:0;bottom:0;width:262px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;z-index:110;transform:translateX(-102%);transition:transform .25s cubic-bezier(.22,.85,.25,1)}
 body.side-open .side{transform:none}
-.logo-row{display:flex;align-items:center;flex:none;border-bottom:1px solid var(--line)}
+.logo-row{display:flex;align-items:center;flex:none}
 .logo-row .logo-btn{flex:1}
 .logo-row>.icon-btn{margin-right:8px}
 .logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;user-select:none;cursor:pointer;position:relative;min-height:48px}
@@ -99,23 +99,31 @@ body.side-open .side{transform:none}
 .svc-line.ok{color:var(--ok)} .svc-line.bad{color:var(--bad)}
 .logo-btn.shake{animation:shake .4s}
 @keyframes shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+/* inset divider lines (discord-style — stop short of the edges) */
+.ins-div{height:1px;background:var(--line);margin:0 14px;flex:none}
 .side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
-.side-foot{flex:none;border-top:1px solid var(--line)}
+.side-foot{flex:none}
+.side-foot::before{content:'';display:block;height:1px;background:var(--line);margin:0 14px}
 .me-chip{display:flex;align-items:center;gap:10px;padding:10px 14px}
-.ava{display:grid;place-items:center;border-radius:8px;font-weight:800;color:#1B1B22;user-select:none;flex:none}
-.me-chip .ava{width:32px;height:32px;font-size:14px}
+.ava{display:grid;place-items:center;border-radius:8px;font-weight:800;color:#1B1B22;user-select:none;flex:none;overflow:hidden;position:relative}
+.ava img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;position:absolute;inset:0}
+.me-chip .ava{width:32px;height:32px;font-size:14px;cursor:pointer}
+.me-chip .ava:hover{outline:2px solid var(--acc)}
 .me-chip .who{min-width:0;flex:1}
 .me-chip .who b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .me-chip .who b svg{width:11px;height:11px;color:var(--acc);margin-left:4px;vertical-align:-1px}
 .me-chip .who span{font-size:9.5px;letter-spacing:.12em;color:var(--ok);text-transform:uppercase}
-.color-row{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+/* profile settings (opens under the card) */
+.prof-set{padding:2px 14px 12px}
+.prof-set::before{content:'';display:block;height:1px;background:var(--line);margin:0 0 10px}
+.ps-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.ps-row+.ps-row{margin-top:10px}
 .color-lbl{font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-right:2px}
 .swatch{width:20px;height:20px;border-radius:6px;border:1px solid rgba(0,0,0,.35);cursor:pointer;flex:none}
 .swatch:hover{transform:scale(1.15)}
 input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2);border-radius:6px;background:none;cursor:pointer}
-/* each sidebar block gets its own divider */
 .sec{padding:12px 10px 14px}
-.sec+.sec{border-top:1px solid var(--line)}
+.sec+.sec::before{content:'';display:block;height:1px;background:var(--line);margin:0 14px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:2px 6px 8px}
 .sec-h span.t{font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;font-weight:700}
 .sec-h .btns{display:flex;gap:2px}
@@ -160,7 +168,7 @@ body.side-open .main{margin-left:274px}
 .msg .mh{display:flex;align-items:baseline;gap:9px}
 .msg .mh .name{font-size:13px;font-weight:700}
 .msg .mh .time{font-family:var(--mono);font-size:9.5px;color:var(--faint)}
-.msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word}
+.msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word;white-space:pre-wrap}
 .msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
 /* day dividers (timestamps) */
 .day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
@@ -191,17 +199,14 @@ body.side-open .main{margin-left:274px}
 .ec-t b{font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ec-t span{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 
-/* ---------- connected composer (send at the end) ---------- */
-.composer{flex:none;display:flex;align-items:center;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px 7px 7px 10px}
-.composer input{flex:1;min-width:0;background:none;border:none;padding:10px 6px;font-size:14px}
-.composer input:focus{border:none}
-.cp-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;color:var(--muted);transition:.15s}
+/* ---------- composer pill (no send button — Enter sends, Shift+Enter = newline) ---------- */
+.composer{flex:none;display:flex;align-items:flex-end;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px}
+.composer textarea{flex:1;min-width:0;background:none;border:none;outline:none;resize:none;padding:9px 6px;font:inherit;font-family:var(--sans);color:var(--text);line-height:1.45;max-height:160px;overflow-y:auto}
+.composer textarea::placeholder{color:var(--faint)}
+.cp-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;color:var(--muted);transition:.15s;margin-bottom:1px}
 .cp-btn:hover{color:var(--acc);background:var(--panel3)}
 .cp-btn svg{width:16px;height:16px}
 .cp-gif{width:auto;padding:0 10px;font-weight:800;font-size:10.5px;letter-spacing:.08em}
-.cp-send{flex:none;width:38px;height:38px;border-radius:10px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center;transition:.15s}
-.cp-send:hover{background:var(--acc-hi)}
-.cp-send svg{width:16px;height:16px}
 
 /* ---------- admin drawer (floating) ---------- */
 .drawer-wrap{position:fixed;inset:0;z-index:140}
@@ -356,6 +361,7 @@ body.side-open .main{margin-left:274px}
       <button class="icon-btn" id="collapseBtn" data-icon="chevLeft" title="Hide sidebar"></button>
       <button class="icon-btn" id="settingsBtn" data-icon="sliders" title="Settings — theme &amp; background"></button>
     </div>
+    <div class="ins-div"></div>
     <div class="side-scroll">
       <div class="sec">
         <div class="sec-h">
@@ -379,22 +385,28 @@ body.side-open .main{margin-left:274px}
     </div>
     <div class="side-foot">
       <div class="me-chip">
-        <div class="ava" id="meAva"></div>
+        <div class="ava" id="meAva" title="Click to change your avatar"></div>
         <div class="who"><b id="meName"></b><span id="meSub">online</span></div>
-        <button class="icon-btn" id="colorBtn" data-icon="palette" title="Name color"></button>
+        <button class="icon-btn" id="profSetBtn" data-icon="gear" title="Profile settings"></button>
         <button class="icon-btn" id="logoutBtn" data-icon="out" title="Sign out"></button>
       </div>
-      <div class="color-row" id="colorRow" hidden>
-        <span class="color-lbl">name color</span>
-        <button class="swatch" data-c="#8B7CF6" style="background:#8B7CF6"></button>
-        <button class="swatch" data-c="#5AD18C" style="background:#5AD18C"></button>
-        <button class="swatch" data-c="#F2A65A" style="background:#F2A65A"></button>
-        <button class="swatch" data-c="#6FB8F2" style="background:#6FB8F2"></button>
-        <button class="swatch" data-c="#F27BA9" style="background:#F27BA9"></button>
-        <button class="swatch" data-c="#8CD790" style="background:#8CD790"></button>
-        <button class="swatch" data-c="#E8C15A" style="background:#E8C15A"></button>
-        <button class="swatch" data-c="#C98BF2" style="background:#C98BF2"></button>
-        <input type="color" id="colorPick" value="#8B7CF6" title="Custom color">
+      <div class="prof-set" id="profSet" hidden>
+        <div class="ps-row">
+          <button class="btn" id="avatarBtn" data-icon="clip">Change avatar</button>
+          <button class="btn" id="avatarDel" hidden>Remove</button>
+        </div>
+        <div class="ps-row">
+          <span class="color-lbl">name color</span>
+          <button class="swatch" data-c="#8B7CF6" style="background:#8B7CF6"></button>
+          <button class="swatch" data-c="#5AD18C" style="background:#5AD18C"></button>
+          <button class="swatch" data-c="#F2A65A" style="background:#F2A65A"></button>
+          <button class="swatch" data-c="#6FB8F2" style="background:#6FB8F2"></button>
+          <button class="swatch" data-c="#F27BA9" style="background:#F27BA9"></button>
+          <button class="swatch" data-c="#8CD790" style="background:#8CD790"></button>
+          <button class="swatch" data-c="#E8C15A" style="background:#E8C15A"></button>
+          <button class="swatch" data-c="#C98BF2" style="background:#C98BF2"></button>
+          <input type="color" id="colorPick" value="#8B7CF6" title="Custom color">
+        </div>
       </div>
     </div>
   </aside>
@@ -416,9 +428,7 @@ body.side-open .main{margin-left:274px}
     <div class="composer">
       <button class="cp-btn" id="attachBtn" data-icon="clip" title="Send a file — 1 GB max"></button>
       <button class="cp-btn cp-gif" id="gifBtn" title="Send a GIF">GIF</button>
-      <input id="msgInput" placeholder="Open a server first…" maxlength="1500" autocomplete="off">
-      <button class="cp-send" id="sendBtn" data-icon="send" title="Send"></button>
-      <input type="file" id="fileInput" hidden>
+      <textarea id="msgInput" rows="1" placeholder="Open a server first…  (Enter to send, Shift+Enter for a new line)" maxlength="1500" spellcheck="false"></textarea>
     </div>
   </main>
 </div>
@@ -500,6 +510,8 @@ body.side-open .main{margin-left:274px}
 </div>
 
 <div id="toasts"></div>
+<input type="file" id="fileInput" hidden>
+<input type="file" id="avatarFile" accept="image/*" hidden>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -521,7 +533,8 @@ const firebaseConfig = {
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
-const VERSION = '1.6.0';
+const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
+const VERSION = '1.7.0';
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -541,7 +554,6 @@ const I = {
   mark: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.1 8.1a7.4 7.4 0 0 1 9.8 0"/><path d="M9.7 11.5a3.6 3.6 0 0 1 4.6 0"/><circle cx="12" cy="15.1" r="1.3" fill="currentColor" stroke="none"/><path d="M12 16.4v4.4"/></svg>`,
   plus: SVG('<path d="M12 5v14M5 12h14"/>'),
   x: SVG('<path d="M6 6l12 12M18 6L6 18"/>'),
-  send: SVG('<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/>'),
   lock: SVG('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
   shield: SVG('<path d="M12 3l7 3v5.5c0 4.7-3.4 7.8-7 9.5-3.6-1.7-7-4.8-7-9.5V6l7-3z"/>'),
   search: SVG('<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.4-4.4"/>'),
@@ -551,7 +563,7 @@ const I = {
   menu: SVG('<path d="M4 6h16M4 12h16M4 18h16"/>'),
   ban: SVG('<circle cx="12" cy="12" r="8.5"/><path d="M6.2 6.2l11.6 11.6"/>'),
   sliders: SVG('<path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/>'),
-  palette: SVG('<path d="M12 3s6 6.4 6 10.5a6 6 0 0 1-12 0C6 9.4 12 3 12 3z"/>'),
+  gear: SVG('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>'),
   clip: SVG('<path d="M21.4 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>'),
   doc: SVG('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>'),
   dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
@@ -562,6 +574,7 @@ const icon = n => I[n] || '';
 const AVC = ['#8B7CF6','#5AD18C','#F2A65A','#6FB8F2','#F27BA9','#8CD790','#E8C15A','#C98BF2'];
 const uColor = u => AVC[[...String(u)].reduce((a,c)=>a+c.charCodeAt(0),0) % AVC.length];
 const nameColor = u => (usersMap[u] && usersMap[u].color) || uColor(u);
+const avatarOf = u => (usersMap[u] && usersMap[u].avatar) || null;
 
 function fmtDate(ts){
   if(!ts) return '—';
@@ -617,7 +630,6 @@ function setSide(open){
   document.body.classList.toggle('side-open', !!open);
   if(isDesktop()) try{ localStorage.setItem('relay_side', open ? 'open' : 'closed'); }catch{}
 }
-// on small screens picking something closes the drawer; desktop keeps it open
 const maybeCloseSide = ()=>{ if(!isDesktop()) setSide(false); };
  $('sideToggle').onclick  = ()=> setSide(!sideIsOpen());
  $('collapseBtn').onclick = ()=> setSide(false);
@@ -869,6 +881,12 @@ function fileCard(m){
       <span class="dl">${icon('dl')}</span>
     </a>`;
 }
+// avatar for messages: picture if the user set one, colored letter otherwise
+function msgAva(u){
+  const av = avatarOf(u);
+  if(av) return `<div class="ava" data-img="${esc(av)}"><img src="${esc(av)}" alt="" loading="lazy"></div>`;
+  return `<div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>`;
+}
 function appendMsg(key, m){
   if(!m || !m.u) return;
   const stick = ($('msgs').scrollTop + $('msgs').clientHeight > $('msgs').scrollHeight - 90) || (Date.now() - chOpen < 1500);
@@ -889,8 +907,8 @@ function appendMsg(key, m){
     body = `<div class="text">${linkify(esc(m.text))}</div>${solo?`<div class="embed" id="emb-${key}"></div>`:''}`;
   }
   $('msgs').insertAdjacentHTML('beforeend', `
-    <div class="msg" id="m-${key}">
-      <div class="ava" style="background:${uColor(m.u)}">${esc(m.u[0].toUpperCase())}</div>
+    <div class="msg" id="m-${key}" data-u="${esc(m.u)}">
+      ${msgAva(m.u)}
       <div class="mc">
         <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
         ${body}
@@ -900,15 +918,42 @@ function appendMsg(key, m){
   const emb = document.getElementById('emb-'+key);
   if(emb) buildEmbed(emb, m.text.trim());
 }
+// live re-color / re-avatar of already-rendered messages when users change
+function refreshMsgStyles(){
+  document.querySelectorAll('#msgs .msg').forEach(el=>{
+    const u = el.dataset.u; if(!u) return;
+    const n = el.querySelector('.mh .name');
+    if(n) n.style.color = nameColor(u);
+    const a = el.querySelector(':scope > .ava');
+    if(!a) return;
+    const av = avatarOf(u);
+    if(av){
+      if(a.dataset.img !== av){ a.removeAttribute('style'); a.dataset.img = av; a.innerHTML = `<img src="${esc(av)}" alt="" loading="lazy">`; }
+    }else if(a.dataset.img){
+      delete a.dataset.img; a.innerHTML = '';
+      a.style.background = uColor(u);
+      a.textContent = (u[0]||'?').toUpperCase();
+    }
+  });
+}
 function send(){
   if(!curPath) return toast('Open a server first.','bad');
-  const text = $('msgInput').value.trim(); if(!text) return;
+  const text = $('msgInput').value.replace(/\s+$/,''); if(!text.trim()) return;
   push(ref(db,curPath), {u:me, t:Date.now(), type:'text', text:text.slice(0,1500)})
     .catch(()=>toast("Couldn't send that message.",'bad'));
   $('msgInput').value = '';
+  autosize();
 }
- $('msgInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); } });
- $('sendBtn').addEventListener('click', send);
+/* Enter sends · Shift+Enter adds a newline */
+function autosize(){
+  const t = $('msgInput');
+  t.style.height = 'auto';
+  t.style.height = Math.min(t.scrollHeight, 160) + 'px';
+}
+ $('msgInput').addEventListener('input', autosize);
+ $('msgInput').addEventListener('keydown', e=>{
+  if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
+});
 
 /* ================= LINK EMBEDS ================= */
 const URL_RE = /(https?:\/\/[^\s<>"']+)/g;
@@ -1141,28 +1186,65 @@ function updateOnlinePill(){
   $('onlinePill').innerHTML = `<b>${n}</b>&nbsp;ONLINE`;
 }
 
-/* ================= PROFILE CARD (bottom) + NAME COLOR ================= */
+/* ================= PROFILE CARD + SETTINGS (gear) ================= */
 function renderMeChip(){
   if(!me) return;
-  const c = nameColor(me);
-  $('meAva').textContent = me[0].toUpperCase();
-  $('meAva').style.background = uColor(me);
+  const av = avatarOf(me);
+  const ava = $('meAva');
+  if(av){
+    ava.innerHTML = `<img src="${esc(av)}" alt="">`;
+    ava.removeAttribute('style');
+  }else{
+    ava.innerHTML = '';
+    ava.style.background = uColor(me);
+    ava.textContent = me[0].toUpperCase();
+  }
+  $('avatarDel').hidden = !av;
   $('meName').textContent = me;
-  $('meName').style.color = c;
+  $('meName').style.color = nameColor(me);
   if(isAdmin()) $('meName').insertAdjacentHTML('beforeend', ' '+icon('shield'));
   $('meSub').textContent = isAdmin() ? 'admin · online' : 'online';
 }
- $('colorBtn').onclick = ()=>{
-  const row = $('colorRow');
-  row.hidden = !row.hidden;
-  if(!row.hidden) $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(nameColor(me)) ? nameColor(me) : '#8B7CF6';
+ $('profSetBtn').onclick = ()=>{
+  const p = $('profSet');
+  p.hidden = !p.hidden;
+  if(!p.hidden){
+    const c = nameColor(me);
+    $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(c) ? c : '#8B7CF6';
+  }
 };
 function setColor(hex){
   if(!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
-  update(ref(db, `users/${me}`), {color:hex}).catch(()=>{});
+  update(ref(db, `users/${me}`), {color:hex}).catch(()=>toast("Couldn't save color.",'bad'));
 }
 document.querySelectorAll('.swatch').forEach(s=>s.onclick = ()=>setColor(s.dataset.c));
  $('colorPick').addEventListener('change', e=>setColor(e.target.value));
+
+/* avatar upload — click your avatar or use the gear menu */
+function pickAvatar(){ if(me) $('avatarFile').click(); }
+ $('meAva').onclick = pickAvatar;
+ $('avatarBtn').onclick = pickAvatar;
+ $('avatarFile').addEventListener('change', e=>{
+  const f = e.target.files[0]; e.target.value = '';
+  if(!f || !me) return;
+  if(!/^image\//.test(f.type||'')) return toast('Pick an image file.','bad');
+  if(f.size > MAX_AVATAR) return toast(`Avatar too big — 8 MB max (this one: ${fmtSize(f.size)}).`,'bad');
+  const safe = f.name.replace(/[^\w.\- ]+/g,'_');
+  const task = uploadBytesResumable(sref(storage, `avatars/${me}/${Date.now()}_${safe}`), f, {contentType: f.type});
+  toast('Uploading avatar…');
+  task.on('state_changed', null,
+    ()=>toast('Avatar upload failed.','bad'),
+    async ()=>{
+      try{
+        const url = await getDownloadURL(task.snapshot.ref);
+        await update(ref(db,`users/${me}`), {avatar:url});
+        toast('Avatar updated.','ok');
+      }catch{ toast("Couldn't save avatar.",'bad'); }
+    });
+});
+ $('avatarDel').onclick = ()=>{
+  update(ref(db, `users/${me}`), {avatar:null}).catch(()=>toast("Couldn't remove avatar.",'bad'));
+};
 
 /* ================= MODALS + SETTINGS ================= */
 function openModal(html){ $('modalBox').innerHTML = html; $('modalWrap').hidden = false; }
@@ -1411,10 +1493,11 @@ async function renderLookup(u){
   let fr = {};
   try{ fr = (await get(ref(db,`friends/${u}`))).val() || {}; }catch{}
   const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
+  const av = v.avatar;
   box.innerHTML = `
     <div class="ucard">
       <div class="uc-head">
-        <div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>
+        ${av?`<div class="ava"><img src="${esc(av)}" alt=""></div>`:`<div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>`}
         <div><b style="color:${nameColor(u)}">${esc(u)}</b>
           <div class="st">${pres.online ? `<span style="color:var(--ok)">ONLINE</span> · ip ${esc(pres.ip||'?')}` : 'OFFLINE'}</div></div>
         ${bannedUsers[u] ? '<span class="tagb">BANNED</span>' : ''}
@@ -1541,7 +1624,7 @@ onValue(ref(db,'users'), s=>{
   const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;   // login page stat
   if(me){
     if(!usersMap[me]) return forceLogout('Account deleted', 'your account was removed by an admin');
-    renderMeChip(); refreshPanes();
+    renderMeChip(); refreshPanes(); refreshMsgStyles();   // live-update colors + avatars on screen
   }
 });
 onValue(ref(db,'presence'), s=>{

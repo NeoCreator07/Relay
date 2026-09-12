@@ -4,26 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Relay</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E8B04B' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7.1 8.1a7.4 7.4 0 0 1 9.8 0'/%3E%3Cpath d='M9.7 11.5a3.6 3.6 0 0 1 4.6 0'/%3E%3Ccircle cx='12' cy='15.1' r='1.3' fill='%23E8B04B' stroke='none'/%3E%3Cpath d='M12 16.4v4.4'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B7CF6' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7.1 8.1a7.4 7.4 0 0 1 9.8 0'/%3E%3Cpath d='M9.7 11.5a3.6 3.6 0 0 1 4.6 0'/%3E%3Ccircle cx='12' cy='15.1' r='1.3' fill='%238B7CF6' stroke='none'/%3E%3Cpath d='M12 16.4v4.4'/%3E%3C/svg%3E">
 <script>document.documentElement.dataset.theme = localStorage.getItem('relay_theme') || 'dark';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0B0D0C; --panel:#121514; --panel2:#171B19; --panel3:#1C211E;
-  --line:#242A26; --line2:#313833;
-  --text:#EAE7DE; --muted:#8B948C; --faint:#5A635C;
-  --acc:#E8B04B; --acc-ink:#191204;
-  --bad:#E0563F; --ok:#63BE8A;
-  --mono:'IBM Plex Mono',ui-monospace,monospace;
-  --sans:'Archivo',sans-serif;
+  --bg:#101014; --panel:#17171D; --panel2:#1E1E26; --panel3:#24242E;
+  --line:#2A2A34; --line2:#383844;
+  --text:#ECECF1; --muted:#9494A3; --faint:#62626F;
+  --acc:#8B7CF6; --acc-ink:#191225; --acc-hi:#9C90F8;
+  --bad:#F06D6D; --ok:#5AD18C;
+  --card:rgba(23,23,29,.78);
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:'Nunito',system-ui,sans-serif;
 }
 html[data-theme=light]{
-  --bg:#F1EFE9; --panel:#FAF8F2; --panel2:#EDE9DE; --panel3:#E5E0D2;
-  --line:#DBD5C6; --line2:#C9C2B0;
-  --text:#23251F; --muted:#6E746A; --faint:#9CA093;
-  --acc:#A07311; --acc-ink:#FFFDF4;
+  --bg:#F6F6FA; --panel:#FFFFFF; --panel2:#EFEFF5; --panel3:#E7E7F0;
+  --line:#E1E1EA; --line2:#D0D0DC;
+  --text:#23232B; --muted:#6E6E7C; --faint:#A0A0AE;
+  --acc:#6C5CE7; --acc-ink:#FFFFFF; --acc-hi:#7D6EF0;
+  --bad:#E35D5D; --ok:#3EA86B;
+  --card:rgba(255,255,255,.82);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
@@ -36,24 +39,27 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
-input{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 11px;outline:none;width:100%}
+input{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;outline:none;width:100%}
 input:focus{border-color:var(--acc)}
 input::placeholder{color:var(--faint)}
 a{color:var(--acc);text-decoration:none;cursor:pointer}
 a:hover{text-decoration:underline}
 
+/* ---------- background (fixed, behind everything) ---------- */
+#vantaBg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+
 /* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:7px 12px;font-weight:600;font-size:12.5px;color:var(--text);transition:border-color .15s,background .15s,color .15s}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;font-weight:700;font-size:12.5px;color:var(--text);transition:border-color .15s,background .15s,color .15s}
 .btn:hover{border-color:var(--muted)}
 .btn.acc{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
-.btn.acc:hover{background:#F3C063;border-color:#F3C063}
-.btn.danger{border-color:rgba(224,86,63,.4);color:var(--bad)}
-.btn.danger:hover{border-color:var(--bad);background:rgba(224,86,63,.08)}
-.btn.armed{border-color:var(--bad);color:var(--bad);background:rgba(224,86,63,.12);animation:armedPulse 1s infinite}
+.btn.acc:hover{background:var(--acc-hi);border-color:var(--acc-hi)}
+.btn.danger{border-color:rgba(240,109,109,.4);color:var(--bad)}
+.btn.danger:hover{border-color:var(--bad);background:rgba(240,109,109,.08)}
+.btn.armed{border-color:var(--bad);color:var(--bad);background:rgba(240,109,109,.12);animation:armedPulse 1s infinite}
 .btn:disabled{opacity:.5;cursor:default}
 .btn svg{width:13px;height:13px}
-@keyframes armedPulse{50%{background:rgba(224,86,63,.24)}}
-.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;color:var(--muted);flex:none}
+@keyframes armedPulse{50%{background:rgba(240,109,109,.24)}}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;color:var(--muted);flex:none}
 .icon-btn:hover{color:var(--text);background:var(--panel2)}
 .icon-btn svg{width:15px;height:15px}
 .icon-btn.ok:hover{color:var(--ok)}
@@ -65,55 +71,58 @@ a:hover{text-decoration:underline}
 .auth-brand-inner{width:min(420px,82%)}
 .logo-lg{display:flex;align-items:center;gap:14px}
 .logo-lg .mark svg{width:46px;height:46px;color:var(--acc);display:block}
-.logo-lg .word{font-weight:800;font-size:30px;letter-spacing:.16em}
+.logo-lg .word{font-weight:800;font-size:32px}
 .auth-form-wrap{display:grid;place-items:center;padding:24px;background:var(--bg)}
-.auth-form{width:min(380px,100%)}
-.auth-form h1{font-size:24px;font-weight:700}
+.auth-form{width:min(380px,100%);background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 10px 36px rgba(0,0,0,.28)}
+.auth-form h1{font-size:24px;font-weight:800}
 .auth-form .sub{margin-top:6px;color:var(--muted);font-size:13px}
-.auth-form label{display:block;margin-top:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.auth-meta{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em}
+.auth-meta b{color:var(--muted);font-weight:500}
+.auth-form label{display:block;margin-top:20px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .auth-form label input{margin-top:8px}
 .err{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--bad);min-height:18px;line-height:1.5}
 .auth-form .btn.acc{width:100%;margin-top:10px;justify-content:center;padding:11px;font-size:14px}
 .auth-switch{margin-top:18px;font-size:13px;color:var(--muted);text-align:center}
-.auth-foot{margin-top:26px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;text-align:left}
 
 /* ---------- app frame ---------- */
-.app{display:grid;grid-template-columns:262px minmax(0,1fr);height:100vh}
-.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.app{height:100vh}
+.side{position:fixed;top:0;left:0;bottom:0;width:262px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;z-index:110;transform:translateX(-102%);transition:transform .25s cubic-bezier(.22,.85,.25,1)}
+body.side-open .side{transform:none}
 .logo-row{display:flex;align-items:center;flex:none;border-bottom:1px solid var(--line)}
 .logo-row .logo-btn{flex:1}
-.logo-row>.icon-btn{margin-right:10px}
-.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 16px 13px;user-select:none;cursor:pointer;position:relative;min-height:48px}
+.logo-row>.icon-btn{margin-right:8px}
+.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;user-select:none;cursor:pointer;position:relative;min-height:48px}
 .logo-btn .mark svg{width:20px;height:20px;color:var(--muted);display:block;transition:color .15s}
 .logo-btn:hover .mark svg{color:var(--acc)}
-.logo-btn .word{font-weight:800;letter-spacing:.18em;font-size:15px}
-.svc-line{position:absolute;left:48px;bottom:1px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--acc);white-space:nowrap}
+.logo-btn .word{font-weight:800;font-size:17px}
+.svc-line{position:absolute;left:44px;bottom:1px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--acc);white-space:nowrap}
 .svc-line.ok{color:var(--ok)} .svc-line.bad{color:var(--bad)}
 .logo-btn.shake{animation:shake .4s}
 @keyframes shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 .side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
 .side-foot{flex:none;border-top:1px solid var(--line)}
 .me-chip{display:flex;align-items:center;gap:10px;padding:10px 14px}
-.ava{display:grid;place-items:center;border-radius:6px;font-weight:700;color:#10130F;user-select:none;flex:none}
+.ava{display:grid;place-items:center;border-radius:8px;font-weight:800;color:#1B1B22;user-select:none;flex:none}
 .me-chip .ava{width:32px;height:32px;font-size:14px}
 .me-chip .who{min-width:0;flex:1}
-.me-chip .who b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me-chip .who b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .me-chip .who b svg{width:11px;height:11px;color:var(--acc);margin-left:4px;vertical-align:-1px}
-.me-chip .who span{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--ok);text-transform:uppercase}
+.me-chip .who span{font-size:9.5px;letter-spacing:.12em;color:var(--ok);text-transform:uppercase}
 .color-row{padding:10px 14px;border-top:1px solid var(--line);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.color-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-right:2px}
-.swatch{width:20px;height:20px;border-radius:5px;border:1px solid rgba(0,0,0,.35);cursor:pointer;flex:none}
+.color-lbl{font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-right:2px}
+.swatch{width:20px;height:20px;border-radius:6px;border:1px solid rgba(0,0,0,.35);cursor:pointer;flex:none}
 .swatch:hover{transform:scale(1.15)}
-input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2);border-radius:5px;background:none;cursor:pointer}
-.sec{padding:10px 10px 12px}
+input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2);border-radius:6px;background:none;cursor:pointer}
+/* each sidebar block gets its own divider */
+.sec{padding:12px 10px 14px}
 .sec+.sec{border-top:1px solid var(--line)}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:2px 6px 8px}
-.sec-h span.t{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.sec-h span.t{font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;font-weight:700}
 .sec-h .btns{display:flex;gap:2px}
 .sec-h .icon-btn{width:22px;height:22px}
 .sec-h .icon-btn svg{width:13px;height:13px}
 .side-list{list-style:none}
-.side-list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:6px;color:var(--muted);cursor:pointer;font-size:13.5px;margin-bottom:1px}
+.side-list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;color:var(--muted);cursor:pointer;font-size:13.5px;margin-bottom:1px}
 .side-list li:hover{background:var(--panel2);color:var(--text)}
 .side-list li.active{background:var(--panel2);color:var(--text);box-shadow:inset 2px 0 0 var(--acc)}
 .side-list .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
@@ -122,6 +131,7 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .side-list .hid{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--faint);letter-spacing:.1em}
 .side-list .lk{display:inline-flex;flex:none;color:var(--muted)}
 .side-list .lk svg{width:11px;height:11px;opacity:1}
+.side-list .ip2{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--faint)}
 .rdot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
 .pdot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
 .pdot.on{background:var(--ok)}
@@ -131,38 +141,39 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .add-row{display:flex;gap:6px;padding:0 4px 8px}
 .add-row input{padding:6px 8px;font-size:12.5px}
 .add-row .btn{padding:6px 9px}
-.empty{font-family:var(--mono);font-size:11px;color:var(--faint);padding:10px 12px;border:1px dashed var(--line);border-radius:7px;line-height:1.6}
+.empty{font-size:11.5px;color:var(--faint);padding:10px 12px;border:1px dashed var(--line);border-radius:8px;line-height:1.6}
 
-/* ---------- main ---------- */
-.main{display:flex;flex-direction:column;min-width:0;position:relative;background:var(--bg)}
-#vantaBg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.chat-head,.msgs,.composer,.upbar{position:relative;z-index:1}
-.chat-head{display:flex;align-items:center;gap:14px;height:58px;padding:0 18px;border-bottom:1px solid var(--line);flex:none}
-.chat-head h2{font-size:15.5px;font-weight:700}
-.chat-head h2 .hash{color:var(--acc);font-weight:600;margin-right:2px}
-.chat-head .meta{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.06em;margin-top:3px}
+/* ---------- main: floating chat card ---------- */
+.main{position:relative;z-index:1;height:calc(100vh - 24px);margin:12px;background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-width:0;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.28);transition:margin-left .25s cubic-bezier(.22,.85,.25,1)}
+body.side-open .main{margin-left:274px}
+.chat-head{display:flex;align-items:center;gap:14px;height:58px;padding:0 16px;border-bottom:1px solid var(--line);flex:none}
+.chat-head h2{font-size:15.5px;font-weight:800}
+.chat-head h2 .hash{color:var(--acc);font-weight:700;margin-right:2px}
+.chat-head .meta{font-size:10.5px;color:var(--muted);letter-spacing:.06em;margin-top:3px}
 .chat-head .right{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em}
 .chat-head .right b{color:var(--ok);font-weight:500}
-#sideToggle{display:none}
-.msgs{flex:1;overflow-y:auto;padding:16px 20px 20px}
-.msg{display:flex;gap:11px;padding:6px 8px;border-radius:8px;margin-bottom:2px}
-.msg:hover{background:rgba(128,128,128,.05)}
+.msgs{flex:1;overflow-y:auto;padding:16px 16px 12px}
+.msg{display:flex;gap:11px;padding:6px 8px;border-radius:10px;margin-bottom:2px}
+.msg:hover{background:rgba(128,128,128,.06)}
 .msg .ava{width:30px;height:30px;font-size:12px;margin-top:2px}
 .msg .mc{min-width:0}
 .msg .mh{display:flex;align-items:baseline;gap:9px}
-.msg .mh .name{font-size:13px;font-weight:600}
+.msg .mh .name{font-size:13px;font-weight:700}
 .msg .mh .time{font-family:var(--mono);font-size:9.5px;color:var(--faint)}
 .msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word}
-.msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:7px;border:1px solid var(--line);background:var(--panel)}
+.msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
+/* day dividers (timestamps) */
+.day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.day-div::before,.day-div::after{content:'';flex:1;height:1px;background:var(--line)}
 
 /* ---------- uploads / embeds ---------- */
-.upbar{padding:8px 18px;border-top:1px solid var(--line);flex:none}
+.upbar{flex:none;margin:0 14px 8px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:8px 12px}
 .up-info{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-bottom:6px;gap:10px}
 .up-info span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .up-x{color:var(--muted)} .up-x svg{width:12px;height:12px}
-.up-track{height:4px;border-radius:4px;background:var(--panel2);overflow:hidden}
+.up-track{height:4px;border-radius:4px;background:var(--panel3);overflow:hidden}
 .up-fill{height:100%;width:0;background:var(--acc);transition:width .2s}
-.file-card{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 12px;margin-top:6px;max-width:100%;text-decoration:none;color:var(--text)}
+.file-card{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 12px;margin-top:6px;max-width:100%;text-decoration:none;color:var(--text)}
 .file-card:hover{border-color:var(--acc);text-decoration:none}
 .fic{color:var(--acc);display:inline-flex} .fic svg{width:18px;height:18px}
 .fc-b{min-width:0;display:flex;flex-direction:column}
@@ -170,28 +181,32 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .fc-b i{font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:2px}
 .dl{color:var(--muted)} .dl svg{width:15px;height:15px}
 .embed{margin-top:6px;max-width:380px}
-.embed-img{display:block;max-width:min(380px,100%);max-height:380px;border-radius:7px;border:1px solid var(--line);background:var(--panel)}
-.embed-vid{display:block;width:100%;max-width:380px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:7px;background:#000}
-.embed-sm{display:block;width:100%;max-width:380px;height:152px;border:1px solid var(--line);border-radius:7px;background:var(--panel)}
-.embed-card{display:flex;gap:10px;border:1px solid var(--line);border-radius:7px;padding:8px;background:var(--panel);text-decoration:none;color:var(--text);align-items:center}
+.embed-img{display:block;max-width:min(380px,100%);max-height:380px;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
+.embed-vid{display:block;width:100%;max-width:380px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:8px;background:#000}
+.embed-sm{display:block;width:100%;max-width:380px;height:152px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.embed-card{display:flex;gap:10px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel);text-decoration:none;color:var(--text);align-items:center}
 .embed-card:hover{border-color:var(--acc);text-decoration:none}
-.embed-card img{width:64px;height:64px;object-fit:cover;border-radius:5px;flex:none}
+.embed-card img{width:64px;height:64px;object-fit:cover;border-radius:6px;flex:none}
 .ec-t{min-width:0;display:flex;flex-direction:column;gap:3px}
 .ec-t b{font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ec-t span{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.composer{display:flex;gap:10px;align-items:center;padding:12px 18px;border-top:1px solid var(--line);flex:none}
-.composer input{flex:1;padding:11px 13px;border-radius:8px;background:var(--panel)}
-.gif-btn{flex:none;font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.1em;border:1px solid var(--line2);border-radius:7px;padding:0 11px;height:40px;color:var(--muted);display:inline-flex;align-items:center;transition:.15s}
-.gif-btn:hover{border-color:var(--acc);color:var(--acc)}
-.gif-btn svg{width:14px;height:14px}
-.send{flex:none;width:40px;height:40px;border-radius:8px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center}
-.send:hover{background:#F3C063}
-.send svg{width:17px;height:17px}
 
-/* ---------- admin drawer ---------- */
-.drawer-wrap{position:fixed;inset:0;z-index:90}
-.drawer-ovl{position:absolute;inset:0;background:rgba(6,8,7,.64)}
-.drawer{position:absolute;top:0;right:0;bottom:0;width:min(750px,96vw);background:var(--panel);border-left:1px solid var(--line2);display:flex;flex-direction:column;transform:translateX(102%);transition:transform .3s cubic-bezier(.22,.85,.25,1)}
+/* ---------- connected composer (send at the end) ---------- */
+.composer{flex:none;display:flex;align-items:center;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px 7px 7px 10px}
+.composer input{flex:1;min-width:0;background:none;border:none;padding:10px 6px;font-size:14px}
+.composer input:focus{border:none}
+.cp-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;color:var(--muted);transition:.15s}
+.cp-btn:hover{color:var(--acc);background:var(--panel3)}
+.cp-btn svg{width:16px;height:16px}
+.cp-gif{width:auto;padding:0 10px;font-weight:800;font-size:10.5px;letter-spacing:.08em}
+.cp-send{flex:none;width:38px;height:38px;border-radius:10px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center;transition:.15s}
+.cp-send:hover{background:var(--acc-hi)}
+.cp-send svg{width:16px;height:16px}
+
+/* ---------- admin drawer (floating) ---------- */
+.drawer-wrap{position:fixed;inset:0;z-index:140}
+.drawer-ovl{position:absolute;inset:0;background:rgba(8,8,12,.6)}
+.drawer{position:absolute;top:12px;right:12px;bottom:12px;width:min(750px,calc(100vw - 24px));background:var(--panel);border:1px solid var(--line2);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;transform:translateX(calc(100% + 24px));transition:transform .3s cubic-bezier(.22,.85,.25,1);box-shadow:0 10px 36px rgba(0,0,0,.35)}
 .drawer.open{transform:none}
 .drawer-head{padding:16px 20px 0;border-bottom:1px solid var(--line);flex:none}
 .drawer-title{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--acc)}
@@ -202,15 +217,15 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .drawer-tabs button:hover{color:var(--text)}
 .drawer-tabs button.active{color:var(--acc);border-color:var(--acc)}
 .drawer-body{flex:1;overflow-y:auto;padding:18px 20px 30px}
-.pane h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px}
+.pane h4{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;font-weight:700}
 .pane h4:first-child{margin-top:0}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px}
-.stat{border:1px solid var(--line);border-radius:8px;padding:13px 14px;background:var(--panel2)}
+.stat{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:var(--panel2)}
 .stat b{display:block;font-family:var(--mono);font-size:22px;font-weight:600;color:var(--acc)}
 .stat span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 .mini-row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:9px 2px;font-size:13px}
 .mini-row span{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
-.adm-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:9px;background:var(--panel2)}
+.adm-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:9px;background:var(--panel2)}
 .adm-row .info{min-width:0;flex:1}
 .adm-row .info b{font-size:14px}
 .adm-row .sub{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px;letter-spacing:.03em}
@@ -220,7 +235,7 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .ban-form{display:flex;gap:8px;flex-wrap:wrap}
 .ban-form input{padding:8px 10px;font-size:12px}
 .ban-form .ipw{font-family:var(--mono);width:170px;flex:none}
-.ip-user{border:1px solid var(--line);border-radius:8px;padding:11px 13px;margin-bottom:9px;background:var(--panel2)}
+.ip-user{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px;background:var(--panel2)}
 .ip-user .h{display:flex;align-items:baseline;gap:10px;margin-bottom:9px;flex-wrap:wrap}
 .ip-user .h b{font-size:13.5px}
 .ip-user .h span{font-family:var(--mono);font-size:10px;color:var(--muted)}
@@ -230,18 +245,18 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .chip.cur{border-color:var(--acc)}
 .chip.plain{cursor:default}
 .chip .cnt{color:var(--faint);font-size:9.5px;font-style:normal}
-.chip button{font-family:var(--mono);font-size:9px;letter-spacing:.08em;border-radius:999px;padding:2px 8px;color:var(--bad);border:1px solid rgba(224,86,63,.35);cursor:pointer;background:none}
-.chip button:hover{background:rgba(224,86,63,.12)}
+.chip button{font-family:var(--mono);font-size:9px;letter-spacing:.08em;border-radius:999px;padding:2px 8px;color:var(--bad);border:1px solid rgba(240,109,109,.35);cursor:pointer;background:none}
+.chip button:hover{background:rgba(240,109,109,.12)}
 .chip button.armed{background:var(--bad);color:#160B08}
-.ucard{border:1px solid var(--line2);border-radius:10px;background:var(--panel2);padding:16px}
+.ucard{border:1px solid var(--line2);border-radius:12px;background:var(--panel2);padding:16px}
 .uc-head{display:flex;align-items:center;gap:12px}
 .uc-head .ava{width:36px;height:36px;font-size:15px}
 .uc-head b{font-size:16px}
 .uc-head .st{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);margin-top:2px}
-.tagb{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--bad);border:1px solid rgba(224,86,63,.4);border-radius:4px;padding:2px 7px;letter-spacing:.1em}
+.tagb{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--bad);border:1px solid rgba(240,109,109,.4);border-radius:5px;padding:2px 7px;letter-spacing:.1em}
 .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin:16px 0 8px}
 .u-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}
-.u-meta>div{border:1px solid var(--line);border-radius:7px;padding:9px 11px}
+.u-meta>div{border:1px solid var(--line);border-radius:8px;padding:9px 11px}
 .u-meta i{display:block;font-style:normal;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
 .u-meta b{font-family:var(--mono);font-size:12px;font-weight:500}
 .uc-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -249,32 +264,32 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 
 /* ---------- settings modal ---------- */
 .seg{display:flex;gap:6px}
-.seg-b{flex:1;border:1px solid var(--line2);border-radius:7px;padding:8px;font-weight:600;font-size:12.5px;color:var(--muted)}
-.seg-b.active{border-color:var(--acc);color:var(--acc);background:rgba(232,176,75,.08)}
+.seg-b{flex:1;border:1px solid var(--line2);border-radius:8px;padding:8px;font-weight:700;font-size:12.5px;color:var(--muted)}
+.seg-b.active{border-color:var(--acc);color:var(--acc);background:rgba(139,124,246,.1)}
 .fx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.fx-b{border:1px solid var(--line2);border-radius:7px;padding:8px 4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.fx-b.active{border-color:var(--acc);color:var(--acc);background:rgba(232,176,75,.08)}
+.fx-b{border:1px solid var(--line2);border-radius:8px;padding:8px 4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fx-b.active{border-color:var(--acc);color:var(--acc);background:rgba(139,124,246,.1)}
 
 /* ---------- toasts / modals / kick ---------- */
 #toasts{position:fixed;right:16px;bottom:16px;z-index:300;display:flex;flex-direction:column;gap:8px}
-.toast{background:var(--panel3);border:1px solid var(--line2);border-left:3px solid var(--acc);border-radius:7px;padding:10px 14px;font-size:13px;max-width:340px;animation:tin .22s cubic-bezier(.2,.9,.3,1.15);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.4)}
+.toast{background:var(--panel3);border:1px solid var(--line2);border-left:3px solid var(--acc);border-radius:9px;padding:10px 14px;font-size:13px;max-width:340px;animation:tin .22s cubic-bezier(.2,.9,.3,1.15);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.4)}
 .toast.bad{border-left-color:var(--bad)}
 .toast.ok{border-left-color:var(--ok)}
 @keyframes tin{from{transform:translateX(30px);opacity:0}}
 .toast.out{opacity:0;transform:translateX(20px);transition:.25s}
-.modal-wrap{position:fixed;inset:0;z-index:150;display:grid;place-items:center;background:rgba(6,8,7,.7)}
-.modal{width:min(430px,92vw);background:var(--panel);border:1px solid var(--line2);border-radius:11px;padding:20px;animation:pop .16s ease-out}
+.modal-wrap{position:fixed;inset:0;z-index:150;display:grid;place-items:center;background:rgba(8,8,12,.7)}
+.modal{width:min(430px,92vw);background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:20px;animation:pop .16s ease-out;box-shadow:0 10px 36px rgba(0,0,0,.35)}
 @keyframes pop{from{transform:scale(.96) translateY(6px);opacity:0}}
-.modal h3{font-size:16px}
+.modal h3{font-size:16px;font-weight:800}
 .modal .sub{color:var(--muted);font-size:12.5px;margin-top:5px}
-.modal label{display:block;margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.modal label{display:block;margin-top:14px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .modal label input{margin-top:7px}
-.modal label .opt{text-transform:none;letter-spacing:0;color:var(--faint)}
+.modal label .opt{text-transform:none;letter-spacing:0;color:var(--faint);font-weight:400}
 .chk{display:flex;align-items:center;gap:9px;margin-top:14px;cursor:pointer;font-size:13px;color:var(--text);text-transform:none;letter-spacing:0;font-family:var(--sans)}
 .chk input{width:15px;height:15px;accent-color:var(--acc);padding:0;flex:none}
 .m-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
 .srv-results{margin-top:8px;display:flex;flex-direction:column;gap:6px;max-height:250px;overflow-y:auto}
-.srv-r{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:7px;padding:9px 11px;cursor:pointer;background:var(--panel2)}
+.srv-r{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;cursor:pointer;background:var(--panel2)}
 .srv-r:hover{border-color:var(--acc)}
 .srv-r b{font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .srv-r i{font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.05em;white-space:nowrap}
@@ -285,7 +300,7 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .gif-head .lbl{margin:0;color:var(--acc);flex:none}
 .gif-head input{flex:1;padding:8px 12px}
 .gif-grid{flex:1;overflow-y:auto;padding:14px;column-width:172px;column-gap:11px}
-.gcell{display:block;width:100%;break-inside:avoid;margin-bottom:11px;border:1px solid var(--line);border-radius:7px;overflow:hidden;padding:0;background:var(--panel2)}
+.gcell{display:block;width:100%;break-inside:avoid;margin-bottom:11px;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding:0;background:var(--panel2)}
 .gcell img{display:block;width:100%;height:auto}
 .gcell:hover{border-color:var(--acc)}
 .gif-foot{flex:none;padding:9px 16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--faint)}
@@ -293,16 +308,14 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .kick{position:fixed;inset:0;z-index:400;background:var(--bg);display:grid;place-items:center;padding:20px}
 .kick .box{width:min(420px,100%);text-align:center}
 .kick-ic svg{width:38px;height:38px;color:var(--bad)}
-.kick h2{font-size:20px;margin-top:16px}
+.kick h2{font-size:20px;margin-top:16px;font-weight:800}
 .kick p{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.7}
 .kick .btn{margin-top:22px}
 
 /* ---------- responsive ---------- */
 @media(max-width:880px){
-  .app{grid-template-columns:minmax(0,1fr)}
-  .side{position:fixed;left:0;top:0;bottom:0;z-index:120;width:280px;transform:translateX(-102%);transition:transform .25s;box-shadow:14px 0 40px rgba(0,0,0,.45)}
-  .side.open{transform:none}
-  #sideToggle{display:inline-flex}
+  body.side-open .main{margin-left:12px}
+  .side{width:280px;box-shadow:14px 0 40px rgba(0,0,0,.45)}
   .auth{grid-template-columns:1fr}
   .auth-brand{display:none}
 }
@@ -310,23 +323,24 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 </head>
 <body>
 
+<div id="vantaBg"></div>
+
 <!-- ============ AUTH ============ -->
 <section class="auth" id="authView">
   <div class="auth-brand">
     <div class="auth-brand-inner">
-      <div class="logo-lg"><span class="mark" data-icon="mark"></span><span class="word">RELAY</span></div>
+      <div class="logo-lg"><span class="mark" data-icon="mark"></span><span class="word">Relay</span></div>
     </div>
   </div>
   <div class="auth-form-wrap">
     <form class="auth-form" id="authForm" autocomplete="off">
       <h1 id="authTitle">Sign in</h1>
-      <p class="sub" id="authSub">Welcome</p>
+      <p class="sub" id="authSub"><span id="authSubText">Welcome</span> <span class="auth-meta">· <b id="loginUsers">—</b> users · <span id="loginVer"></span></span></p>
       <label>username<input id="fUser" maxlength="16" spellcheck="false" autocomplete="username"></label>
       <label>password<input id="fPass" type="password" autocomplete="current-password"></label>
       <div class="err mono" id="authErr"></div>
       <button class="btn acc" id="authBtn" type="submit">Sign in</button>
-      <p class="auth-switch" id="authSwitchWrap">No account? <a id="authSwitch">Register one</a></p>
-      <p class="auth-foot"><b id="loginUsers">—</b> users · <span id="loginVer"></span></p>
+      <p class="auth-switch" id="authSwitchWrap">New here? <a id="authSwitch">Create an account</a></p>
     </form>
   </div>
 </section>
@@ -336,9 +350,10 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
   <aside class="side" id="sideEl">
     <div class="logo-row">
       <button class="logo-btn" id="logoBtn" title="Relay">
-        <span class="mark" data-icon="mark"></span><span class="word">RELAY</span>
+        <span class="mark" data-icon="mark"></span><span class="word">Relay</span>
         <span class="svc-line mono" id="svcLine"></span>
       </button>
+      <button class="icon-btn" id="collapseBtn" data-icon="chevLeft" title="Hide sidebar"></button>
       <button class="icon-btn" id="settingsBtn" data-icon="sliders" title="Settings — theme &amp; background"></button>
     </div>
     <div class="side-scroll">
@@ -346,15 +361,15 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
         <div class="sec-h">
           <span class="t">SERVERS</span>
           <span class="btns">
-            <button class="icon-btn" id="searchServerBtn" data-icon="search" title="Search / join servers"></button>
+            <button class="icon-btn" id="searchServerBtn" data-icon="search" title="Find / join servers"></button>
             <button class="icon-btn" id="addServerBtn" data-icon="plus" title="New server"></button>
           </span>
         </div>
         <ul class="side-list" id="serverList"></ul>
       </div>
       <div class="sec">
-        <div class="sec-h"><span class="t" id="dmLabel">DIRECT</span><button class="icon-btn" id="addFriendBtn" data-icon="userPlus" title="Add friend"></button></div>
-        <div class="add-row" id="friendAddRow" hidden><input id="friendInput" placeholder="callsign" maxlength="16" spellcheck="false"><button class="btn" id="friendGo" data-icon="plus"></button></div>
+        <div class="sec-h"><span class="t" id="dmLabel">FRIENDS</span><button class="icon-btn" id="addFriendBtn" data-icon="userPlus" title="Add friend"></button></div>
+        <div class="add-row" id="friendAddRow" hidden><input id="friendInput" placeholder="username" maxlength="16" spellcheck="false"><button class="btn" id="friendGo" data-icon="plus"></button></div>
         <ul class="side-list" id="dmList"></ul>
       </div>
       <div class="sec">
@@ -371,51 +386,50 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
       </div>
       <div class="color-row" id="colorRow" hidden>
         <span class="color-lbl">name color</span>
-        <button class="swatch" data-c="#C9A85C" style="background:#C9A85C"></button>
-        <button class="swatch" data-c="#94B48B" style="background:#94B48B"></button>
-        <button class="swatch" data-c="#C58B76" style="background:#C58B76"></button>
-        <button class="swatch" data-c="#87A3A8" style="background:#87A3A8"></button>
-        <button class="swatch" data-c="#A98F9C" style="background:#A98F9C"></button>
-        <button class="swatch" data-c="#9DA47E" style="background:#9DA47E"></button>
-        <button class="swatch" data-c="#E0563F" style="background:#E0563F"></button>
-        <button class="swatch" data-c="#63BE8A" style="background:#63BE8A"></button>
-        <input type="color" id="colorPick" value="#C9A85C" title="Custom color">
+        <button class="swatch" data-c="#8B7CF6" style="background:#8B7CF6"></button>
+        <button class="swatch" data-c="#5AD18C" style="background:#5AD18C"></button>
+        <button class="swatch" data-c="#F2A65A" style="background:#F2A65A"></button>
+        <button class="swatch" data-c="#6FB8F2" style="background:#6FB8F2"></button>
+        <button class="swatch" data-c="#F27BA9" style="background:#F27BA9"></button>
+        <button class="swatch" data-c="#8CD790" style="background:#8CD790"></button>
+        <button class="swatch" data-c="#E8C15A" style="background:#E8C15A"></button>
+        <button class="swatch" data-c="#C98BF2" style="background:#C98BF2"></button>
+        <input type="color" id="colorPick" value="#8B7CF6" title="Custom color">
       </div>
     </div>
   </aside>
 
   <main class="main">
     <header class="chat-head">
-      <button class="icon-btn" id="sideToggle" data-icon="menu"></button>
+      <button class="icon-btn" id="sideToggle" data-icon="menu" title="Toggle sidebar"></button>
       <div>
         <h2 id="roomTitle">—</h2>
         <p class="meta" id="roomMeta">no channel selected</p>
       </div>
       <div class="right" id="onlinePill"></div>
     </header>
-    <div id="vantaBg"></div>
     <div class="msgs" id="msgs"></div>
     <div class="upbar" id="upbar" hidden>
       <div class="up-info"><span id="upName"></span><button class="up-x" id="upCancel" data-icon="x" title="Cancel upload"></button></div>
       <div class="up-track"><div class="up-fill" id="upFill"></div></div>
     </div>
     <div class="composer">
-      <button class="gif-btn" id="attachBtn" data-icon="clip" title="Send a file — 1 GB max"></button>
-      <button class="gif-btn" id="gifBtn" title="Send a GIF">GIF</button>
+      <button class="cp-btn" id="attachBtn" data-icon="clip" title="Send a file — 1 GB max"></button>
+      <button class="cp-btn cp-gif" id="gifBtn" title="Send a GIF">GIF</button>
       <input id="msgInput" placeholder="Open a server first…" maxlength="1500" autocomplete="off">
-      <button class="send" id="sendBtn" data-icon="send" title="Send"></button>
+      <button class="cp-send" id="sendBtn" data-icon="send" title="Send"></button>
       <input type="file" id="fileInput" hidden>
     </div>
   </main>
 </div>
 
-<!-- ============ ADMIN SERVICE PANEL (triple-click the logo) ============ -->
+<!-- ============ ADMIN PANEL (triple-click the logo) ============ -->
 <div class="drawer-wrap" id="drawerWrap" hidden>
   <div class="drawer-ovl" id="drawerOvl"></div>
   <aside class="drawer" id="drawer">
     <div class="drawer-head">
       <div class="drawer-title">
-        <span data-icon="shield"></span> SERVICE PANEL
+        <span data-icon="shield"></span> ADMIN PANEL
         <span class="who mono" id="admWho"></span>
         <button class="icon-btn" id="drawerClose" data-icon="x"></button>
       </div>
@@ -429,7 +443,7 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
     <div class="drawer-body" id="drawerBody">
       <section class="pane" id="pane-ovw">
         <div class="stat-grid" id="admStats"></div>
-        <h4>RECENT REGISTRATIONS</h4>
+        <h4>RECENT SIGNUPS</h4>
         <div id="admRecent"></div>
       </section>
       <section class="pane" id="pane-srv" hidden>
@@ -442,20 +456,20 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
           <input id="lookupInput" placeholder="username" spellcheck="false">
           <button class="btn" id="lookupBtn" data-icon="search">LOOK UP</button>
         </div>
-        <div id="userCard" style="margin-top:14px"><div class="empty">Enter a username to pull their record.</div></div>
+        <div id="userCard" style="margin-top:14px"><div class="empty">Enter a username to pull up their record.</div></div>
       </section>
       <section class="pane" id="pane-net" hidden>
-        <h4>BAN A NETWORK (IP)</h4>
+        <h4>BAN AN IP</h4>
         <div class="ban-form">
           <input class="ipw" id="banIpInput" placeholder="203.0.113.7" spellcheck="false">
           <input id="banIpReason" placeholder="reason (optional)">
           <button class="btn danger" id="banIpGo">BAN IP</button>
         </div>
-        <h4>BANNED NETWORKS</h4>
+        <h4>BANNED IPs</h4>
         <div id="bannedIpList"></div>
         <h4>BANNED ACCOUNTS</h4>
         <div id="bannedAccList"></div>
-        <h4>REGISTERED USERS — TRACKED IPs (MAX 5 PER ACCOUNT)</h4>
+        <h4>USERS — TRACKED IPs (MAX 5 PER ACCOUNT)</h4>
         <div id="ipUsers"></div>
       </section>
     </div>
@@ -467,8 +481,8 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 <div class="modal-wrap" id="gifWrap" hidden>
   <div class="modal gif">
     <div class="gif-head">
-      <span class="lbl">GIF FEED</span>
-      <input id="gifSearch" placeholder="Search GIPHY… (Enter to fire)" spellcheck="false">
+      <span class="lbl">GIFS</span>
+      <input id="gifSearch" placeholder="Search GIPHY…" spellcheck="false">
       <button class="icon-btn" id="gifClose" data-icon="x"></button>
     </div>
     <div class="gif-grid" id="gifGrid"></div>
@@ -481,7 +495,7 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
     <span class="kick-ic" data-icon="ban"></span>
     <h2 id="kickTitle">Access revoked</h2>
     <p id="kickDetail"></p>
-    <button class="btn" id="kickReload">Reconnect</button>
+    <button class="btn" id="kickReload">Reload</button>
   </div>
 </div>
 
@@ -507,7 +521,7 @@ const firebaseConfig = {
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
-const VERSION = '1.4.0';
+const VERSION = '1.6.0';
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -541,10 +555,11 @@ const I = {
   clip: SVG('<path d="M21.4 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>'),
   doc: SVG('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>'),
   dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
+  chevLeft: SVG('<path d="M15 18l-6-6 6-6"/>'),
 };
 const icon = n => I[n] || '';
 
-const AVC = ['#C9A85C','#94B48B','#C58B76','#87A3A8','#B7A48D','#A98F9C','#9DA47E','#C0B254'];
+const AVC = ['#8B7CF6','#5AD18C','#F2A65A','#6FB8F2','#F27BA9','#8CD790','#E8C15A','#C98BF2'];
 const uColor = u => AVC[[...String(u)].reduce((a,c)=>a+c.charCodeAt(0),0) % AVC.length];
 const nameColor = u => (usersMap[u] && usersMap[u].color) || uColor(u);
 
@@ -558,6 +573,14 @@ function fmtTime(ts){
   if(!ts) return '';
   const d = new Date(ts), hm = d.toTimeString().slice(0,5);
   return d.toDateString()===new Date().toDateString() ? hm : `${d.toDateString().slice(4,10).toUpperCase()} · ${hm}`;
+}
+function dayLabel(ts){
+  const d = new Date(ts || Date.now());
+  const today = new Date(), yest = new Date(Date.now() - 864e5);
+  if(d.toDateString() === today.toDateString()) return 'Today';
+  if(d.toDateString() === yest.toDateString()) return 'Yesterday';
+  const sameYear = d.getFullYear() === today.getFullYear();
+  return d.toLocaleDateString(undefined, {weekday:'long', month:'long', day:'numeric', ...(sameYear ? {} : {year:'numeric'})});
 }
 function fmtSize(n){
   if(!n && n!==0) return '';
@@ -587,6 +610,19 @@ function toast(msg, kind='ok'){
   t.onclick = kill; setTimeout(kill, 4200);
 }
 
+/* ================= SIDEBAR (shrinkable to the side) ================= */
+const isDesktop = () => matchMedia('(min-width:881px)').matches;
+function sideIsOpen(){ return document.body.classList.contains('side-open'); }
+function setSide(open){
+  document.body.classList.toggle('side-open', !!open);
+  if(isDesktop()) try{ localStorage.setItem('relay_side', open ? 'open' : 'closed'); }catch{}
+}
+// on small screens picking something closes the drawer; desktop keeps it open
+const maybeCloseSide = ()=>{ if(!isDesktop()) setSide(false); };
+ $('sideToggle').onclick  = ()=> setSide(!sideIsOpen());
+ $('collapseBtn').onclick = ()=> setSide(false);
+setSide( isDesktop() ? ((localStorage.getItem('relay_side') || 'open') !== 'closed') : false );
+
 /* ================= THEME + VANTA BACKGROUND ================= */
 let curTheme = localStorage.getItem('relay_theme') || 'dark';
 let vantaKey = localStorage.getItem('relay_vanta') || 'none';
@@ -596,38 +632,38 @@ document.documentElement.dataset.theme = curTheme;
 const VANTA_FX = {
   none:{label:'None'},
   waves:{label:'Waves',file:'vanta.waves.min.js',fn:'WAVES',
-    dark:{color:0xE8B04B,shininess:35,waveHeight:11,waveSpeed:.7,zoom:.65},
-    light:{color:0xB98A1E,shininess:35,waveHeight:11,waveSpeed:.7,zoom:.65}},
+    dark:{color:0x8B7CF6,shininess:35,waveHeight:12,waveSpeed:.7,zoom:.65},
+    light:{color:0x9E93F8,shininess:35,waveHeight:12,waveSpeed:.7,zoom:.65}},
   net:{label:'Net',file:'vanta.net.min.js',fn:'NET',
-    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C,points:11,maxDistance:26,spacing:18},
-    light:{color:0xA97C10,backgroundColor:0xF1EFE9,points:11,maxDistance:26,spacing:18}},
+    dark:{color:0x8B7CF6,backgroundColor:0x101014,points:12,maxDistance:24,spacing:18},
+    light:{color:0x6C5CE7,backgroundColor:0xF6F6FA,points:12,maxDistance:24,spacing:18}},
   rings:{label:'Rings',file:'vanta.rings.min.js',fn:'RINGS',
-    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C},
-    light:{color:0xA97C10,backgroundColor:0xF1EFE9}},
+    dark:{color:0x8B7CF6,backgroundColor:0x101014},
+    light:{color:0x6C5CE7,backgroundColor:0xF6F6FA}},
   cells:{label:'Cells',file:'vanta.cells.min.js',fn:'CELLS',
-    dark:{color1:0xE8B04B,color2:0x4A5348,size:1.3,speed:1},
-    light:{color1:0xC79A3A,color2:0x9CA08B,size:1.3,speed:1}},
+    dark:{color1:0x8B7CF6,color2:0x3A3A46,size:1.4,speed:1},
+    light:{color1:0x9E93F8,color2:0xBFB9EE,size:1.4,speed:1}},
   dots:{label:'Dots',file:'vanta.dots.min.js',fn:'DOTS',
-    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C,size:2,spacing:36,showLines:false},
-    light:{color:0xA97C10,backgroundColor:0xF1EFE9,size:2,spacing:36,showLines:false}},
+    dark:{color:0x8B7CF6,backgroundColor:0x101014,size:2.2,spacing:34,showLines:false},
+    light:{color:0x6C5CE7,backgroundColor:0xF6F6FA,size:2.2,spacing:34,showLines:false}},
   topology:{label:'Topology',file:'vanta.topology.min.js',fn:'TOPOLOGY',
-    dark:{color:0x4A5348,backgroundColor:0x0B0D0C},
-    light:{color:0xB9B29F,backgroundColor:0xF1EFE9}},
+    dark:{color:0x55506B,backgroundColor:0x101014},
+    light:{color:0xB9B4DE,backgroundColor:0xF6F6FA}},
   trunks:{label:'Trunks',file:'vanta.trunks.min.js',fn:'TRUNKS',
-    dark:{color:0xE8B04B,backgroundColor:0x0B0D0C,spacing:6,chaos:3},
-    light:{color:0xA97C10,backgroundColor:0xF1EFE9,spacing:6,chaos:3}},
+    dark:{color:0x8B7CF6,backgroundColor:0x101014,spacing:6,chaos:3},
+    light:{color:0x6C5CE7,backgroundColor:0xF6F6FA,spacing:6,chaos:3}},
   halo:{label:'Halo',file:'vanta.halo.min.js',fn:'HALO',
-    dark:{baseColor:0xE8B04B,amplitudeFactor:1.2,size:1.15,xOffset:.18,yOffset:.2},
-    light:{baseColor:0xC79A3A,amplitudeFactor:1.2,size:1.15,xOffset:.18,yOffset:.2}},
+    dark:{baseColor:0x8B7CF6,amplitudeFactor:1.2,size:1.15,xOffset:.18,yOffset:.2},
+    light:{baseColor:0x9E93F8,amplitudeFactor:1.2,size:1.15,xOffset:.18,yOffset:.2}},
   fog:{label:'Fog',file:'vanta.fog.min.js',fn:'FOG',
-    dark:{highlightColor:0xE8B04B,midtoneColor:0x3E4A3F,lowlightColor:0x0B0D0C,baseColor:0x0B0D0C,blurFactor:.5},
-    light:{highlightColor:0xF3E4C2,midtoneColor:0xC9C2AC,lowlightColor:0xF1EFE9,baseColor:0xF1EFE9,blurFactor:.5}},
+    dark:{highlightColor:0x9E93F8,midtoneColor:0x3C3C4A,lowlightColor:0x101014,baseColor:0x101014,blurFactor:.55},
+    light:{highlightColor:0xD9D4F8,midtoneColor:0xC9C2AC,lowlightColor:0xF6F6FA,baseColor:0xF6F6FA,blurFactor:.55}},
   birds:{label:'Birds',file:'vanta.birds.min.js',fn:'BIRDS',
-    dark:{backgroundColor:0x0B0D0C,color1:0xE8B04B,color2:0x8B948C,colorMode:'variance',quantity:3,birdSize:.8,wingSpan:25,speedLimit:4},
-    light:{backgroundColor:0xF1EFE9,color1:0xA97C10,color2:0x9CA08B,colorMode:'variance',quantity:3,birdSize:.8,wingSpan:25,speedLimit:4}},
+    dark:{backgroundColor:0x101014,color1:0x8B7CF6,color2:0x9494A3,colorMode:'variance',quantity:3,birdSize:.9,wingSpan:26,speedLimit:4},
+    light:{backgroundColor:0xF6F6FA,color1:0x6C5CE7,color2:0x9CA0B8,colorMode:'variance',quantity:3,birdSize:.9,wingSpan:26,speedLimit:4}},
   clouds:{label:'Clouds',file:'vanta.clouds.min.js',fn:'CLOUDS',
-    dark:{skyColor:0x161A17,cloudColor:0x2A2F2B,sunColor:0xE8B04B,sunGlareColor:0x8B7434,sunlightColor:0x3E4A3F,speed:1.4},
-    light:{skyColor:0x9EC7DD,cloudColor:0xF7F5EF,sunColor:0xE8B04B,sunGlareColor:0xC9A85C,sunlightColor:0x9CA08B,speed:1.2}},
+    dark:{skyColor:0x1A1A22,cloudColor:0x2E2E3A,sunColor:0x9E93F8,sunGlareColor:0x5A4E8C,sunlightColor:0x3C3C4A,speed:1.4},
+    light:{skyColor:0xAAC8E8,cloudColor:0xF9F9FD,sunColor:0xE8C15A,sunGlareColor:0xD9D4F8,sunlightColor:0xB9B4DE,speed:1.2}},
 };
 
 function setTheme(t){
@@ -646,21 +682,22 @@ async function setVanta(key){
   try{
     if(!window.THREE) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js');
     if(!window.THREE) throw 0;
-    if(!window.THREE[fx.fn]) await loadScript(`https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/${fx.file}`);
-    if(!window.THREE[fx.fn]) throw 0;
+    // vanta effects register on the VANTA global (NOT on THREE)
+    if(!window.VANTA || !window.VANTA[fx.fn]) await loadScript(`https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/${fx.file}`);
+    if(!window.VANTA || !window.VANTA[fx.fn]) throw 0;
     const opts = Object.assign(
-      {el:bg, mouseControls:false, touchControls:false, gyroControls:false},
+      {el:bg, mouseControls:true, touchControls:true, gyroControls:false},
       (curTheme==='light') ? fx.light : fx.dark
     );
-    vantaEff = window.THREE[fx.fn](opts);
-  }catch(e){ toast('Background failed to load.','bad'); }
+    vantaEff = window.VANTA[fx.fn](opts);
+  }catch(e){ toast("Couldn't load that background.",'bad'); }
 }
 
 /* ================= STATE ================= */
 let me=null, myIp=null, kicked=false;
 let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, adminMap={}, bannedUsers={}, bannedIps={}, userRoomsMap={};
 const cur = {server:null, dm:null};
-let curPath=null, msgUns=[], chOpen=0;
+let curPath=null, msgUns=[], chOpen=0, lastDay=null;
 let serverPres=null;
 let clickCount=0, clickTimer=null, drawerOpen=false, activeTab='ovw', lookupUser=null;
 let pwResolve=null;
@@ -686,13 +723,13 @@ async function logUserIp(u, ip){
 async function assertNotBanned(u, user, ip){
   const [bIps,bUs] = await Promise.all([getV('config/bannedIps'), getV('config/bannedUsers')]);
   if(bUs && bUs[u]) throw new Error(`This account is banned — ${reasonOf(bUs[u])}`);
-  if(bIps && ip && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is banned from Relay.`);
+  if(bIps && ip && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
   const linked = Object.values(user.ips||{}).find(v => v && v.ip && bIps && bIps[ipKey(v.ip)]);
-  if(linked) throw new Error(`This account is linked to a banned network (${linked.ip}).`);
+  if(linked) throw new Error(`This account was used from a banned IP (${linked.ip}).`);
 }
 async function doLogin(u, p, ip){
   const user = await getV(`users/${u}`);
-  if(!user) throw new Error('No account with that callsign.');
+  if(!user) throw new Error('No account with that username.');
   if(user.pw !== await sha256hex(user.salt+':'+p)) throw new Error('Wrong password.');
   await assertNotBanned(u, user, ip);
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
@@ -703,9 +740,9 @@ async function doLogin(u, p, ip){
 }
 async function doRegister(u, p, ip){
   const [exist,bIps,bUs] = await Promise.all([getV(`users/${u}`), getV('config/bannedIps'), getV('config/bannedUsers')]);
-  if(exist) throw new Error('That callsign is taken.');
-  if(bIps && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is banned from Relay.`);
-  if(bUs && bUs[u]) throw new Error('That callsign is banned.');
+  if(exist) throw new Error('That username is taken.');
+  if(bIps && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
+  if(bUs && bUs[u]) throw new Error('That username is banned.');
   const salt = randHex(8), now = Date.now();
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
   const user = {
@@ -713,18 +750,18 @@ async function doRegister(u, p, ip){
     sessToken: tok,
     ips: { [ipKey(ip)]: {ip, first:now, last:now, count:1} }
   };
-  // very first account claims the service panel (config/admins)
+  // very first account becomes the admin (config/admins)
   let firstAdmin = false;
   try{
     const res = await runTransaction(ref(db,'config/admins'), c => c ? undefined : ({[u]:true}));
     firstAdmin = !!(res && res.committed && res.snapshot && res.snapshot.val() && res.snapshot.val()[u]);
   }catch{}
   await set(ref(db,`users/${u}`), user);
-  // starter server so the new operator lands somewhere real
+  // starter server so new users land somewhere
   const sid = push(ref(db,'servers')).key;
-  await set(ref(db,`servers/${sid}`), {name:`${u}-hq`, owner:u, createdAt:now});
+  await set(ref(db,`servers/${sid}`), {name:`${u}'s server`, owner:u, createdAt:now});
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
-  if(firstAdmin) toast('First operator — service panel unlocked. Triple-click the logo.','ok');
+  if(firstAdmin) toast("First user — admin unlocked. Triple-click the logo to open the panel.",'ok');
   await enter(u, ip);
 }
 async function tryAutoLogin(){
@@ -752,7 +789,7 @@ async function enter(u, ip){
     await update(pref, {online:true, lastSeen:Date.now(), ip:myIp});
   }catch{}
   setInterval(()=>{ if(!kicked) update(pref,{lastSeen:Date.now()}).catch(()=>{}); }, 45000);
-  // joined / unlocked servers (hidden + passcode) — userRooms is reused since rooms are gone
+  // joined / unlocked servers (hidden + passcode)
   onValue(ref(db,`userRooms/${me}`), s=>{ userRoomsMap = s.val()||{}; renderServers(); });
   renderServers(); renderDMs(); renderOnline(); updateOnlinePill();
   onValue(ref(db,`friends/${me}`), s=>{ friendsMap = s.val()||{}; renderDMs(); });
@@ -773,10 +810,10 @@ function forceLogout(title, detail){
 let authMode = 'login';
 function syncAuthUI(){
   const reg = authMode==='register';
-  $('authTitle').textContent = reg ? 'Register' : 'Sign in';
-  $('authSub').textContent = reg ? 'Claim your callsign.' : 'Welcome';
+  $('authTitle').textContent = reg ? 'Create account' : 'Sign in';
+  $('authSubText').textContent = reg ? 'Pick a username.' : 'Welcome';
   $('authBtn').textContent = reg ? 'Create account' : 'Sign in';
-  $('authSwitchWrap').innerHTML = reg ? 'Have an account? <a id="authSwitch">Sign in</a>' : 'No account? <a id="authSwitch">Register one</a>';
+  $('authSwitchWrap').innerHTML = reg ? 'Have an account? <a id="authSwitch">Sign in</a>' : 'New here? <a id="authSwitch">Create an account</a>';
   bindSwitch();
 }
 function bindSwitch(){
@@ -788,8 +825,8 @@ bindSwitch();
   e.preventDefault();
   const u = $('fUser').value.trim().toLowerCase(), p = $('fPass').value;
   $('authErr').textContent = '';
-  if(!/^[a-z0-9_]{3,16}$/.test(u)) return $('authErr').textContent = 'Username: 3–16 chars — a–z, 0–9, _ only.';
-  if(p.length < 4) return $('authErr').textContent = 'Password: 4+ characters.';
+  if(!/^[a-z0-9_]{3,16}$/.test(u)) return $('authErr').textContent = 'Username: 3–16 characters — a–z, 0–9, _ only.';
+  if(p.length < 4) return $('authErr').textContent = 'Password needs 4+ characters.';
   const btn = $('authBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = '···';
   try{
     const ip = await getPublicIp();
@@ -802,19 +839,19 @@ bindSwitch();
 /* ================= CHANNELS & MESSAGES ================= */
 function resetChannel(){
   msgUns.forEach(u=>u && u()); msgUns = [];
-  curPath = null; cur.dm = null;
+  curPath = null; cur.dm = null; lastDay = null;
   $('roomTitle').textContent = '—';
   $('roomMeta').textContent = 'no channel selected';
-  $('msgs').innerHTML = '<div class="empty">Pick a server to start receiving traffic.</div>';
+  $('msgs').innerHTML = '<div class="empty">Pick a server to start chatting.</div>';
   $('msgInput').placeholder = 'Open a server first…';
 }
 function openChannel(path, name, kind){
   if(curPath === path) return;
   msgUns.forEach(u=>u && u()); msgUns = [];
-  curPath = path; chOpen = Date.now();
-  $('msgs').innerHTML = '<div class="empty">No traffic on this channel yet.</div>';
+  curPath = path; chOpen = Date.now(); lastDay = null;
+  $('msgs').innerHTML = '<div class="empty">No messages yet.</div>';
   $('roomTitle').innerHTML = `<span class="hash">${kind==='dm'?'@':'#'}</span>${esc(name)}`;
-  $('roomMeta').textContent = kind==='dm' ? 'direct line' : 'server';
+  $('roomMeta').textContent = kind==='dm' ? 'direct message' : 'server';
   $('msgInput').placeholder = `Message ${kind==='dm'?'@':'#'}${name}`;
   const q = query(ref(db,path), limitToLast(150));
   msgUns.push(onChildAdded(q, s => appendMsg(s.key, s.val())));
@@ -836,6 +873,12 @@ function appendMsg(key, m){
   if(!m || !m.u) return;
   const stick = ($('msgs').scrollTop + $('msgs').clientHeight > $('msgs').scrollHeight - 90) || (Date.now() - chOpen < 1500);
   const es = $('msgs').querySelector('.empty'); if(es) es.remove();
+  // day divider — a timestamp between days
+  const dstr = new Date(m.t || Date.now()).toDateString();
+  if(dstr !== lastDay){
+    lastDay = dstr;
+    $('msgs').insertAdjacentHTML('beforeend', `<div class="day-div"><span>${dayLabel(m.t)}</span></div>`);
+  }
   let body = '';
   if(m.type === 'gif'){
     body = `<img class="gif" src="${esc(m.url)}" width="${m.w||200}" height="${m.h||200}" alt="gif" loading="lazy">`;
@@ -861,7 +904,7 @@ function send(){
   if(!curPath) return toast('Open a server first.','bad');
   const text = $('msgInput').value.trim(); if(!text) return;
   push(ref(db,curPath), {u:me, t:Date.now(), type:'text', text:text.slice(0,1500)})
-    .catch(()=>toast('Message failed to send.','bad'));
+    .catch(()=>toast("Couldn't send that message.",'bad'));
   $('msgInput').value = '';
 }
  $('msgInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); } });
@@ -882,7 +925,7 @@ async function buildEmbed(el, url){
     mt = url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
     if(mt){ el.innerHTML = `<iframe class="embed-sm" src="https://open.spotify.com/embed/${esc(mt[1])}/${esc(mt[2])}" allow="encrypted-media" loading="lazy" frameborder="0"></iframe>`; return; }
     if(/soundcloud\.com\//.test(url)){
-      el.innerHTML = `<iframe class="embed-sm" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=E8B04B&hide_related=true" loading="lazy" frameborder="0"></iframe>`; return;
+      el.innerHTML = `<iframe class="embed-sm" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=8B7CF6&hide_related=true" loading="lazy" frameborder="0"></iframe>`; return;
     }
     mt = url.match(/vimeo\.com\/(\d+)/);
     if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://player.vimeo.com/video/${esc(mt[1])}" allow="autoplay; fullscreen" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
@@ -903,7 +946,7 @@ let upTask = null;
  $('fileInput').addEventListener('change', e=>{
   const f = e.target.files[0]; e.target.value = '';
   if(!f) return;
-  if(f.size > MAX_FILE) return toast(`Too big — 1 GB max per file (yours: ${fmtSize(f.size)}).`,'bad');
+  if(f.size > MAX_FILE) return toast(`Too big — 1 GB max per file (this one: ${fmtSize(f.size)}).`,'bad');
   if(f.size === 0) return toast('That file is empty.','bad');
   const safe = f.name.replace(/[^\w.\- ]+/g,'_');
   const task = uploadBytesResumable(sref(storage, `files/${me}/${Date.now()}_${safe}`), f, {contentType: f.type || 'application/octet-stream'});
@@ -917,15 +960,13 @@ let upTask = null;
       try{
         const url = await getDownloadURL(task.snapshot.ref);
         await push(ref(db,curPath), {u:me, t:Date.now(), type:'file', url, name:f.name, size:f.size, mime:f.type||''});
-      }catch{ toast('File message failed.','bad'); }
+      }catch{ toast("Couldn't send the file message.",'bad'); }
       $('upbar').hidden = true; upTask = null;
     });
 });
  $('upCancel').onclick = ()=>{ if(upTask) upTask.cancel(); $('upbar').hidden = true; };
 
 /* ================= SERVERS: SELECT / GATE / JOIN ================= */
-const closeMobileSide = ()=> $('sideEl').classList.remove('open');
-
 function promptPw(what){
   return new Promise(res=>{
     pwResolve = res;
@@ -960,7 +1001,7 @@ async function selectServer(sid, skipAuth){
   try{ onDisconnect(r).remove(); set(r, Date.now()); }catch{}
   serverPres = r;
   openChannel(`messages/${sid}`, s.name || 'server', 'server');
-  renderServers(); renderOnline(); updateOnlinePill(); closeMobileSide();
+  renderServers(); renderOnline(); updateOnlinePill(); maybeCloseSide();
 }
 async function joinServer(sid){
   const s = serversMap[sid] || await getV(`servers/${sid}`);
@@ -986,7 +1027,7 @@ function renderServers(){
       ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
       ${s.hidden?'<span class="hid">HIDDEN</span>':''}
       ${s.owner===me?'<span class="sub">YOURS</span>':''}
-    </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to raise one.</div></li>`;
+    </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to make one.</div></li>`;
   if(!cur.server && es.length){
     // auto-select only something already accessible (never prompt on boot)
     const pick = es.find(([sid,s]) => s.owner===me || !s.locked || userRoomsMap[sid]);
@@ -998,9 +1039,9 @@ function renderServers(){
 /* ================= SERVER SEARCH / JOIN-BY-ID ================= */
 function openSrvSearch(){
   openModal(`<h3>Find a server</h3>
-    <label>search<input id="srvSearch" placeholder="server name…" spellcheck="false"></label>
+    <label>search<input id="srvSearch" placeholder="type a name…" spellcheck="false"></label>
     <div class="srv-results" id="srvResults"></div>
-    <label>join by id <span class="opt">(for hidden servers)</span><input id="joinId" placeholder="paste server id" spellcheck="false"></label>
+    <label>join with an id <span class="opt">(for hidden servers)</span><input id="joinId" placeholder="paste server id" spellcheck="false"></label>
     <div class="m-actions"><button class="btn" data-close>Close</button><button class="btn acc" id="joinGo">Join</button></div>`);
   renderSrvResults('');
   $('srvSearch').addEventListener('input', ()=>renderSrvResults($('srvSearch').value.trim().toLowerCase()));
@@ -1019,7 +1060,7 @@ function renderSrvResults(q){
       ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
       <i>${esc(s.owner||'?')} · ${n} online</i>
     </div>`;
-  }).join('') : '<div class="empty">No servers match.</div>';
+  }).join('') : '<div class="empty">No servers found.</div>';
 }
  $('searchServerBtn').onclick = openSrvSearch;
 
@@ -1031,7 +1072,7 @@ async function acceptFriend(f){
 }
 function renderDMs(){
   const reqs = Object.entries(reqMap||{});
-  $('dmLabel').textContent = 'DIRECT' + (reqs.length ? ` · ${reqs.length}` : '');
+  $('dmLabel').textContent = 'FRIENDS' + (reqs.length ? ` · ${reqs.length}` : '');
   const fr = Object.keys(friendsMap||{}).sort();
   let html = '';
   if(reqs.length) html += reqs.map(([from])=>`
@@ -1044,17 +1085,17 @@ function renderDMs(){
     const on = presenceMap[f] && presenceMap[f].online;
     return `<li data-dm="${esc(f)}" class="${cur.dm===f?'active':''}"><span class="pdot ${on?'on':''}"></span><span class="nm">${esc(f)}</span></li>`;
   }).join('');
-  if(!html) html = `<li><div class="empty">No direct lines yet.<br>Add a friend with +.</div></li>`;
+  if(!html) html = `<li><div class="empty">No friends yet.<br>Add someone with +.</div></li>`;
   $('dmList').innerHTML = html;
 }
  $('dmList').addEventListener('click', async e=>{
   const acc = e.target.closest('[data-accept]');
-  if(acc){ try{ await acceptFriend(acc.dataset.accept); toast(`${acc.dataset.accept} is on your line.`,'ok'); }catch{} return; }
+  if(acc){ try{ await acceptFriend(acc.dataset.accept); toast(`You and ${acc.dataset.accept} are now friends.`,'ok'); }catch{} return; }
   const dec = e.target.closest('[data-decline]');
   if(dec){ remove(ref(db,`friendRequests/${me}/${dec.dataset.decline}`)).catch(()=>{}); return; }
   const li = e.target.closest('[data-dm]'); if(!li) return;
   const f = li.dataset.dm;
-  cur.dm = f; cur.server = null; closeMobileSide();
+  cur.dm = f; cur.server = null; maybeCloseSide();
   if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
   openChannel(`messages/_dm/${[me,f].sort().join('--')}`, f, 'dm');
   renderDMs(); renderOnline(); updateOnlinePill();
@@ -1063,13 +1104,13 @@ function renderDMs(){
  $('friendGo').onclick = async ()=>{
   const u = $('friendInput').value.trim().toLowerCase();
   if(!u) return;
-  if(u===me) return toast('You are already yourself.','bad');
-  if(!/^[a-z0-9_]{3,16}$/.test(u)) return toast('Invalid callsign.','bad');
+  if(u===me) return toast("That's you!",'bad');
+  if(!/^[a-z0-9_]{3,16}$/.test(u)) return toast('Invalid username.','bad');
   const t = usersMap[u] || await getV(`users/${u}`);
-  if(!t) return toast('No such user.','bad');
-  if(friendsMap[u]) return toast('Already on your line.','bad');
+  if(!t) return toast('No user with that name.','bad');
+  if(friendsMap[u]) return toast('Already your friend.','bad');
   if(await getV(`friendRequests/${me}/${u}`)){
-    await acceptFriend(u); toast(`${u} added — you both had pending requests.`,'ok');
+    await acceptFriend(u); toast(`You and ${u} are now friends.`,'ok');
   }else{
     await set(ref(db,`friendRequests/${u}/${me}`), Date.now());
     toast('Request sent.','ok');
@@ -1114,7 +1155,7 @@ function renderMeChip(){
  $('colorBtn').onclick = ()=>{
   const row = $('colorRow');
   row.hidden = !row.hidden;
-  if(!row.hidden) $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(nameColor(me)) ? nameColor(me) : '#C9A85C';
+  if(!row.hidden) $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(nameColor(me)) ? nameColor(me) : '#8B7CF6';
 };
 function setColor(hex){
   if(!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
@@ -1171,19 +1212,19 @@ function closeModal(){
       if(hidden) sObj.hidden = true;
       await set(ref(db,`servers/${sid}`), sObj);
       if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
-      if(hidden) toast(`Server raised — ID ${sid} (share it to invite).`,'ok');
-      else toast('Server raised.','ok');
+      if(hidden) toast(`Server created — ID: ${sid} (share it to invite).`,'ok');
+      else toast('Server created.','ok');
       closeModal(); selectServer(sid, true);
     }catch(err){ toast((err && err.message) || 'Failed.','bad'); go.disabled = false; }
   })();
 });
  $('addServerBtn').onclick = ()=>{
   openModal(`<h3>New server</h3>
-    <p class="sub">Your own corner of the relay.</p>
-    <label>server name<input id="mName" maxlength="24" placeholder="night-ops" spellcheck="false"></label>
-    <label>passcode <span class="opt">(optional — gates entry)</span><input id="mPw" type="password" autocomplete="new-password"></label>
-    <label class="chk"><input type="checkbox" id="mHidden"> hidden — joinable only by ID</label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mGo">Raise server</button></div>`);
+    <p class="sub">Make your own space.</p>
+    <label>server name<input id="mName" maxlength="24" placeholder="movie night" spellcheck="false"></label>
+    <label>passcode <span class="opt">(optional)</span><input id="mPw" type="password" autocomplete="new-password"></label>
+    <label class="chk"><input type="checkbox" id="mHidden"> hidden — joinable only with an ID</label>
+    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mGo">Create server</button></div>`);
   setTimeout(()=>$('mName')?.focus(), 50);
 };
  $('settingsBtn').onclick = ()=>{
@@ -1214,7 +1255,7 @@ function closeGif(){ $('gifWrap').hidden = true; $('gifSearch').value = ''; }
  $('gifClose').onclick = closeGif;
  $('gifWrap').addEventListener('click', e=>{ if(e.target === $('gifWrap')) closeGif(); });
 async function loadGifs(q){
-  $('gifGrid').innerHTML = '<div class="empty">loading feed…</div>';
+  $('gifGrid').innerHTML = '<div class="empty">loading…</div>';
   try{
     const url = q
       ? `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=30&rating=pg-13`
@@ -1234,11 +1275,11 @@ let gifDeb;
  $('gifGrid').addEventListener('click', e=>{
   const c = e.target.closest('.gcell'); if(!c || !curPath) return;
   push(ref(db,curPath), {u:me, t:Date.now(), type:'gif', url:c.dataset.url, w:+c.dataset.w||200, h:+c.dataset.h||200})
-    .catch(()=>toast('GIF failed to send.','bad'));
+    .catch(()=>toast("Couldn't send that GIF.",'bad'));
   closeGif();
 });
 
-/* ================= SECRET: TRIPLE-CLICK LOGO → SERVICE PANEL ================= */
+/* ================= SECRET: TRIPLE-CLICK LOGO → ADMIN PANEL ================= */
  $('logoBtn').addEventListener('click', ()=>{
   clickCount++;
   clearTimeout(clickTimer);
@@ -1248,7 +1289,7 @@ let gifDeb;
 async function svcAuth(){
   const line = $('svcLine');
   line.className = 'svc-line mono'; line.textContent = '';
-  const msg = 'SERVICE ACCESS';
+  const msg = 'ADMIN ACCESS';
   for(const ch of msg){ line.textContent += ch; await sleep(16); }
   line.textContent += ' … ';
   await sleep(220);
@@ -1259,12 +1300,12 @@ async function svcAuth(){
   else{
     $('logoBtn').classList.add('shake');
     setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
-    toast('Service panel: admins only.','bad');
+    toast('Admin panel is for admins only.','bad');
   }
   setTimeout(()=>{ line.textContent=''; line.className='svc-line mono'; }, 2200);
 }
 
-/* ================= ADMIN SERVICE PANEL ================= */
+/* ================= ADMIN PANEL ================= */
 const isAdmin = () => !!(me && adminMap[me]);
 function openDrawer(){
   if(!isAdmin()){ toast('Admins only.','bad'); return; }
@@ -1315,11 +1356,11 @@ function renderOverview(){
     <div class="stat"><b>${Object.keys(usersMap).length}</b><span>accounts</span></div>
     <div class="stat"><b>${Object.keys(serversMap).length}</b><span>servers</span></div>
     <div class="stat"><b>${onl}</b><span>online now</span></div>
-    <div class="stat"><b>${Object.keys(bannedIps).length}</b><span>banned nets</span></div>
+    <div class="stat"><b>${Object.keys(bannedIps).length}</b><span>banned IPs</span></div>
     <div class="stat"><b>${Object.keys(bannedUsers).length}</b><span>banned accounts</span></div>`;
   const recent = Object.entries(usersMap).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,6);
   $('admRecent').innerHTML = recent.length
-    ? recent.map(([u,v])=>`<div class="mini-row"><b>${esc(u)}</b><span>${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}</span></div>`).join('')
+    ? recent.map(([u,v])=>`<div class="mini-row"><b>${esc(u)}</b><span>joined ${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}</span></div>`).join('')
     : '<div class="empty">No accounts yet.</div>';
 }
 function renderAdminServers(){
@@ -1344,7 +1385,7 @@ function renderNet(){
     <div class="adm-row"><div class="info"><b class="mono">${esc(v.ip||k)}</b>
       <div class="sub">${esc(v.reason||'no reason')} · by ${esc(v.by||'?')} · ${fmtDate(v.at)}</div></div>
       <div class="acts"><button class="btn" data-act="unban-ip" data-ip="${esc(v.ip||k)}">UNBAN</button></div></div>`).join('')
-    : '<div class="empty">No banned networks.</div>';
+    : '<div class="empty">No banned IPs.</div>';
   const ba = Object.entries(bannedUsers);
   $('bannedAccList').innerHTML = ba.length ? ba.map(([u,r])=>`
     <div class="adm-row"><div class="info"><b>${esc(u)}</b>
@@ -1356,20 +1397,20 @@ function renderNet(){
     const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
     return `<div class="ip-user">
       <div class="h"><b>${esc(u)}</b><span>last login ${fmtDate(v.lastLogin)} · now ${esc(v.ip||'—')}</span></div>
-      <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono" style="color:var(--faint);font-size:11px">no ips logged</span>'}</div>
+      <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono" style="color:var(--faint);font-size:11px">no IPs logged</span>'}</div>
     </div>`;
   }).join('') : '<div class="empty">No registered users.</div>';
 }
 async function renderLookup(u){
   lookupUser = u || null;
   const box = $('userCard');
-  if(!u){ box.innerHTML = '<div class="empty">Enter a username to pull their record.</div>'; return; }
+  if(!u){ box.innerHTML = '<div class="empty">Enter a username to pull up their record.</div>'; return; }
   const v = usersMap[u];
-  if(!v){ box.innerHTML = `<div class="empty">No account "${esc(u)}".</div>`; return; }
+  if(!v){ box.innerHTML = `<div class="empty">No account called "${esc(u)}".</div>`; return; }
   const pres = presenceMap[u] || {};
   let fr = {};
   try{ fr = (await get(ref(db,`friends/${u}`))).val() || {}; }catch{}
-  const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a[1]?0:a.last||0));
+  const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
   box.innerHTML = `
     <div class="ucard">
       <div class="uc-head">
@@ -1379,7 +1420,7 @@ async function renderLookup(u){
         ${bannedUsers[u] ? '<span class="tagb">BANNED</span>' : ''}
       </div>
       <div class="u-meta">
-        <div><i>registered</i><b>${fmtDate(v.createdAt)}</b></div>
+        <div><i>joined</i><b>${fmtDate(v.createdAt)}</b></div>
         <div><i>last login</i><b>${fmtDate(v.lastLogin)}</b></div>
         <div><i>current ip</i><b class="mono">${esc(v.ip||'—')}</b></div>
         <div><i>ips tracked</i><b>${ips.length}/${MAX_IPS}</b></div>
@@ -1388,7 +1429,7 @@ async function renderLookup(u){
       <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono muted" style="font-size:11px">none logged</span>'}</div>
       <div class="lbl">Friends (${Object.keys(fr).length})</div>
       <div class="chips">${Object.keys(fr).map(f=>`<span class="chip plain">${esc(f)}</span>`).join('') || '<span class="mono muted" style="font-size:11px">none</span>'}</div>
-      <div class="lbl">Administrative action</div>
+      <div class="lbl">Admin actions</div>
       <div class="uc-acts">
         <input id="ucReason" placeholder="reason (optional, used for bans)">
         <button class="btn danger" data-act="ban-user" data-u="${esc(u)}">${bannedUsers[u]?'BAN (update)':'BAN ACCOUNT'}</button>
@@ -1401,7 +1442,7 @@ async function renderLookup(u){
  $('lookupInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('lookupBtn').click(); } });
  $('banIpGo').onclick = async ()=>{
   const ip = $('banIpInput').value.trim();
-  if(!/^[0-9a-fA-F.:]{3,45}$/.test(ip)) return toast('That does not look like an IP.','bad');
+  if(!/^[0-9a-fA-F.:]{3,45}$/.test(ip)) return toast("That doesn't look like an IP.",'bad');
   await admBanIp(ip, $('banIpReason').value.trim());
   $('banIpInput').value = ''; $('banIpReason').value = '';
   renderNet();
@@ -1410,16 +1451,16 @@ async function renderLookup(u){
 /* admin operations */
 async function admClearServer(sid){
   if(!sid) return;
-  try{ await remove(ref(db,`messages/${sid}`)); toast('All server messages cleared.','ok'); }
+  try{ await remove(ref(db,`messages/${sid}`)); toast('Messages cleared.','ok'); }
   catch{ toast('Clear failed.','bad'); }
 }
 async function admDeleteServer(sid){
   if(!sid) return;
   try{
     await remove(ref(db,`messages/${sid}`));
-    await remove(ref(db,`roomPasswords/${sid}`));   // server passcode
+    await remove(ref(db,`roomPasswords/${sid}`));
     await remove(ref(db,`servers/${sid}`));
-    Object.keys(usersMap).forEach(u=>{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=>{}); }); // unlocks + hidden memberships
+    Object.keys(usersMap).forEach(u=>{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=>{}); });
     Object.entries(presenceMap).forEach(([u,p])=>{ if(p && p.servers && p.servers[sid]) remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=>{}); });
     if(cur.server === sid){
       if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
@@ -1437,7 +1478,7 @@ async function admBanUser(u, reason){
   try{
     await set(ref(db,`config/bannedUsers/${u}`), reason || `banned by ${me}`);
     await remove(ref(db,`presence/${u}`));
-    toast(`${u} has been banned. They will be kicked live.`,'ok');
+    toast(`${u} banned — they'll be disconnected.`,'ok');
     renderNet(); if(lookupUser===u) renderLookup(u);
   }catch{ toast('Ban failed.','bad'); }
 }
@@ -1462,12 +1503,12 @@ async function admBanIp(ip, reason){
   if(!ip) return;
   try{
     await set(ref(db,`config/bannedIps/${ipKey(ip)}`), {ip, reason: reason || 'banned', by: me, at: Date.now()});
-    toast(`Network ${ip} banned.`,'ok');
+    toast(`IP ${ip} banned.`,'ok');
     renderNet();
   }catch{ toast('IP ban failed.','bad'); }
 }
 async function admUnbanIp(ip){
-  try{ await remove(ref(db,`config/bannedIps/${ipKey(ip)}`)); toast(`Network ${ip} unbanned.`,'ok'); renderNet(); }
+  try{ await remove(ref(db,`config/bannedIps/${ipKey(ip)}`)); toast(`IP ${ip} unbanned.`,'ok'); renderNet(); }
   catch{ toast('Unban failed.','bad'); }
 }
  $('drawerBody').addEventListener('click', e=>{
@@ -1499,7 +1540,7 @@ onValue(ref(db,'users'), s=>{
   usersMap = s.val()||{};
   const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;   // login page stat
   if(me){
-    if(!usersMap[me]) return forceLogout('ACCOUNT DELETED', 'your record was removed by an administrator');
+    if(!usersMap[me]) return forceLogout('Account deleted', 'your account was removed by an admin');
     renderMeChip(); refreshPanes();
   }
 });
@@ -1514,12 +1555,12 @@ onValue(ref(db,'config/admins'), s=>{
 });
 onValue(ref(db,'config/bannedUsers'), s=>{
   bannedUsers = s.val()||{};
-  if(me && bannedUsers[me]) return forceLogout('ACCOUNT BANNED', reasonOf(bannedUsers[me]));
+  if(me && bannedUsers[me]) return forceLogout('Account banned', reasonOf(bannedUsers[me]));
   if(drawerOpen && activeTab==='net') renderNet();
 });
 onValue(ref(db,'config/bannedIps'), s=>{
   bannedIps = s.val()||{};
-  if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout('NETWORK BANNED', `your ip ${myIp} was blacklisted`);
+  if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout("You're blocked", `your IP ${myIp} was banned`);
   if(drawerOpen && activeTab==='net') renderNet();
 });
 
@@ -1533,7 +1574,6 @@ onValue(ref(db,'config/bannedIps'), s=>{
   localStorage.removeItem('relay_session');
   location.reload();
 };
- $('sideToggle').onclick = ()=> $('sideEl').classList.toggle('open');
  $('kickReload').onclick = ()=> location.reload();
 document.addEventListener('keydown', e=>{
   if(e.key !== 'Escape') return;
@@ -1544,7 +1584,7 @@ document.addEventListener('keydown', e=>{
 
 /* ================= BOOT ================= */
 document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
- $('loginVer').textContent = 'relay v'+VERSION;
+ $('loginVer').textContent = 'v'+VERSION;
 (async function boot(){
   await tryAutoLogin();
 })();

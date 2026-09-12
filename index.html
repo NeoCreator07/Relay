@@ -455,6 +455,12 @@ body.side-open .main{margin-left:274px}
         <div class="stat-grid" id="admStats"></div>
         <h4>RECENT SIGNUPS</h4>
         <div id="admRecent"></div>
+        <h4>ADMIN PASSWORD</h4>
+        <div class="adm-row">
+          <div class="info"><b>Password gate</b>
+            <div class="sub" id="admPwState">…</div></div>
+          <div class="acts"><button class="btn" data-act="chg-pw">CHANGE</button></div>
+        </div>
       </section>
       <section class="pane" id="pane-srv" hidden>
         <h4>ALL SERVERS — DELETE / CLEAR</h4>
@@ -534,7 +540,7 @@ const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
 const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
-const VERSION = '1.7.0';
+const VERSION = '131';
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -708,6 +714,7 @@ async function setVanta(key){
 /* ================= STATE ================= */
 let me=null, myIp=null, kicked=false;
 let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, adminMap={}, bannedUsers={}, bannedIps={}, userRoomsMap={};
+let adminPwHash=null;   // {h, set, by} from config/adminPw
 const cur = {server:null, dm:null};
 let curPath=null, msgUns=[], chOpen=0, lastDay=null;
 let serverPres=null;
@@ -773,7 +780,7 @@ async function doRegister(u, p, ip){
   const sid = push(ref(db,'servers')).key;
   await set(ref(db,`servers/${sid}`), {name:`${u}'s server`, owner:u, createdAt:now});
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
-  if(firstAdmin) toast("First user — admin unlocked. Triple-click the logo to open the panel.",'ok');
+  if(firstAdmin) toast("First user — admin unlocked. Triple-click the logo and set an admin password.",'ok');
   await enter(u, ip);
 }
 async function tryAutoLogin(){
@@ -1257,6 +1264,8 @@ function closeModal(){
   if(e.key !== 'Enter') return;
   if($('mGo')) $('mGo').click();
   else if($('mPwGo')) $('mPwGo').click();
+  else if($('aPwGo')) $('aPwGo').click();
+  else if($('cpGo')) $('cpGo').click();
   else if($('joinGo')) $('joinGo').click();
 });
  $('modalBox').addEventListener('click', async e=>{
@@ -1265,6 +1274,41 @@ function closeModal(){
   if(pw){
     const r = pwResolve; pwResolve = null;
     const v = $('mPwIn').value; closeModal(); if(r) r(v);
+    return;
+  }
+  // admin panel password gate
+  const ap = e.target.closest('#aPwGo');
+  if(ap){
+    const val = $('aPwIn').value;
+    closeModal();
+    if(!val) return;                       // empty = cancelled
+    if(!adminPwHash){                      // first time — set the password
+      if(val.length < 4) return toast('Use at least 4 characters.','bad');
+      saveAdminPw(val);
+      return;
+    }
+    if(await sha256hex('admin:'+val) === adminPwHash.h){ openDrawer(); }
+    else{
+      toast('Wrong admin password.','bad');
+      $('logoBtn').classList.add('shake');
+      setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
+    }
+    return;
+  }
+  // change admin password (from the panel)
+  const cp = e.target.closest('#cpGo');
+  if(cp){
+    const oldPw = $('cpOld').value, newPw = $('cpNew').value;
+    if(!newPw) return toast('Enter a new password.','bad');
+    if(newPw.length < 4) return toast('New password needs 4+ characters.','bad');
+    if(adminPwHash && await sha256hex('admin:'+oldPw) !== adminPwHash.h) return toast('Current password is wrong.','bad');
+    try{
+      const h = await sha256hex('admin:'+newPw);
+      await set(ref(db,'config/adminPw'), {h, set:Date.now(), by:me});
+      adminPwHash = {h};
+      closeModal(); toast('Admin password saved.','ok');
+      if(activeTab==='ovw') renderOverview();
+    }catch{ toast("Couldn't save password.",'bad'); }
     return;
   }
   const th = e.target.closest('[data-theme-set]');
@@ -1378,7 +1422,7 @@ async function svcAuth(){
   const ok = isAdmin();
   line.textContent += ok ? 'OK' : 'DENIED';
   line.classList.add(ok ? 'ok' : 'bad');
-  if(ok){ await sleep(320); openDrawer(); }
+  if(ok){ await sleep(320); adminGate(); }
   else{
     $('logoBtn').classList.add('shake');
     setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
@@ -1387,8 +1431,36 @@ async function svcAuth(){
   setTimeout(()=>{ line.textContent=''; line.className='svc-line mono'; }, 2200);
 }
 
-/* ================= ADMIN PANEL ================= */
+/* ================= ADMIN PANEL + PASSWORD GATE ================= */
 const isAdmin = () => !!(me && adminMap[me]);
+
+// password popup between "ADMIN ACCESS OK" and the panel itself
+function adminGate(){
+  if(!isAdmin()){ toast('Admins only.','bad'); return; }
+  const first = !adminPwHash;
+  openModal(`<h3>${first ? 'Set an admin password' : 'Admin password'}</h3>
+    <p class="sub">${first ? 'Pick one now — you&apos;ll need it every time the panel opens.' : 'Enter the admin password to open the panel.'}</p>
+    <label>password<input type="password" id="aPwIn" autocomplete="off"></label>
+    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="aPwGo">${first ? 'Set &amp; open' : 'Unlock'}</button></div>`);
+  setTimeout(()=>$('aPwIn')?.focus(), 50);
+}
+async function saveAdminPw(pw){
+  try{
+    const h = await sha256hex('admin:'+pw);
+    await set(ref(db,'config/adminPw'), {h, set:Date.now(), by:me});
+    adminPwHash = {h};
+    toast('Admin password set.','ok');
+    openDrawer();
+  }catch{ toast("Couldn't save the password.",'bad'); }
+}
+function chgPwModal(){
+  openModal(`<h3>Change admin password</h3>
+    <label>current password<input type="password" id="cpOld" autocomplete="off"></label>
+    <label>new password<input type="password" id="cpNew" autocomplete="off"></label>
+    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="cpGo">Save</button></div>`);
+  setTimeout(()=>$('cpOld')?.focus(), 50);
+}
+
 function openDrawer(){
   if(!isAdmin()){ toast('Admins only.','bad'); return; }
   drawerOpen = true;
@@ -1440,6 +1512,9 @@ function renderOverview(){
     <div class="stat"><b>${onl}</b><span>online now</span></div>
     <div class="stat"><b>${Object.keys(bannedIps).length}</b><span>banned IPs</span></div>
     <div class="stat"><b>${Object.keys(bannedUsers).length}</b><span>banned accounts</span></div>`;
+  $('admPwState').textContent = adminPwHash
+    ? `required to open this panel${adminPwHash.set ? ' · set ${fmtDate(adminPwHash.set)}' : ''}`
+    : 'not set yet — will be requested next time the panel opens';
   const recent = Object.entries(usersMap).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,6);
   $('admRecent').innerHTML = recent.length
     ? recent.map(([u,v])=>`<div class="mini-row"><b>${esc(u)}</b><span>joined ${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}</span></div>`).join('')
@@ -1600,6 +1675,7 @@ async function admUnbanIp(ip){
     const a = b.dataset.act;
     if(a==='clear-srv')      arm(b, ()=>admClearServer(b.dataset.sid));
     else if(a==='del-srv')   arm(b, ()=>admDeleteServer(b.dataset.sid));
+    else if(a==='chg-pw')    chgPwModal();
     else if(a==='ban-user')  arm(b, ()=>admBanUser(b.dataset.u, ($('ucReason')||{}).value ? $('ucReason').value.trim() : ''));
     else if(a==='del-user')  arm(b, ()=>admDeleteUser(b.dataset.u));
     else if(a==='ban-ip')    arm(b, ()=>admBanIp(b.dataset.ip));
@@ -1635,6 +1711,10 @@ onValue(ref(db,'config/admins'), s=>{
   adminMap = s.val()||{};
   renderMeChip();
   if(drawerOpen && !isAdmin()){ closeDrawer(); toast('Admin access revoked.','bad'); }
+});
+onValue(ref(db,'config/adminPw'), s=>{
+  adminPwHash = s.val();   // {h, set, by} — null until first set
+  if(drawerOpen && activeTab==='ovw') renderOverview();
 });
 onValue(ref(db,'config/bannedUsers'), s=>{
   bannedUsers = s.val()||{};

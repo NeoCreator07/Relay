@@ -1,15 +1,689 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relay</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B7CF6' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7.1 8.1a7.4 7.4 0 0 1 9.8 0'/%3E%3Cpath d='M9.7 11.5a3.6 3.6 0 0 1 4.6 0'/%3E%3Ccircle cx='12' cy='15.1' r='1.3' fill='%238B7CF6' stroke='none'/%3E%3Cpath d='M12 16.4v4.4'/%3E%3C/svg%3E">
-<script>document.documentElement.dataset.theme = localStorage.getItem('relay_theme') || 'dark';</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
+<html lang="en-US" class="light"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<link rel="icon" type="image/png" sizes="512x512" href="https://z-cdn.chatglm.cn/z-ai/static/logo.svg">
+		<link rel="shortcut icon" href="https://z-cdn.chatglm.cn/z-ai/static/logo.svg">
+		<link rel="apple-touch-icon" sizes="512x512" href="https://z-cdn.chatglm.cn/z-ai/static/logo.svg">
+		<meta name="apple-mobile-web-app-title" content="Z.ai - Advanced AI Chatbot &amp; Agent powered by GLM-5.3-Flash">
+		
+		<meta name="keywords" content="GLM-4.6, GLM 4.6, GLM-4.6-Air, GLM 4.6 Air, GLM 4.5, GLM4.5, GLM4.6, Deep Research, z ai, z.ai, GLM 4.5 AI, GLM 4.6 AI, GLM AI, Chat Z, zai, Chat AI, GLM, z.ia, Chat Z AI, AI chat, chatbot, z.ai chat, free ai chat, free AI, free ai chat no login, GLM-4.5, GLM-4.5 chat, GLM-4.1V, GLM-4.5V, AI assistant chat, AI PPT, AI presentation, AI presentation maker, AI slides maker, AI slides, slide deck, pitch deck, AI deck generator, free pitch deck generator, AI PPT, AI PPT maker, AI for Google Slides, AI for PowerPoint, AI writer, AI writing assistant, AI code generator, full stack code generation, AI full stack developer, claude code, Roo Code, Cline, Kilo Code, OpenCode, Codex, Cursor, GLM Coding Plan, GLM Coding, AI Coding, code writer ai, magic design, magic design tool, AI inspiration board, visual brainstorming AI, chat with AI, AI对话, AI聊天, 聊天机器人, 免费AI聊天, AI做PPT, AI写作, AI编程, 全栈开发, 灵感画板, AI tool, AI helper, AI for students, AI for marketers, AI for content creation, ChatGPT, chatgpt free, Free ChatGPT, gpt chat, Gemini, Grok, Claude, Poe AI, YouChat, Jasper AI, deepseek, qwen, 豆包, 文心一言, AI搜问答, 写作灵感AI, 代码解释工具, PPT思路生成, 如何用AI做PPT, create pitch deck from brief, AI business plan presentation, marketing report slides, AI academic paper assistant, AI legal contract drafting, write social media calendar, AI email responder,  VS Code AI assistant, AI for Notion, AI for Figma, AI math problem solver from image, AI geoguessr solver, image to code generator, table extractor from image, chart data extractor, document analysis AI, image caption generator, visual Q&amp;A, 看图猜成语, AI拍照解题, 数学题解答, 物理题解答, GeoGuess AI, 图片转表格, 图片读数据, 看图问答, analyze video, summarize video content, generate video transcript, find object in image, what is in this picture, 视频分析, 视频内容摘要, 生成视频字幕, 图片里有什么, 识别图中物体, GLM-4.7, GLM 4.7, GLM4.7, skills, coding plan, GLM-5, GLM-5.0, GLM5, GLM 5, Pony, Pony Alpha, GLM-5.2, GLM 5.2, GLM5.2, long-horizon, long-running, ox alpha, Ox Alpha, Ox alpha, oxalpha, GLM-5.3-Flash, glm-5.3-flash, glm5.3flash, 5.3flash, 5.3 flash">
+
+		<!-- Google Tag Manager -->
+		<script async="" src="index_files/google-analytics_analytics_002_WWt7.js"></script><script>(function (w, d, s, l, i) {
+				w[l] = w[l] || []; w[l].push({
+					'gtm.start':
+						new Date().getTime(), event: 'gtm.js'
+				}); var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-T9CBCLPX');
+		</script>
+		<!-- End Google Tag Manager -->
+
+		<link rel="manifest" href="https://z-cdn.chatglm.cn/z-ai/frontend/static/manifest.json">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+		
+		<meta name="referrer" content="no-referrer">
+		<link rel="search" type="application/opensearchdescription+xml" title="Z.ai - Advanced AI Chatbot &amp; Agent powered by GLM-5.3-Flash" href="https://z-cdn.chatglm.cn/z-ai/frontend/static/opensearch.xml">
+		<script async="" src="index_files/google-analytics_analytics_WWt7.js"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-Z8QTHYBHP3');
+		</script>
+
+		<script>
+			let metrics = {};
+			const observer = new PerformanceObserver((list) => {
+				const entries = list.getEntries();
+
+				entries.forEach((entry) => {
+					// 根据不同的entry类型处理不同的性能指标
+					switch (entry.entryType) {
+						case 'navigation':
+							{
+								const navEntry = entry;
+								metrics = {
+									...metrics,
+									dns: navEntry.domainLookupEnd - navEntry.domainLookupStart,
+									response: navEntry.responseEnd - navEntry.responseStart,
+									dom_parse: navEntry.domInteractive - navEntry.responseEnd,
+									dom_ready: navEntry.domContentLoadedEventEnd - navEntry.fetchStart,
+									resource: navEntry.domComplete - navEntry.domContentLoadedEventEnd,
+									first_interactive: navEntry.domInteractive - navEntry.fetchStart,
+									first_byte: navEntry.responseStart - navEntry.domainLookupStart,
+									loaded: navEntry.loadEventEnd - navEntry.fetchStart
+								};
+								sessionStorage.setItem('performance', JSON.stringify(metrics));
+								// 发送性能指标到阿里云日志服务
+							}
+							break;
+
+						case 'paint':
+							if (entry.name === 'first-paint') {
+								metrics = {
+									...metrics,
+									first_paint: entry.startTime
+								};
+								sessionStorage.setItem('performance', JSON.stringify(metrics));
+							}
+							if (entry.name === 'first-contentful-paint') {
+								metrics = {
+									...metrics,
+									first_contentful_paint: entry.startTime
+								};
+								sessionStorage.setItem('performance', JSON.stringify(metrics));
+							}
+							break;
+					}
+				});
+			});
+
+			// 观察的性能指标类型
+			observer.observe({
+				entryTypes: ['navigation', 'paint']
+			});
+		</script>
+
+		<script>
+			function resizeIframe(obj) {
+				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+			}
+		</script>
+
+		<script>
+			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+			const initTheme = () => {
+				const metaThemeColorTag = document.querySelector('meta[name="theme-color"]');
+				// 取用户浏览器设置的主题
+				// const prefersTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+				const prefersTheme = 'light';
+
+				if (!localStorage?.theme) {
+					localStorage.theme = prefersTheme;
+				}
+
+				if (localStorage.theme === 'system') {
+					document.documentElement.classList.add(prefersTheme);
+					metaThemeColorTag.setAttribute(
+						'content',
+						prefersTheme === 'light' ? '#F4F6F8' : '#141618'
+					);
+				} else if (localStorage.theme === 'light') {
+					document.documentElement.classList.add('light');
+					metaThemeColorTag.setAttribute('content', '#F4F6F8');
+				} else {
+					document.documentElement.classList.add('dark');
+					metaThemeColorTag.setAttribute('content', '#141618');
+				}
+
+				// window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
+				// 	if (localStorage.theme === 'system') {
+				// 		if (e.matches) {
+				// 			document.documentElement.classList.add('dark');
+				// 			document.documentElement.classList.remove('light');
+				// 			metaThemeColorTag.setAttribute('content', '#141618');
+				// 		} else {
+				// 			document.documentElement.classList.add('light');
+				// 			document.documentElement.classList.remove('dark');
+				// 			metaThemeColorTag.setAttribute('content', '#F4F6F8');
+				// 		}
+				// 	}
+				// });
+			};
+			initTheme();
+		</script>
+
+		
+
+		<script>
+			// 炫酷的控制台介绍 - 根据语言显示
+			(function () {
+				// 检测用户语言偏好
+				const userLang = navigator.language || navigator.userLanguage;
+				const isChinese =
+					userLang.startsWith('zh') ||
+					userLang.includes('CN') ||
+					userLang.includes('TW') ||
+					userLang.includes('HK');
+
+				// 共同的 ASCII Logo
+				const logoLines = [
+					'%c███████╗     █████╗ ██╗',
+					'%c╚══███╔╝    ██╔══██╗██║',
+					'%c  ███╔╝     ███████║██║',
+					'%c ███╔╝      ██╔══██║██║',
+					'%c███████╗ ██╗██║  ██║██║',
+					'%c╚══════╝ ╚═╝╚═╝  ╚═╝╚═╝'
+				];
+				const logoColors = [
+					'color: #ff6b6b; font-family: monospace; font-size: 12px;',
+					'color: #4ecdc4; font-family: monospace; font-size: 12px;',
+					'color: #45b7d1; font-family: monospace; font-size: 12px;',
+					'color: #f9ca24; font-family: monospace; font-size: 12px;',
+					'color: #ff9ff3; font-family: monospace; font-size: 12px;',
+					'color: #6c5ce7; font-family: monospace; font-size: 12px;'
+				];
+
+				if (isChinese) {
+					// 中文版本
+					console.log(
+						'%c🚀 欢迎来到 Z.ai 🚀',
+						'color: #00d4ff; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #00d4ff;'
+					);
+					logoLines.forEach((line, index) => console.log(line, logoColors[index]));
+					console.log('');
+					console.log(
+						'%c✨ 基于开源GLM模型的智能AI助手',
+						'color: #a29bfe; font-size: 14px; font-weight: bold;'
+					);
+					console.log('%c🧠 支持文本生成、推理和深度研究', 'color: #fd79a8; font-size: 12px;');
+					console.log('%c🌍 为中英文用户量身定制', 'color: #00b894; font-size: 12px;');
+					console.log('%c💡 免费开源的ChatGPT替代方案', 'color: #fdcb6e; font-size: 12px;');
+					console.log('');
+					console.log('%c---', 'color: #ddd;');
+					console.log(
+						'%c由 ❤️ 和大量 ☕ 驱动',
+						'color: #e84393; font-size: 11px; font-style: italic;'
+					);
+					console.log('');
+					console.log(
+						'%c🚀 加入我们！我们正在招聘优秀人才！',
+						'color: #00b894; font-size: 13px; font-weight: bold;'
+					);
+					console.log(
+						'%c💼 查看职位: https://zhipu-ai.jobs.feishu.cn/s/stmyTm5lxaU',
+						'color: #0984e3; font-size: 12px; text-decoration: underline;'
+					);
+				} else {
+					// 英文版本
+					console.log(
+						'%c🚀 Welcome to Z.ai 🚀',
+						'color: #00d4ff; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #00d4ff;'
+					);
+					logoLines.forEach((line, index) => console.log(line, logoColors[index]));
+					console.log('');
+					console.log(
+						'%c✨ Advanced AI assistant powered by open-source GLM models',
+						'color: #a29bfe; font-size: 14px; font-weight: bold;'
+					);
+					console.log(
+						'%c🧠 Supports text generation, reasoning, and deep research',
+						'color: #fd79a8; font-size: 12px;'
+					);
+					console.log(
+						'%c🌍 Tailored for both English and Chinese users',
+						'color: #00b894; font-size: 12px;'
+					);
+					console.log(
+						'%c💡 Free and open-source ChatGPT alternative',
+						'color: #fdcb6e; font-size: 12px;'
+					);
+					console.log('');
+					console.log('%c---', 'color: #ddd;');
+					console.log(
+						'%cPowered by ❤️ and lots of ☕',
+						'color: #e84393; font-size: 11px; font-style: italic;'
+					);
+					console.log('');
+					console.log(
+						'%c🚀 Join us! We are hiring talented people!',
+						'color: #00b894; font-size: 13px; font-weight: bold;'
+					);
+					console.log(
+						'%c💼 View jobs: https://zhipu-ai.jobs.feishu.cn/s/stmyTm5lxaU',
+						'color: #0984e3; font-size: 12px; text-decoration: underline;'
+					);
+				}
+			})();
+		</script>
+
+		<script type="module" crossorigin="" src="index_files/index-BjHUnlhR_WWt7.js"></script>
+		<link rel="stylesheet" crossorigin="" href="index_files/index-CqXvxGON_WWt7.css">
+	<title>Z.ai - Advanced AI Chatbot &amp; Agent powered by GLM-5.3-Flash</title><meta name="description" content="Amazing content sharing from Z.AI"><meta property="og:type" content="website"><meta property="og:site_name" content="Z.AI"><meta property="og:title" content="Z.AI Share"><meta property="og:description" content="Amazing content sharing from Z.AI"><meta property="og:image" content="https://z-cdn.chatglm.cn/z-ai/static/share-logo.png"><meta property="og:image:alt" content="Z.AI Share"><meta property="og:image:width" content="400"><meta property="og:image:height" content="400"><meta property="og:image:type" content="image/png"><meta property="og:url" content="http://chat.z.ai/space/d19u67t2fux1-art"><meta property="article:author" content="Z.AI"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Z.AI Share"><meta name="twitter:description" content="Amazing content sharing from Z.AI"><meta name="twitter:image" content="https://z-cdn.chatglm.cn/z-ai/static/share-logo.png"><meta name="twitter:image:alt" content="Z.AI Share"><meta name="robots" content="index,follow"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="application-name" content="Z.AI"><meta name="theme-color" content="#1976d2"><meta name="msapplication-TileColor" content="#1976d2"><link rel="canonical" href="http://chat.z.ai/space/d19u67t2fux1-art"><script src="index_files/jweixin-1.6.0_WWt7.js"></script>
+<script>
+(function() {
+  var frontendCallId = Math.random().toString(36).substring(2, 8);
+  console.log('[WeChat-Frontend-' + frontendCallId + '] ===== 开始前端微信JS-SDK初始化 =====');
+  console.log('[WeChat-Frontend-' + frontendCallId + '] 当前页面URL:', window.location.href);
+  console.log('[WeChat-Frontend-' + frontendCallId + '] 当前页面URL (去掉#):', window.location.href.split('#')[0]);
+  console.log('[WeChat-Frontend-' + frontendCallId + '] 签名配置:', {
+    debug: false,
+    appId: 'wxa5796e47c57570b1',
+    timestamp: 1789441750,
+    nonceStr: 'Eqg1KEyZwjQKNlxM',
+    signature: '27762afdf252fbfa1d7cdfdea44979495e2783bb',
+    jsApiList: ["updateAppMessageShareData","updateTimelineShareData","onMenuShareAppMessage","onMenuShareTimeline"]
+  });
+
+  // 微信 JS-SDK 配置
+  wx.config({
+    debug: false, // 根据环境变量设置debug模式
+    appId: 'wxa5796e47c57570b1', // 公众号的唯一标识
+    timestamp: 1789441750, // 生成签名的时间戳
+    nonceStr: 'Eqg1KEyZwjQKNlxM', // 生成签名的随机串
+    signature: '27762afdf252fbfa1d7cdfdea44979495e2783bb', // 签名
+    jsApiList: ["updateAppMessageShareData","updateTimelineShareData","onMenuShareAppMessage","onMenuShareTimeline"] // 需要使用的JS接口列表
+  });
+
+  console.log('[WeChat-Frontend-' + frontendCallId + '] wx.config() 调用完成');
+
+  // 微信 JS-SDK 就绪回调
+  wx.ready(function () {
+    console.log('[WeChat-Frontend-' + frontendCallId + '] WeChat JS-SDK ready - 微信JS-SDK就绪!');
+
+    // 分享给朋友的配置
+    console.log('[WeChat-Frontend-' + frontendCallId + '] 开始配置分享给朋友...');
+    wx.updateAppMessageShareData({
+      title: 'Z.AI Share',
+      desc: 'Amazing content sharing from Z.AI',
+      link: 'http://chat.z.ai/space/d19u67t2fux1-art',
+      imgUrl: 'https://z-cdn.chatglm.cn/z-ai/static/share-logo.png',
+      success: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 分享给朋友成功');
+      },
+      cancel: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 分享给朋友取消');
+      }
+    });
+
+    // 分享到朋友圈的配置
+    console.log('[WeChat-Frontend-' + frontendCallId + '] 开始配置分享到朋友圈...');
+    wx.updateTimelineShareData({
+      title: 'Z.AI Share',
+      link: 'http://chat.z.ai/space/d19u67t2fux1-art',
+      imgUrl: 'https://z-cdn.chatglm.cn/z-ai/static/share-logo.png',
+      success: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 分享到朋友圈成功');
+      },
+      cancel: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 分享到朋友圈取消');
+      }
+    });
+
+    // 兼容旧版本微信客户端
+    console.log('[WeChat-Frontend-' + frontendCallId + '] 开始配置兼容旧版本分享...');
+    wx.onMenuShareAppMessage({
+      title: 'Z.AI Share',
+      desc: 'Amazing content sharing from Z.AI',
+      link: 'http://chat.z.ai/space/d19u67t2fux1-art',
+      imgUrl: 'https://z-cdn.chatglm.cn/z-ai/static/share-logo.png',
+      success: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 兼容版分享给朋友成功');
+      },
+      cancel: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 兼容版分享给朋友取消');
+      }
+    });
+
+    wx.onMenuShareTimeline({
+      title: 'Z.AI Share',
+      link: 'http://chat.z.ai/space/d19u67t2fux1-art',
+      imgUrl: 'https://z-cdn.chatglm.cn/z-ai/static/share-logo.png',
+      success: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 兼容版分享到朋友圈成功');
+      },
+      cancel: function () {
+        console.log('[WeChat-Frontend-' + frontendCallId + '] 兼容版分享到朋友圈取消');
+      }
+    });
+
+    console.log('[WeChat-Frontend-' + frontendCallId + '] 所有分享配置完成');
+  });
+
+  // 微信 JS-SDK 错误回调
+  wx.error(function(res){
+    console.error('[WeChat-Frontend-' + frontendCallId + '] 微信JS-SDK错误:', res);
+    console.error('[WeChat-Frontend-' + frontendCallId + '] 错误详情:', JSON.stringify(res, null, 2));
+    // 可以在这里处理签名验证失败等错误
+  });
+
+  console.log('[WeChat-Frontend-' + frontendCallId + '] ===== 微信JS-SDK初始化完成 =====');
+})();
+</script><link rel="modulepreload" as="script" crossorigin="" href="https://z-cdn.chatglm.cn/z-ai/frontend/prod-fe-1.1.95/assets/_page-CU8co4ea.js"><link rel="stylesheet" crossorigin="" href="index_files/_page-3CViShiz_WWt7.css"></head>
+
+	<body><script src="index_files/browser-sdk_WWt7.js" crossorigin=""></script>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript>
+			<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9CBCLPX" height="0" width="0"
+				style="display:none;visibility:hidden">
+			</iframe>
+		</noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+		<script>
+			const env = location.hostname === 'chat.z.ai' ? 'prod' : 'pre';
+			!(function (c, b, d, a) {
+				c[a] || (c[a] = {});
+				c[a] = {
+					pid: 'j2c03hoppk@9a8be198b65ba4b',
+					endpoint: 'https://j2c03hoppk-default-cn.rum.aliyuncs.com',
+					// 设置环境信息，参考值：'prod' | 'gray' | 'pre' | 'daily' | 'local'
+					env: env,
+					// 设置路由模式， 参考值：'history' | 'hash'
+					spaMode: 'history',
+					collectors: {
+						// 页面性能指标监听开关，默认开启
+						perf: true,
+						// WebVitals指标监听开关，默认开启
+						webVitals: false,
+						// Ajax监听开关，默认开启
+						api: true,
+						// 静态资源开关，默认开启
+						staticResource: true,
+						// JS错误监听开关，默认开启
+						jsError: true,
+						// 控制台错误监听开关，默认开启
+						consoleError: false,
+						// 用户行为监听开关，默认开启
+						action: true
+					},
+					// 链路追踪配置开关，默认关闭
+					tracing: false,
+					parseViewName(url) {
+						const pathname = new URL(url).pathname;
+						if (!pathname) {
+							return '/';
+						}
+						return pathname.replace(/(.*)\/[a-f0-9-]+$/g, '$1');
+					},
+					evaluateApi(options, response) {
+						const traceId = response?.headers?.get?.('X-Trace-Id') || 'unknown';
+
+						return {
+							name: options.url.replace(/\/[a-f0-9-]{36}/g, '/**'),
+							properties: {
+								traceId
+							}
+						};
+					}
+				};
+				with (b)
+					with (body)
+						with (insertBefore(createElement('script'), firstChild))
+							setAttribute('crossorigin', '', (src = d));
+			})(window, document, 'https://sdk.rum.aliyuncs.com/v2/browser-sdk.js', '__rum');
+		</script>
+		<div id="app" style="display: contents"><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><iframe class="w-screen h-screen" frameborder="0" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" title="html" srcdoc="
+		&lt;!DOCTYPE html&gt;
+		&lt;html lang=&quot;en&quot;&gt;
+			&lt;head&gt;
+				&lt;meta charset=&quot;UTF-8&quot;&gt;
+				&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+				&lt;style&gt;
+					body {
+						background-color: white; /* Ensure the iframe has a white background */
+					}
+				&lt;/style&gt;
+				&lt;script&gt;
+					var Z_CDN_WHITELIST = [
+						'cdn.jsdelivr.net',
+						'cdnjs.cloudflare.com',
+						'cdn.tailwindcss.com',
+						'unpkg.com',
+						'fonts.googleapis.com',
+						'd3js.org',
+						'cdn.babylonjs.com',
+						'html2canvas.hertzen.com',
+						'code.jquery.com',
+						'cdn.datatables.net',
+						'kit.fontawesome.com',
+						'code.createjs.com',
+						'cdn.plot.ly',
+						'fonts.gstatic.com',
+						'www.rgraph.net',
+						'api.mapbox.com',
+						'polyfill.io',
+						'cdn.quilljs.com',
+						'picsum.photos',
+						'esm.sh'
+					];
+
+					function z_isUrlInWhitelist(url) {
+						if (!url || typeof url !== 'string') {
+							return false;
+						}
+						try {
+							const urlObj = new URL(url);
+							const hostname = urlObj.hostname;
+							return Z_CDN_WHITELIST.some(domain =&gt; hostname === domain);
+						} catch (e) {
+							return false;
+						}
+					}
+
+						function z_proxyCdnUrl(url) {
+						if (!url || !url.startsWith('http')) {
+							return url;
+						}
+							if (!z_isUrlInWhitelist(url)) {
+							return url;
+						}
+						if (!url.startsWith('https://artifacts-cdn.chatglm.site/')) {
+							return 'https://artifacts-cdn.chatglm.site/' + url;
+						}
+						return url;
+					}
+					
+					// 增强版外部链接拦截 - 适合放在模板字符串中
+					document.addEventListener('click', function (ev) {
+						try {
+							const anchor = ev.target?.closest?.('a[href]') || null;
+							if (!anchor) return;
+
+							let href = anchor.getAttribute('href')?.trim() || '';
+							if (!href) return;
+
+							if (href.startsWith('javascript:')) return;
+
+							// 新需求：href=&quot;#&quot; 的链接完全阻止跳转和任何行为
+							if (href === '#') {
+								ev.preventDefault();
+								return;
+							}
+
+							// 处理其他内部锚点（如 #about、#contact 等）
+							if (href.startsWith('#')) {
+								const rawId = href.slice(1);
+								if (!rawId) return;
+
+								const id = decodeURIComponent(rawId);
+								const target = 
+									document.getElementById(id) ||
+									document.querySelector('a[name=&quot;' + id.replace(/&quot;/g, '\&quot;') + '&quot;]') ||
+									document.querySelector('[name=&quot;' + id.replace(/&quot;/g, '\&quot;') + '&quot;]');
+
+								if (target &amp;&amp; target.scrollIntoView) {
+									ev.preventDefault();
+									try {
+										history.pushState(null, '', href);
+									} catch (e) {}
+									target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+								}
+								return;
+							}
+
+							// 处理外部链接
+							let url;
+							try {
+								url = new URL(href, window.location.href);
+							} catch (e) {
+								return;
+							}
+
+							if (url.protocol !== 'http:' &amp;&amp; url.protocol !== 'https:') return;
+
+							const isExternal = url.hostname !== window.location.hostname;
+
+							if (isExternal || anchor.getAttribute('target') === '_blank') {
+								ev.preventDefault();
+								window.open(url.toString(), '_blank', 'noopener,noreferrer');
+							}
+
+						} catch (e) {
+							// 出错时不阻止默认行为
+						}
+					}, true);
+
+					// 1. 暴力清除函数：从 DOM 层面抹除 onclick 属性
+					var Z_removeInlineOnclick = function () {
+						// 专门锁定 href=&quot;#&quot; 且带有 onclick 的 a 标签
+						const targetedLinks = document.querySelectorAll('a[href=&quot;#&quot;][onclick]');
+						for (let i = 0; i &lt; targetedLinks.length; i++) {
+							targetedLinks[i].removeAttribute('onclick');
+							targetedLinks[i].onclick = null; // 确保 JS 层的赋值也被清理
+						}
+					};
+					// 3. 动态监测：防止页面通过异步加载重新生成带 onclick 的元素
+					var z_observer = new MutationObserver(function () {
+						Z_removeInlineOnclick();
+					});
+
+					z_observer.observe(document.documentElement, {
+						childList: true,
+						subtree: true,
+						attributes: true,
+						attributeFilter: ['onclick']
+					});
+
+					// 4. 初始化执行一次
+					Z_removeInlineOnclick();
+
+					const Z_rawCreateElement = document.createElement;
+
+					document.createElement = function (tagName, ...args) {
+						const el = Z_rawCreateElement.call(this, tagName, ...args);
+
+						if (tagName.toLowerCase() === 'script') {
+							const rawSetAttribute = el.setAttribute;
+							const rawGetAttribute = el.getAttribute;
+							let srcValue = '';
+							
+							el.setAttribute = function (name, value) {
+								if (name === 'src' &amp;&amp; typeof value === 'string') {
+									value = z_proxyCdnUrl(value);
+									srcValue = value;
+								}
+								return rawSetAttribute.call(this, name, value);
+							};
+
+							Object.defineProperty(el, 'src', {
+								get: function() {
+									return srcValue || rawGetAttribute.call(this, 'src') || '';
+								},
+								set: function(value) {
+									if (typeof value === 'string') {
+										srcValue = z_proxyCdnUrl(value);
+										rawSetAttribute.call(this, 'src', srcValue);
+									} else {
+										srcValue = value;
+									}
+								},
+								configurable: true,
+								enumerable: true
+							});
+						}
+
+						if (tagName.toLowerCase() === 'link') {
+							const rawSetAttribute = el.setAttribute;
+							const rawGetAttribute = el.getAttribute;
+							let hrefValue = '';
+							
+							el.setAttribute = function (name, value) {
+								if (name === 'href' &amp;&amp; typeof value === 'string') {
+									value = z_proxyCdnUrl(value);
+									hrefValue = value;
+								}
+								return rawSetAttribute.call(this, name, value);
+							};
+
+							Object.defineProperty(el, 'href', {
+								get: function() {
+									return hrefValue || rawGetAttribute.call(this, 'href') || '';
+								},
+								set: function(value) {
+									if (typeof value === 'string') {
+										hrefValue = z_proxyCdnUrl(value);
+										rawSetAttribute.call(this, 'href', hrefValue);
+									} else {
+										hrefValue = value;
+									}
+								},
+								configurable: true,
+								enumerable: true
+							});
+						}
+
+						return el;
+					};
+
+					const Z_OriginalXMLHttpRequest = window.XMLHttpRequest;
+					window.XMLHttpRequest = function (...args) {
+						const xhr = new Z_OriginalXMLHttpRequest(...args);
+						const rawOpen = xhr.open;
+
+						xhr.open = function (method, url, ...rest) {
+							if (typeof url === 'string') {
+								const methodUpper = (method || '').toUpperCase();
+								if (methodUpper === 'GET' &amp;&amp; z_isUrlInWhitelist(url)) {
+									url = z_proxyCdnUrl(url);
+								}
+							}
+							return rawOpen.call(this, method, url, ...rest);
+						};
+
+						return xhr;
+					};
+
+					window.XMLHttpRequest.prototype = Z_OriginalXMLHttpRequest.prototype;
+					Object.setPrototypeOf(window.XMLHttpRequest, Z_OriginalXMLHttpRequest);
+
+					const z_originalFetch = window.fetch;
+					window.fetch = async function (...args) {
+						if (args.length &gt; 0) {
+							let url = '';
+							let method = 'GET';
+							
+							if (typeof args[0] === 'string') {
+								url = args[0];
+								if (args[1] &amp;&amp; args[1].method) {
+									method = args[1].method.toUpperCase();
+								}
+								if (method === 'GET' &amp;&amp; z_isUrlInWhitelist(url)) {
+									args[0] = z_proxyCdnUrl(url);
+								}
+							} else if (args[0] instanceof Request) {
+								const originalUrl = args[0].url;
+								method = (args[0].method || 'GET').toUpperCase();
+								if (method === 'GET' &amp;&amp; z_isUrlInWhitelist(originalUrl)) {
+									const proxiedUrl = z_proxyCdnUrl(originalUrl);
+									if (proxiedUrl !== originalUrl) {
+										args[0] = new Request(proxiedUrl, args[0]);
+									}
+								}
+							}
+						}
+						return z_originalFetch.apply(this, args);
+					};
+				&lt;/script&gt;
+			&lt;/head&gt;
+			&lt;body&gt;
+				&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;Relay&lt;/title&gt;
+&lt;link rel=&quot;icon&quot; href=&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B7CF6' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7.1 8.1a7.4 7.4 0 0 1 9.8 0'/%3E%3Cpath d='M9.7 11.5a3.6 3.6 0 0 1 4.6 0'/%3E%3Ccircle cx='12' cy='15.1' r='1.3' fill='%238B7CF6' stroke='none'/%3E%3Cpath d='M12 16.4v4.4'/%3E%3C/svg%3E&quot;&gt;
+&lt;script&gt;document.documentElement.dataset.theme = localStorage.getItem('relay_theme') || 'dark';&lt;/script&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://artifacts-cdn.chatglm.site/https://fonts.googleapis.com&quot;&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://artifacts-cdn.chatglm.site/https://fonts.gstatic.com&quot; crossorigin=&quot;&quot;&gt;
+&lt;link href=&quot;https://artifacts-cdn.chatglm.site/https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
 :root{
   --bg:#101014; --panel:#17171D; --panel2:#1E1E26; --panel3:#24242E;
   --line:#2A2A34; --line2:#383844;
@@ -90,7 +764,7 @@ a:hover{text-decoration:underline}
 body.side-open .side{transform:none}
 .logo-row{display:flex;align-items:center;flex:none}
 .logo-row .logo-btn{flex:1}
-.logo-row>.icon-btn{margin-right:8px}
+.logo-row&gt;.icon-btn{margin-right:8px}
 .logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;user-select:none;cursor:pointer;position:relative;min-height:48px}
 .logo-btn .mark svg{width:20px;height:20px;color:var(--muted);display:block;transition:color .15s}
 .logo-btn:hover .mark svg{color:var(--acc)}
@@ -139,6 +813,12 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .side-list .hid{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--faint);letter-spacing:.1em}
 .side-list .lk{display:inline-flex;flex:none;color:var(--muted)}
 .side-list .lk svg{width:11px;height:11px;opacity:1}
+/* invite button on hidden servers you own (appears on hover, badge slides away) */
+.side-list .li-act{display:none;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;color:var(--muted);flex:none}
+.side-list li:hover .li-act{display:inline-flex}
+.side-list .li-act:hover{color:var(--acc)}
+.side-list .li-act svg{width:12px;height:12px;opacity:1}
+.side-list li:hover .hid{display:none}
 .side-list .ip2{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--faint)}
 .rdot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
 .pdot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
@@ -161,7 +841,7 @@ body.side-open .main{margin-left:274px}
 .chat-head .right{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em}
 .chat-head .right b{color:var(--ok);font-weight:500}
 .msgs{flex:1;overflow-y:auto;padding:16px 16px 12px}
-.msg{display:flex;gap:11px;padding:6px 8px;border-radius:10px;margin-bottom:2px}
+.msg{display:flex;gap:11px;padding:6px 8px;border-radius:10px;margin-bottom:2px;position:relative}
 .msg:hover{background:rgba(128,128,128,.06)}
 .msg .ava{width:30px;height:30px;font-size:12px;margin-top:2px}
 .msg .mc{min-width:0}
@@ -173,6 +853,36 @@ body.side-open .main{margin-left:274px}
 /* day dividers (timestamps) */
 .day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
 .day-div::before,.day-div::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ---------- hover toolbar: reactions + reply ---------- */
+.hover-bar{position:absolute;right:10px;top:-15px;display:none;align-items:center;gap:2px;background:var(--panel3);border:1px solid var(--line2);border-radius:10px;padding:3px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:3}
+.msg:hover .hover-bar{display:flex}
+.hover-bar button{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:7px;font-size:13px;color:var(--muted);transition:.12s}
+.hover-bar button:hover{background:var(--panel2);color:var(--text);transform:scale(1.12)}
+.hover-bar .hb-reply svg{width:13px;height:13px}
+/* reaction chips */
+.reactions{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.react{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:2px 8px 2px 7px;font-size:12.5px;cursor:pointer}
+.react b{font-size:10.5px;color:var(--muted);font-family:var(--mono);font-weight:600}
+.react:hover{border-color:var(--muted)}
+.react.mine{border-color:var(--acc);background:rgba(139,124,246,.14)}
+.react.mine b{color:var(--acc)}
+/* reply quote on a message */
+.reply-quote{display:flex;align-items:center;gap:6px;margin:1px 0 3px;padding-left:8px;border-left:2px solid var(--acc);color:var(--muted);font-size:11.5px;cursor:pointer;min-width:0;max-width:100%}
+.reply-quote:hover{color:var(--text)}
+.reply-quote .rq-ic{display:inline-flex;flex:none;color:var(--acc)} .reply-quote .rq-ic svg{width:12px;height:12px}
+.reply-quote b{flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.reply-quote .rq-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.msg.flash{animation:msgFlash 1.6s}
+@keyframes msgFlash{0%,55%{background:rgba(139,124,246,.2)}100%{background:transparent}}
+
+/* ---------- reply bar above composer ---------- */
+.replybar{flex:none;margin:0 14px 8px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:7px 12px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);overflow:hidden}
+.replybar .rb-ic{display:inline-flex;flex:none;color:var(--acc)} .replybar .rb-ic svg{width:13px;height:13px}
+.replybar .rb-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.replybar .rb-x{margin-left:auto;flex:none;display:inline-flex;cursor:pointer;color:var(--muted)}
+.replybar .rb-x svg{width:14px;height:14px}
+.replybar .rb-x:hover{color:var(--bad)}
 
 /* ---------- uploads / embeds ---------- */
 .upbar{flex:none;margin:0 14px 8px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:8px 12px}
@@ -261,11 +971,22 @@ body.side-open .main{margin-left:274px}
 .tagb{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--bad);border:1px solid rgba(240,109,109,.4);border-radius:5px;padding:2px 7px;letter-spacing:.1em}
 .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin:16px 0 8px}
 .u-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}
-.u-meta>div{border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.u-meta&gt;div{border:1px solid var(--line);border-radius:8px;padding:9px 11px}
 .u-meta i{display:block;font-style:normal;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
 .u-meta b{font-family:var(--mono);font-size:12px;font-weight:500}
 .uc-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .uc-acts input{flex:1;min-width:150px;padding:7px 10px;font-size:12px}
+
+/* ---------- members modal (hidden server invites) ---------- */
+.mem-list{margin-top:14px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto}
+.mem-row{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel2)}
+.mem-row .ava{width:24px;height:24px;font-size:11px}
+.mem-row b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.mem-row b svg{width:11px;height:11px;color:var(--acc);margin-left:4px;vertical-align:-1px}
+.mem-st{font-family:var(--mono);font-size:9.5px;color:var(--faint);flex:none}
+.mem-tag{font-family:var(--mono);font-size:8.5px;color:var(--acc);letter-spacing:.12em;flex:none}
+.mem-row .icon-btn{width:22px;height:22px}
+.mem-row .icon-btn svg{width:12px;height:12px}
 
 /* ---------- settings modal ---------- */
 .seg{display:flex;gap:6px}
@@ -324,263 +1045,271 @@ body.side-open .main{margin-left:274px}
   .auth{grid-template-columns:1fr}
   .auth-brand{display:none}
 }
-</style>
-</head>
-<body>
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
 
-<div id="vantaBg"></div>
+&lt;div id=&quot;vantaBg&quot;&gt;&lt;/div&gt;
 
-<!-- ============ AUTH ============ -->
-<section class="auth" id="authView">
-  <div class="auth-brand">
-    <div class="auth-brand-inner">
-      <div class="logo-lg"><span class="mark" data-icon="mark"></span><span class="word">Relay</span></div>
-    </div>
-  </div>
-  <div class="auth-form-wrap">
-    <form class="auth-form" id="authForm" autocomplete="off">
-      <h1 id="authTitle">Sign in</h1>
-      <p class="sub" id="authSub"><span id="authSubText">Welcome</span> <span class="auth-meta">· <b id="loginUsers">—</b> users · <span id="loginVer"></span></span></p>
-      <label>username<input id="fUser" maxlength="16" spellcheck="false" autocomplete="username"></label>
-      <label>password<input id="fPass" type="password" autocomplete="current-password"></label>
-      <div class="err mono" id="authErr"></div>
-      <button class="btn acc" id="authBtn" type="submit">Sign in</button>
-      <p class="auth-switch" id="authSwitchWrap">New here? <a id="authSwitch">Create an account</a></p>
-    </form>
-  </div>
-</section>
+&lt;!-- ============ AUTH ============ --&gt;
+&lt;section class=&quot;auth&quot; id=&quot;authView&quot;&gt;
+  &lt;div class=&quot;auth-brand&quot;&gt;
+    &lt;div class=&quot;auth-brand-inner&quot;&gt;
+      &lt;div class=&quot;logo-lg&quot;&gt;&lt;span class=&quot;mark&quot; data-icon=&quot;mark&quot;&gt;&lt;/span&gt;&lt;span class=&quot;word&quot;&gt;Relay&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;auth-form-wrap&quot;&gt;
+    &lt;form class=&quot;auth-form&quot; id=&quot;authForm&quot; autocomplete=&quot;off&quot;&gt;
+      &lt;h1 id=&quot;authTitle&quot;&gt;Sign in&lt;/h1&gt;
+      &lt;p class=&quot;sub&quot; id=&quot;authSub&quot;&gt;&lt;span id=&quot;authSubText&quot;&gt;Welcome&lt;/span&gt; &lt;span class=&quot;auth-meta&quot;&gt;· &lt;b id=&quot;loginUsers&quot;&gt;—&lt;/b&gt; users · &lt;span id=&quot;loginVer&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+      &lt;label&gt;username&lt;input id=&quot;fUser&quot; maxlength=&quot;16&quot; spellcheck=&quot;false&quot; autocomplete=&quot;username&quot;&gt;&lt;/label&gt;
+      &lt;label&gt;password&lt;input id=&quot;fPass&quot; type=&quot;password&quot; autocomplete=&quot;current-password&quot;&gt;&lt;/label&gt;
+      &lt;div class=&quot;err mono&quot; id=&quot;authErr&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;btn acc&quot; id=&quot;authBtn&quot; type=&quot;submit&quot;&gt;Sign in&lt;/button&gt;
+      &lt;p class=&quot;auth-switch&quot; id=&quot;authSwitchWrap&quot;&gt;New here? &lt;a id=&quot;authSwitch&quot;&gt;Create an account&lt;/a&gt;&lt;/p&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
 
-<!-- ============ APP ============ -->
-<div class="app" id="appView" hidden>
-  <aside class="side" id="sideEl">
-    <div class="logo-row">
-      <button class="logo-btn" id="logoBtn" title="Relay">
-        <span class="mark" data-icon="mark"></span><span class="word">Relay</span>
-        <span class="svc-line mono" id="svcLine"></span>
-      </button>
-      <button class="icon-btn" id="collapseBtn" data-icon="chevLeft" title="Hide sidebar"></button>
-      <button class="icon-btn" id="settingsBtn" data-icon="sliders" title="Settings — theme &amp; background"></button>
-    </div>
-    <div class="ins-div"></div>
-    <div class="side-scroll">
-      <div class="sec">
-        <div class="sec-h">
-          <span class="t">SERVERS</span>
-          <span class="btns">
-            <button class="icon-btn" id="searchServerBtn" data-icon="search" title="Find / join servers"></button>
-            <button class="icon-btn" id="addServerBtn" data-icon="plus" title="New server"></button>
-          </span>
-        </div>
-        <ul class="side-list" id="serverList"></ul>
-      </div>
-      <div class="sec">
-        <div class="sec-h"><span class="t" id="dmLabel">FRIENDS</span><button class="icon-btn" id="addFriendBtn" data-icon="userPlus" title="Add friend"></button></div>
-        <div class="add-row" id="friendAddRow" hidden><input id="friendInput" placeholder="username" maxlength="16" spellcheck="false"><button class="btn" id="friendGo" data-icon="plus"></button></div>
-        <ul class="side-list" id="dmList"></ul>
-      </div>
-      <div class="sec">
-        <div class="sec-h"><span class="t">ONLINE</span></div>
-        <ul class="side-list" id="onlineList"></ul>
-      </div>
-    </div>
-    <div class="side-foot">
-      <div class="me-chip">
-        <div class="ava" id="meAva" title="Click to change your avatar"></div>
-        <div class="who"><b id="meName"></b><span id="meSub">online</span></div>
-        <button class="icon-btn" id="profSetBtn" data-icon="gear" title="Profile settings"></button>
-        <button class="icon-btn" id="logoutBtn" data-icon="out" title="Sign out"></button>
-      </div>
-      <div class="prof-set" id="profSet" hidden>
-        <div class="ps-row">
-          <button class="btn" id="avatarBtn" data-icon="clip">Change avatar</button>
-          <button class="btn" id="avatarDel" hidden>Remove</button>
-        </div>
-        <div class="ps-row">
-          <span class="color-lbl">name color</span>
-          <button class="swatch" data-c="#8B7CF6" style="background:#8B7CF6"></button>
-          <button class="swatch" data-c="#5AD18C" style="background:#5AD18C"></button>
-          <button class="swatch" data-c="#F2A65A" style="background:#F2A65A"></button>
-          <button class="swatch" data-c="#6FB8F2" style="background:#6FB8F2"></button>
-          <button class="swatch" data-c="#F27BA9" style="background:#F27BA9"></button>
-          <button class="swatch" data-c="#8CD790" style="background:#8CD790"></button>
-          <button class="swatch" data-c="#E8C15A" style="background:#E8C15A"></button>
-          <button class="swatch" data-c="#C98BF2" style="background:#C98BF2"></button>
-          <input type="color" id="colorPick" value="#8B7CF6" title="Custom color">
-        </div>
-      </div>
-    </div>
-  </aside>
+&lt;!-- ============ APP ============ --&gt;
+&lt;div class=&quot;app&quot; id=&quot;appView&quot; hidden=&quot;&quot;&gt;
+  &lt;aside class=&quot;side&quot; id=&quot;sideEl&quot;&gt;
+    &lt;div class=&quot;logo-row&quot;&gt;
+      &lt;button class=&quot;logo-btn&quot; id=&quot;logoBtn&quot; title=&quot;Relay&quot;&gt;
+        &lt;span class=&quot;mark&quot; data-icon=&quot;mark&quot;&gt;&lt;/span&gt;&lt;span class=&quot;word&quot;&gt;Relay&lt;/span&gt;
+        &lt;span class=&quot;svc-line mono&quot; id=&quot;svcLine&quot;&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button class=&quot;icon-btn&quot; id=&quot;collapseBtn&quot; data-icon=&quot;chevLeft&quot; title=&quot;Hide sidebar&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;icon-btn&quot; id=&quot;settingsBtn&quot; data-icon=&quot;sliders&quot; title=&quot;Settings — theme &amp;amp; background&quot;&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;ins-div&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;side-scroll&quot;&gt;
+      &lt;div class=&quot;sec&quot;&gt;
+        &lt;div class=&quot;sec-h&quot;&gt;
+          &lt;span class=&quot;t&quot;&gt;SERVERS&lt;/span&gt;
+          &lt;span class=&quot;btns&quot;&gt;
+            &lt;button class=&quot;icon-btn&quot; id=&quot;searchServerBtn&quot; data-icon=&quot;search&quot; title=&quot;Find / join servers&quot;&gt;&lt;/button&gt;
+            &lt;button class=&quot;icon-btn&quot; id=&quot;addServerBtn&quot; data-icon=&quot;plus&quot; title=&quot;New server&quot;&gt;&lt;/button&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;ul class=&quot;side-list&quot; id=&quot;serverList&quot;&gt;&lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;sec&quot;&gt;
+        &lt;div class=&quot;sec-h&quot;&gt;&lt;span class=&quot;t&quot; id=&quot;dmLabel&quot;&gt;FRIENDS&lt;/span&gt;&lt;button class=&quot;icon-btn&quot; id=&quot;addFriendBtn&quot; data-icon=&quot;userPlus&quot; title=&quot;Add friend&quot;&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;div class=&quot;add-row&quot; id=&quot;friendAddRow&quot; hidden=&quot;&quot;&gt;&lt;input id=&quot;friendInput&quot; placeholder=&quot;username&quot; maxlength=&quot;16&quot; spellcheck=&quot;false&quot;&gt;&lt;button class=&quot;btn&quot; id=&quot;friendGo&quot; data-icon=&quot;plus&quot;&gt;&lt;/button&gt;&lt;/div&gt;
+        &lt;ul class=&quot;side-list&quot; id=&quot;dmList&quot;&gt;&lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;sec&quot;&gt;
+        &lt;div class=&quot;sec-h&quot;&gt;&lt;span class=&quot;t&quot;&gt;ONLINE&lt;/span&gt;&lt;/div&gt;
+        &lt;ul class=&quot;side-list&quot; id=&quot;onlineList&quot;&gt;&lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;side-foot&quot;&gt;
+      &lt;div class=&quot;me-chip&quot;&gt;
+        &lt;div class=&quot;ava&quot; id=&quot;meAva&quot; title=&quot;Click to change your avatar&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;who&quot;&gt;&lt;b id=&quot;meName&quot;&gt;&lt;/b&gt;&lt;span id=&quot;meSub&quot;&gt;online&lt;/span&gt;&lt;/div&gt;
+        &lt;button class=&quot;icon-btn&quot; id=&quot;profSetBtn&quot; data-icon=&quot;gear&quot; title=&quot;Profile settings&quot;&gt;&lt;/button&gt;
+        &lt;button class=&quot;icon-btn&quot; id=&quot;logoutBtn&quot; data-icon=&quot;out&quot; title=&quot;Sign out&quot;&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;prof-set&quot; id=&quot;profSet&quot; hidden=&quot;&quot;&gt;
+        &lt;div class=&quot;ps-row&quot;&gt;
+          &lt;button class=&quot;btn&quot; id=&quot;avatarBtn&quot; data-icon=&quot;clip&quot;&gt;Change avatar&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; id=&quot;avatarDel&quot; hidden=&quot;&quot;&gt;Remove&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;ps-row&quot;&gt;
+          &lt;span class=&quot;color-lbl&quot;&gt;name color&lt;/span&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#8B7CF6&quot; style=&quot;background:#8B7CF6&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#5AD18C&quot; style=&quot;background:#5AD18C&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#F2A65A&quot; style=&quot;background:#F2A65A&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#6FB8F2&quot; style=&quot;background:#6FB8F2&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#F27BA9&quot; style=&quot;background:#F27BA9&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#8CD790&quot; style=&quot;background:#8CD790&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#E8C15A&quot; style=&quot;background:#E8C15A&quot;&gt;&lt;/button&gt;
+          &lt;button class=&quot;swatch&quot; data-c=&quot;#C98BF2&quot; style=&quot;background:#C98BF2&quot;&gt;&lt;/button&gt;
+          &lt;input type=&quot;color&quot; id=&quot;colorPick&quot; value=&quot;#8B7CF6&quot; title=&quot;Custom color&quot;&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/aside&gt;
 
-  <main class="main">
-    <header class="chat-head">
-      <button class="icon-btn" id="sideToggle" data-icon="menu" title="Toggle sidebar"></button>
-      <div>
-        <h2 id="roomTitle">—</h2>
-        <p class="meta" id="roomMeta">no channel selected</p>
-      </div>
-      <div class="right" id="onlinePill"></div>
-    </header>
-    <div class="msgs" id="msgs"></div>
-    <div class="upbar" id="upbar" hidden>
-      <div class="up-info"><span id="upName"></span><button class="up-x" id="upCancel" data-icon="x" title="Cancel upload"></button></div>
-      <div class="up-track"><div class="up-fill" id="upFill"></div></div>
-    </div>
-    <div class="composer">
-      <button class="cp-btn" id="attachBtn" data-icon="clip" title="Send a file — 1 GB max"></button>
-      <button class="cp-btn cp-gif" id="gifBtn" title="Send a GIF">GIF</button>
-      <textarea id="msgInput" rows="1" placeholder="Open a server first…  (Enter to send, Shift+Enter for a new line)" maxlength="1500" spellcheck="false"></textarea>
-    </div>
-  </main>
-</div>
+  &lt;main class=&quot;main&quot;&gt;
+    &lt;header class=&quot;chat-head&quot;&gt;
+      &lt;button class=&quot;icon-btn&quot; id=&quot;sideToggle&quot; data-icon=&quot;menu&quot; title=&quot;Toggle sidebar&quot;&gt;&lt;/button&gt;
+      &lt;div&gt;
+        &lt;h2 id=&quot;roomTitle&quot;&gt;—&lt;/h2&gt;
+        &lt;p class=&quot;meta&quot; id=&quot;roomMeta&quot;&gt;no channel selected&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;right&quot; id=&quot;onlinePill&quot;&gt;&lt;/div&gt;
+    &lt;/header&gt;
+    &lt;div class=&quot;msgs&quot; id=&quot;msgs&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;upbar&quot; id=&quot;upbar&quot; hidden=&quot;&quot;&gt;
+      &lt;div class=&quot;up-info&quot;&gt;&lt;span id=&quot;upName&quot;&gt;&lt;/span&gt;&lt;button class=&quot;up-x&quot; id=&quot;upCancel&quot; data-icon=&quot;x&quot; title=&quot;Cancel upload&quot;&gt;&lt;/button&gt;&lt;/div&gt;
+      &lt;div class=&quot;up-track&quot;&gt;&lt;div class=&quot;up-fill&quot; id=&quot;upFill&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;replybar&quot; id=&quot;replyBar&quot; hidden=&quot;&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;composer&quot;&gt;
+      &lt;button class=&quot;cp-btn&quot; id=&quot;attachBtn&quot; data-icon=&quot;clip&quot; title=&quot;Send a file — 1 GB max&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;cp-btn cp-gif&quot; id=&quot;gifBtn&quot; title=&quot;Send a GIF&quot;&gt;GIF&lt;/button&gt;
+      &lt;textarea id=&quot;msgInput&quot; rows=&quot;1&quot; placeholder=&quot;Open a server first…  (Enter to send, Shift+Enter for a new line)&quot; maxlength=&quot;1500&quot; spellcheck=&quot;false&quot;&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+&lt;/div&gt;
 
-<!-- ============ ADMIN PANEL (triple-click the logo) ============ -->
-<div class="drawer-wrap" id="drawerWrap" hidden>
-  <div class="drawer-ovl" id="drawerOvl"></div>
-  <aside class="drawer" id="drawer">
-    <div class="drawer-head">
-      <div class="drawer-title">
-        <span data-icon="shield"></span> ADMIN PANEL
-        <span class="who mono" id="admWho"></span>
-        <button class="icon-btn" id="drawerClose" data-icon="x"></button>
-      </div>
-      <nav class="drawer-tabs">
-        <button data-tab="ovw" class="active">Overview</button>
-        <button data-tab="srv">Servers</button>
-        <button data-tab="usr">Users</button>
-        <button data-tab="net">Networks</button>
-      </nav>
-    </div>
-    <div class="drawer-body" id="drawerBody">
-      <section class="pane" id="pane-ovw">
-        <div class="stat-grid" id="admStats"></div>
-        <h4>RECENT SIGNUPS</h4>
-        <div id="admRecent"></div>
-        <h4>ADMIN PASSWORD</h4>
-        <div class="adm-row">
-          <div class="info"><b>Password gate</b>
-            <div class="sub" id="admPwState">…</div></div>
-          <div class="acts"><button class="btn" data-act="chg-pw">CHANGE</button></div>
-        </div>
-      </section>
-      <section class="pane" id="pane-srv" hidden>
-        <h4>ALL SERVERS — DELETE / CLEAR</h4>
-        <div id="admSrvList"></div>
-      </section>
-      <section class="pane" id="pane-usr" hidden>
-        <h4>USER LOOKUP</h4>
-        <div class="lookup-row">
-          <input id="lookupInput" placeholder="username" spellcheck="false">
-          <button class="btn" id="lookupBtn" data-icon="search">LOOK UP</button>
-        </div>
-        <div id="userCard" style="margin-top:14px"><div class="empty">Enter a username to pull up their record.</div></div>
-      </section>
-      <section class="pane" id="pane-net" hidden>
-        <h4>BAN AN IP</h4>
-        <div class="ban-form">
-          <input class="ipw" id="banIpInput" placeholder="203.0.113.7" spellcheck="false">
-          <input id="banIpReason" placeholder="reason (optional)">
-          <button class="btn danger" id="banIpGo">BAN IP</button>
-        </div>
-        <h4>BANNED IPs</h4>
-        <div id="bannedIpList"></div>
-        <h4>BANNED ACCOUNTS</h4>
-        <div id="bannedAccList"></div>
-        <h4>USERS — TRACKED IPs (MAX 5 PER ACCOUNT)</h4>
-        <div id="ipUsers"></div>
-      </section>
-    </div>
-  </aside>
-</div>
+&lt;!-- ============ ADMIN PANEL (triple-click the logo) ============ --&gt;
+&lt;div class=&quot;drawer-wrap&quot; id=&quot;drawerWrap&quot; hidden=&quot;&quot;&gt;
+  &lt;div class=&quot;drawer-ovl&quot; id=&quot;drawerOvl&quot;&gt;&lt;/div&gt;
+  &lt;aside class=&quot;drawer&quot; id=&quot;drawer&quot;&gt;
+    &lt;div class=&quot;drawer-head&quot;&gt;
+      &lt;div class=&quot;drawer-title&quot;&gt;
+        &lt;span data-icon=&quot;shield&quot;&gt;&lt;/span&gt; ADMIN PANEL
+        &lt;span class=&quot;who mono&quot; id=&quot;admWho&quot;&gt;&lt;/span&gt;
+        &lt;button class=&quot;icon-btn&quot; id=&quot;drawerClose&quot; data-icon=&quot;x&quot;&gt;&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;nav class=&quot;drawer-tabs&quot;&gt;
+        &lt;button data-tab=&quot;ovw&quot; class=&quot;active&quot;&gt;Overview&lt;/button&gt;
+        &lt;button data-tab=&quot;srv&quot;&gt;Servers&lt;/button&gt;
+        &lt;button data-tab=&quot;usr&quot;&gt;Users&lt;/button&gt;
+        &lt;button data-tab=&quot;net&quot;&gt;Networks&lt;/button&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;drawer-body&quot; id=&quot;drawerBody&quot;&gt;
+      &lt;section class=&quot;pane&quot; id=&quot;pane-ovw&quot;&gt;
+        &lt;div class=&quot;stat-grid&quot; id=&quot;admStats&quot;&gt;&lt;/div&gt;
+        &lt;h4&gt;RECENT SIGNUPS&lt;/h4&gt;
+        &lt;div id=&quot;admRecent&quot;&gt;&lt;/div&gt;
+        &lt;h4&gt;ADMIN PASSWORD&lt;/h4&gt;
+        &lt;div class=&quot;adm-row&quot;&gt;
+          &lt;div class=&quot;info&quot;&gt;&lt;b&gt;Password gate&lt;/b&gt;
+            &lt;div class=&quot;sub&quot; id=&quot;admPwState&quot;&gt;…&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;acts&quot;&gt;&lt;button class=&quot;btn&quot; data-act=&quot;chg-pw&quot;&gt;CHANGE&lt;/button&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+      &lt;section class=&quot;pane&quot; id=&quot;pane-srv&quot; hidden=&quot;&quot;&gt;
+        &lt;h4&gt;ALL SERVERS — DELETE / CLEAR&lt;/h4&gt;
+        &lt;div id=&quot;admSrvList&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+      &lt;section class=&quot;pane&quot; id=&quot;pane-usr&quot; hidden=&quot;&quot;&gt;
+        &lt;h4&gt;USER LOOKUP&lt;/h4&gt;
+        &lt;div class=&quot;lookup-row&quot;&gt;
+          &lt;input id=&quot;lookupInput&quot; placeholder=&quot;username&quot; spellcheck=&quot;false&quot;&gt;
+          &lt;button class=&quot;btn&quot; id=&quot;lookupBtn&quot; data-icon=&quot;search&quot;&gt;LOOK UP&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;userCard&quot; style=&quot;margin-top:14px&quot;&gt;&lt;div class=&quot;empty&quot;&gt;Enter a username to pull up their record.&lt;/div&gt;&lt;/div&gt;
+      &lt;/section&gt;
+      &lt;section class=&quot;pane&quot; id=&quot;pane-net&quot; hidden=&quot;&quot;&gt;
+        &lt;h4&gt;BAN AN IP&lt;/h4&gt;
+        &lt;div class=&quot;ban-form&quot;&gt;
+          &lt;input class=&quot;ipw&quot; id=&quot;banIpInput&quot; placeholder=&quot;203.0.113.7&quot; spellcheck=&quot;false&quot;&gt;
+          &lt;input id=&quot;banIpReason&quot; placeholder=&quot;reason (optional)&quot;&gt;
+          &lt;button class=&quot;btn danger&quot; id=&quot;banIpGo&quot;&gt;BAN IP&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;h4&gt;BANNED IPs&lt;/h4&gt;
+        &lt;div id=&quot;bannedIpList&quot;&gt;&lt;/div&gt;
+        &lt;h4&gt;BANNED ACCOUNTS&lt;/h4&gt;
+        &lt;div id=&quot;bannedAccList&quot;&gt;&lt;/div&gt;
+        &lt;h4&gt;USERS — TRACKED IPs (MAX 5 PER ACCOUNT)&lt;/h4&gt;
+        &lt;div id=&quot;ipUsers&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;
 
-<!-- ============ MODALS ============ -->
-<div class="modal-wrap" id="modalWrap" hidden><div class="modal" id="modalBox"></div></div>
-<div class="modal-wrap" id="gifWrap" hidden>
-  <div class="modal gif">
-    <div class="gif-head">
-      <span class="lbl">GIFS</span>
-      <input id="gifSearch" placeholder="Search GIPHY…" spellcheck="false">
-      <button class="icon-btn" id="gifClose" data-icon="x"></button>
-    </div>
-    <div class="gif-grid" id="gifGrid"></div>
-    <div class="gif-foot">POWERED BY <a href="https://giphy.com" target="_blank" rel="noopener">GIPHY</a></div>
-  </div>
-</div>
+&lt;!-- ============ MODALS ============ --&gt;
+&lt;div class=&quot;modal-wrap&quot; id=&quot;modalWrap&quot; hidden=&quot;&quot;&gt;&lt;div class=&quot;modal&quot; id=&quot;modalBox&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;modal-wrap&quot; id=&quot;gifWrap&quot; hidden=&quot;&quot;&gt;
+  &lt;div class=&quot;modal gif&quot;&gt;
+    &lt;div class=&quot;gif-head&quot;&gt;
+      &lt;span class=&quot;lbl&quot;&gt;GIFS&lt;/span&gt;
+      &lt;input id=&quot;gifSearch&quot; placeholder=&quot;Search GIPHY…&quot; spellcheck=&quot;false&quot;&gt;
+      &lt;button class=&quot;icon-btn&quot; id=&quot;gifClose&quot; data-icon=&quot;x&quot;&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;gif-grid&quot; id=&quot;gifGrid&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;gif-foot&quot;&gt;POWERED BY &lt;a href=&quot;https://giphy.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GIPHY&lt;/a&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 
-<div class="kick" id="kick" hidden>
-  <div class="box">
-    <span class="kick-ic" data-icon="ban"></span>
-    <h2 id="kickTitle">Access revoked</h2>
-    <p id="kickDetail"></p>
-    <button class="btn" id="kickReload">Reload</button>
-  </div>
-</div>
+&lt;div class=&quot;kick&quot; id=&quot;kick&quot; hidden=&quot;&quot;&gt;
+  &lt;div class=&quot;box&quot;&gt;
+    &lt;span class=&quot;kick-ic&quot; data-icon=&quot;ban&quot;&gt;&lt;/span&gt;
+    &lt;h2 id=&quot;kickTitle&quot;&gt;Access revoked&lt;/h2&gt;
+    &lt;p id=&quot;kickDetail&quot;&gt;&lt;/p&gt;
+    &lt;button class=&quot;btn&quot; id=&quot;kickReload&quot;&gt;Reload&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 
-<div id="toasts"></div>
-<input type="file" id="fileInput" hidden>
-<input type="file" id="avatarFile" accept="image/*" hidden>
+&lt;div id=&quot;toasts&quot;&gt;&lt;/div&gt;
+&lt;input type=&quot;file&quot; id=&quot;fileInput&quot; hidden=&quot;&quot;&gt;
+&lt;input type=&quot;file&quot; id=&quot;avatarFile&quot; accept=&quot;image/*&quot; hidden=&quot;&quot;&gt;
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, get, update, remove, push, onValue, onChildAdded, onChildRemoved, onDisconnect, query, limitToLast, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getStorage, ref as sref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+&lt;script type=&quot;module&quot;&gt;
+import { initializeApp } from &quot;https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js&quot;;
+import { getDatabase, ref, set, get, update, remove, push, onValue, onChildAdded, onChildChanged, onChildRemoved, onDisconnect, query, limitToLast, runTransaction } from &quot;https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js&quot;;
+import { getStorage, ref as sref, uploadBytesResumable, getDownloadURL } from &quot;https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js&quot;;
+import { getAnalytics, isSupported } from &quot;https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js&quot;;
 
 /* ================= YOUR KEYS ================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyCzN-u60wcQBPLXEGme6S2sLMV1vdhx_TY",
-  authDomain: "relay-87573.firebaseapp.com",
-  databaseURL: "https://relay-87573-default-rtdb.firebaseio.com",
-  projectId: "relay-87573",
-  storageBucket: "relay-87573.firebasestorage.app",
-  messagingSenderId: "43598831902",
-  appId: "1:43598831902:web:1c25ca635fb470bbfb290f",
-  measurementId: "G-1VX8K36M9J"
+  apiKey: &quot;AIzaSyCzN-u60wcQBPLXEGme6S2sLMV1vdhx_TY&quot;,
+  authDomain: &quot;relay-87573.firebaseapp.com&quot;,
+  databaseURL: &quot;https://relay-87573-default-rtdb.firebaseio.com&quot;,
+  projectId: &quot;relay-87573&quot;,
+  storageBucket: &quot;relay-87573.firebasestorage.app&quot;,
+  messagingSenderId: &quot;43598831902&quot;,
+  appId: &quot;1:43598831902:web:1c25ca635fb470bbfb290f&quot;,
+  measurementId: &quot;G-1VX8K36M9J&quot;
 };
-const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
+const GIPHY_KEY = &quot;dqYfys2LirMQAXDx7RJfuegvJfNbUl47&quot;;
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
 const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
-const VERSION = '131';
+const VERSION = '133';
+
+/* spam protection tuning */
+const MSG_COOLDOWN = 1200;                 // min ms between your messages
+const RATE_MAX = 8, RATE_WINDOW = 10000;   // max messages per rolling 10 s window
+const DUP_WINDOW = 30000;                  // identical message blocked within 30 s
+const REACTIONS = ['👍','❤️','😂','😮','😢','🔥'];
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const storage = getStorage(app);
-try{ isSupported().then(ok=>{ if(ok) getAnalytics(app); }).catch(()=>{}); }catch(e){}
+try{ isSupported().then(ok=&gt;{ if(ok) getAnalytics(app); }).catch(()=&gt;{}); }catch(e){}
 
 /* ================= HELPERS ================= */
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const $ = id =&gt; document.getElementById(id);
+const esc = s =&gt; String(s ?? '').replace(/[&amp;&lt;&gt;&quot;']/g, c=&gt;({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','&quot;':'&amp;quot;',&quot;'&quot;:'&amp;#39;'}[c]));
+const sleep = ms =&gt; new Promise(r=&gt;setTimeout(r,ms));
 // RTDB keys cannot contain . $ # [ ] / — IPs are keyed sanitized, real IP lives in the value
-const ipKey = ip => String(ip).replace(/[.$#\[\]\/]/g,'_');
-const reasonOf = v => (typeof v === 'string' ? v : (v && (v.reason || v.ip))) || 'no reason given';
+const ipKey = ip =&gt; String(ip).replace(/[.$#\[\]\/]/g,'_');
+const reasonOf = v =&gt; (typeof v === 'string' ? v : (v &amp;&amp; (v.reason || v.ip))) || 'no reason given';
 
-const SVG = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+const SVG = inner =&gt; `&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;${inner}&lt;/svg&gt;`;
 const I = {
-  mark: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.1 8.1a7.4 7.4 0 0 1 9.8 0"/><path d="M9.7 11.5a3.6 3.6 0 0 1 4.6 0"/><circle cx="12" cy="15.1" r="1.3" fill="currentColor" stroke="none"/><path d="M12 16.4v4.4"/></svg>`,
-  plus: SVG('<path d="M12 5v14M5 12h14"/>'),
-  x: SVG('<path d="M6 6l12 12M18 6L6 18"/>'),
-  lock: SVG('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
-  shield: SVG('<path d="M12 3l7 3v5.5c0 4.7-3.4 7.8-7 9.5-3.6-1.7-7-4.8-7-9.5V6l7-3z"/>'),
-  search: SVG('<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.4-4.4"/>'),
-  check: SVG('<path d="M5 12.5l4.5 4.5L19 7"/>'),
-  userPlus: SVG('<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.7-3.6 3.4-5.5 6.5-5.5s5.8 1.9 6.5 5.5"/><path d="M19 8v6M16 11h6"/>'),
-  out: SVG('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>'),
-  menu: SVG('<path d="M4 6h16M4 12h16M4 18h16"/>'),
-  ban: SVG('<circle cx="12" cy="12" r="8.5"/><path d="M6.2 6.2l11.6 11.6"/>'),
-  sliders: SVG('<path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/>'),
-  gear: SVG('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>'),
-  clip: SVG('<path d="M21.4 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>'),
-  doc: SVG('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>'),
-  dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
-  chevLeft: SVG('<path d="M15 18l-6-6 6-6"/>'),
+  mark: `&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;&gt;&lt;path d=&quot;M7.1 8.1a7.4 7.4 0 0 1 9.8 0&quot;/&gt;&lt;path d=&quot;M9.7 11.5a3.6 3.6 0 0 1 4.6 0&quot;/&gt;&lt;circle cx=&quot;12&quot; cy=&quot;15.1&quot; r=&quot;1.3&quot; fill=&quot;currentColor&quot; stroke=&quot;none&quot;/&gt;&lt;path d=&quot;M12 16.4v4.4&quot;/&gt;&lt;/svg&gt;`,
+  plus: SVG('&lt;path d=&quot;M12 5v14M5 12h14&quot;/&gt;'),
+  x: SVG('&lt;path d=&quot;M6 6l12 12M18 6L6 18&quot;/&gt;'),
+  lock: SVG('&lt;rect x=&quot;5&quot; y=&quot;11&quot; width=&quot;14&quot; height=&quot;9&quot; rx=&quot;2&quot;/&gt;&lt;path d=&quot;M8 11V7a4 4 0 0 1 8 0v4&quot;/&gt;'),
+  shield: SVG('&lt;path d=&quot;M12 3l7 3v5.5c0 4.7-3.4 7.8-7 9.5-3.6-1.7-7-4.8-7-9.5V6l7-3z&quot;/&gt;'),
+  search: SVG('&lt;circle cx=&quot;11&quot; cy=&quot;11&quot; r=&quot;6.5&quot;/&gt;&lt;path d=&quot;M20 20l-4.4-4.4&quot;/&gt;'),
+  check: SVG('&lt;path d=&quot;M5 12.5l4.5 4.5L19 7&quot;/&gt;'),
+  userPlus: SVG('&lt;circle cx=&quot;10&quot; cy=&quot;8&quot; r=&quot;3.5&quot;/&gt;&lt;path d=&quot;M3.5 20c.7-3.6 3.4-5.5 6.5-5.5s5.8 1.9 6.5 5.5&quot;/&gt;&lt;path d=&quot;M19 8v6M16 11h6&quot;/&gt;'),
+  out: SVG('&lt;path d=&quot;M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4&quot;/&gt;&lt;path d=&quot;M16 17l5-5-5-5M21 12H9&quot;/&gt;'),
+  menu: SVG('&lt;path d=&quot;M4 6h16M4 12h16M4 18h16&quot;/&gt;'),
+  ban: SVG('&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;8.5&quot;/&gt;&lt;path d=&quot;M6.2 6.2l11.6 11.6&quot;/&gt;'),
+  sliders: SVG('&lt;path d=&quot;M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4&quot;/&gt;'),
+  gear: SVG('&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;3&quot;/&gt;&lt;path d=&quot;M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z&quot;/&gt;'),
+  clip: SVG('&lt;path d=&quot;M21.4 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48&quot;/&gt;'),
+  doc: SVG('&lt;path d=&quot;M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z&quot;/&gt;&lt;path d=&quot;M14 3v5h5&quot;/&gt;'),
+  dl: SVG('&lt;path d=&quot;M12 3v12M7 10l5 5 5-5&quot;/&gt;&lt;path d=&quot;M5 21h14&quot;/&gt;'),
+  chevLeft: SVG('&lt;path d=&quot;M15 18l-6-6 6-6&quot;/&gt;'),
+  reply: SVG('&lt;path d=&quot;M9 17l-6-5 6-5&quot;/&gt;&lt;path d=&quot;M3 12h11a5 5 0 0 1 5 5v4&quot;/&gt;'),
 };
-const icon = n => I[n] || '';
+const icon = n =&gt; I[n] || '';
 
 const AVC = ['#8B7CF6','#5AD18C','#F2A65A','#6FB8F2','#F27BA9','#8CD790','#E8C15A','#C98BF2'];
-const uColor = u => AVC[[...String(u)].reduce((a,c)=>a+c.charCodeAt(0),0) % AVC.length];
-const nameColor = u => (usersMap[u] && usersMap[u].color) || uColor(u);
-const avatarOf = u => (usersMap[u] && usersMap[u].avatar) || null;
+const uColor = u =&gt; AVC[[...String(u)].reduce((a,c)=&gt;a+c.charCodeAt(0),0) % AVC.length];
+const nameColor = u =&gt; (usersMap[u] &amp;&amp; usersMap[u].color) || uColor(u);
+const avatarOf = u =&gt; (usersMap[u] &amp;&amp; usersMap[u].avatar) || null;
 
 function fmtDate(ts){
   if(!ts) return '—';
@@ -602,43 +1331,99 @@ function dayLabel(ts){
   return d.toLocaleDateString(undefined, {weekday:'long', month:'long', day:'numeric', ...(sameYear ? {} : {year:'numeric'})});
 }
 function fmtSize(n){
-  if(!n && n!==0) return '';
-  if(n < 1024) return n+' B';
-  if(n < 1048576) return (n/1024).toFixed(1)+' KB';
-  if(n < 1073741824) return (n/1048576).toFixed(1)+' MB';
+  if(!n &amp;&amp; n!==0) return '';
+  if(n &lt; 1024) return n+' B';
+  if(n &lt; 1048576) return (n/1024).toFixed(1)+' KB';
+  if(n &lt; 1073741824) return (n/1048576).toFixed(1)+' MB';
   return (n/1073741824).toFixed(2)+' GB';
 }
 async function sha256hex(s){
   try{
     const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-    return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+    return [...new Uint8Array(b)].map(x=&gt;x.toString(16).padStart(2,'0')).join('');
   }catch{
-    let h=0x811c9dc5; for(let i=0;i<s.length;i++) h=((h^s.charCodeAt(i))*16777619)>>>0;
+    let h=0x811c9dc5; for(let i=0;i&lt;s.length;i++) h=((h^s.charCodeAt(i))*16777619)&gt;&gt;&gt;0;
     return h.toString(16).padStart(8,'0');
   }
 }
-const randHex = n => [...crypto.getRandomValues(new Uint8Array(Math.ceil(n/2)))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,n);
+const randHex = n =&gt; [...crypto.getRandomValues(new Uint8Array(Math.ceil(n/2)))].map(x=&gt;x.toString(16).padStart(2,'0')).join('').slice(0,n);
 async function getV(path){ try{ const s = await get(ref(db,path)); return s.val(); }catch{ return null; } }
-function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
+function loadScript(src){ return new Promise((res,rej)=&gt;{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 
 function toast(msg, kind='ok'){
   const t = document.createElement('div');
   t.className = 'toast '+kind; t.textContent = msg;
   $('toasts').appendChild(t);
-  const kill = ()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),260); };
+  const kill = ()=&gt;{ t.classList.add('out'); setTimeout(()=&gt;t.remove(),260); };
   t.onclick = kill; setTimeout(kill, 4200);
 }
 
+/* ================= PROFANITY FILTER (leetspeak-aware) ================= */
+// leet → letters, applied before matching, so &quot;sh1t&quot; / &quot;f@ck&quot; / &quot;b0llocks&quot; all get caught
+const LEET = {'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','8':'b','@':'a','$':'s','!':'i','+':'t','€':'e','£':'l'};
+const BAD_RAW = [
+  'fuck','fucks','fucked','fucker','fuckers','fucking','motherfucker','motherfucking','mf',
+  'shit','shits','shitty','bullshit','dipshit','shithead','shitstorm',
+  'bitch','bitches','bitchy','bitchass',
+  'ass','arse','asshole','arsehole','asshat','dumbass','jackass','badass','smartass','fatass',
+  'bastard','bastards',
+  'cunt','cunts',
+  'dick','dicks','dickhead',
+  'piss','pissed','pissing',
+  'prick','pricks',
+  'whore','whores','slut','sluts','slutty','skank','skanks',
+  'douche','douches','douchebag',
+  'twat','twats','wanker','wankers','bollocks',
+  'cock','cocks','cocksucker','pussy',
+  'fag','fags','faggot','faggots',
+  'nigger','niggers','nigga','niggas',
+  'retard','retards','retarded',
+  'damn','damned','dammit','goddamn','goddammit','goddamnit',
+  'crap','craps','crappy','jerkoff','tit','tits','titties'
+];
+function canonWord(w){
+  let out = '';
+  for(const ch of w.toLowerCase()){
+    const c = /[a-z]/.test(ch) ? ch : LEET[ch];
+    if(c) out += c;
+  }
+  return out.replace(/(.)\1+/g, '$1');   // collapse stretched letters: &quot;fuuuck&quot; → &quot;fuck&quot;
+}
+const BAD_WORDS = new Set(BAD_RAW.map(canonWord));
+function censorWord(seg){
+  const m = seg.match(/^(\W*)(.*?)(\W*)$/);
+  const lead = m[1]||'', core = m[2]||'', trail = m[3]||'';
+  if(core &amp;&amp; BAD_WORDS.has(canonWord(core))) return lead + '*'.repeat(core.length) + trail;
+  return seg;
+}
+const censorText = t =&gt; t.replace(/\S+/g, censorWord);
+
+/* ================= SPAM PROTECTION ================= */
+let lastSentAt = 0, sentLog = [];   // {key, t} — key is the (censored) text or gif url
+function spamCheck(key){
+  const now = Date.now();
+  if(now - lastSentAt &lt; MSG_COOLDOWN) return 'Easy — slow down a little.';
+  sentLog = sentLog.filter(x =&gt; now - x.t &lt; DUP_WINDOW);
+  const recent = sentLog.filter(x =&gt; now - x.t &lt; RATE_WINDOW);
+  if(recent.length &gt;= RATE_MAX){
+    const wait = Math.max(1, Math.ceil((RATE_WINDOW - (now - recent[0].t)) / 1000));
+    return `Rate limit — take a breath (${wait}s).`;
+  }
+  if(sentLog.some(x =&gt; x.key === key)) return 'You already sent that.';
+  return null;
+}
+function markSent(key){ lastSentAt = Date.now(); sentLog.push({key, t:lastSentAt}); }
+
 /* ================= SIDEBAR (shrinkable to the side) ================= */
-const isDesktop = () => matchMedia('(min-width:881px)').matches;
+const isDesktop = () =&gt; matchMedia('(min-width:881px)').matches;
 function sideIsOpen(){ return document.body.classList.contains('side-open'); }
 function setSide(open){
   document.body.classList.toggle('side-open', !!open);
   if(isDesktop()) try{ localStorage.setItem('relay_side', open ? 'open' : 'closed'); }catch{}
 }
-const maybeCloseSide = ()=>{ if(!isDesktop()) setSide(false); };
- $('sideToggle').onclick  = ()=> setSide(!sideIsOpen());
- $('collapseBtn').onclick = ()=> setSide(false);
+const maybeCloseSide = ()=&gt;{ if(!isDesktop()) setSide(false); };
+$('sideToggle').onclick  = ()=&gt; setSide(!sideIsOpen());
+$('collapseBtn').onclick = ()=&gt; setSide(false);
 setSide( isDesktop() ? ((localStorage.getItem('relay_side') || 'open') !== 'closed') : false );
 
 /* ================= THEME + VANTA BACKGROUND ================= */
@@ -708,7 +1493,7 @@ async function setVanta(key){
       (curTheme==='light') ? fx.light : fx.dark
     );
     vantaEff = window.VANTA[fx.fn](opts);
-  }catch(e){ toast("Couldn't load that background.",'bad'); }
+  }catch(e){ toast(&quot;Couldn't load that background.&quot;,'bad'); }
 }
 
 /* ================= STATE ================= */
@@ -717,6 +1502,8 @@ let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, adminM
 let adminPwHash=null;   // {h, set, by} from config/adminPw
 const cur = {server:null, dm:null};
 let curPath=null, msgUns=[], chOpen=0, lastDay=null;
+let msgCache={};       // rendered messages of the open channel — used by reactions + replies
+let replyingTo=null;    // {key, u, label}
 let serverPres=null;
 let clickCount=0, clickTimer=null, drawerOpen=false, activeTab='ovw', lookupUser=null;
 let pwResolve=null;
@@ -734,16 +1521,16 @@ async function logUserIp(u, ip){
   const raw = (await getV(`users/${u}/ips`)) || {};
   const now = Date.now(), k = ipKey(ip), prev = raw[k];
   raw[k] = { ip, first: prev?.first ?? now, last: now, count: (prev?.count||0)+1 };
-  const top = Object.entries(raw).sort((a,b)=>(b[1].last||0)-(a[1].last||0)).slice(0, MAX_IPS);
+  const top = Object.entries(raw).sort((a,b)=&gt;(b[1].last||0)-(a[1].last||0)).slice(0, MAX_IPS);
   try{ await set(ref(db,`users/${u}/ips`), Object.fromEntries(top)); }catch(e){}
 }
 
 /* ================= AUTH ================= */
 async function assertNotBanned(u, user, ip){
   const [bIps,bUs] = await Promise.all([getV('config/bannedIps'), getV('config/bannedUsers')]);
-  if(bUs && bUs[u]) throw new Error(`This account is banned — ${reasonOf(bUs[u])}`);
-  if(bIps && ip && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
-  const linked = Object.values(user.ips||{}).find(v => v && v.ip && bIps && bIps[ipKey(v.ip)]);
+  if(bUs &amp;&amp; bUs[u]) throw new Error(`This account is banned — ${reasonOf(bUs[u])}`);
+  if(bIps &amp;&amp; ip &amp;&amp; bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
+  const linked = Object.values(user.ips||{}).find(v =&gt; v &amp;&amp; v.ip &amp;&amp; bIps &amp;&amp; bIps[ipKey(v.ip)]);
   if(linked) throw new Error(`This account was used from a banned IP (${linked.ip}).`);
 }
 async function doLogin(u, p, ip){
@@ -760,8 +1547,8 @@ async function doLogin(u, p, ip){
 async function doRegister(u, p, ip){
   const [exist,bIps,bUs] = await Promise.all([getV(`users/${u}`), getV('config/bannedIps'), getV('config/bannedUsers')]);
   if(exist) throw new Error('That username is taken.');
-  if(bIps && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
-  if(bUs && bUs[u]) throw new Error('That username is banned.');
+  if(bIps &amp;&amp; bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
+  if(bUs &amp;&amp; bUs[u]) throw new Error('That username is banned.');
   const salt = randHex(8), now = Date.now();
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
   const user = {
@@ -772,15 +1559,15 @@ async function doRegister(u, p, ip){
   // very first account becomes the admin (config/admins)
   let firstAdmin = false;
   try{
-    const res = await runTransaction(ref(db,'config/admins'), c => c ? undefined : ({[u]:true}));
-    firstAdmin = !!(res && res.committed && res.snapshot && res.snapshot.val() && res.snapshot.val()[u]);
+    const res = await runTransaction(ref(db,'config/admins'), c =&gt; c ? undefined : ({[u]:true}));
+    firstAdmin = !!(res &amp;&amp; res.committed &amp;&amp; res.snapshot &amp;&amp; res.snapshot.val() &amp;&amp; res.snapshot.val()[u]);
   }catch{}
   await set(ref(db,`users/${u}`), user);
   // starter server so new users land somewhere
   const sid = push(ref(db,'servers')).key;
   await set(ref(db,`servers/${sid}`), {name:`${u}'s server`, owner:u, createdAt:now});
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
-  if(firstAdmin) toast("First user — admin unlocked. Triple-click the logo and set an admin password.",'ok');
+  if(firstAdmin) toast(&quot;First user — admin unlocked. Triple-click the logo and set an admin password.&quot;,'ok');
   await enter(u, ip);
 }
 async function tryAutoLogin(){
@@ -807,12 +1594,23 @@ async function enter(u, ip){
     await onDisconnect(pref).set({online:false, lastSeen:Date.now(), ip:myIp});
     await update(pref, {online:true, lastSeen:Date.now(), ip:myIp});
   }catch{}
-  setInterval(()=>{ if(!kicked) update(pref,{lastSeen:Date.now()}).catch(()=>{}); }, 45000);
-  // joined / unlocked servers (hidden + passcode)
-  onValue(ref(db,`userRooms/${me}`), s=>{ userRoomsMap = s.val()||{}; renderServers(); });
+  setInterval(()=&gt;{ if(!kicked) update(pref,{lastSeen:Date.now()}).catch(()=&gt;{}); }, 45000);
+  // joined / unlocked servers (hidden + passcode) — also fires when someone adds you
+  onValue(ref(db,`userRooms/${me}`), s=&gt;{
+    userRoomsMap = s.val()||{};
+    renderServers();
+    // removed from a hidden server by its owner? → leave it live
+    const sv = cur.server &amp;&amp; serversMap[cur.server];
+    if(cur.server &amp;&amp; sv &amp;&amp; sv.hidden &amp;&amp; sv.owner!==me &amp;&amp; !userRoomsMap[cur.server]){
+      if(serverPres){ remove(serverPres).catch(()=&gt;{}); serverPres = null; }
+      cur.server = null;
+      resetChannel();
+      toast('You were removed from that server.','bad');
+    }
+  });
   renderServers(); renderDMs(); renderOnline(); updateOnlinePill();
-  onValue(ref(db,`friends/${me}`), s=>{ friendsMap = s.val()||{}; renderDMs(); });
-  onValue(ref(db,`friendRequests/${me}`), s=>{ reqMap = s.val()||{}; renderDMs(); });
+  onValue(ref(db,`friends/${me}`), s=&gt;{ friendsMap = s.val()||{}; renderDMs(); });
+  onValue(ref(db,`friendRequests/${me}`), s=&gt;{ reqMap = s.val()||{}; renderDMs(); });
   setVanta(vantaKey);
   $('msgInput').focus();
 }
@@ -832,110 +1630,157 @@ function syncAuthUI(){
   $('authTitle').textContent = reg ? 'Create account' : 'Sign in';
   $('authSubText').textContent = reg ? 'Pick a username.' : 'Welcome';
   $('authBtn').textContent = reg ? 'Create account' : 'Sign in';
-  $('authSwitchWrap').innerHTML = reg ? 'Have an account? <a id="authSwitch">Sign in</a>' : 'New here? <a id="authSwitch">Create an account</a>';
+  $('authSwitchWrap').innerHTML = reg ? 'Have an account? &lt;a id=&quot;authSwitch&quot;&gt;Sign in&lt;/a&gt;' : 'New here? &lt;a id=&quot;authSwitch&quot;&gt;Create an account&lt;/a&gt;';
   bindSwitch();
 }
 function bindSwitch(){
   const a = $('authSwitch'); if(!a) return;
-  a.onclick = ()=>{ authMode = authMode==='login' ? 'register' : 'login'; syncAuthUI(); };
+  a.onclick = ()=&gt;{ authMode = authMode==='login' ? 'register' : 'login'; syncAuthUI(); };
 }
 bindSwitch();
- $('authForm').addEventListener('submit', async e=>{
+$('authForm').addEventListener('submit', async e=&gt;{
   e.preventDefault();
   const u = $('fUser').value.trim().toLowerCase(), p = $('fPass').value;
   $('authErr').textContent = '';
   if(!/^[a-z0-9_]{3,16}$/.test(u)) return $('authErr').textContent = 'Username: 3–16 characters — a–z, 0–9, _ only.';
-  if(p.length < 4) return $('authErr').textContent = 'Password needs 4+ characters.';
+  if(p.length &lt; 4) return $('authErr').textContent = 'Password needs 4+ characters.';
   const btn = $('authBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = '···';
   try{
     const ip = await getPublicIp();
     if(authMode==='register') await doRegister(u,p,ip); else await doLogin(u,p,ip);
-  }catch(err){ $('authErr').textContent = (err && err.message) || 'Something went wrong.'; }
+  }catch(err){ $('authErr').textContent = (err &amp;&amp; err.message) || 'Something went wrong.'; }
   btn.disabled = false; btn.textContent = old;
 });
- $('fUser').focus();
+$('fUser').focus();
 
-/* ================= CHANNELS & MESSAGES ================= */
+/* ================= CHANNELS &amp; MESSAGES ================= */
 function resetChannel(){
-  msgUns.forEach(u=>u && u()); msgUns = [];
+  msgUns.forEach(u=&gt;u &amp;&amp; u()); msgUns = [];
   curPath = null; cur.dm = null; lastDay = null;
+  msgCache = {}; replyingTo = null; renderReplyBar();
   $('roomTitle').textContent = '—';
   $('roomMeta').textContent = 'no channel selected';
-  $('msgs').innerHTML = '<div class="empty">Pick a server to start chatting.</div>';
+  $('msgs').innerHTML = '&lt;div class=&quot;empty&quot;&gt;Pick a server to start chatting.&lt;/div&gt;';
   $('msgInput').placeholder = 'Open a server first…';
 }
 function openChannel(path, name, kind){
   if(curPath === path) return;
-  msgUns.forEach(u=>u && u()); msgUns = [];
+  msgUns.forEach(u=&gt;u &amp;&amp; u()); msgUns = [];
   curPath = path; chOpen = Date.now(); lastDay = null;
-  $('msgs').innerHTML = '<div class="empty">No messages yet.</div>';
-  $('roomTitle').innerHTML = `<span class="hash">${kind==='dm'?'@':'#'}</span>${esc(name)}`;
+  msgCache = {}; replyingTo = null; renderReplyBar();
+  $('msgs').innerHTML = '&lt;div class=&quot;empty&quot;&gt;No messages yet.&lt;/div&gt;';
+  $('roomTitle').innerHTML = `&lt;span class=&quot;hash&quot;&gt;${kind==='dm'?'@':'#'}&lt;/span&gt;${esc(name)}`;
   $('roomMeta').textContent = kind==='dm' ? 'direct message' : 'server';
   $('msgInput').placeholder = `Message ${kind==='dm'?'@':'#'}${name}`;
   const q = query(ref(db,path), limitToLast(150));
-  msgUns.push(onChildAdded(q, s => appendMsg(s.key, s.val())));
-  msgUns.push(onChildRemoved(q, s => {
+  msgUns.push(onChildAdded(q, s =&gt; appendMsg(s.key, s.val())));
+  msgUns.push(onChildChanged(q, s =&gt; updateMsg(s.key, s.val())));   // reactions etc. live-update
+  msgUns.push(onChildRemoved(q, s =&gt; {
+    delete msgCache[s.key];
     const el = document.getElementById('m-'+s.key); if(el) el.remove();
-    if(!$('msgs').querySelector('.msg')) $('msgs').innerHTML = '<div class="empty">Channel cleared.</div>';
+    if(!$('msgs').querySelector('.msg')) $('msgs').innerHTML = '&lt;div class=&quot;empty&quot;&gt;Channel cleared.&lt;/div&gt;';
   }));
 }
 function fileCard(m){
   const isImg = /^image\//.test(m.mime||'');
-  return `${isImg?`<img class="embed-img" style="margin-top:6px" src="${esc(m.url)}" loading="lazy" alt="">`:''}
-    <a class="file-card" href="${esc(m.url)}" target="_blank" rel="noopener">
-      <span class="fic">${icon('doc')}</span>
-      <span class="fc-b"><b>${esc(m.name||'file')}</b><i>${fmtSize(m.size)} · click to open</i></span>
-      <span class="dl">${icon('dl')}</span>
-    </a>`;
+  return `${isImg?`&lt;img class=&quot;embed-img&quot; style=&quot;margin-top:6px&quot; src=&quot;${esc(m.url)}&quot; loading=&quot;lazy&quot; alt=&quot;&quot;&gt;`:''}
+    &lt;a class=&quot;file-card&quot; href=&quot;${esc(m.url)}&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+      &lt;span class=&quot;fic&quot;&gt;${icon('doc')}&lt;/span&gt;
+      &lt;span class=&quot;fc-b&quot;&gt;&lt;b&gt;${esc(m.name||'file')}&lt;/b&gt;&lt;i&gt;${fmtSize(m.size)} · click to open&lt;/i&gt;&lt;/span&gt;
+      &lt;span class=&quot;dl&quot;&gt;${icon('dl')}&lt;/span&gt;
+    &lt;/a&gt;`;
 }
 // avatar for messages: picture if the user set one, colored letter otherwise
 function msgAva(u){
   const av = avatarOf(u);
-  if(av) return `<div class="ava" data-img="${esc(av)}"><img src="${esc(av)}" alt="" loading="lazy"></div>`;
-  return `<div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>`;
+  if(av) return `&lt;div class=&quot;ava&quot; data-img=&quot;${esc(av)}&quot;&gt;&lt;img src=&quot;${esc(av)}&quot; alt=&quot;&quot; loading=&quot;lazy&quot;&gt;&lt;/div&gt;`;
+  return `&lt;div class=&quot;ava&quot; style=&quot;background:${uColor(u)}&quot;&gt;${esc(u[0].toUpperCase())}&lt;/div&gt;`;
+}
+function isPinned(){
+  const m = $('msgs');
+  return (m.scrollTop + m.clientHeight &gt; m.scrollHeight - 90) || (Date.now() - chOpen &lt; 1500);
+}
+function msgBody(m, key){
+  if(m.type === 'gif') return `&lt;img class=&quot;gif&quot; src=&quot;${esc(m.url)}&quot; width=&quot;${m.w||200}&quot; height=&quot;${m.h||200}&quot; alt=&quot;gif&quot; loading=&quot;lazy&quot;&gt;`;
+  if(m.type === 'file') return fileCard(m);
+  const solo = /^https?:\/\/\S+$/i.test((m.text||'').trim());
+  return `&lt;div class=&quot;text&quot;&gt;${linkify(esc(m.text))}&lt;/div&gt;${solo?`&lt;div class=&quot;embed&quot; id=&quot;emb-${key}&quot;&gt;&lt;/div&gt;`:''}`;
+}
+function replyQuote(m){
+  if(!m.replyTo || !m.replyTo.u) return '';
+  return `&lt;div class=&quot;reply-quote&quot; data-src=&quot;${esc(m.replyTo.key||'')}&quot; title=&quot;jump to message&quot;&gt;
+    &lt;span class=&quot;rq-ic&quot;&gt;${icon('reply')}&lt;/span&gt;
+    &lt;b style=&quot;color:${nameColor(m.replyTo.u)}&quot;&gt;${esc(m.replyTo.u)}&lt;/b&gt;
+    &lt;span class=&quot;rq-t&quot;&gt;${esc((m.replyTo.text||'').slice(0,90))}&lt;/span&gt;
+  &lt;/div&gt;`;
+}
+function reactionsHTML(key, m){
+  const r = m.reactions;
+  if(!r) return '';
+  const entries = Object.entries(r).filter(([,users]) =&gt; users &amp;&amp; typeof users === 'object' &amp;&amp; Object.keys(users).length);
+  if(!entries.length) return '';
+  return `&lt;div class=&quot;reactions&quot;&gt;${entries.map(([e,users])=&gt;
+    `&lt;button class=&quot;react${users[me]?' mine':''}&quot; data-react=&quot;${e}&quot; data-key=&quot;${key}&quot; title=&quot;${esc(Object.keys(users).join(', '))}&quot;&gt;${e}&lt;b&gt;${Object.keys(users).length}&lt;/b&gt;&lt;/button&gt;`
+  ).join('')}&lt;/div&gt;`;
+}
+function msgHTML(key, m){
+  return `&lt;div class=&quot;msg&quot; id=&quot;m-${key}&quot; data-u=&quot;${esc(m.u)}&quot;&gt;
+    ${msgAva(m.u)}
+    &lt;div class=&quot;mc&quot;&gt;
+      &lt;div class=&quot;mh&quot;&gt;&lt;span class=&quot;name&quot; style=&quot;color:${nameColor(m.u)}&quot;&gt;${esc(m.u)}&lt;/span&gt;&lt;span class=&quot;time&quot;&gt;${fmtTime(m.t)}&lt;/span&gt;&lt;/div&gt;
+      ${replyQuote(m)}
+      ${msgBody(m, key)}
+      ${reactionsHTML(key, m)}
+    &lt;/div&gt;
+    &lt;div class=&quot;hover-bar&quot;&gt;
+      ${REACTIONS.map(e=&gt;`&lt;button data-react=&quot;${e}&quot; data-key=&quot;${key}&quot; title=&quot;react ${e}&quot;&gt;${e}&lt;/button&gt;`).join('')}
+      &lt;button class=&quot;hb-reply&quot; data-reply=&quot;${key}&quot; title=&quot;Reply&quot;&gt;${icon('reply')}&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;`;
 }
 function appendMsg(key, m){
   if(!m || !m.u) return;
-  const stick = ($('msgs').scrollTop + $('msgs').clientHeight > $('msgs').scrollHeight - 90) || (Date.now() - chOpen < 1500);
+  const stick = isPinned();
   const es = $('msgs').querySelector('.empty'); if(es) es.remove();
   // day divider — a timestamp between days
   const dstr = new Date(m.t || Date.now()).toDateString();
   if(dstr !== lastDay){
     lastDay = dstr;
-    $('msgs').insertAdjacentHTML('beforeend', `<div class="day-div"><span>${dayLabel(m.t)}</span></div>`);
+    $('msgs').insertAdjacentHTML('beforeend', `&lt;div class=&quot;day-div&quot;&gt;&lt;span&gt;${dayLabel(m.t)}&lt;/span&gt;&lt;/div&gt;`);
   }
-  let body = '';
-  if(m.type === 'gif'){
-    body = `<img class="gif" src="${esc(m.url)}" width="${m.w||200}" height="${m.h||200}" alt="gif" loading="lazy">`;
-  }else if(m.type === 'file'){
-    body = fileCard(m);
-  }else{
-    const solo = /^https?:\/\/\S+$/i.test((m.text||'').trim());
-    body = `<div class="text">${linkify(esc(m.text))}</div>${solo?`<div class="embed" id="emb-${key}"></div>`:''}`;
-  }
-  $('msgs').insertAdjacentHTML('beforeend', `
-    <div class="msg" id="m-${key}" data-u="${esc(m.u)}">
-      ${msgAva(m.u)}
-      <div class="mc">
-        <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
-        ${body}
-      </div>
-    </div>`);
+  msgCache[key] = m;
+  $('msgs').insertAdjacentHTML('beforeend', msgHTML(key, m));
   if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
   const emb = document.getElementById('emb-'+key);
-  if(emb) buildEmbed(emb, m.text.trim());
+  if(emb &amp;&amp; m.type === 'text') buildEmbed(emb, m.text.trim());
 }
-// live re-color / re-avatar of already-rendered messages when users change
+function updateMsg(key, m){
+  if(!m || !m.u) return;
+  const old = document.getElementById('m-'+key);
+  if(!old) return appendMsg(key, m);   // not rendered yet — just append
+  msgCache[key] = m;
+  const stick = isPinned();
+  const oldEmbHTML = old.querySelector('.embed')?.innerHTML || '';   // keep fetched embeds
+  old.outerHTML = msgHTML(key, m);
+  if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
+  const el = document.getElementById('m-'+key);
+  const emb = el &amp;&amp; el.querySelector('.embed');
+  if(emb){
+    if(oldEmbHTML) emb.innerHTML = oldEmbHTML;
+    else if(m.type === 'text') buildEmbed(emb, m.text.trim());
+  }
+}
+/* live re-color / re-avatar of already-rendered messages when users change */
 function refreshMsgStyles(){
-  document.querySelectorAll('#msgs .msg').forEach(el=>{
+  document.querySelectorAll('#msgs .msg').forEach(el=&gt;{
     const u = el.dataset.u; if(!u) return;
     const n = el.querySelector('.mh .name');
     if(n) n.style.color = nameColor(u);
-    const a = el.querySelector(':scope > .ava');
+    const a = el.querySelector(':scope &gt; .ava');
     if(!a) return;
     const av = avatarOf(u);
     if(av){
-      if(a.dataset.img !== av){ a.removeAttribute('style'); a.dataset.img = av; a.innerHTML = `<img src="${esc(av)}" alt="" loading="lazy">`; }
+      if(a.dataset.img !== av){ a.removeAttribute('style'); a.dataset.img = av; a.innerHTML = `&lt;img src=&quot;${esc(av)}&quot; alt=&quot;&quot; loading=&quot;lazy&quot;&gt;`; }
     }else if(a.dataset.img){
       delete a.dataset.img; a.innerHTML = '';
       a.style.background = uColor(u);
@@ -945,9 +1790,16 @@ function refreshMsgStyles(){
 }
 function send(){
   if(!curPath) return toast('Open a server first.','bad');
-  const text = $('msgInput').value.replace(/\s+$/,''); if(!text.trim()) return;
-  push(ref(db,curPath), {u:me, t:Date.now(), type:'text', text:text.slice(0,1500)})
-    .catch(()=>toast("Couldn't send that message.",'bad'));
+  const text = censorText($('msgInput').value.replace(/\s+$/,''));
+  if(!text.trim()) return;
+  const err = spamCheck(text);
+  if(err) return toast(err,'bad');
+  markSent(text);
+  const msg = {u:me, t:Date.now(), type:'text', text:text.slice(0,1500)};
+  if(replyingTo) msg.replyTo = {u:replyingTo.u, text:(replyingTo.label||'').slice(0,120), key:replyingTo.key};
+  push(ref(db,curPath), msg)
+    .then(()=&gt;{ replyingTo = null; renderReplyBar(); })
+    .catch(()=&gt;toast(&quot;Couldn't send that message.&quot;,'bad'));
   $('msgInput').value = '';
   autosize();
 }
@@ -957,98 +1809,147 @@ function autosize(){
   t.style.height = 'auto';
   t.style.height = Math.min(t.scrollHeight, 160) + 'px';
 }
- $('msgInput').addEventListener('input', autosize);
- $('msgInput').addEventListener('keydown', e=>{
-  if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
+$('msgInput').addEventListener('input', autosize);
+$('msgInput').addEventListener('keydown', e=&gt;{
+  if(e.key === 'Enter' &amp;&amp; !e.shiftKey &amp;&amp; !e.isComposing){ e.preventDefault(); send(); }
+});
+
+/* ================= REACTIONS ================= */
+async function toggleReact(key, emoji){
+  if(!curPath || !key) return;
+  const m = msgCache[key]; if(!m) return;
+  const has = m.reactions &amp;&amp; m.reactions[emoji] &amp;&amp; m.reactions[emoji][me];
+  try{
+    // reactions live on the message itself: messages/&lt;server&gt;/&lt;key&gt;/reactions/&lt;emoji&gt;/&lt;user&gt;
+    await set(ref(db, `${curPath}/${key}/reactions/${emoji}/${me}`), has ? null : true);
+  }catch{ toast(&quot;Couldn't save that reaction.&quot;,'bad'); }
+}
+
+/* ================= REPLIES ================= */
+function startReply(key){
+  const m = msgCache[key]; if(!m) return;
+  replyingTo = {
+    key,
+    u: m.u,
+    label: m.type === 'gif' ? 'GIF' : m.type === 'file' ? (m.name || 'file') : (m.text || 'message')
+  };
+  renderReplyBar();
+  $('msgInput').focus();
+}
+function cancelReply(){ replyingTo = null; renderReplyBar(); }
+function renderReplyBar(){
+  const bar = $('replyBar');
+  if(!replyingTo){ bar.hidden = true; bar.innerHTML = ''; return; }
+  bar.hidden = false;
+  bar.innerHTML = `&lt;span class=&quot;rb-ic&quot;&gt;${icon('reply')}&lt;/span&gt;
+    &lt;span class=&quot;rb-t&quot;&gt;Replying to &lt;b style=&quot;color:${nameColor(replyingTo.u)}&quot;&gt;${esc(replyingTo.u)}&lt;/b&gt; · ${esc((replyingTo.label||'').slice(0,60))}&lt;/span&gt;
+    &lt;button class=&quot;rb-x&quot; id=&quot;replyCancel&quot; title=&quot;Cancel reply&quot;&gt;${icon('x')}&lt;/button&gt;`;
+  $('replyCancel').onclick = cancelReply;
+}
+function jumpTo(key){
+  const el = key &amp;&amp; document.getElementById('m-'+key);
+  if(!el) return toast('That message is too far back to jump to.','bad');
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.add('flash');
+  setTimeout(()=&gt;el.classList.remove('flash'), 1600);
+}
+/* one delegated click handler for react chips, hover-bar buttons, reply + quote jumps */
+$('msgs').addEventListener('click', e=&gt;{
+  const r = e.target.closest('[data-react]');
+  if(r){ toggleReact(r.dataset.key, r.dataset.react); return; }
+  const rb = e.target.closest('[data-reply]');
+  if(rb){ startReply(rb.dataset.key); return; }
+  const rq = e.target.closest('.reply-quote');
+  if(rq){ jumpTo(rq.dataset.src); return; }
 });
 
 /* ================= LINK EMBEDS ================= */
-const URL_RE = /(https?:\/\/[^\s<>"']+)/g;
-const linkify = t => t.replace(URL_RE, m=>`<a href="${m}" target="_blank" rel="noopener">${m}</a>`);
+const URL_RE = /(https?:\/\/[^\s&lt;&gt;&quot;']+)/g;
+const linkify = t =&gt; t.replace(URL_RE, m=&gt;`&lt;a href=&quot;${m}&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;${m}&lt;/a&gt;`);
 async function buildEmbed(el, url){
   try{
     // direct image link
     if(/\.(png|jpe?g|gif|webp|avif|svg)([?#]|$)/i.test(url)){
-      el.innerHTML = `<img class="embed-img" src="${esc(url)}" loading="lazy" alt="">`; return;
+      el.innerHTML = `&lt;img class=&quot;embed-img&quot; src=&quot;${esc(url)}&quot; loading=&quot;lazy&quot; alt=&quot;&quot;&gt;`; return;
     }
     // known players
     let mt = url.match(/(?:youtube\.com\/(?:watch\?.*?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
-    if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://www.youtube-nocookie.com/embed/${esc(mt[1])}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
+    if(mt){ el.innerHTML = `&lt;iframe class=&quot;embed-vid&quot; src=&quot;https://www.youtube-nocookie.com/embed/${esc(mt[1])}&quot; allow=&quot;accelerometer; autoplay; encrypted-media; picture-in-picture&quot; allowfullscreen loading=&quot;lazy&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;`; return; }
     mt = url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
-    if(mt){ el.innerHTML = `<iframe class="embed-sm" src="https://open.spotify.com/embed/${esc(mt[1])}/${esc(mt[2])}" allow="encrypted-media" loading="lazy" frameborder="0"></iframe>`; return; }
+    if(mt){ el.innerHTML = `&lt;iframe class=&quot;embed-sm&quot; src=&quot;https://open.spotify.com/embed/${esc(mt[1])}/${esc(mt[2])}&quot; allow=&quot;encrypted-media&quot; loading=&quot;lazy&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;`; return; }
     if(/soundcloud\.com\//.test(url)){
-      el.innerHTML = `<iframe class="embed-sm" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=8B7CF6&hide_related=true" loading="lazy" frameborder="0"></iframe>`; return;
+      el.innerHTML = `&lt;iframe class=&quot;embed-sm&quot; src=&quot;https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&amp;color=8B7CF6&amp;hide_related=true&quot; loading=&quot;lazy&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;`; return;
     }
     mt = url.match(/vimeo\.com\/(\d+)/);
-    if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://player.vimeo.com/video/${esc(mt[1])}" allow="autoplay; fullscreen" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
+    if(mt){ el.innerHTML = `&lt;iframe class=&quot;embed-vid&quot; src=&quot;https://player.vimeo.com/video/${esc(mt[1])}&quot; allow=&quot;autoplay; fullscreen&quot; allowfullscreen loading=&quot;lazy&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;`; return; }
     // generic preview via noembed (free, CORS-friendly)
     const r = await fetch('https://noembed.com/embed?url='+encodeURIComponent(url));
     const j = await r.json();
-    if(j && !j.error && (j.title || j.thumbnail_url)){
-      el.innerHTML = `<a class="embed-card" href="${esc(url)}" target="_blank" rel="noopener">
-        ${j.thumbnail_url?`<img src="${esc(j.thumbnail_url)}" loading="lazy" alt="">`:''}
-        <div class="ec-t"><b>${esc(j.title||url)}</b><span>${esc(j.provider_name||'link')}</span></div></a>`;
+    if(j &amp;&amp; !j.error &amp;&amp; (j.title || j.thumbnail_url)){
+      el.innerHTML = `&lt;a class=&quot;embed-card&quot; href=&quot;${esc(url)}&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+        ${j.thumbnail_url?`&lt;img src=&quot;${esc(j.thumbnail_url)}&quot; loading=&quot;lazy&quot; alt=&quot;&quot;&gt;`:''}
+        &lt;div class=&quot;ec-t&quot;&gt;&lt;b&gt;${esc(j.title||url)}&lt;/b&gt;&lt;span&gt;${esc(j.provider_name||'link')}&lt;/span&gt;&lt;/div&gt;&lt;/a&gt;`;
     }
   }catch{ /* stays a plain link */ }
 }
 
 /* ================= FILE UPLOADS (1 GB per file) ================= */
 let upTask = null;
- $('attachBtn').onclick = ()=>{ if(!curPath) return toast('Open a server first.','bad'); $('fileInput').click(); };
- $('fileInput').addEventListener('change', e=>{
+$('attachBtn').onclick = ()=&gt;{ if(!curPath) return toast('Open a server first.','bad'); $('fileInput').click(); };
+$('fileInput').addEventListener('change', e=&gt;{
   const f = e.target.files[0]; e.target.value = '';
   if(!f) return;
-  if(f.size > MAX_FILE) return toast(`Too big — 1 GB max per file (this one: ${fmtSize(f.size)}).`,'bad');
+  if(f.size &gt; MAX_FILE) return toast(`Too big — 1 GB max per file (this one: ${fmtSize(f.size)}).`,'bad');
   if(f.size === 0) return toast('That file is empty.','bad');
   const safe = f.name.replace(/[^\w.\- ]+/g,'_');
   const task = uploadBytesResumable(sref(storage, `files/${me}/${Date.now()}_${safe}`), f, {contentType: f.type || 'application/octet-stream'});
   upTask = task;
   $('upbar').hidden = false; $('upFill').style.width = '0%'; $('upName').textContent = `${f.name} · 0%`;
   task.on('state_changed',
-    s=>{ const pct = Math.floor(s.bytesTransferred / s.totalBytes * 100);
+    s=&gt;{ const pct = Math.floor(s.bytesTransferred / s.totalBytes * 100);
          $('upFill').style.width = pct+'%'; $('upName').textContent = `${f.name} · ${pct}%`; },
-    err=>{ $('upbar').hidden = true; upTask = null; if(err.code !== 'storage/canceled') toast('Upload failed — check Storage rules.','bad'); },
-    async ()=>{
+    err=&gt;{ $('upbar').hidden = true; upTask = null; if(err.code !== 'storage/canceled') toast('Upload failed — check Storage rules.','bad'); },
+    async ()=&gt;{
       try{
         const url = await getDownloadURL(task.snapshot.ref);
         await push(ref(db,curPath), {u:me, t:Date.now(), type:'file', url, name:f.name, size:f.size, mime:f.type||''});
-      }catch{ toast("Couldn't send the file message.",'bad'); }
+      }catch{ toast(&quot;Couldn't send the file message.&quot;,'bad'); }
       $('upbar').hidden = true; upTask = null;
     });
 });
- $('upCancel').onclick = ()=>{ if(upTask) upTask.cancel(); $('upbar').hidden = true; };
+$('upCancel').onclick = ()=&gt;{ if(upTask) upTask.cancel(); $('upbar').hidden = true; };
 
 /* ================= SERVERS: SELECT / GATE / JOIN ================= */
 function promptPw(what){
-  return new Promise(res=>{
+  return new Promise(res=&gt;{
     pwResolve = res;
-    openModal(`<h3>Passcode required</h3>
-      <p class="sub mono">${esc(what)} is locked.</p>
-      <label>passcode<input type="password" id="mPwIn" autocomplete="off"></label>
-      <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mPwGo">Enter</button></div>`);
-    setTimeout(()=>$('mPwIn')?.focus(), 50);
+    openModal(`&lt;h3&gt;Passcode required&lt;/h3&gt;
+      &lt;p class=&quot;sub mono&quot;&gt;${esc(what)} is locked.&lt;/p&gt;
+      &lt;label&gt;passcode&lt;input type=&quot;password&quot; id=&quot;mPwIn&quot; autocomplete=&quot;off&quot;&gt;&lt;/label&gt;
+      &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn&quot; data-close&gt;Cancel&lt;/button&gt;&lt;button class=&quot;btn acc&quot; id=&quot;mPwGo&quot;&gt;Enter&lt;/button&gt;&lt;/div&gt;`);
+    setTimeout(()=&gt;$('mPwIn')?.focus(), 50);
   });
 }
 async function gateServer(sid, s){
   const pw = await promptPw(s.name || 'server');
   if(pw == null) return false;
   const stored = await getV(`roomPasswords/${sid}`);
-  const h = stored && (stored.h || stored);
+  const h = stored &amp;&amp; (stored.h || stored);
   if(await sha256hex('server:'+pw) !== h){ toast('Wrong passcode.','bad'); return false; }
   userRoomsMap[sid] = Date.now();
-  set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=>{});
+  set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=&gt;{});
   return true;
 }
 async function selectServer(sid, skipAuth){
   if(cur.server === sid) return;
   const s = serversMap[sid]; if(!s) return;
   // passcode gate — owner bypasses, unlocked members skip
-  if(!skipAuth && s.locked && s.owner!==me && !userRoomsMap[sid]){
+  if(!skipAuth &amp;&amp; s.locked &amp;&amp; s.owner!==me &amp;&amp; !userRoomsMap[sid]){
     const ok = await gateServer(sid, s);
     if(!ok) return;
   }
   cur.server = sid; cur.dm = null;
-  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+  if(serverPres){ remove(serverPres).catch(()=&gt;{}); serverPres = null; }
   const r = ref(db, `presence/${me}/servers/${sid}`);
   try{ onDisconnect(r).remove(); set(r, Date.now()); }catch{}
   serverPres = r;
@@ -1059,62 +1960,130 @@ async function joinServer(sid){
   const s = serversMap[sid] || await getV(`servers/${sid}`);
   if(!s) return toast('No server with that ID.','bad');
   closeModal();
-  if(s.locked && s.owner!==me && !userRoomsMap[sid]){
+  if(s.locked &amp;&amp; s.owner!==me &amp;&amp; !userRoomsMap[sid]){
     const ok = await gateServer(sid, s);
     if(!ok) return;
   }
-  if(s.owner!==me && s.hidden){
+  if(s.owner!==me &amp;&amp; s.hidden){
     userRoomsMap[sid] = Date.now();
-    set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=>{});
+    set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=&gt;{});
+    set(ref(db,`servers/${sid}/members/${me}`), Date.now()).catch(()=&gt;{});   // so the owner sees who joined
   }
   selectServer(sid, true);
 }
 function renderServers(){
   const es = Object.entries(serversMap)
-    .sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0))
-    .filter(([sid,s]) => !s.hidden || s.owner===me || userRoomsMap[sid]);
-  $('serverList').innerHTML = es.length ? es.map(([sid,s])=>`
-    <li data-sid="${sid}" class="${cur.server===sid?'active':''}">
-      <span class="nm">${esc(s.name||'server')}</span>
-      ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
-      ${s.hidden?'<span class="hid">HIDDEN</span>':''}
-      ${s.owner===me?'<span class="sub">YOURS</span>':''}
-    </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to make one.</div></li>`;
-  if(!cur.server && es.length){
+    .sort((a,b)=&gt;(a[1].createdAt||0)-(b[1].createdAt||0))
+    .filter(([sid,s]) =&gt; !s.hidden || s.owner===me || userRoomsMap[sid]);
+  $('serverList').innerHTML = es.length ? es.map(([sid,s])=&gt;`
+    &lt;li data-sid=&quot;${sid}&quot; class=&quot;${cur.server===sid?'active':''}&quot;&gt;
+      &lt;span class=&quot;nm&quot;&gt;${esc(s.name||'server')}&lt;/span&gt;
+      ${s.locked?`&lt;span class=&quot;lk&quot;&gt;${icon('lock')}&lt;/span&gt;`:''}
+      ${(s.hidden&amp;&amp;s.owner===me)?`&lt;button class=&quot;li-act&quot; data-invite=&quot;${sid}&quot; title=&quot;Add people&quot;&gt;${icon('userPlus')}&lt;/button&gt;`:''}
+      ${s.hidden?'&lt;span class=&quot;hid&quot;&gt;HIDDEN&lt;/span&gt;':''}
+      ${s.owner===me?'&lt;span class=&quot;sub&quot;&gt;YOURS&lt;/span&gt;':''}
+    &lt;/li&gt;`).join('') : `&lt;li&gt;&lt;div class=&quot;empty&quot;&gt;No servers yet.&lt;br&gt;Hit + to make one.&lt;/div&gt;&lt;/li&gt;`;
+  if(!cur.server &amp;&amp; es.length){
     // auto-select only something already accessible (never prompt on boot)
-    const pick = es.find(([sid,s]) => s.owner===me || !s.locked || userRoomsMap[sid]);
+    const pick = es.find(([sid,s]) =&gt; s.owner===me || !s.locked || userRoomsMap[sid]);
     if(pick) selectServer(pick[0], true);
   }
 }
- $('serverList').addEventListener('click', e=>{ const li = e.target.closest('li[data-sid]'); if(li) selectServer(li.dataset.sid); });
+$('serverList').addEventListener('click', e=&gt;{
+  const inv = e.target.closest('[data-invite]');
+  if(inv){ membersModal(inv.dataset.invite); return; }
+  const li = e.target.closest('li[data-sid]'); if(li) selectServer(li.dataset.sid);
+});
+
+/* ================= HIDDEN SERVER MEMBERS ================= */
+function membersModal(sid){
+  const s = serversMap[sid]; if(!s) return;
+  if(s.owner!==me) return toast('Only the owner can manage members.','bad');
+  openModal(`&lt;h3&gt;Members — ${esc(s.name||'server')}&lt;/h3&gt;
+    &lt;p class=&quot;sub&quot;&gt;People you add can see this hidden server right away — no ID needed.&lt;/p&gt;
+    &lt;label&gt;add by username&lt;input id=&quot;memIn&quot; maxlength=&quot;16&quot; placeholder=&quot;username&quot; spellcheck=&quot;false&quot;&gt;&lt;/label&gt;
+    &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn&quot; data-close&gt;Close&lt;/button&gt;&lt;button class=&quot;btn acc&quot; id=&quot;memGo&quot; data-sid=&quot;${sid}&quot;&gt;Add member&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;mem-list&quot; id=&quot;memList&quot;&gt;&lt;/div&gt;`);
+  renderMemList(sid);
+  setTimeout(()=&gt;$('memIn')?.focus(), 50);
+}
+function renderMemList(sid){
+  const s = serversMap[sid]; if(!s) return;
+  const box = $('memList'); if(!box) return;   // modal closed
+  const ownerRow = `
+    &lt;div class=&quot;mem-row&quot;&gt;
+      &lt;div class=&quot;ava&quot; style=&quot;background:${uColor(me)}&quot;&gt;${esc(me[0].toUpperCase())}&lt;/div&gt;
+      &lt;b style=&quot;color:${nameColor(me)}&quot;&gt;${esc(me)}&lt;/b&gt;
+      &lt;span class=&quot;mem-tag&quot;&gt;OWNER&lt;/span&gt;
+    &lt;/div&gt;`;
+  const mems = Object.keys(s.members||{}).filter(u=&gt;u!==s.owner).sort();
+  box.innerHTML = ownerRow + (mems.length ? mems.map(u=&gt;{
+    const av = avatarOf(u);
+    const on = presenceMap[u] &amp;&amp; presenceMap[u].online;
+    return `&lt;div class=&quot;mem-row&quot;&gt;
+      ${av?`&lt;div class=&quot;ava&quot;&gt;&lt;img src=&quot;${esc(av)}&quot; alt=&quot;&quot;&gt;&lt;/div&gt;`:`&lt;div class=&quot;ava&quot; style=&quot;background:${uColor(u)}&quot;&gt;${esc(u[0].toUpperCase())}&lt;/div&gt;`}
+      &lt;b style=&quot;color:${nameColor(u)}&quot;&gt;${esc(u)}&lt;/b&gt;
+      &lt;span class=&quot;mem-st&quot;&gt;${on?'online':'offline'}&lt;/span&gt;
+      &lt;button class=&quot;icon-btn no&quot; data-unmem=&quot;${esc(u)}&quot; data-sid=&quot;${sid}&quot; title=&quot;Remove&quot;&gt;${icon('x')}&lt;/button&gt;
+    &lt;/div&gt;`;
+  }).join('') : '&lt;div class=&quot;empty&quot;&gt;No members yet — add someone above, or keep sharing the server ID.&lt;/div&gt;');
+}
+async function addMember(sid, u){
+  const s = serversMap[sid]; if(!s) return;
+  if(s.owner!==me) return toast('Only the owner can add members.','bad');
+  if(u===me) return toast(&quot;That's you — you're the owner.&quot;,'bad');
+  if(!/^[a-z0-9_]{3,16}$/.test(u)) return toast('Invalid username.','bad');
+  const t = usersMap[u] || await getV(`users/${u}`);
+  if(!t) return toast('No user with that name.','bad');
+  if(s.members &amp;&amp; s.members[u]) return toast('Already a member.','bad');
+  try{
+    await set(ref(db,`servers/${sid}/members/${u}`), Date.now());
+    await set(ref(db,`userRooms/${u}/${sid}`), Date.now());   // makes it appear in their sidebar, live
+    (s.members = s.members||{})[u] = Date.now();
+    renderMemList(sid);
+    toast(`${u} added — they can see this server now.`,'ok');
+  }catch{ toast(&quot;Couldn't add that member.&quot;,'bad'); }
+}
+async function removeMember(sid, u){
+  const s = serversMap[sid]; if(!s) return;
+  if(s.owner!==me) return toast('Only the owner can remove members.','bad');
+  try{
+    await remove(ref(db,`servers/${sid}/members/${u}`));
+    await remove(ref(db,`userRooms/${u}/${sid}`));
+    remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=&gt;{});   // drop them from the online list too
+    if(s.members) delete s.members[u];
+    renderMemList(sid);
+    toast(`${u} removed.`,'ok');
+  }catch{ toast(&quot;Couldn't remove that member.&quot;,'bad'); }
+}
 
 /* ================= SERVER SEARCH / JOIN-BY-ID ================= */
 function openSrvSearch(){
-  openModal(`<h3>Find a server</h3>
-    <label>search<input id="srvSearch" placeholder="type a name…" spellcheck="false"></label>
-    <div class="srv-results" id="srvResults"></div>
-    <label>join with an id <span class="opt">(for hidden servers)</span><input id="joinId" placeholder="paste server id" spellcheck="false"></label>
-    <div class="m-actions"><button class="btn" data-close>Close</button><button class="btn acc" id="joinGo">Join</button></div>`);
+  openModal(`&lt;h3&gt;Find a server&lt;/h3&gt;
+    &lt;label&gt;search&lt;input id=&quot;srvSearch&quot; placeholder=&quot;type a name…&quot; spellcheck=&quot;false&quot;&gt;&lt;/label&gt;
+    &lt;div class=&quot;srv-results&quot; id=&quot;srvResults&quot;&gt;&lt;/div&gt;
+    &lt;label&gt;join with an id &lt;span class=&quot;opt&quot;&gt;(for hidden servers)&lt;/span&gt;&lt;input id=&quot;joinId&quot; placeholder=&quot;paste server id&quot; spellcheck=&quot;false&quot;&gt;&lt;/label&gt;
+    &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn&quot; data-close&gt;Close&lt;/button&gt;&lt;button class=&quot;btn acc&quot; id=&quot;joinGo&quot;&gt;Join&lt;/button&gt;&lt;/div&gt;`);
   renderSrvResults('');
-  $('srvSearch').addEventListener('input', ()=>renderSrvResults($('srvSearch').value.trim().toLowerCase()));
-  setTimeout(()=>$('srvSearch')?.focus(), 50);
+  $('srvSearch').addEventListener('input', ()=&gt;renderSrvResults($('srvSearch').value.trim().toLowerCase()));
+  setTimeout(()=&gt;$('srvSearch')?.focus(), 50);
 }
 function renderSrvResults(q){
   const all = Object.entries(serversMap)
-    .filter(([sid,s]) => !s.hidden || s.owner===me)              // hidden stays hidden
-    .filter(([sid,s]) => !q || (s.name||'').toLowerCase().includes(q))
-    .sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0))
+    .filter(([sid,s]) =&gt; !s.hidden || s.owner===me)              // hidden stays hidden
+    .filter(([sid,s]) =&gt; !q || (s.name||'').toLowerCase().includes(q))
+    .sort((a,b)=&gt;(b[1].createdAt||0)-(a[1].createdAt||0))
     .slice(0, 12);
-  $('srvResults').innerHTML = all.length ? all.map(([sid,s])=>{
-    const n = Object.values(presenceMap).filter(p=>p && p.online && p.servers && p.servers[sid]).length;
-    return `<div class="srv-r" data-join="${sid}">
-      <b>${esc(s.name||'server')}</b>
-      ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
-      <i>${esc(s.owner||'?')} · ${n} online</i>
-    </div>`;
-  }).join('') : '<div class="empty">No servers found.</div>';
+  $('srvResults').innerHTML = all.length ? all.map(([sid,s])=&gt;{
+    const n = Object.values(presenceMap).filter(p=&gt;p &amp;&amp; p.online &amp;&amp; p.servers &amp;&amp; p.servers[sid]).length;
+    return `&lt;div class=&quot;srv-r&quot; data-join=&quot;${sid}&quot;&gt;
+      &lt;b&gt;${esc(s.name||'server')}&lt;/b&gt;
+      ${s.locked?`&lt;span class=&quot;lk&quot;&gt;${icon('lock')}&lt;/span&gt;`:''}
+      &lt;i&gt;${esc(s.owner||'?')} · ${n} online&lt;/i&gt;
+    &lt;/div&gt;`;
+  }).join('') : '&lt;div class=&quot;empty&quot;&gt;No servers found.&lt;/div&gt;';
 }
- $('searchServerBtn').onclick = openSrvSearch;
+$('searchServerBtn').onclick = openSrvSearch;
 
 /* ================= FRIENDS / DM ================= */
 async function acceptFriend(f){
@@ -1127,36 +2096,36 @@ function renderDMs(){
   $('dmLabel').textContent = 'FRIENDS' + (reqs.length ? ` · ${reqs.length}` : '');
   const fr = Object.keys(friendsMap||{}).sort();
   let html = '';
-  if(reqs.length) html += reqs.map(([from])=>`
-    <li><span class="rdot"></span><span class="nm">${esc(from)}</span>
-      <span class="fr-acts">
-        <button class="icon-btn ok" data-accept="${esc(from)}" title="Accept">${icon('check')}</button>
-        <button class="icon-btn no" data-decline="${esc(from)}" title="Decline">${icon('x')}</button>
-      </span></li>`).join('');
-  if(fr.length) html += fr.map(f=>{
-    const on = presenceMap[f] && presenceMap[f].online;
-    return `<li data-dm="${esc(f)}" class="${cur.dm===f?'active':''}"><span class="pdot ${on?'on':''}"></span><span class="nm">${esc(f)}</span></li>`;
+  if(reqs.length) html += reqs.map(([from])=&gt;`
+    &lt;li&gt;&lt;span class=&quot;rdot&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;${esc(from)}&lt;/span&gt;
+      &lt;span class=&quot;fr-acts&quot;&gt;
+        &lt;button class=&quot;icon-btn ok&quot; data-accept=&quot;${esc(from)}&quot; title=&quot;Accept&quot;&gt;${icon('check')}&lt;/button&gt;
+        &lt;button class=&quot;icon-btn no&quot; data-decline=&quot;${esc(from)}&quot; title=&quot;Decline&quot;&gt;${icon('x')}&lt;/button&gt;
+      &lt;/span&gt;&lt;/li&gt;`).join('');
+  if(fr.length) html += fr.map(f=&gt;{
+    const on = presenceMap[f] &amp;&amp; presenceMap[f].online;
+    return `&lt;li data-dm=&quot;${esc(f)}&quot; class=&quot;${cur.dm===f?'active':''}&quot;&gt;&lt;span class=&quot;pdot ${on?'on':''}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;${esc(f)}&lt;/span&gt;&lt;/li&gt;`;
   }).join('');
-  if(!html) html = `<li><div class="empty">No friends yet.<br>Add someone with +.</div></li>`;
+  if(!html) html = `&lt;li&gt;&lt;div class=&quot;empty&quot;&gt;No friends yet.&lt;br&gt;Add someone with +.&lt;/div&gt;&lt;/li&gt;`;
   $('dmList').innerHTML = html;
 }
- $('dmList').addEventListener('click', async e=>{
+$('dmList').addEventListener('click', async e=&gt;{
   const acc = e.target.closest('[data-accept]');
   if(acc){ try{ await acceptFriend(acc.dataset.accept); toast(`You and ${acc.dataset.accept} are now friends.`,'ok'); }catch{} return; }
   const dec = e.target.closest('[data-decline]');
-  if(dec){ remove(ref(db,`friendRequests/${me}/${dec.dataset.decline}`)).catch(()=>{}); return; }
+  if(dec){ remove(ref(db,`friendRequests/${me}/${dec.dataset.decline}`)).catch(()=&gt;{}); return; }
   const li = e.target.closest('[data-dm]'); if(!li) return;
   const f = li.dataset.dm;
   cur.dm = f; cur.server = null; maybeCloseSide();
-  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+  if(serverPres){ remove(serverPres).catch(()=&gt;{}); serverPres = null; }
   openChannel(`messages/_dm/${[me,f].sort().join('--')}`, f, 'dm');
   renderDMs(); renderOnline(); updateOnlinePill();
 });
- $('addFriendBtn').onclick = ()=>{ const r = $('friendAddRow'); r.hidden = !r.hidden; if(!r.hidden) $('friendInput').focus(); };
- $('friendGo').onclick = async ()=>{
+$('addFriendBtn').onclick = ()=&gt;{ const r = $('friendAddRow'); r.hidden = !r.hidden; if(!r.hidden) $('friendInput').focus(); };
+$('friendGo').onclick = async ()=&gt;{
   const u = $('friendInput').value.trim().toLowerCase();
   if(!u) return;
-  if(u===me) return toast("That's you!",'bad');
+  if(u===me) return toast(&quot;That's you!&quot;,'bad');
   if(!/^[a-z0-9_]{3,16}$/.test(u)) return toast('Invalid username.','bad');
   const t = usersMap[u] || await getV(`users/${u}`);
   if(!t) return toast('No user with that name.','bad');
@@ -1174,23 +2143,23 @@ function renderDMs(){
 function serverHere(){
   if(!cur.server) return [];
   return Object.entries(presenceMap)
-    .filter(([u,p])=>p && p.online && p.servers && p.servers[cur.server])
-    .sort((a,b)=>a[0].localeCompare(b[0]));
+    .filter(([u,p])=&gt;p &amp;&amp; p.online &amp;&amp; p.servers &amp;&amp; p.servers[cur.server])
+    .sort((a,b)=&gt;a[0].localeCompare(b[0]));
 }
 function renderOnline(){
   if(!me) return;
   const es = serverHere();
   $('onlineList').innerHTML = cur.server
-    ? (es.length ? es.map(([u,p])=>`
-        <li><span class="pdot on"></span><span class="nm">${esc(u)}</span>${(isAdmin()&&p.ip)?`<span class="ip2">${esc(p.ip)}</span>`:''}</li>`).join('')
-      : `<li><div class="empty">Nobody here but you.</div></li>`)
-    : `<li><div class="empty">Pick a server to see who's in.</div></li>`;
+    ? (es.length ? es.map(([u,p])=&gt;`
+        &lt;li&gt;&lt;span class=&quot;pdot on&quot;&gt;&lt;/span&gt;&lt;span class=&quot;nm&quot;&gt;${esc(u)}&lt;/span&gt;${(isAdmin()&amp;&amp;p.ip)?`&lt;span class=&quot;ip2&quot;&gt;${esc(p.ip)}&lt;/span&gt;`:''}&lt;/li&gt;`).join('')
+      : `&lt;li&gt;&lt;div class=&quot;empty&quot;&gt;Nobody here but you.&lt;/div&gt;&lt;/li&gt;`)
+    : `&lt;li&gt;&lt;div class=&quot;empty&quot;&gt;Pick a server to see who's in.&lt;/div&gt;&lt;/li&gt;`;
 }
 function updateOnlinePill(){
   if(!me) return;
   if(!cur.server){ $('onlinePill').textContent = ''; return; }
   const n = serverHere().length;
-  $('onlinePill').innerHTML = `<b>${n}</b>&nbsp;ONLINE`;
+  $('onlinePill').innerHTML = `&lt;b&gt;${n}&lt;/b&gt;&amp;nbsp;ONLINE`;
 }
 
 /* ================= PROFILE CARD + SETTINGS (gear) ================= */
@@ -1199,7 +2168,7 @@ function renderMeChip(){
   const av = avatarOf(me);
   const ava = $('meAva');
   if(av){
-    ava.innerHTML = `<img src="${esc(av)}" alt="">`;
+    ava.innerHTML = `&lt;img src=&quot;${esc(av)}&quot; alt=&quot;&quot;&gt;`;
     ava.removeAttribute('style');
   }else{
     ava.innerHTML = '';
@@ -1212,7 +2181,7 @@ function renderMeChip(){
   if(isAdmin()) $('meName').insertAdjacentHTML('beforeend', ' '+icon('shield'));
   $('meSub').textContent = isAdmin() ? 'admin · online' : 'online';
 }
- $('profSetBtn').onclick = ()=>{
+$('profSetBtn').onclick = ()=&gt;{
   const p = $('profSet');
   p.hidden = !p.hidden;
   if(!p.hidden){
@@ -1222,35 +2191,35 @@ function renderMeChip(){
 };
 function setColor(hex){
   if(!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
-  update(ref(db, `users/${me}`), {color:hex}).catch(()=>toast("Couldn't save color.",'bad'));
+  update(ref(db, `users/${me}`), {color:hex}).catch(()=&gt;toast(&quot;Couldn't save color.&quot;,'bad'));
 }
-document.querySelectorAll('.swatch').forEach(s=>s.onclick = ()=>setColor(s.dataset.c));
- $('colorPick').addEventListener('change', e=>setColor(e.target.value));
+document.querySelectorAll('.swatch').forEach(s=&gt;s.onclick = ()=&gt;setColor(s.dataset.c));
+$('colorPick').addEventListener('change', e=&gt;setColor(e.target.value));
 
 /* avatar upload — click your avatar or use the gear menu */
 function pickAvatar(){ if(me) $('avatarFile').click(); }
- $('meAva').onclick = pickAvatar;
- $('avatarBtn').onclick = pickAvatar;
- $('avatarFile').addEventListener('change', e=>{
+$('meAva').onclick = pickAvatar;
+$('avatarBtn').onclick = pickAvatar;
+$('avatarFile').addEventListener('change', e=&gt;{
   const f = e.target.files[0]; e.target.value = '';
   if(!f || !me) return;
   if(!/^image\//.test(f.type||'')) return toast('Pick an image file.','bad');
-  if(f.size > MAX_AVATAR) return toast(`Avatar too big — 8 MB max (this one: ${fmtSize(f.size)}).`,'bad');
+  if(f.size &gt; MAX_AVATAR) return toast(`Avatar too big — 8 MB max (this one: ${fmtSize(f.size)}).`,'bad');
   const safe = f.name.replace(/[^\w.\- ]+/g,'_');
   const task = uploadBytesResumable(sref(storage, `avatars/${me}/${Date.now()}_${safe}`), f, {contentType: f.type});
   toast('Uploading avatar…');
   task.on('state_changed', null,
-    ()=>toast('Avatar upload failed.','bad'),
-    async ()=>{
+    ()=&gt;toast('Avatar upload failed.','bad'),
+    async ()=&gt;{
       try{
         const url = await getDownloadURL(task.snapshot.ref);
         await update(ref(db,`users/${me}`), {avatar:url});
         toast('Avatar updated.','ok');
-      }catch{ toast("Couldn't save avatar.",'bad'); }
+      }catch{ toast(&quot;Couldn't save avatar.&quot;,'bad'); }
     });
 });
- $('avatarDel').onclick = ()=>{
-  update(ref(db, `users/${me}`), {avatar:null}).catch(()=>toast("Couldn't remove avatar.",'bad'));
+$('avatarDel').onclick = ()=&gt;{
+  update(ref(db, `users/${me}`), {avatar:null}).catch(()=&gt;toast(&quot;Couldn't remove avatar.&quot;,'bad'));
 };
 
 /* ================= MODALS + SETTINGS ================= */
@@ -1259,16 +2228,17 @@ function closeModal(){
   if(pwResolve){ const r = pwResolve; pwResolve = null; r(null); }
   $('modalWrap').hidden = true; $('modalBox').innerHTML = '';
 }
- $('modalWrap').addEventListener('click', e=>{ if(e.target === $('modalWrap')) closeModal(); });
- $('modalBox').addEventListener('keydown', e=>{
+$('modalWrap').addEventListener('click', e=&gt;{ if(e.target === $('modalWrap')) closeModal(); });
+$('modalBox').addEventListener('keydown', e=&gt;{
   if(e.key !== 'Enter') return;
   if($('mGo')) $('mGo').click();
   else if($('mPwGo')) $('mPwGo').click();
   else if($('aPwGo')) $('aPwGo').click();
   else if($('cpGo')) $('cpGo').click();
+  else if($('memGo')) $('memGo').click();
   else if($('joinGo')) $('joinGo').click();
 });
- $('modalBox').addEventListener('click', async e=>{
+$('modalBox').addEventListener('click', async e=&gt;{
   if(e.target.closest('[data-close]')) return closeModal();
   const pw = e.target.closest('#mPwGo');
   if(pw){
@@ -1283,7 +2253,7 @@ function closeModal(){
     closeModal();
     if(!val) return;                       // empty = cancelled
     if(!adminPwHash){                      // first time — set the password
-      if(val.length < 4) return toast('Use at least 4 characters.','bad');
+      if(val.length &lt; 4) return toast('Use at least 4 characters.','bad');
       saveAdminPw(val);
       return;
     }
@@ -1291,7 +2261,7 @@ function closeModal(){
     else{
       toast('Wrong admin password.','bad');
       $('logoBtn').classList.add('shake');
-      setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
+      setTimeout(()=&gt;$('logoBtn').classList.remove('shake'), 450);
     }
     return;
   }
@@ -1300,17 +2270,30 @@ function closeModal(){
   if(cp){
     const oldPw = $('cpOld').value, newPw = $('cpNew').value;
     if(!newPw) return toast('Enter a new password.','bad');
-    if(newPw.length < 4) return toast('New password needs 4+ characters.','bad');
-    if(adminPwHash && await sha256hex('admin:'+oldPw) !== adminPwHash.h) return toast('Current password is wrong.','bad');
+    if(newPw.length &lt; 4) return toast('New password needs 4+ characters.','bad');
+    if(adminPwHash &amp;&amp; await sha256hex('admin:'+oldPw) !== adminPwHash.h) return toast('Current password is wrong.','bad');
     try{
       const h = await sha256hex('admin:'+newPw);
       await set(ref(db,'config/adminPw'), {h, set:Date.now(), by:me});
       adminPwHash = {h};
       closeModal(); toast('Admin password saved.','ok');
       if(activeTab==='ovw') renderOverview();
-    }catch{ toast("Couldn't save password.",'bad'); }
+    }catch{ toast(&quot;Couldn't save password.&quot;,'bad'); }
     return;
   }
+  // hidden-server members: add
+  const mg = e.target.closest('#memGo');
+  if(mg){
+    const sid = mg.dataset.sid;
+    const u = ($('memIn').value||'').trim().toLowerCase();
+    if(!u) return toast('Type a username first.','bad');
+    await addMember(sid, u);
+    const inp = $('memIn'); if(inp){ inp.value = ''; inp.focus(); }
+    return;
+  }
+  // hidden-server members: remove
+  const um = e.target.closest('[data-unmem]');
+  if(um){ await removeMember(um.dataset.sid, um.dataset.unmem); return; }
   const th = e.target.closest('[data-theme-set]');
   if(th){ setTheme(th.dataset.themeSet); markSettings(); return; }
   const fx = e.target.closest('[data-fx]');
@@ -1327,10 +2310,10 @@ function closeModal(){
   const go = e.target.closest('#mGo'); if(!go) return;
   const name = ($('mName').value || '').trim().replace(/^#/,'');
   if(!name) return toast('Give it a name.','bad');
-  const pwv = ($('mPw') && $('mPw').value) || '';
-  const hidden = !!($('mHidden') && $('mHidden').checked);
+  const pwv = ($('mPw') &amp;&amp; $('mPw').value) || '';
+  const hidden = !!($('mHidden') &amp;&amp; $('mHidden').checked);
   go.disabled = true;
-  (async ()=>{
+  (async ()=&gt;{
     try{
       const sid = push(ref(db,'servers')).key;
       const sObj = {name, owner:me, createdAt:Date.now()};
@@ -1338,37 +2321,37 @@ function closeModal(){
       if(hidden) sObj.hidden = true;
       await set(ref(db,`servers/${sid}`), sObj);
       if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
-      if(hidden) toast(`Server created — ID: ${sid} (share it to invite).`,'ok');
+      if(hidden) toast(`Server created — ID: ${sid} (or add people from the sidebar).`,'ok');
       else toast('Server created.','ok');
       closeModal(); selectServer(sid, true);
-    }catch(err){ toast((err && err.message) || 'Failed.','bad'); go.disabled = false; }
+    }catch(err){ toast((err &amp;&amp; err.message) || 'Failed.','bad'); go.disabled = false; }
   })();
 });
- $('addServerBtn').onclick = ()=>{
-  openModal(`<h3>New server</h3>
-    <p class="sub">Make your own space.</p>
-    <label>server name<input id="mName" maxlength="24" placeholder="movie night" spellcheck="false"></label>
-    <label>passcode <span class="opt">(optional)</span><input id="mPw" type="password" autocomplete="new-password"></label>
-    <label class="chk"><input type="checkbox" id="mHidden"> hidden — joinable only with an ID</label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="mGo">Create server</button></div>`);
-  setTimeout(()=>$('mName')?.focus(), 50);
+$('addServerBtn').onclick = ()=&gt;{
+  openModal(`&lt;h3&gt;New server&lt;/h3&gt;
+    &lt;p class=&quot;sub&quot;&gt;Make your own space.&lt;/p&gt;
+    &lt;label&gt;server name&lt;input id=&quot;mName&quot; maxlength=&quot;24&quot; placeholder=&quot;movie night&quot; spellcheck=&quot;false&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;passcode &lt;span class=&quot;opt&quot;&gt;(optional)&lt;/span&gt;&lt;input id=&quot;mPw&quot; type=&quot;password&quot; autocomplete=&quot;new-password&quot;&gt;&lt;/label&gt;
+    &lt;label class=&quot;chk&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;mHidden&quot;&gt; hidden — invite people or share the ID&lt;/label&gt;
+    &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn&quot; data-close&gt;Cancel&lt;/button&gt;&lt;button class=&quot;btn acc&quot; id=&quot;mGo&quot;&gt;Create server&lt;/button&gt;&lt;/div&gt;`);
+  setTimeout(()=&gt;$('mName')?.focus(), 50);
 };
- $('settingsBtn').onclick = ()=>{
-  openModal(`<h3>Settings</h3>
-    <label>theme</label>
-    <div class="seg">
-      <button class="seg-b" data-theme-set="dark">Dark</button>
-      <button class="seg-b" data-theme-set="light">Light</button>
-    </div>
-    <label>chat background</label>
-    <div class="fx-grid">${Object.entries(VANTA_FX).map(([k,v])=>`<button class="fx-b" data-fx="${k}">${v.label}</button>`).join('')}</div>
-    <p class="sub mono" style="margin-top:16px">relay v${VERSION}</p>
-    <div class="m-actions"><button class="btn acc" data-close>Done</button></div>`);
+$('settingsBtn').onclick = ()=&gt;{
+  openModal(`&lt;h3&gt;Settings&lt;/h3&gt;
+    &lt;label&gt;theme&lt;/label&gt;
+    &lt;div class=&quot;seg&quot;&gt;
+      &lt;button class=&quot;seg-b&quot; data-theme-set=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;button class=&quot;seg-b&quot; data-theme-set=&quot;light&quot;&gt;Light&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;label&gt;chat background&lt;/label&gt;
+    &lt;div class=&quot;fx-grid&quot;&gt;${Object.entries(VANTA_FX).map(([k,v])=&gt;`&lt;button class=&quot;fx-b&quot; data-fx=&quot;${k}&quot;&gt;${v.label}&lt;/button&gt;`).join('')}&lt;/div&gt;
+    &lt;p class=&quot;sub mono&quot; style=&quot;margin-top:16px&quot;&gt;relay v${VERSION}&lt;/p&gt;
+    &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn acc&quot; data-close&gt;Done&lt;/button&gt;&lt;/div&gt;`);
   markSettings();
 };
 function markSettings(){
-  document.querySelectorAll('.seg-b').forEach(b=>b.classList.toggle('active', b.dataset.themeSet===curTheme));
-  document.querySelectorAll('.fx-b').forEach(b=>b.classList.toggle('active', b.dataset.fx===vantaKey));
+  document.querySelectorAll('.seg-b').forEach(b=&gt;b.classList.toggle('active', b.dataset.themeSet===curTheme));
+  document.querySelectorAll('.fx-b').forEach(b=&gt;b.classList.toggle('active', b.dataset.fx===vantaKey));
 }
 
 /* ================= GIPHY ================= */
@@ -1377,40 +2360,43 @@ function openGif(){
   $('gifWrap').hidden = false; loadGifs('');
 }
 function closeGif(){ $('gifWrap').hidden = true; $('gifSearch').value = ''; }
- $('gifBtn').onclick = openGif;
- $('gifClose').onclick = closeGif;
- $('gifWrap').addEventListener('click', e=>{ if(e.target === $('gifWrap')) closeGif(); });
+$('gifBtn').onclick = openGif;
+$('gifClose').onclick = closeGif;
+$('gifWrap').addEventListener('click', e=&gt;{ if(e.target === $('gifWrap')) closeGif(); });
 async function loadGifs(q){
-  $('gifGrid').innerHTML = '<div class="empty">loading…</div>';
+  $('gifGrid').innerHTML = '&lt;div class=&quot;empty&quot;&gt;loading…&lt;/div&gt;';
   try{
     const url = q
-      ? `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_KEY}&q=${encodeURIComponent(q)}&limit=30&rating=pg-13`
-      : `https://api.giphy.com/v1/gifs/trending?api_key=${GIPHY_KEY}&limit=30&rating=pg-13`;
+      ? `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_KEY}&amp;q=${encodeURIComponent(q)}&amp;limit=30&amp;rating=pg-13`
+      : `https://api.giphy.com/v1/gifs/trending?api_key=${GIPHY_KEY}&amp;limit=30&amp;rating=pg-13`;
     const j = await (await fetch(url)).json();
-    const data = (j.data || []).map(g => ({url:g.images.fixed_height.url, w:g.images.fixed_height.width, h:g.images.fixed_height.height}));
+    const data = (j.data || []).map(g =&gt; ({url:g.images.fixed_height.url, w:g.images.fixed_height.width, h:g.images.fixed_height.height}));
     $('gifGrid').innerHTML = data.length
-      ? data.map(g=>`<button class="gcell" data-url="${esc(g.url)}" data-w="${g.w}" data-h="${g.h}"><img src="${esc(g.url)}" alt="gif" loading="lazy"></button>`).join('')
-      : '<div class="empty">Nothing found.</div>';
+      ? data.map(g=&gt;`&lt;button class=&quot;gcell&quot; data-url=&quot;${esc(g.url)}&quot; data-w=&quot;${g.w}&quot; data-h=&quot;${g.h}&quot;&gt;&lt;img src=&quot;${esc(g.url)}&quot; alt=&quot;gif&quot; loading=&quot;lazy&quot;&gt;&lt;/button&gt;`).join('')
+      : '&lt;div class=&quot;empty&quot;&gt;Nothing found.&lt;/div&gt;';
   }catch{
-    $('gifGrid').innerHTML = '<div class="empty">GIPHY unreachable — check key / network.</div>';
+    $('gifGrid').innerHTML = '&lt;div class=&quot;empty&quot;&gt;GIPHY unreachable — check key / network.&lt;/div&gt;';
   }
 }
 let gifDeb;
- $('gifSearch').addEventListener('input', ()=>{ clearTimeout(gifDeb); gifDeb = setTimeout(()=>loadGifs($('gifSearch').value.trim()), 350); });
- $('gifSearch').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); clearTimeout(gifDeb); loadGifs($('gifSearch').value.trim()); } });
- $('gifGrid').addEventListener('click', e=>{
+$('gifSearch').addEventListener('input', ()=&gt;{ clearTimeout(gifDeb); gifDeb = setTimeout(()=&gt;loadGifs($('gifSearch').value.trim()), 350); });
+$('gifSearch').addEventListener('keydown', e=&gt;{ if(e.key==='Enter'){ e.preventDefault(); clearTimeout(gifDeb); loadGifs($('gifSearch').value.trim()); } });
+$('gifGrid').addEventListener('click', e=&gt;{
   const c = e.target.closest('.gcell'); if(!c || !curPath) return;
+  const err = spamCheck(c.dataset.url);           // gifs follow the same spam rules
+  if(err) return toast(err,'bad');
+  markSent(c.dataset.url);
   push(ref(db,curPath), {u:me, t:Date.now(), type:'gif', url:c.dataset.url, w:+c.dataset.w||200, h:+c.dataset.h||200})
-    .catch(()=>toast("Couldn't send that GIF.",'bad'));
+    .catch(()=&gt;toast(&quot;Couldn't send that GIF.&quot;,'bad'));
   closeGif();
 });
 
 /* ================= SECRET: TRIPLE-CLICK LOGO → ADMIN PANEL ================= */
- $('logoBtn').addEventListener('click', ()=>{
+$('logoBtn').addEventListener('click', ()=&gt;{
   clickCount++;
   clearTimeout(clickTimer);
-  clickTimer = setTimeout(()=>{ clickCount = 0; $('svcLine').textContent=''; $('svcLine').className='svc-line mono'; }, 900);
-  if(clickCount >= 3){ clickCount = 0; svcAuth(); }
+  clickTimer = setTimeout(()=&gt;{ clickCount = 0; $('svcLine').textContent=''; $('svcLine').className='svc-line mono'; }, 900);
+  if(clickCount &gt;= 3){ clickCount = 0; svcAuth(); }
 });
 async function svcAuth(){
   const line = $('svcLine');
@@ -1425,24 +2411,24 @@ async function svcAuth(){
   if(ok){ await sleep(320); adminGate(); }
   else{
     $('logoBtn').classList.add('shake');
-    setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
+    setTimeout(()=&gt;$('logoBtn').classList.remove('shake'), 450);
     toast('Admin panel is for admins only.','bad');
   }
-  setTimeout(()=>{ line.textContent=''; line.className='svc-line mono'; }, 2200);
+  setTimeout(()=&gt;{ line.textContent=''; line.className='svc-line mono'; }, 2200);
 }
 
 /* ================= ADMIN PANEL + PASSWORD GATE ================= */
-const isAdmin = () => !!(me && adminMap[me]);
+const isAdmin = () =&gt; !!(me &amp;&amp; adminMap[me]);
 
-// password popup between "ADMIN ACCESS OK" and the panel itself
+// password popup between &quot;ADMIN ACCESS OK&quot; and the panel itself
 function adminGate(){
   if(!isAdmin()){ toast('Admins only.','bad'); return; }
   const first = !adminPwHash;
-  openModal(`<h3>${first ? 'Set an admin password' : 'Admin password'}</h3>
-    <p class="sub">${first ? 'Pick one now — you&apos;ll need it every time the panel opens.' : 'Enter the admin password to open the panel.'}</p>
-    <label>password<input type="password" id="aPwIn" autocomplete="off"></label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="aPwGo">${first ? 'Set &amp; open' : 'Unlock'}</button></div>`);
-  setTimeout(()=>$('aPwIn')?.focus(), 50);
+  openModal(`&lt;h3&gt;${first ? 'Set an admin password' : 'Admin password'}&lt;/h3&gt;
+    &lt;p class=&quot;sub&quot;&gt;${first ? 'Pick one now — you&amp;apos;ll need it every time the panel opens.' : 'Enter the admin password to open the panel.'}&lt;/p&gt;
+    &lt;label&gt;password&lt;input type=&quot;password&quot; id=&quot;aPwIn&quot; autocomplete=&quot;off&quot;&gt;&lt;/label&gt;
+    &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn&quot; data-close&gt;Cancel&lt;/button&gt;&lt;button class=&quot;btn acc&quot; id=&quot;aPwGo&quot;&gt;${first ? 'Set &amp;amp; open' : 'Unlock'}&lt;/button&gt;&lt;/div&gt;`);
+  setTimeout(()=&gt;$('aPwIn')?.focus(), 50);
 }
 async function saveAdminPw(pw){
   try{
@@ -1451,14 +2437,14 @@ async function saveAdminPw(pw){
     adminPwHash = {h};
     toast('Admin password set.','ok');
     openDrawer();
-  }catch{ toast("Couldn't save the password.",'bad'); }
+  }catch{ toast(&quot;Couldn't save the password.&quot;,'bad'); }
 }
 function chgPwModal(){
-  openModal(`<h3>Change admin password</h3>
-    <label>current password<input type="password" id="cpOld" autocomplete="off"></label>
-    <label>new password<input type="password" id="cpNew" autocomplete="off"></label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="cpGo">Save</button></div>`);
-  setTimeout(()=>$('cpOld')?.focus(), 50);
+  openModal(`&lt;h3&gt;Change admin password&lt;/h3&gt;
+    &lt;label&gt;current password&lt;input type=&quot;password&quot; id=&quot;cpOld&quot; autocomplete=&quot;off&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;new password&lt;input type=&quot;password&quot; id=&quot;cpNew&quot; autocomplete=&quot;off&quot;&gt;&lt;/label&gt;
+    &lt;div class=&quot;m-actions&quot;&gt;&lt;button class=&quot;btn&quot; data-close&gt;Cancel&lt;/button&gt;&lt;button class=&quot;btn acc&quot; id=&quot;cpGo&quot;&gt;Save&lt;/button&gt;&lt;/div&gt;`);
+  setTimeout(()=&gt;$('cpOld')?.focus(), 50);
 }
 
 function openDrawer(){
@@ -1466,21 +2452,21 @@ function openDrawer(){
   drawerOpen = true;
   $('admWho').textContent = '· signed in as ' + me;
   $('drawerWrap').hidden = false;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>$('drawer').classList.add('open')));
+  requestAnimationFrame(()=&gt;requestAnimationFrame(()=&gt;$('drawer').classList.add('open')));
   setTab(activeTab);
 }
 function closeDrawer(){
   drawerOpen = false;
   $('drawer').classList.remove('open');
-  setTimeout(()=>{ $('drawerWrap').hidden = true; }, 320);
+  setTimeout(()=&gt;{ $('drawerWrap').hidden = true; }, 320);
 }
- $('drawerClose').onclick = closeDrawer;
- $('drawerOvl').onclick = closeDrawer;
-document.querySelectorAll('.drawer-tabs button').forEach(b => b.onclick = ()=>setTab(b.dataset.tab));
+$('drawerClose').onclick = closeDrawer;
+$('drawerOvl').onclick = closeDrawer;
+document.querySelectorAll('.drawer-tabs button').forEach(b =&gt; b.onclick = ()=&gt;setTab(b.dataset.tab));
 function setTab(t){
   activeTab = t;
-  document.querySelectorAll('.drawer-tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===t));
-  ['ovw','srv','usr','net'].forEach(k=>$('pane-'+k).hidden = (k !== t));
+  document.querySelectorAll('.drawer-tabs button').forEach(b=&gt;b.classList.toggle('active', b.dataset.tab===t));
+  ['ovw','srv','usr','net'].forEach(k=&gt;$('pane-'+k).hidden = (k !== t));
   if(t==='ovw') renderOverview();
   else if(t==='srv') renderAdminServers();
   else if(t==='net') renderNet();
@@ -1490,7 +2476,7 @@ function refreshPanes(){
   if(activeTab==='ovw') renderOverview();
   else if(activeTab==='srv') renderAdminServers();
   else if(activeTab==='net') renderNet();
-  else if(activeTab==='usr' && lookupUser) renderLookup(lookupUser);
+  else if(activeTab==='usr' &amp;&amp; lookupUser) renderLookup(lookupUser);
 }
 function arm(btn, fn){
   if(btn.dataset.armed){
@@ -1500,107 +2486,107 @@ function arm(btn, fn){
   }
   btn.dataset.label = btn.textContent;
   btn.classList.add('armed'); btn.textContent = 'SURE?';
-  btn.dataset.armed = setTimeout(()=>{
+  btn.dataset.armed = setTimeout(()=&gt;{
     delete btn.dataset.armed; btn.classList.remove('armed'); btn.textContent = btn.dataset.label;
   }, 2600);
 }
 function renderOverview(){
-  const onl = Object.values(presenceMap).filter(p=>p && p.online).length;
+  const onl = Object.values(presenceMap).filter(p=&gt;p &amp;&amp; p.online).length;
   $('admStats').innerHTML = `
-    <div class="stat"><b>${Object.keys(usersMap).length}</b><span>accounts</span></div>
-    <div class="stat"><b>${Object.keys(serversMap).length}</b><span>servers</span></div>
-    <div class="stat"><b>${onl}</b><span>online now</span></div>
-    <div class="stat"><b>${Object.keys(bannedIps).length}</b><span>banned IPs</span></div>
-    <div class="stat"><b>${Object.keys(bannedUsers).length}</b><span>banned accounts</span></div>`;
+    &lt;div class=&quot;stat&quot;&gt;&lt;b&gt;${Object.keys(usersMap).length}&lt;/b&gt;&lt;span&gt;accounts&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;stat&quot;&gt;&lt;b&gt;${Object.keys(serversMap).length}&lt;/b&gt;&lt;span&gt;servers&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;stat&quot;&gt;&lt;b&gt;${onl}&lt;/b&gt;&lt;span&gt;online now&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;stat&quot;&gt;&lt;b&gt;${Object.keys(bannedIps).length}&lt;/b&gt;&lt;span&gt;banned IPs&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;stat&quot;&gt;&lt;b&gt;${Object.keys(bannedUsers).length}&lt;/b&gt;&lt;span&gt;banned accounts&lt;/span&gt;&lt;/div&gt;`;
   $('admPwState').textContent = adminPwHash
     ? `required to open this panel${adminPwHash.set ? ' · set ${fmtDate(adminPwHash.set)}' : ''}`
     : 'not set yet — will be requested next time the panel opens';
-  const recent = Object.entries(usersMap).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,6);
+  const recent = Object.entries(usersMap).sort((a,b)=&gt;(b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,6);
   $('admRecent').innerHTML = recent.length
-    ? recent.map(([u,v])=>`<div class="mini-row"><b>${esc(u)}</b><span>joined ${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}</span></div>`).join('')
-    : '<div class="empty">No accounts yet.</div>';
+    ? recent.map(([u,v])=&gt;`&lt;div class=&quot;mini-row&quot;&gt;&lt;b&gt;${esc(u)}&lt;/b&gt;&lt;span&gt;joined ${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}&lt;/span&gt;&lt;/div&gt;`).join('')
+    : '&lt;div class=&quot;empty&quot;&gt;No accounts yet.&lt;/div&gt;';
 }
 function renderAdminServers(){
-  const es = Object.entries(serversMap).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
-  $('admSrvList').innerHTML = es.length ? es.map(([sid,s])=>`
-    <div class="adm-row">
-      <div class="info"><b>${esc(s.name||'server')}</b>
-        <div class="sub">owner ${esc(s.owner||'?')} · since ${fmtDate(s.createdAt)}${s.locked?' · locked':''}${s.hidden?' · hidden':''} · id ${sid}</div></div>
-      <div class="acts">
-        <button class="btn" data-act="clear-srv" data-sid="${sid}">CLEAR MSGS</button>
-        <button class="btn danger" data-act="del-srv" data-sid="${sid}">DELETE</button>
-      </div></div>`).join('') : '<div class="empty">No servers exist.</div>';
+  const es = Object.entries(serversMap).sort((a,b)=&gt;(a[1].createdAt||0)-(b[1].createdAt||0));
+  $('admSrvList').innerHTML = es.length ? es.map(([sid,s])=&gt;`
+    &lt;div class=&quot;adm-row&quot;&gt;
+      &lt;div class=&quot;info&quot;&gt;&lt;b&gt;${esc(s.name||'server')}&lt;/b&gt;
+        &lt;div class=&quot;sub&quot;&gt;owner ${esc(s.owner||'?')} · since ${fmtDate(s.createdAt)}${s.locked?' · locked':''}${s.hidden?' · hidden':''} · ${Object.keys(s.members||{}).length} members · id ${sid}&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;acts&quot;&gt;
+        &lt;button class=&quot;btn&quot; data-act=&quot;clear-srv&quot; data-sid=&quot;${sid}&quot;&gt;CLEAR MSGS&lt;/button&gt;
+        &lt;button class=&quot;btn danger&quot; data-act=&quot;del-srv&quot; data-sid=&quot;${sid}&quot;&gt;DELETE&lt;/button&gt;
+      &lt;/div&gt;&lt;/div&gt;`).join('') : '&lt;div class=&quot;empty&quot;&gt;No servers exist.&lt;/div&gt;';
 }
 function chipHTML(p, curIp){
   const ip = p.ip || '—';
   const banned = bannedIps[ipKey(ip)];
-  return `<span class="chip${ip===curIp?' cur':''}" data-copy="${esc(ip)}" title="click to copy">${esc(ip)}<i class="cnt">·${p.count||1}×</i>${banned?'<i class="cnt" style="color:var(--bad)">BANNED</i>':''}${banned?'':`<button data-act="ban-ip" data-ip="${esc(ip)}">BAN</button>`}</span>`;
+  return `&lt;span class=&quot;chip${ip===curIp?' cur':''}&quot; data-copy=&quot;${esc(ip)}&quot; title=&quot;click to copy&quot;&gt;${esc(ip)}&lt;i class=&quot;cnt&quot;&gt;·${p.count||1}×&lt;/i&gt;${banned?'&lt;i class=&quot;cnt&quot; style=&quot;color:var(--bad)&quot;&gt;BANNED&lt;/i&gt;':''}${banned?'':`&lt;button data-act=&quot;ban-ip&quot; data-ip=&quot;${esc(ip)}&quot;&gt;BAN&lt;/button&gt;`}&lt;/span&gt;`;
 }
 function renderNet(){
-  const bl = Object.entries(bannedIps).sort((a,b)=>(b[1].at||0)-(a[1].at||0));
-  $('bannedIpList').innerHTML = bl.length ? bl.map(([k,v])=>`
-    <div class="adm-row"><div class="info"><b class="mono">${esc(v.ip||k)}</b>
-      <div class="sub">${esc(v.reason||'no reason')} · by ${esc(v.by||'?')} · ${fmtDate(v.at)}</div></div>
-      <div class="acts"><button class="btn" data-act="unban-ip" data-ip="${esc(v.ip||k)}">UNBAN</button></div></div>`).join('')
-    : '<div class="empty">No banned IPs.</div>';
+  const bl = Object.entries(bannedIps).sort((a,b)=&gt;(b[1].at||0)-(a[1].at||0));
+  $('bannedIpList').innerHTML = bl.length ? bl.map(([k,v])=&gt;`
+    &lt;div class=&quot;adm-row&quot;&gt;&lt;div class=&quot;info&quot;&gt;&lt;b class=&quot;mono&quot;&gt;${esc(v.ip||k)}&lt;/b&gt;
+      &lt;div class=&quot;sub&quot;&gt;${esc(v.reason||'no reason')} · by ${esc(v.by||'?')} · ${fmtDate(v.at)}&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;acts&quot;&gt;&lt;button class=&quot;btn&quot; data-act=&quot;unban-ip&quot; data-ip=&quot;${esc(v.ip||k)}&quot;&gt;UNBAN&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;`).join('')
+    : '&lt;div class=&quot;empty&quot;&gt;No banned IPs.&lt;/div&gt;';
   const ba = Object.entries(bannedUsers);
-  $('bannedAccList').innerHTML = ba.length ? ba.map(([u,r])=>`
-    <div class="adm-row"><div class="info"><b>${esc(u)}</b>
-      <div class="sub">${esc(reasonOf(r))}</div></div>
-      <div class="acts"><button class="btn" data-act="unban-user" data-u="${esc(u)}">UNBAN</button></div></div>`).join('')
-    : '<div class="empty">No banned accounts.</div>';
-  const us = Object.entries(usersMap).sort((a,b)=>(b[1].lastLogin||0)-(a[1].lastLogin||0));
-  $('ipUsers').innerHTML = us.length ? us.map(([u,v])=>{
-    const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
-    return `<div class="ip-user">
-      <div class="h"><b>${esc(u)}</b><span>last login ${fmtDate(v.lastLogin)} · now ${esc(v.ip||'—')}</span></div>
-      <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono" style="color:var(--faint);font-size:11px">no IPs logged</span>'}</div>
-    </div>`;
-  }).join('') : '<div class="empty">No registered users.</div>';
+  $('bannedAccList').innerHTML = ba.length ? ba.map(([u,r])=&gt;`
+    &lt;div class=&quot;adm-row&quot;&gt;&lt;div class=&quot;info&quot;&gt;&lt;b&gt;${esc(u)}&lt;/b&gt;
+      &lt;div class=&quot;sub&quot;&gt;${esc(reasonOf(r))}&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;acts&quot;&gt;&lt;button class=&quot;btn&quot; data-act=&quot;unban-user&quot; data-u=&quot;${esc(u)}&quot;&gt;UNBAN&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;`).join('')
+    : '&lt;div class=&quot;empty&quot;&gt;No banned accounts.&lt;/div&gt;';
+  const us = Object.entries(usersMap).sort((a,b)=&gt;(b[1].lastLogin||0)-(a[1].lastLogin||0));
+  $('ipUsers').innerHTML = us.length ? us.map(([u,v])=&gt;{
+    const ips = Object.values(v.ips||{}).sort((a,b)=&gt;(b.last||0)-(a.last||0));
+    return `&lt;div class=&quot;ip-user&quot;&gt;
+      &lt;div class=&quot;h&quot;&gt;&lt;b&gt;${esc(u)}&lt;/b&gt;&lt;span&gt;last login ${fmtDate(v.lastLogin)} · now ${esc(v.ip||'—')}&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;chips&quot;&gt;${ips.length ? ips.map(p=&gt;chipHTML(p, v.ip)).join('') : '&lt;span class=&quot;mono&quot; style=&quot;color:var(--faint);font-size:11px&quot;&gt;no IPs logged&lt;/span&gt;'}&lt;/div&gt;
+    &lt;/div&gt;`;
+  }).join('') : '&lt;div class=&quot;empty&quot;&gt;No registered users.&lt;/div&gt;';
 }
 async function renderLookup(u){
   lookupUser = u || null;
   const box = $('userCard');
-  if(!u){ box.innerHTML = '<div class="empty">Enter a username to pull up their record.</div>'; return; }
+  if(!u){ box.innerHTML = '&lt;div class=&quot;empty&quot;&gt;Enter a username to pull up their record.&lt;/div&gt;'; return; }
   const v = usersMap[u];
-  if(!v){ box.innerHTML = `<div class="empty">No account called "${esc(u)}".</div>`; return; }
+  if(!v){ box.innerHTML = `&lt;div class=&quot;empty&quot;&gt;No account called &quot;${esc(u)}&quot;.&lt;/div&gt;`; return; }
   const pres = presenceMap[u] || {};
   let fr = {};
   try{ fr = (await get(ref(db,`friends/${u}`))).val() || {}; }catch{}
-  const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
+  const ips = Object.values(v.ips||{}).sort((a,b)=&gt;(b.last||0)-(a.last||0));
   const av = v.avatar;
   box.innerHTML = `
-    <div class="ucard">
-      <div class="uc-head">
-        ${av?`<div class="ava"><img src="${esc(av)}" alt=""></div>`:`<div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>`}
-        <div><b style="color:${nameColor(u)}">${esc(u)}</b>
-          <div class="st">${pres.online ? `<span style="color:var(--ok)">ONLINE</span> · ip ${esc(pres.ip||'?')}` : 'OFFLINE'}</div></div>
-        ${bannedUsers[u] ? '<span class="tagb">BANNED</span>' : ''}
-      </div>
-      <div class="u-meta">
-        <div><i>joined</i><b>${fmtDate(v.createdAt)}</b></div>
-        <div><i>last login</i><b>${fmtDate(v.lastLogin)}</b></div>
-        <div><i>current ip</i><b class="mono">${esc(v.ip||'—')}</b></div>
-        <div><i>ips tracked</i><b>${ips.length}/${MAX_IPS}</b></div>
-      </div>
-      <div class="lbl">IP history (max ${MAX_IPS})</div>
-      <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono muted" style="font-size:11px">none logged</span>'}</div>
-      <div class="lbl">Friends (${Object.keys(fr).length})</div>
-      <div class="chips">${Object.keys(fr).map(f=>`<span class="chip plain">${esc(f)}</span>`).join('') || '<span class="mono muted" style="font-size:11px">none</span>'}</div>
-      <div class="lbl">Admin actions</div>
-      <div class="uc-acts">
-        <input id="ucReason" placeholder="reason (optional, used for bans)">
-        <button class="btn danger" data-act="ban-user" data-u="${esc(u)}">${bannedUsers[u]?'BAN (update)':'BAN ACCOUNT'}</button>
-        <button class="btn danger" data-act="ban-cur-ip" data-ip="${esc(v.ip||'')}" data-u="${esc(u)}">BAN CURRENT IP</button>
-        <button class="btn danger" data-act="del-user" data-u="${esc(u)}">DELETE ACCOUNT</button>
-      </div>
-    </div>`;
+    &lt;div class=&quot;ucard&quot;&gt;
+      &lt;div class=&quot;uc-head&quot;&gt;
+        ${av?`&lt;div class=&quot;ava&quot;&gt;&lt;img src=&quot;${esc(av)}&quot; alt=&quot;&quot;&gt;&lt;/div&gt;`:`&lt;div class=&quot;ava&quot; style=&quot;background:${uColor(u)}&quot;&gt;${esc(u[0].toUpperCase())}&lt;/div&gt;`}
+        &lt;div&gt;&lt;b style=&quot;color:${nameColor(u)}&quot;&gt;${esc(u)}&lt;/b&gt;
+          &lt;div class=&quot;st&quot;&gt;${pres.online ? `&lt;span style=&quot;color:var(--ok)&quot;&gt;ONLINE&lt;/span&gt; · ip ${esc(pres.ip||'?')}` : 'OFFLINE'}&lt;/div&gt;&lt;/div&gt;
+        ${bannedUsers[u] ? '&lt;span class=&quot;tagb&quot;&gt;BANNED&lt;/span&gt;' : ''}
+      &lt;/div&gt;
+      &lt;div class=&quot;u-meta&quot;&gt;
+        &lt;div&gt;&lt;i&gt;joined&lt;/i&gt;&lt;b&gt;${fmtDate(v.createdAt)}&lt;/b&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;i&gt;last login&lt;/i&gt;&lt;b&gt;${fmtDate(v.lastLogin)}&lt;/b&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;i&gt;current ip&lt;/i&gt;&lt;b class=&quot;mono&quot;&gt;${esc(v.ip||'—')}&lt;/b&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;i&gt;ips tracked&lt;/i&gt;&lt;b&gt;${ips.length}/${MAX_IPS}&lt;/b&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;lbl&quot;&gt;IP history (max ${MAX_IPS})&lt;/div&gt;
+      &lt;div class=&quot;chips&quot;&gt;${ips.length ? ips.map(p=&gt;chipHTML(p, v.ip)).join('') : '&lt;span class=&quot;mono muted&quot; style=&quot;font-size:11px&quot;&gt;none logged&lt;/span&gt;'}&lt;/div&gt;
+      &lt;div class=&quot;lbl&quot;&gt;Friends (${Object.keys(fr).length})&lt;/div&gt;
+      &lt;div class=&quot;chips&quot;&gt;${Object.keys(fr).map(f=&gt;`&lt;span class=&quot;chip plain&quot;&gt;${esc(f)}&lt;/span&gt;`).join('') || '&lt;span class=&quot;mono muted&quot; style=&quot;font-size:11px&quot;&gt;none&lt;/span&gt;'}&lt;/div&gt;
+      &lt;div class=&quot;lbl&quot;&gt;Admin actions&lt;/div&gt;
+      &lt;div class=&quot;uc-acts&quot;&gt;
+        &lt;input id=&quot;ucReason&quot; placeholder=&quot;reason (optional, used for bans)&quot;&gt;
+        &lt;button class=&quot;btn danger&quot; data-act=&quot;ban-user&quot; data-u=&quot;${esc(u)}&quot;&gt;${bannedUsers[u]?'BAN (update)':'BAN ACCOUNT'}&lt;/button&gt;
+        &lt;button class=&quot;btn danger&quot; data-act=&quot;ban-cur-ip&quot; data-ip=&quot;${esc(v.ip||'')}&quot; data-u=&quot;${esc(u)}&quot;&gt;BAN CURRENT IP&lt;/button&gt;
+        &lt;button class=&quot;btn danger&quot; data-act=&quot;del-user&quot; data-u=&quot;${esc(u)}&quot;&gt;DELETE ACCOUNT&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;`;
 }
- $('lookupBtn').onclick = ()=>renderLookup($('lookupInput').value.trim().toLowerCase());
- $('lookupInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('lookupBtn').click(); } });
- $('banIpGo').onclick = async ()=>{
+$('lookupBtn').onclick = ()=&gt;renderLookup($('lookupInput').value.trim().toLowerCase());
+$('lookupInput').addEventListener('keydown', e=&gt;{ if(e.key==='Enter'){ e.preventDefault(); $('lookupBtn').click(); } });
+$('banIpGo').onclick = async ()=&gt;{
   const ip = $('banIpInput').value.trim();
-  if(!/^[0-9a-fA-F.:]{3,45}$/.test(ip)) return toast("That doesn't look like an IP.",'bad');
+  if(!/^[0-9a-fA-F.:]{3,45}$/.test(ip)) return toast(&quot;That doesn't look like an IP.&quot;,'bad');
   await admBanIp(ip, $('banIpReason').value.trim());
   $('banIpInput').value = ''; $('banIpReason').value = '';
   renderNet();
@@ -1618,10 +2604,10 @@ async function admDeleteServer(sid){
     await remove(ref(db,`messages/${sid}`));
     await remove(ref(db,`roomPasswords/${sid}`));
     await remove(ref(db,`servers/${sid}`));
-    Object.keys(usersMap).forEach(u=>{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=>{}); });
-    Object.entries(presenceMap).forEach(([u,p])=>{ if(p && p.servers && p.servers[sid]) remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=>{}); });
+    Object.keys(usersMap).forEach(u=&gt;{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=&gt;{}); });
+    Object.entries(presenceMap).forEach(([u,p])=&gt;{ if(p &amp;&amp; p.servers &amp;&amp; p.servers[sid]) remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=&gt;{}); });
     if(cur.server === sid){
-      if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+      if(serverPres){ remove(serverPres).catch(()=&gt;{}); serverPres = null; }
       cur.server = null; resetChannel();
     }
     renderServers(); renderOnline(); updateOnlinePill();
@@ -1648,7 +2634,7 @@ async function admDeleteUser(u){
   if(!u) return;
   try{
     const fr = (await get(ref(db,`friends/${u}`))).val() || {};
-    await Promise.all(Object.keys(fr).map(f=>remove(ref(db,`friends/${f}/${u}`))));
+    await Promise.all(Object.keys(fr).map(f=&gt;remove(ref(db,`friends/${f}/${u}`))));
     await Promise.all([
       remove(ref(db,`users/${u}`)), remove(ref(db,`presence/${u}`)),
       remove(ref(db,`friendRequests/${u}`)), remove(ref(db,`friends/${u}`))
@@ -1669,33 +2655,33 @@ async function admUnbanIp(ip){
   try{ await remove(ref(db,`config/bannedIps/${ipKey(ip)}`)); toast(`IP ${ip} unbanned.`,'ok'); renderNet(); }
   catch{ toast('Unban failed.','bad'); }
 }
- $('drawerBody').addEventListener('click', e=>{
+$('drawerBody').addEventListener('click', e=&gt;{
   const b = e.target.closest('button[data-act]');
   if(b){
     const a = b.dataset.act;
-    if(a==='clear-srv')      arm(b, ()=>admClearServer(b.dataset.sid));
-    else if(a==='del-srv')   arm(b, ()=>admDeleteServer(b.dataset.sid));
+    if(a==='clear-srv')      arm(b, ()=&gt;admClearServer(b.dataset.sid));
+    else if(a==='del-srv')   arm(b, ()=&gt;admDeleteServer(b.dataset.sid));
     else if(a==='chg-pw')    chgPwModal();
-    else if(a==='ban-user')  arm(b, ()=>admBanUser(b.dataset.u, ($('ucReason')||{}).value ? $('ucReason').value.trim() : ''));
-    else if(a==='del-user')  arm(b, ()=>admDeleteUser(b.dataset.u));
-    else if(a==='ban-ip')    arm(b, ()=>admBanIp(b.dataset.ip));
-    else if(a==='ban-cur-ip')arm(b, ()=>admBanIp(b.dataset.ip, 'linked to '+b.dataset.u));
+    else if(a==='ban-user')  arm(b, ()=&gt;admBanUser(b.dataset.u, ($('ucReason')||{}).value ? $('ucReason').value.trim() : ''));
+    else if(a==='del-user')  arm(b, ()=&gt;admDeleteUser(b.dataset.u));
+    else if(a==='ban-ip')    arm(b, ()=&gt;admBanIp(b.dataset.ip));
+    else if(a==='ban-cur-ip')arm(b, ()=&gt;admBanIp(b.dataset.ip, 'linked to '+b.dataset.u));
     else if(a==='unban-ip')  admUnbanIp(b.dataset.ip);
     else if(a==='unban-user')admUnbanUser(b.dataset.u);
     return;
   }
   const chip = e.target.closest('.chip[data-copy]');
-  if(chip && !chip.classList.contains('plain')){
+  if(chip &amp;&amp; !chip.classList.contains('plain')){
     try{ navigator.clipboard.writeText(chip.dataset.copy); toast('IP copied to clipboard.','ok'); }catch{}
   }
 });
 
 /* ================= GLOBAL LIVE LISTENERS (incl. live ban enforcement) ================= */
-onValue(ref(db,'servers'), s=>{
+onValue(ref(db,'servers'), s=&gt;{
   serversMap = s.val()||{};
   if(me) renderServers();
 });
-onValue(ref(db,'users'), s=>{
+onValue(ref(db,'users'), s=&gt;{
   usersMap = s.val()||{};
   const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;   // login page stat
   if(me){
@@ -1703,32 +2689,42 @@ onValue(ref(db,'users'), s=>{
     renderMeChip(); refreshPanes(); refreshMsgStyles();   // live-update colors + avatars on screen
   }
 });
-onValue(ref(db,'presence'), s=>{
+onValue(ref(db,'presence'), s=&gt;{
   presenceMap = s.val()||{};
-  if(me){ renderOnline(); updateOnlinePill(); renderDMs(); refreshPanes(); }
+  if(me){
+    renderOnline(); updateOnlinePill(); renderDMs(); refreshPanes();
+    // member online-status in an open members modal
+    if(!$('modalWrap').hidden &amp;&amp; $('memList')) renderMemList(curMemSid());
+  }
 });
-onValue(ref(db,'config/admins'), s=>{
+onValue(ref(db,'config/admins'), s=&gt;{
   adminMap = s.val()||{};
   renderMeChip();
-  if(drawerOpen && !isAdmin()){ closeDrawer(); toast('Admin access revoked.','bad'); }
+  if(drawerOpen &amp;&amp; !isAdmin()){ closeDrawer(); toast('Admin access revoked.','bad'); }
 });
-onValue(ref(db,'config/adminPw'), s=>{
+onValue(ref(db,'config/adminPw'), s=&gt;{
   adminPwHash = s.val();   // {h, set, by} — null until first set
-  if(drawerOpen && activeTab==='ovw') renderOverview();
+  if(drawerOpen &amp;&amp; activeTab==='ovw') renderOverview();
 });
-onValue(ref(db,'config/bannedUsers'), s=>{
+onValue(ref(db,'config/bannedUsers'), s=&gt;{
   bannedUsers = s.val()||{};
-  if(me && bannedUsers[me]) return forceLogout('Account banned', reasonOf(bannedUsers[me]));
-  if(drawerOpen && activeTab==='net') renderNet();
+  if(me &amp;&amp; bannedUsers[me]) return forceLogout('Account banned', reasonOf(bannedUsers[me]));
+  if(drawerOpen &amp;&amp; activeTab==='net') renderNet();
 });
-onValue(ref(db,'config/bannedIps'), s=>{
+onValue(ref(db,'config/bannedIps'), s=&gt;{
   bannedIps = s.val()||{};
-  if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout("You're blocked", `your IP ${myIp} was banned`);
-  if(drawerOpen && activeTab==='net') renderNet();
+  if(me &amp;&amp; myIp &amp;&amp; bannedIps[ipKey(myIp)]) return forceLogout(&quot;You're blocked&quot;, `your IP ${myIp} was banned`);
+  if(drawerOpen &amp;&amp; activeTab==='net') renderNet();
 });
 
+// which server the open members modal belongs to (stored on the Add button)
+function curMemSid(){
+  const b = document.querySelector('#memGo');
+  return b ? b.dataset.sid : null;
+}
+
 /* ================= MISC BINDINGS ================= */
- $('logoutBtn').onclick = async ()=>{
+$('logoutBtn').onclick = async ()=&gt;{
   try{
     if(serverPres) await remove(serverPres);
     await update(ref(db,`users/${me}`), {sessToken:null});
@@ -1737,20 +2733,79 @@ onValue(ref(db,'config/bannedIps'), s=>{
   localStorage.removeItem('relay_session');
   location.reload();
 };
- $('kickReload').onclick = ()=> location.reload();
-document.addEventListener('keydown', e=>{
+$('kickReload').onclick = ()=&gt; location.reload();
+document.addEventListener('keydown', e=&gt;{
   if(e.key !== 'Escape') return;
   if(!$('gifWrap').hidden) closeGif();
   else if(!$('modalWrap').hidden) closeModal();
   else if(drawerOpen) closeDrawer();
+  else if(replyingTo) cancelReply();
 });
 
 /* ================= BOOT ================= */
-document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
- $('loginVer').textContent = 'v'+VERSION;
+document.querySelectorAll('[data-icon]').forEach(el=&gt;{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
+$('loginVer').textContent = 'v'+VERSION;
 (async function boot(){
   await tryAutoLogin();
 })();
-</script>
-</body>
-</html>
+&lt;/script&gt;
+
+&lt;/body&gt;&lt;/html&gt;
+			&lt;/body&gt;
+		&lt;/html&gt;
+"></iframe><!----> <section aria-live="polite" aria-relevant="additions text" aria-atomic="false" class="svelte-nbs0zk" tabindex="-1" aria-label="Notifications alt+T"><!----></section><!----> <div class="fixed top-[60px] right-4 z-[9999] flex flex-col gap-3 pointer-events-none"></div><!----><!----> <!----></div>
+
+		<script>
+			var token = localStorage.getItem('token');
+			var base = window.WEBUI_BASE_URL || '';
+			var lang = localStorage.locale ?? (navigator.language.includes('zh') ? 'zh-CN' : 'en-US');
+			var config = {
+				credentials: 'include',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					...(token ? { Authorization: `Bearer ${token}` } : {}),
+					'Accept-Language': lang
+				}
+			};
+
+			var sessionFetch = fetch(`${base}/api/v1/auths/`, config).then(async (res) => {
+				if (!res.ok) throw await res.json();
+				return res.json();
+			});
+
+			window.GLOBAL_FETCHES = {
+				session: sessionFetch,
+				config: fetch(`${base}/api/config`, config).then(async (res) => {
+					if (!res.ok) throw await res.json();
+					return res.json();
+				}),
+				// token 存在时与其他请求并行；不存在时需等 session 之后再请求 models
+				// 至少要 cookie 里有 token 才能正常请求 models
+				models: token
+					? fetch(`${base}/api/models`, config)
+					: sessionFetch.then(() => fetch(`${base}/api/models`, config)),
+				settings:
+					token &&
+					fetch(`${base}/api/v1/users/user/settings`, config).then(async (res) => {
+						if (!res.ok) throw await res.json();
+						return res.json();
+					})
+			};
+		</script>
+		<script async="" src="index_files/jquery.min_WWt7.js"></script>
+	
+
+
+<style type="text/css" nonce="">
+	@keyframes pulse {
+		50% {
+			opacity: 0.65;
+		}
+	}
+
+	.animate-pulse-fast {
+		animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+</style>
+</body></html>

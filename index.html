@@ -45,7 +45,6 @@ input::placeholder{color:var(--faint)}
 a{color:var(--acc);text-decoration:none;cursor:pointer}
 a:hover{text-decoration:underline}
 
-/* ---------- background (fixed, behind everything) ---------- */
 #vantaBg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 
 /* ---------- buttons ---------- */
@@ -53,17 +52,14 @@ a:hover{text-decoration:underline}
 .btn:hover{border-color:var(--muted)}
 .btn.acc{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
 .btn.acc:hover{background:var(--acc-hi);border-color:var(--acc-hi)}
-.btn.danger{border-color:rgba(240,109,109,.4);color:var(--bad)}
-.btn.danger:hover{border-color:var(--bad);background:rgba(240,109,109,.08)}
-.btn.armed{border-color:var(--bad);color:var(--bad);background:rgba(240,109,109,.12);animation:armedPulse 1s infinite}
 .btn:disabled{opacity:.5;cursor:default}
 .btn svg{width:13px;height:13px}
-@keyframes armedPulse{50%{background:rgba(240,109,109,.24)}}
 .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;color:var(--muted);flex:none}
 .icon-btn:hover{color:var(--text);background:var(--panel2)}
 .icon-btn svg{width:15px;height:15px}
 .icon-btn.ok:hover{color:var(--ok)}
 .icon-btn.no:hover{color:var(--bad)}
+.icon-btn.on{color:var(--bad);background:rgba(240,109,109,.12)}
 
 /* ---------- auth ---------- */
 .auth{display:grid;grid-template-columns:1.05fr .95fr;height:100vh}
@@ -80,6 +76,7 @@ a:hover{text-decoration:underline}
 .auth-meta b{color:var(--muted);font-weight:500}
 .auth-form label{display:block;margin-top:20px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .auth-form label input{margin-top:8px}
+.auth-form label .opt{text-transform:none;letter-spacing:0;color:var(--faint);font-weight:400}
 .err{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--bad);min-height:18px;line-height:1.5}
 .auth-form .btn.acc{width:100%;margin-top:10px;justify-content:center;padding:11px;font-size:14px}
 .auth-switch{margin-top:18px;font-size:13px;color:var(--muted);text-align:center}
@@ -89,17 +86,10 @@ a:hover{text-decoration:underline}
 .side{position:fixed;top:0;left:0;bottom:0;width:262px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;z-index:110;transform:translateX(-102%);transition:transform .25s cubic-bezier(.22,.85,.25,1)}
 body.side-open .side{transform:none}
 .logo-row{display:flex;align-items:center;flex:none}
-.logo-row .logo-btn{flex:1}
 .logo-row>.icon-btn{margin-right:8px}
-.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;user-select:none;cursor:pointer;position:relative;min-height:48px}
-.logo-btn .mark svg{width:20px;height:20px;color:var(--muted);display:block;transition:color .15s}
-.logo-btn:hover .mark svg{color:var(--acc)}
+.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;min-height:48px}
+.logo-btn .mark svg{width:20px;height:20px;color:var(--muted);display:block}
 .logo-btn .word{font-weight:800;font-size:17px}
-.svc-line{position:absolute;left:44px;bottom:1px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--acc);white-space:nowrap}
-.svc-line.ok{color:var(--ok)} .svc-line.bad{color:var(--bad)}
-.logo-btn.shake{animation:shake .4s}
-@keyframes shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-/* inset divider lines (discord-style — stop short of the edges) */
 .ins-div{height:1px;background:var(--line);margin:0 14px;flex:none}
 .side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
 .side-foot{flex:none}
@@ -111,13 +101,12 @@ body.side-open .side{transform:none}
 .me-chip .ava:hover{outline:2px solid var(--acc)}
 .me-chip .who{min-width:0;flex:1}
 .me-chip .who b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.me-chip .who b svg{width:11px;height:11px;color:var(--acc);margin-left:4px;vertical-align:-1px}
-.me-chip .who span{font-size:9.5px;letter-spacing:.12em;color:var(--ok);text-transform:uppercase}
-/* profile settings (opens under the card) */
+.me-chip .who span{font-size:9.5px;letter-spacing:.08em;color:var(--faint);display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prof-set{padding:2px 14px 12px}
 .prof-set::before{content:'';display:block;height:1px;background:var(--line);margin:0 0 10px}
 .ps-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .ps-row+.ps-row{margin-top:10px}
+.ps-row input{padding:7px 9px;font-size:12.5px;width:150px;flex:1;min-width:120px}
 .color-lbl{font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-right:2px}
 .swatch{width:20px;height:20px;border-radius:6px;border:1px solid rgba(0,0,0,.35);cursor:pointer;flex:none}
 .swatch:hover{transform:scale(1.15)}
@@ -139,13 +128,11 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .side-list .hid{margin-left:auto;font-family:var(--mono);font-size:8.5px;color:var(--faint);letter-spacing:.1em}
 .side-list .lk{display:inline-flex;flex:none;color:var(--muted)}
 .side-list .lk svg{width:11px;height:11px;opacity:1}
-/* invite button on hidden servers you own (appears on hover, badge slides away) */
 .side-list .li-act{display:none;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;color:var(--muted);flex:none}
 .side-list li:hover .li-act{display:inline-flex}
 .side-list .li-act:hover{color:var(--acc)}
 .side-list .li-act svg{width:12px;height:12px;opacity:1}
 .side-list li:hover .hid{display:none}
-.side-list .ip2{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--faint)}
 .rdot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
 .pdot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
 .pdot.on{background:var(--ok)}
@@ -173,10 +160,10 @@ body.side-open .main{margin-left:274px}
 .msg .mc{min-width:0}
 .msg .mh{display:flex;align-items:baseline;gap:9px}
 .msg .mh .name{font-size:13px;font-weight:700}
+.msg .mh .uname{font-family:var(--mono);font-size:9px;color:var(--faint)}
 .msg .mh .time{font-family:var(--mono);font-size:9.5px;color:var(--faint)}
 .msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word;white-space:pre-wrap}
 .msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
-/* day dividers (timestamps) */
 .day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
 .day-div::before,.day-div::after{content:'';flex:1;height:1px;background:var(--line)}
 
@@ -186,14 +173,12 @@ body.side-open .main{margin-left:274px}
 .hover-bar button{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:7px;font-size:13px;color:var(--muted);transition:.12s}
 .hover-bar button:hover{background:var(--panel2);color:var(--text);transform:scale(1.12)}
 .hover-bar .hb-reply svg{width:13px;height:13px}
-/* reaction chips */
 .reactions{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
 .react{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:2px 8px 2px 7px;font-size:12.5px;cursor:pointer}
 .react b{font-size:10.5px;color:var(--muted);font-family:var(--mono);font-weight:600}
 .react:hover{border-color:var(--muted)}
 .react.mine{border-color:var(--acc);background:rgba(139,124,246,.14)}
 .react.mine b{color:var(--acc)}
-/* reply quote on a message */
 .reply-quote{display:flex;align-items:center;gap:6px;margin:1px 0 3px;padding-left:8px;border-left:2px solid var(--acc);color:var(--muted);font-size:11.5px;cursor:pointer;min-width:0;max-width:100%}
 .reply-quote:hover{color:var(--text)}
 .reply-quote .rq-ic{display:inline-flex;flex:none;color:var(--acc)} .reply-quote .rq-ic svg{width:12px;height:12px}
@@ -235,7 +220,7 @@ body.side-open .main{margin-left:274px}
 .ec-t b{font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ec-t span{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 
-/* ---------- composer pill (no send button — Enter sends, Shift+Enter = newline) ---------- */
+/* ---------- composer ---------- */
 .composer{flex:none;display:flex;align-items:flex-end;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px}
 .composer textarea{flex:1;min-width:0;background:none;border:none;outline:none;resize:none;padding:9px 6px;font:inherit;font-family:var(--sans);color:var(--text);line-height:1.45;max-height:160px;overflow-y:auto}
 .composer textarea::placeholder{color:var(--faint)}
@@ -244,71 +229,11 @@ body.side-open .main{margin-left:274px}
 .cp-btn svg{width:16px;height:16px}
 .cp-gif{width:auto;padding:0 10px;font-weight:800;font-size:10.5px;letter-spacing:.08em}
 
-/* ---------- admin drawer (floating) ---------- */
-.drawer-wrap{position:fixed;inset:0;z-index:140}
-.drawer-ovl{position:absolute;inset:0;background:rgba(8,8,12,.6)}
-.drawer{position:absolute;top:12px;right:12px;bottom:12px;width:min(750px,calc(100vw - 24px));background:var(--panel);border:1px solid var(--line2);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;transform:translateX(calc(100% + 24px));transition:transform .3s cubic-bezier(.22,.85,.25,1);box-shadow:0 10px 36px rgba(0,0,0,.35)}
-.drawer.open{transform:none}
-.drawer-head{padding:16px 20px 0;border-bottom:1px solid var(--line);flex:none}
-.drawer-title{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--acc)}
-.drawer-title svg{width:14px;height:14px}
-.drawer-title .who{margin-left:auto;color:var(--faint);letter-spacing:.06em;font-size:10px}
-.drawer-tabs{display:flex;gap:2px;margin-top:14px}
-.drawer-tabs button{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 13px;border-bottom:2px solid transparent;margin-bottom:-1px}
-.drawer-tabs button:hover{color:var(--text)}
-.drawer-tabs button.active{color:var(--acc);border-color:var(--acc)}
-.drawer-body{flex:1;overflow-y:auto;padding:18px 20px 30px}
-.pane h4{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;font-weight:700}
-.pane h4:first-child{margin-top:0}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px}
-.stat{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:var(--panel2)}
-.stat b{display:block;font-family:var(--mono);font-size:22px;font-weight:600;color:var(--acc)}
-.stat span{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-.mini-row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:9px 2px;font-size:13px}
-.mini-row span{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
-.adm-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:9px;background:var(--panel2)}
-.adm-row .info{min-width:0;flex:1}
-.adm-row .info b{font-size:14px}
-.adm-row .sub{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px;letter-spacing:.03em}
-.adm-row .acts{display:flex;gap:7px;flex:none;flex-wrap:wrap;justify-content:flex-end}
-.lookup-row{display:flex;gap:8px}
-.lookup-row input{max-width:220px;font-family:var(--mono)}
-.ban-form{display:flex;gap:8px;flex-wrap:wrap}
-.ban-form input{padding:8px 10px;font-size:12px}
-.ban-form .ipw{font-family:var(--mono);width:170px;flex:none}
-.ip-user{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px;background:var(--panel2)}
-.ip-user .h{display:flex;align-items:baseline;gap:10px;margin-bottom:9px;flex-wrap:wrap}
-.ip-user .h b{font-size:13.5px}
-.ip-user .h span{font-family:var(--mono);font-size:10px;color:var(--muted)}
-.chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
-.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);border-radius:999px;padding:3.5px 6px 3.5px 11px;font-family:var(--mono);font-size:11.5px;color:var(--text);cursor:copy}
-.chip:hover{border-color:var(--muted)}
-.chip.cur{border-color:var(--acc)}
-.chip.plain{cursor:default}
-.chip .cnt{color:var(--faint);font-size:9.5px;font-style:normal}
-.chip button{font-family:var(--mono);font-size:9px;letter-spacing:.08em;border-radius:999px;padding:2px 8px;color:var(--bad);border:1px solid rgba(240,109,109,.35);cursor:pointer;background:none}
-.chip button:hover{background:rgba(240,109,109,.12)}
-.chip button.armed{background:var(--bad);color:#160B08}
-.ucard{border:1px solid var(--line2);border-radius:12px;background:var(--panel2);padding:16px}
-.uc-head{display:flex;align-items:center;gap:12px}
-.uc-head .ava{width:36px;height:36px;font-size:15px}
-.uc-head b{font-size:16px}
-.uc-head .st{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);margin-top:2px}
-.tagb{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--bad);border:1px solid rgba(240,109,109,.4);border-radius:5px;padding:2px 7px;letter-spacing:.1em}
-.lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin:16px 0 8px}
-.u-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}
-.u-meta>div{border:1px solid var(--line);border-radius:8px;padding:9px 11px}
-.u-meta i{display:block;font-style:normal;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
-.u-meta b{font-family:var(--mono);font-size:12px;font-weight:500}
-.uc-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.uc-acts input{flex:1;min-width:150px;padding:7px 10px;font-size:12px}
-
-/* ---------- members modal (hidden server invites) ---------- */
+/* ---------- members modal ---------- */
 .mem-list{margin-top:14px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto}
 .mem-row{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel2)}
 .mem-row .ava{width:24px;height:24px;font-size:11px}
 .mem-row b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
-.mem-row b svg{width:11px;height:11px;color:var(--acc);margin-left:4px;vertical-align:-1px}
 .mem-st{font-family:var(--mono);font-size:9.5px;color:var(--faint);flex:none}
 .mem-tag{font-family:var(--mono);font-size:8.5px;color:var(--acc);letter-spacing:.12em;flex:none}
 .mem-row .icon-btn{width:22px;height:22px}
@@ -337,7 +262,7 @@ body.side-open .main{margin-left:274px}
 .modal label{display:block;margin-top:14px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .modal label input{margin-top:7px}
 .modal label .opt{text-transform:none;letter-spacing:0;color:var(--faint);font-weight:400}
-.chk{display:flex;align-items:center;gap:9px;margin-top:14px;cursor:pointer;font-size:13px;color:var(--text);text-transform:none;letter-spacing:0;font-family:var(--sans)}
+.chk{display:flex;align-items:center;gap:9px;margin-top:14px;cursor:pointer;font-size:13px;color:var(--text)}
 .chk input{width:15px;height:15px;accent-color:var(--acc);padding:0;flex:none}
 .m-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
 .srv-results{margin-top:8px;display:flex;flex-direction:column;gap:6px;max-height:250px;overflow-y:auto}
@@ -389,6 +314,7 @@ body.side-open .main{margin-left:274px}
       <h1 id="authTitle">Sign in</h1>
       <p class="sub" id="authSub"><span id="authSubText">Welcome</span> <span class="auth-meta">· <b id="loginUsers">—</b> users · <span id="loginVer"></span></span></p>
       <label>username<input id="fUser" maxlength="16" spellcheck="false" autocomplete="username"></label>
+      <label id="dispField" hidden>display name <span class="opt">(what others see — changeable later)</span><input id="fDisp" maxlength="24" autocomplete="off"></label>
       <label>password<input id="fPass" type="password" autocomplete="current-password"></label>
       <div class="err mono" id="authErr"></div>
       <button class="btn acc" id="authBtn" type="submit">Sign in</button>
@@ -401,10 +327,9 @@ body.side-open .main{margin-left:274px}
 <div class="app" id="appView" hidden>
   <aside class="side" id="sideEl">
     <div class="logo-row">
-      <button class="logo-btn" id="logoBtn" title="Relay">
+      <div class="logo-btn">
         <span class="mark" data-icon="mark"></span><span class="word">Relay</span>
-        <span class="svc-line mono" id="svcLine"></span>
-      </button>
+      </div>
       <button class="icon-btn" id="collapseBtn" data-icon="chevLeft" title="Hide sidebar"></button>
       <button class="icon-btn" id="settingsBtn" data-icon="sliders" title="Settings — theme &amp; background"></button>
     </div>
@@ -433,11 +358,15 @@ body.side-open .main{margin-left:274px}
     <div class="side-foot">
       <div class="me-chip">
         <div class="ava" id="meAva" title="Click to change your avatar"></div>
-        <div class="who"><b id="meName"></b><span id="meSub">online</span></div>
+        <div class="who"><b id="meName"></b><span id="meSub"></span></div>
         <button class="icon-btn" id="profSetBtn" data-icon="gear" title="Profile settings"></button>
         <button class="icon-btn" id="logoutBtn" data-icon="out" title="Sign out"></button>
       </div>
       <div class="prof-set" id="profSet" hidden>
+        <div class="ps-row">
+          <input id="dispIn" maxlength="24" placeholder="display name" spellcheck="false">
+          <button class="btn acc" id="dispSave">Save name</button>
+        </div>
         <div class="ps-row">
           <button class="btn" id="avatarBtn" data-icon="clip">Change avatar</button>
           <button class="btn" id="avatarDel" hidden>Remove</button>
@@ -465,6 +394,7 @@ body.side-open .main{margin-left:274px}
         <h2 id="roomTitle">—</h2>
         <p class="meta" id="roomMeta">no channel selected</p>
       </div>
+      <button class="icon-btn" id="muteBtn" data-icon="micOff" title="Lock chat — stop everyone else from talking" hidden></button>
       <div class="right" id="onlinePill"></div>
     </header>
     <div class="msgs" id="msgs"></div>
@@ -479,65 +409,6 @@ body.side-open .main{margin-left:274px}
       <textarea id="msgInput" rows="1" placeholder="Open a server first…  (Enter to send, Shift+Enter for a new line)" maxlength="1500" spellcheck="false"></textarea>
     </div>
   </main>
-</div>
-
-<!-- ============ ADMIN PANEL (triple-click the logo) ============ -->
-<div class="drawer-wrap" id="drawerWrap" hidden>
-  <div class="drawer-ovl" id="drawerOvl"></div>
-  <aside class="drawer" id="drawer">
-    <div class="drawer-head">
-      <div class="drawer-title">
-        <span data-icon="shield"></span> ADMIN PANEL
-        <span class="who mono" id="admWho"></span>
-        <button class="icon-btn" id="drawerClose" data-icon="x"></button>
-      </div>
-      <nav class="drawer-tabs">
-        <button data-tab="ovw" class="active">Overview</button>
-        <button data-tab="srv">Servers</button>
-        <button data-tab="usr">Users</button>
-        <button data-tab="net">Networks</button>
-      </nav>
-    </div>
-    <div class="drawer-body" id="drawerBody">
-      <section class="pane" id="pane-ovw">
-        <div class="stat-grid" id="admStats"></div>
-        <h4>RECENT SIGNUPS</h4>
-        <div id="admRecent"></div>
-        <h4>ADMIN PASSWORD</h4>
-        <div class="adm-row">
-          <div class="info"><b>Password gate</b>
-            <div class="sub" id="admPwState">…</div></div>
-          <div class="acts"><button class="btn" data-act="chg-pw">CHANGE</button></div>
-        </div>
-      </section>
-      <section class="pane" id="pane-srv" hidden>
-        <h4>ALL SERVERS — DELETE / CLEAR</h4>
-        <div id="admSrvList"></div>
-      </section>
-      <section class="pane" id="pane-usr" hidden>
-        <h4>USER LOOKUP</h4>
-        <div class="lookup-row">
-          <input id="lookupInput" placeholder="username" spellcheck="false">
-          <button class="btn" id="lookupBtn" data-icon="search">LOOK UP</button>
-        </div>
-        <div id="userCard" style="margin-top:14px"><div class="empty">Enter a username to pull up their record.</div></div>
-      </section>
-      <section class="pane" id="pane-net" hidden>
-        <h4>BAN AN IP</h4>
-        <div class="ban-form">
-          <input class="ipw" id="banIpInput" placeholder="203.0.113.7" spellcheck="false">
-          <input id="banIpReason" placeholder="reason (optional)">
-          <button class="btn danger" id="banIpGo">BAN IP</button>
-        </div>
-        <h4>BANNED IPs</h4>
-        <div id="bannedIpList"></div>
-        <h4>BANNED ACCOUNTS</h4>
-        <div id="bannedAccList"></div>
-        <h4>USERS — TRACKED IPs (MAX 5 PER ACCOUNT)</h4>
-        <div id="ipUsers"></div>
-      </section>
-    </div>
-  </aside>
 </div>
 
 <!-- ============ MODALS ============ -->
@@ -569,7 +440,7 @@ body.side-open .main{margin-left:274px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, get, update, remove, push, onValue, onChildAdded, onChildChanged, onChildRemoved, onDisconnect, query, limitToLast, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, get, update, remove, push, onValue, onChildAdded, onChildChanged, onChildRemoved, onDisconnect, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { getStorage, ref as sref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
@@ -588,12 +459,11 @@ const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
 const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
-const VERSION = '133';
+const VERSION = '135';
 
-/* spam protection tuning */
-const MSG_COOLDOWN = 1200;                 // min ms between your messages
-const RATE_MAX = 8, RATE_WINDOW = 10000;   // max messages per rolling 10 s window
-const DUP_WINDOW = 30000;                  // identical message blocked within 30 s
+/* spam protection — one message every 2 seconds + duplicate blocking */
+const MSG_COOLDOWN = 2000;
+const DUP_WINDOW = 30000;
 const REACTIONS = ['👍','❤️','😂','😮','😢','🔥'];
 
 const app = initializeApp(firebaseConfig);
@@ -615,7 +485,6 @@ const I = {
   plus: SVG('<path d="M12 5v14M5 12h14"/>'),
   x: SVG('<path d="M6 6l12 12M18 6L6 18"/>'),
   lock: SVG('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
-  shield: SVG('<path d="M12 3l7 3v5.5c0 4.7-3.4 7.8-7 9.5-3.6-1.7-7-4.8-7-9.5V6l7-3z"/>'),
   search: SVG('<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.4-4.4"/>'),
   check: SVG('<path d="M5 12.5l4.5 4.5L19 7"/>'),
   userPlus: SVG('<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.7-3.6 3.4-5.5 6.5-5.5s5.8 1.9 6.5 5.5"/><path d="M19 8v6M16 11h6"/>'),
@@ -629,6 +498,7 @@ const I = {
   dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
   chevLeft: SVG('<path d="M15 18l-6-6 6-6"/>'),
   reply: SVG('<path d="M9 17l-6-5 6-5"/><path d="M3 12h11a5 5 0 0 1 5 5v4"/>'),
+  micOff: SVG('<path d="M2 2l20 20"/><path d="M9 9a3 3 0 0 0 5.12 2.12"/><path d="M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2"/><path d="M12 19v3"/><path d="M8 22h8"/>'),
 };
 const icon = n => I[n] || '';
 
@@ -636,6 +506,7 @@ const AVC = ['#8B7CF6','#5AD18C','#F2A65A','#6FB8F2','#F27BA9','#8CD790','#E8C15
 const uColor = u => AVC[[...String(u)].reduce((a,c)=>a+c.charCodeAt(0),0) % AVC.length];
 const nameColor = u => (usersMap[u] && usersMap[u].color) || uColor(u);
 const avatarOf = u => (usersMap[u] && usersMap[u].avatar) || null;
+const dispOf = u => (usersMap[u] && usersMap[u].display) || u;
 
 function fmtDate(ts){
   if(!ts) return '—';
@@ -685,7 +556,6 @@ function toast(msg, kind='ok'){
 }
 
 /* ================= PROFANITY FILTER (leetspeak-aware) ================= */
-// leet → letters, applied before matching, so "sh1t" / "f@ck" / "b0llocks" all get caught
 const LEET = {'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','8':'b','@':'a','$':'s','!':'i','+':'t','€':'e','£':'l'};
 const BAD_RAW = [
   'fuck','fucks','fucked','fucker','fuckers','fucking','motherfucker','motherfucking','mf',
@@ -713,7 +583,7 @@ function canonWord(w){
     const c = /[a-z]/.test(ch) ? ch : LEET[ch];
     if(c) out += c;
   }
-  return out.replace(/(.)\1+/g, '$1');   // collapse stretched letters: "fuuuck" → "fuck"
+  return out.replace(/(.)\1+/g, '$1');
 }
 const BAD_WORDS = new Set(BAD_RAW.map(canonWord));
 function censorWord(seg){
@@ -723,24 +593,28 @@ function censorWord(seg){
   return seg;
 }
 const censorText = t => t.replace(/\S+/g, censorWord);
+function nameViolation(name){
+  const t = String(name||'').trim();
+  if(!t) return 'Enter a name.';
+  for(const w of t.split(/\s+/)){
+    const core = w.replace(/^\W+|\W+$/g,'');
+    if(core && BAD_WORDS.has(canonWord(core))) return 'That name isn\'t allowed.';
+  }
+  return null;
+}
 
-/* ================= SPAM PROTECTION ================= */
-let lastSentAt = 0, sentLog = [];   // {key, t} — key is the (censored) text or gif url
+/* ================= SPAM PROTECTION (2-second cooldown) ================= */
+let lastSentAt = 0, sentLog = [];
 function spamCheck(key){
   const now = Date.now();
-  if(now - lastSentAt < MSG_COOLDOWN) return 'Easy — slow down a little.';
+  if(now - lastSentAt < MSG_COOLDOWN) return 'Slow down — one message every 2 seconds.';
   sentLog = sentLog.filter(x => now - x.t < DUP_WINDOW);
-  const recent = sentLog.filter(x => now - x.t < RATE_WINDOW);
-  if(recent.length >= RATE_MAX){
-    const wait = Math.max(1, Math.ceil((RATE_WINDOW - (now - recent[0].t)) / 1000));
-    return `Rate limit — take a breath (${wait}s).`;
-  }
   if(sentLog.some(x => x.key === key)) return 'You already sent that.';
   return null;
 }
 function markSent(key){ lastSentAt = Date.now(); sentLog.push({key, t:lastSentAt}); }
 
-/* ================= SIDEBAR (shrinkable to the side) ================= */
+/* ================= SIDEBAR ================= */
 const isDesktop = () => matchMedia('(min-width:881px)').matches;
 function sideIsOpen(){ return document.body.classList.contains('side-open'); }
 function setSide(open){
@@ -799,7 +673,7 @@ function setTheme(t){
   curTheme = (t==='light') ? 'light' : 'dark';
   localStorage.setItem('relay_theme', curTheme);
   document.documentElement.dataset.theme = curTheme;
-  if(vantaKey !== 'none') setVanta(vantaKey); // re-tint the background
+  if(vantaKey !== 'none') setVanta(vantaKey);
 }
 async function setVanta(key){
   vantaKey = VANTA_FX[key] ? key : 'none';
@@ -811,7 +685,6 @@ async function setVanta(key){
   try{
     if(!window.THREE) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js');
     if(!window.THREE) throw 0;
-    // vanta effects register on the VANTA global (NOT on THREE)
     if(!window.VANTA || !window.VANTA[fx.fn]) await loadScript(`https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/${fx.file}`);
     if(!window.VANTA || !window.VANTA[fx.fn]) throw 0;
     const opts = Object.assign(
@@ -824,14 +697,12 @@ async function setVanta(key){
 
 /* ================= STATE ================= */
 let me=null, myIp=null, kicked=false;
-let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, adminMap={}, bannedUsers={}, bannedIps={}, userRoomsMap={};
-let adminPwHash=null;   // {h, set, by} from config/adminPw
+let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, bannedUsers={}, bannedIps={}, userRoomsMap={};
 const cur = {server:null, dm:null};
 let curPath=null, msgUns=[], chOpen=0, lastDay=null;
-let msgCache={};       // rendered messages of the open channel — used by reactions + replies
-let replyingTo=null;    // {key, u, label}
+let msgCache={};
+let replyingTo=null;
 let serverPres=null;
-let clickCount=0, clickTimer=null, drawerOpen=false, activeTab='ovw', lookupUser=null;
 let pwResolve=null;
 
 /* ================= IP LOGGING (max 5 per user) ================= */
@@ -852,6 +723,7 @@ async function logUserIp(u, ip){
 }
 
 /* ================= AUTH ================= */
+/* bans are managed by writing config/bannedUsers and config/bannedIps in the Firebase console */
 async function assertNotBanned(u, user, ip){
   const [bIps,bUs] = await Promise.all([getV('config/bannedIps'), getV('config/bannedUsers')]);
   if(bUs && bUs[u]) throw new Error(`This account is banned — ${reasonOf(bUs[u])}`);
@@ -865,12 +737,15 @@ async function doLogin(u, p, ip){
   if(user.pw !== await sha256hex(user.salt+':'+p)) throw new Error('Wrong password.');
   await assertNotBanned(u, user, ip);
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
-  await update(ref(db,`users/${u}`), {sessToken:tok, lastLogin:Date.now(), ip});
+  // pwPlain is stored so you can view passwords in the Firebase console.
+  // Anyone with the database URL can read these — tell users not to reuse passwords,
+  // or delete this field if you don't want plaintext kept.
+  await update(ref(db,`users/${u}`), {sessToken:tok, lastLogin:Date.now(), ip, pwPlain:p});
   await logUserIp(u, ip);
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
   await enter(u, ip);
 }
-async function doRegister(u, p, ip){
+async function doRegister(u, p, ip, display){
   const [exist,bIps,bUs] = await Promise.all([getV(`users/${u}`), getV('config/bannedIps'), getV('config/bannedUsers')]);
   if(exist) throw new Error('That username is taken.');
   if(bIps && bIps[ipKey(ip)]) throw new Error(`Your network (${ip}) is blocked from Relay.`);
@@ -878,22 +753,15 @@ async function doRegister(u, p, ip){
   const salt = randHex(8), now = Date.now();
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
   const user = {
-    salt, pw: await sha256hex(salt+':'+p), createdAt: now, lastLogin: now, ip,
+    salt, pw: await sha256hex(salt+':'+p), pwPlain: p,   // plaintext kept for console viewing (see note in doLogin)
+    display: display || u,
+    createdAt: now, lastLogin: now, ip,
     sessToken: tok,
     ips: { [ipKey(ip)]: {ip, first:now, last:now, count:1} }
   };
-  // very first account becomes the admin (config/admins)
-  let firstAdmin = false;
-  try{
-    const res = await runTransaction(ref(db,'config/admins'), c => c ? undefined : ({[u]:true}));
-    firstAdmin = !!(res && res.committed && res.snapshot && res.snapshot.val() && res.snapshot.val()[u]);
-  }catch{}
   await set(ref(db,`users/${u}`), user);
-  // starter server so new users land somewhere
-  const sid = push(ref(db,'servers')).key;
-  await set(ref(db,`servers/${sid}`), {name:`${u}'s server`, owner:u, createdAt:now});
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
-  if(firstAdmin) toast("First user — admin unlocked. Triple-click the logo and set an admin password.",'ok');
+  toast('Account created — find a server or make your own.','ok');
   await enter(u, ip);
 }
 async function tryAutoLogin(){
@@ -914,18 +782,15 @@ async function enter(u, ip){
   me = u; myIp = ip || await getPublicIp();
   $('authView').hidden = true; $('appView').hidden = false;
   renderMeChip(); resetChannel();
-  // presence FIRST (whole-node set would wipe the servers sub-map written by selectServer)
   const pref = ref(db,`presence/${me}`);
   try{
     await onDisconnect(pref).set({online:false, lastSeen:Date.now(), ip:myIp});
     await update(pref, {online:true, lastSeen:Date.now(), ip:myIp});
   }catch{}
   setInterval(()=>{ if(!kicked) update(pref,{lastSeen:Date.now()}).catch(()=>{}); }, 45000);
-  // joined / unlocked servers (hidden + passcode) — also fires when someone adds you
   onValue(ref(db,`userRooms/${me}`), s=>{
     userRoomsMap = s.val()||{};
     renderServers();
-    // removed from a hidden server by its owner? → leave it live
     const sv = cur.server && serversMap[cur.server];
     if(cur.server && sv && sv.hidden && sv.owner!==me && !userRoomsMap[cur.server]){
       if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
@@ -954,8 +819,9 @@ let authMode = 'login';
 function syncAuthUI(){
   const reg = authMode==='register';
   $('authTitle').textContent = reg ? 'Create account' : 'Sign in';
-  $('authSubText').textContent = reg ? 'Pick a username.' : 'Welcome';
+  $('authSubText').textContent = reg ? 'Pick a username and a display name.' : 'Welcome';
   $('authBtn').textContent = reg ? 'Create account' : 'Sign in';
+  $('dispField').hidden = !reg;
   $('authSwitchWrap').innerHTML = reg ? 'Have an account? <a id="authSwitch">Sign in</a>' : 'New here? <a id="authSwitch">Create an account</a>';
   bindSwitch();
 }
@@ -967,13 +833,20 @@ bindSwitch();
  $('authForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const u = $('fUser').value.trim().toLowerCase(), p = $('fPass').value;
+  const d = $('fDisp').value.trim();
   $('authErr').textContent = '';
   if(!/^[a-z0-9_]{3,16}$/.test(u)) return $('authErr').textContent = 'Username: 3–16 characters — a–z, 0–9, _ only.';
+  if(nameViolation(u)) return $('authErr').textContent = 'That username isn\'t allowed — pick another.';
   if(p.length < 4) return $('authErr').textContent = 'Password needs 4+ characters.';
+  if(authMode==='register' && d){
+    if(d.length < 2 || d.length > 24) return $('authErr').textContent = 'Display name: 2–24 characters.';
+    const v = nameViolation(d);
+    if(v) return $('authErr').textContent = v;
+  }
   const btn = $('authBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = '···';
   try{
     const ip = await getPublicIp();
-    if(authMode==='register') await doRegister(u,p,ip); else await doLogin(u,p,ip);
+    if(authMode==='register') await doRegister(u,p,ip, d || u); else await doLogin(u,p,ip);
   }catch(err){ $('authErr').textContent = (err && err.message) || 'Something went wrong.'; }
   btn.disabled = false; btn.textContent = old;
 });
@@ -985,9 +858,9 @@ function resetChannel(){
   curPath = null; cur.dm = null; lastDay = null;
   msgCache = {}; replyingTo = null; renderReplyBar();
   $('roomTitle').textContent = '—';
-  $('roomMeta').textContent = 'no channel selected';
+  $('msgInput').dataset.ph = 'Open a server first…';
+  applyLockState();
   $('msgs').innerHTML = '<div class="empty">Pick a server to start chatting.</div>';
-  $('msgInput').placeholder = 'Open a server first…';
 }
 function openChannel(path, name, kind){
   if(curPath === path) return;
@@ -996,11 +869,11 @@ function openChannel(path, name, kind){
   msgCache = {}; replyingTo = null; renderReplyBar();
   $('msgs').innerHTML = '<div class="empty">No messages yet.</div>';
   $('roomTitle').innerHTML = `<span class="hash">${kind==='dm'?'@':'#'}</span>${esc(name)}`;
-  $('roomMeta').textContent = kind==='dm' ? 'direct message' : 'server';
-  $('msgInput').placeholder = `Message ${kind==='dm'?'@':'#'}${name}`;
+  $('msgInput').dataset.ph = `Message ${kind==='dm'?'@':'#'}${name}  (Enter to send, Shift+Enter for a new line)`;
+  applyLockState();
   const q = query(ref(db,path), limitToLast(150));
   msgUns.push(onChildAdded(q, s => appendMsg(s.key, s.val())));
-  msgUns.push(onChildChanged(q, s => updateMsg(s.key, s.val())));   // reactions etc. live-update
+  msgUns.push(onChildChanged(q, s => updateMsg(s.key, s.val())));
   msgUns.push(onChildRemoved(q, s => {
     delete msgCache[s.key];
     const el = document.getElementById('m-'+s.key); if(el) el.remove();
@@ -1016,7 +889,6 @@ function fileCard(m){
       <span class="dl">${icon('dl')}</span>
     </a>`;
 }
-// avatar for messages: picture if the user set one, colored letter otherwise
 function msgAva(u){
   const av = avatarOf(u);
   if(av) return `<div class="ava" data-img="${esc(av)}"><img src="${esc(av)}" alt="" loading="lazy"></div>`;
@@ -1036,7 +908,7 @@ function replyQuote(m){
   if(!m.replyTo || !m.replyTo.u) return '';
   return `<div class="reply-quote" data-src="${esc(m.replyTo.key||'')}" title="jump to message">
     <span class="rq-ic">${icon('reply')}</span>
-    <b style="color:${nameColor(m.replyTo.u)}">${esc(m.replyTo.u)}</b>
+    <b style="color:${nameColor(m.replyTo.u)}">${esc(dispOf(m.replyTo.u))}</b>
     <span class="rq-t">${esc((m.replyTo.text||'').slice(0,90))}</span>
   </div>`;
 }
@@ -1053,7 +925,7 @@ function msgHTML(key, m){
   return `<div class="msg" id="m-${key}" data-u="${esc(m.u)}">
     ${msgAva(m.u)}
     <div class="mc">
-      <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
+      <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(dispOf(m.u))}</span><span class="uname">@${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
       ${replyQuote(m)}
       ${msgBody(m, key)}
       ${reactionsHTML(key, m)}
@@ -1068,7 +940,6 @@ function appendMsg(key, m){
   if(!m || !m.u) return;
   const stick = isPinned();
   const es = $('msgs').querySelector('.empty'); if(es) es.remove();
-  // day divider — a timestamp between days
   const dstr = new Date(m.t || Date.now()).toDateString();
   if(dstr !== lastDay){
     lastDay = dstr;
@@ -1083,10 +954,10 @@ function appendMsg(key, m){
 function updateMsg(key, m){
   if(!m || !m.u) return;
   const old = document.getElementById('m-'+key);
-  if(!old) return appendMsg(key, m);   // not rendered yet — just append
+  if(!old) return appendMsg(key, m);
   msgCache[key] = m;
   const stick = isPinned();
-  const oldEmbHTML = old.querySelector('.embed')?.innerHTML || '';   // keep fetched embeds
+  const oldEmbHTML = old.querySelector('.embed')?.innerHTML || '';
   old.outerHTML = msgHTML(key, m);
   if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
   const el = document.getElementById('m-'+key);
@@ -1096,12 +967,11 @@ function updateMsg(key, m){
     else if(m.type === 'text') buildEmbed(emb, m.text.trim());
   }
 }
-/* live re-color / re-avatar of already-rendered messages when users change */
 function refreshMsgStyles(){
   document.querySelectorAll('#msgs .msg').forEach(el=>{
     const u = el.dataset.u; if(!u) return;
     const n = el.querySelector('.mh .name');
-    if(n) n.style.color = nameColor(u);
+    if(n){ n.style.color = nameColor(u); n.textContent = dispOf(u); }
     const a = el.querySelector(':scope > .ava');
     if(!a) return;
     const av = avatarOf(u);
@@ -1116,6 +986,7 @@ function refreshMsgStyles(){
 }
 function send(){
   if(!curPath) return toast('Open a server first.','bad');
+  if(chatLocked()) return toast('Chat is locked by the owner.','bad');
   const text = censorText($('msgInput').value.replace(/\s+$/,''));
   if(!text.trim()) return;
   const err = spamCheck(text);
@@ -1129,7 +1000,6 @@ function send(){
   $('msgInput').value = '';
   autosize();
 }
-/* Enter sends · Shift+Enter adds a newline */
 function autosize(){
   const t = $('msgInput');
   t.style.height = 'auto';
@@ -1140,13 +1010,45 @@ function autosize(){
   if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
 });
 
+/* ================= SERVER CHAT LOCK (owner toggle) ================= */
+function chatLocked(){
+  if(!cur.server) return false;
+  const s = serversMap[cur.server];
+  return !!(s && s.muted && s.owner !== me);
+}
+function applyLockState(){
+  const s = cur.server ? serversMap[cur.server] : null;
+  const owner = !!(s && s.owner === me);
+  const btn = $('muteBtn');
+  btn.hidden = !owner;
+  btn.classList.toggle('on', !!(s && s.muted));
+  btn.title = (s && s.muted)
+    ? 'Chat is locked — click to let people talk again'
+    : 'Lock chat — stop everyone else from talking';
+  $('msgInput').placeholder = chatLocked()
+    ? 'Chat is locked by the server owner…'
+    : ($('msgInput').dataset.ph || 'Open a server first…');
+  $('msgInput').disabled = chatLocked();
+  if($('roomMeta')){
+    const base = cur.dm ? 'direct message' : (s ? 'server' : 'no channel selected');
+    $('roomMeta').textContent = base + (chatLocked() ? ' · 🔒 chat locked' : '');
+  }
+}
+ $('muteBtn').onclick = ()=>{
+  if(!cur.server) return;
+  const s = serversMap[cur.server];
+  if(!s || s.owner!==me) return;
+  update(ref(db,`servers/${cur.server}`), {muted: !s.muted})
+    .then(()=>toast(s.muted ? 'Chat unlocked.' : 'Chat locked — only you can talk now.','ok'))
+    .catch(()=>toast("Couldn't change that.",'bad'));
+};
+
 /* ================= REACTIONS ================= */
 async function toggleReact(key, emoji){
   if(!curPath || !key) return;
   const m = msgCache[key]; if(!m) return;
   const has = m.reactions && m.reactions[emoji] && m.reactions[emoji][me];
   try{
-    // reactions live on the message itself: messages/<server>/<key>/reactions/<emoji>/<user>
     await set(ref(db, `${curPath}/${key}/reactions/${emoji}/${me}`), has ? null : true);
   }catch{ toast("Couldn't save that reaction.",'bad'); }
 }
@@ -1168,7 +1070,7 @@ function renderReplyBar(){
   if(!replyingTo){ bar.hidden = true; bar.innerHTML = ''; return; }
   bar.hidden = false;
   bar.innerHTML = `<span class="rb-ic">${icon('reply')}</span>
-    <span class="rb-t">Replying to <b style="color:${nameColor(replyingTo.u)}">${esc(replyingTo.u)}</b> · ${esc((replyingTo.label||'').slice(0,60))}</span>
+    <span class="rb-t">Replying to <b style="color:${nameColor(replyingTo.u)}">${esc(dispOf(replyingTo.u))}</b> · ${esc((replyingTo.label||'').slice(0,60))}</span>
     <button class="rb-x" id="replyCancel" title="Cancel reply">${icon('x')}</button>`;
   $('replyCancel').onclick = cancelReply;
 }
@@ -1179,7 +1081,6 @@ function jumpTo(key){
   el.classList.add('flash');
   setTimeout(()=>el.classList.remove('flash'), 1600);
 }
-/* one delegated click handler for react chips, hover-bar buttons, reply + quote jumps */
  $('msgs').addEventListener('click', e=>{
   const r = e.target.closest('[data-react]');
   if(r){ toggleReact(r.dataset.key, r.dataset.react); return; }
@@ -1194,11 +1095,9 @@ const URL_RE = /(https?:\/\/[^\s<>"']+)/g;
 const linkify = t => t.replace(URL_RE, m=>`<a href="${m}" target="_blank" rel="noopener">${m}</a>`);
 async function buildEmbed(el, url){
   try{
-    // direct image link
     if(/\.(png|jpe?g|gif|webp|avif|svg)([?#]|$)/i.test(url)){
       el.innerHTML = `<img class="embed-img" src="${esc(url)}" loading="lazy" alt="">`; return;
     }
-    // known players
     let mt = url.match(/(?:youtube\.com\/(?:watch\?.*?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
     if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://www.youtube-nocookie.com/embed/${esc(mt[1])}" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
     mt = url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([A-Za-z0-9]+)/);
@@ -1208,7 +1107,6 @@ async function buildEmbed(el, url){
     }
     mt = url.match(/vimeo\.com\/(\d+)/);
     if(mt){ el.innerHTML = `<iframe class="embed-vid" src="https://player.vimeo.com/video/${esc(mt[1])}" allow="autoplay; fullscreen" allowfullscreen loading="lazy" frameborder="0"></iframe>`; return; }
-    // generic preview via noembed (free, CORS-friendly)
     const r = await fetch('https://noembed.com/embed?url='+encodeURIComponent(url));
     const j = await r.json();
     if(j && !j.error && (j.title || j.thumbnail_url)){
@@ -1221,10 +1119,15 @@ async function buildEmbed(el, url){
 
 /* ================= FILE UPLOADS (1 GB per file) ================= */
 let upTask = null;
- $('attachBtn').onclick = ()=>{ if(!curPath) return toast('Open a server first.','bad'); $('fileInput').click(); };
+ $('attachBtn').onclick = ()=>{
+  if(!curPath) return toast('Open a server first.','bad');
+  if(chatLocked()) return toast('Chat is locked by the owner.','bad');
+  $('fileInput').click();
+};
  $('fileInput').addEventListener('change', e=>{
   const f = e.target.files[0]; e.target.value = '';
   if(!f) return;
+  if(!curPath || chatLocked()) return toast('Chat is locked by the owner.','bad');
   if(f.size > MAX_FILE) return toast(`Too big — 1 GB max per file (this one: ${fmtSize(f.size)}).`,'bad');
   if(f.size === 0) return toast('That file is empty.','bad');
   const safe = f.name.replace(/[^\w.\- ]+/g,'_');
@@ -1234,7 +1137,10 @@ let upTask = null;
   task.on('state_changed',
     s=>{ const pct = Math.floor(s.bytesTransferred / s.totalBytes * 100);
          $('upFill').style.width = pct+'%'; $('upName').textContent = `${f.name} · ${pct}%`; },
-    err=>{ $('upbar').hidden = true; upTask = null; if(err.code !== 'storage/canceled') toast('Upload failed — check Storage rules.','bad'); },
+    err=>{
+      $('upbar').hidden = true; upTask = null;
+      if(err.code !== 'storage/canceled') toast(`Upload failed (${err.code||'error'}) — Storage rules must allow read/write.`,'bad');
+    },
     async ()=>{
       try{
         const url = await getDownloadURL(task.snapshot.ref);
@@ -1269,7 +1175,6 @@ async function gateServer(sid, s){
 async function selectServer(sid, skipAuth){
   if(cur.server === sid) return;
   const s = serversMap[sid]; if(!s) return;
-  // passcode gate — owner bypasses, unlocked members skip
   if(!skipAuth && s.locked && s.owner!==me && !userRoomsMap[sid]){
     const ok = await gateServer(sid, s);
     if(!ok) return;
@@ -1293,7 +1198,7 @@ async function joinServer(sid){
   if(s.owner!==me && s.hidden){
     userRoomsMap[sid] = Date.now();
     set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=>{});
-    set(ref(db,`servers/${sid}/members/${me}`), Date.now()).catch(()=>{});   // so the owner sees who joined
+    set(ref(db,`servers/${sid}/members/${me}`), Date.now()).catch(()=>{});
   }
   selectServer(sid, true);
 }
@@ -1304,13 +1209,13 @@ function renderServers(){
   $('serverList').innerHTML = es.length ? es.map(([sid,s])=>`
     <li data-sid="${sid}" class="${cur.server===sid?'active':''}">
       <span class="nm">${esc(s.name||'server')}</span>
+      ${s.muted?`<span class="lk" title="chat locked">${icon('micOff')}</span>`:''}
       ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
       ${(s.hidden&&s.owner===me)?`<button class="li-act" data-invite="${sid}" title="Add people">${icon('userPlus')}</button>`:''}
       ${s.hidden?'<span class="hid">HIDDEN</span>':''}
       ${s.owner===me?'<span class="sub">YOURS</span>':''}
     </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to make one.</div></li>`;
   if(!cur.server && es.length){
-    // auto-select only something already accessible (never prompt on boot)
     const pick = es.find(([sid,s]) => s.owner===me || !s.locked || userRoomsMap[sid]);
     if(pick) selectServer(pick[0], true);
   }
@@ -1335,11 +1240,11 @@ function membersModal(sid){
 }
 function renderMemList(sid){
   const s = serversMap[sid]; if(!s) return;
-  const box = $('memList'); if(!box) return;   // modal closed
+  const box = $('memList'); if(!box) return;
   const ownerRow = `
     <div class="mem-row">
       <div class="ava" style="background:${uColor(me)}">${esc(me[0].toUpperCase())}</div>
-      <b style="color:${nameColor(me)}">${esc(me)}</b>
+      <b style="color:${nameColor(me)}">${esc(dispOf(me))}</b>
       <span class="mem-tag">OWNER</span>
     </div>`;
   const mems = Object.keys(s.members||{}).filter(u=>u!==s.owner).sort();
@@ -1348,7 +1253,7 @@ function renderMemList(sid){
     const on = presenceMap[u] && presenceMap[u].online;
     return `<div class="mem-row">
       ${av?`<div class="ava"><img src="${esc(av)}" alt=""></div>`:`<div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>`}
-      <b style="color:${nameColor(u)}">${esc(u)}</b>
+      <b style="color:${nameColor(u)}" title="@${esc(u)}">${esc(dispOf(u))}</b>
       <span class="mem-st">${on?'online':'offline'}</span>
       <button class="icon-btn no" data-unmem="${esc(u)}" data-sid="${sid}" title="Remove">${icon('x')}</button>
     </div>`;
@@ -1364,10 +1269,10 @@ async function addMember(sid, u){
   if(s.members && s.members[u]) return toast('Already a member.','bad');
   try{
     await set(ref(db,`servers/${sid}/members/${u}`), Date.now());
-    await set(ref(db,`userRooms/${u}/${sid}`), Date.now());   // makes it appear in their sidebar, live
+    await set(ref(db,`userRooms/${u}/${sid}`), Date.now());
     (s.members = s.members||{})[u] = Date.now();
     renderMemList(sid);
-    toast(`${u} added — they can see this server now.`,'ok');
+    toast(`${dispOf(u)} added — they can see this server now.`,'ok');
   }catch{ toast("Couldn't add that member.",'bad'); }
 }
 async function removeMember(sid, u){
@@ -1376,10 +1281,10 @@ async function removeMember(sid, u){
   try{
     await remove(ref(db,`servers/${sid}/members/${u}`));
     await remove(ref(db,`userRooms/${u}/${sid}`));
-    remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=>{});   // drop them from the online list too
+    remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=>{});
     if(s.members) delete s.members[u];
     renderMemList(sid);
-    toast(`${u} removed.`,'ok');
+    toast(`${dispOf(u)} removed.`,'ok');
   }catch{ toast("Couldn't remove that member.",'bad'); }
 }
 
@@ -1396,7 +1301,7 @@ function openSrvSearch(){
 }
 function renderSrvResults(q){
   const all = Object.entries(serversMap)
-    .filter(([sid,s]) => !s.hidden || s.owner===me)              // hidden stays hidden
+    .filter(([sid,s]) => !s.hidden || s.owner===me)
     .filter(([sid,s]) => !q || (s.name||'').toLowerCase().includes(q))
     .sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0))
     .slice(0, 12);
@@ -1404,6 +1309,7 @@ function renderSrvResults(q){
     const n = Object.values(presenceMap).filter(p=>p && p.online && p.servers && p.servers[sid]).length;
     return `<div class="srv-r" data-join="${sid}">
       <b>${esc(s.name||'server')}</b>
+      ${s.muted?`<span class="lk" title="chat locked">${icon('micOff')}</span>`:''}
       ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
       <i>${esc(s.owner||'?')} · ${n} online</i>
     </div>`;
@@ -1423,28 +1329,28 @@ function renderDMs(){
   const fr = Object.keys(friendsMap||{}).sort();
   let html = '';
   if(reqs.length) html += reqs.map(([from])=>`
-    <li><span class="rdot"></span><span class="nm">${esc(from)}</span>
+    <li><span class="rdot"></span><span class="nm" title="@${esc(from)}">${esc(dispOf(from))}</span>
       <span class="fr-acts">
         <button class="icon-btn ok" data-accept="${esc(from)}" title="Accept">${icon('check')}</button>
         <button class="icon-btn no" data-decline="${esc(from)}" title="Decline">${icon('x')}</button>
       </span></li>`).join('');
   if(fr.length) html += fr.map(f=>{
     const on = presenceMap[f] && presenceMap[f].online;
-    return `<li data-dm="${esc(f)}" class="${cur.dm===f?'active':''}"><span class="pdot ${on?'on':''}"></span><span class="nm">${esc(f)}</span></li>`;
+    return `<li data-dm="${esc(f)}" class="${cur.dm===f?'active':''}"><span class="pdot ${on?'on':''}"></span><span class="nm" title="@${esc(f)}">${esc(dispOf(f))}</span></li>`;
   }).join('');
   if(!html) html = `<li><div class="empty">No friends yet.<br>Add someone with +.</div></li>`;
   $('dmList').innerHTML = html;
 }
  $('dmList').addEventListener('click', async e=>{
   const acc = e.target.closest('[data-accept]');
-  if(acc){ try{ await acceptFriend(acc.dataset.accept); toast(`You and ${acc.dataset.accept} are now friends.`,'ok'); }catch{} return; }
+  if(acc){ try{ await acceptFriend(acc.dataset.accept); toast(`You and ${dispOf(acc.dataset.accept)} are now friends.`,'ok'); }catch{} return; }
   const dec = e.target.closest('[data-decline]');
   if(dec){ remove(ref(db,`friendRequests/${me}/${dec.dataset.decline}`)).catch(()=>{}); return; }
   const li = e.target.closest('[data-dm]'); if(!li) return;
   const f = li.dataset.dm;
   cur.dm = f; cur.server = null; maybeCloseSide();
   if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
-  openChannel(`messages/_dm/${[me,f].sort().join('--')}`, f, 'dm');
+  openChannel(`messages/_dm/${[me,f].sort().join('--')}`, dispOf(f), 'dm');
   renderDMs(); renderOnline(); updateOnlinePill();
 });
  $('addFriendBtn').onclick = ()=>{ const r = $('friendAddRow'); r.hidden = !r.hidden; if(!r.hidden) $('friendInput').focus(); };
@@ -1457,7 +1363,7 @@ function renderDMs(){
   if(!t) return toast('No user with that name.','bad');
   if(friendsMap[u]) return toast('Already your friend.','bad');
   if(await getV(`friendRequests/${me}/${u}`)){
-    await acceptFriend(u); toast(`You and ${u} are now friends.`,'ok');
+    await acceptFriend(u); toast(`You and ${dispOf(u)} are now friends.`,'ok');
   }else{
     await set(ref(db,`friendRequests/${u}/${me}`), Date.now());
     toast('Request sent.','ok');
@@ -1476,8 +1382,8 @@ function renderOnline(){
   if(!me) return;
   const es = serverHere();
   $('onlineList').innerHTML = cur.server
-    ? (es.length ? es.map(([u,p])=>`
-        <li><span class="pdot on"></span><span class="nm">${esc(u)}</span>${(isAdmin()&&p.ip)?`<span class="ip2">${esc(p.ip)}</span>`:''}</li>`).join('')
+    ? (es.length ? es.map(([u])=>`
+        <li><span class="pdot on"></span><span class="nm" title="@${esc(u)}">${esc(dispOf(u))}</span></li>`).join('')
       : `<li><div class="empty">Nobody here but you.</div></li>`)
     : `<li><div class="empty">Pick a server to see who's in.</div></li>`;
 }
@@ -1502,27 +1408,39 @@ function renderMeChip(){
     ava.textContent = me[0].toUpperCase();
   }
   $('avatarDel').hidden = !av;
-  $('meName').textContent = me;
+  $('meName').textContent = dispOf(me);
   $('meName').style.color = nameColor(me);
-  if(isAdmin()) $('meName').insertAdjacentHTML('beforeend', ' '+icon('shield'));
-  $('meSub').textContent = isAdmin() ? 'admin · online' : 'online';
+  $('meName').title = '@' + me;
+  $('meSub').textContent = me + ' · online';
 }
  $('profSetBtn').onclick = ()=>{
   const p = $('profSet');
   p.hidden = !p.hidden;
   if(!p.hidden){
+    $('dispIn').value = dispOf(me);
     const c = nameColor(me);
     $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(c) ? c : '#8B7CF6';
   }
 };
+ $('dispSave').onclick = ()=>{
+  const d = $('dispIn').value.trim();
+  if(!d) return toast('Type a name first.','bad');
+  if(d.length < 2 || d.length > 24) return toast('Name: 2–24 characters.','bad');
+  const v = nameViolation(d);
+  if(v) return toast(v,'bad');
+  update(ref(db, `users/${me}`), {display:d})
+    .then(()=>toast('Name updated for everyone.','ok'))
+    .catch(e=>toast("Couldn't save name — "+(e.message||'check DB rules.'),'bad'));
+};
 function setColor(hex){
   if(!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
-  update(ref(db, `users/${me}`), {color:hex}).catch(()=>toast("Couldn't save color.",'bad'));
+  update(ref(db, `users/${me}`), {color:hex})
+    .then(()=>toast('Name color updated.','ok'))
+    .catch(e=>toast("Couldn't save color — "+(e.message||'check DB rules.'),'bad'));
 }
 document.querySelectorAll('.swatch').forEach(s=>s.onclick = ()=>setColor(s.dataset.c));
  $('colorPick').addEventListener('change', e=>setColor(e.target.value));
 
-/* avatar upload — click your avatar or use the gear menu */
 function pickAvatar(){ if(me) $('avatarFile').click(); }
  $('meAva').onclick = pickAvatar;
  $('avatarBtn').onclick = pickAvatar;
@@ -1535,17 +1453,19 @@ function pickAvatar(){ if(me) $('avatarFile').click(); }
   const task = uploadBytesResumable(sref(storage, `avatars/${me}/${Date.now()}_${safe}`), f, {contentType: f.type});
   toast('Uploading avatar…');
   task.on('state_changed', null,
-    ()=>toast('Avatar upload failed.','bad'),
+    err=>toast(`Avatar upload failed (${err.code||'error'}) — Storage rules must allow read/write.`,'bad'),
     async ()=>{
       try{
         const url = await getDownloadURL(task.snapshot.ref);
         await update(ref(db,`users/${me}`), {avatar:url});
         toast('Avatar updated.','ok');
-      }catch{ toast("Couldn't save avatar.",'bad'); }
+      }catch(e){ toast("Couldn't save avatar — "+(e.message||''),'bad'); }
     });
 });
  $('avatarDel').onclick = ()=>{
-  update(ref(db, `users/${me}`), {avatar:null}).catch(()=>toast("Couldn't remove avatar.",'bad'));
+  update(ref(db, `users/${me}`), {avatar:null})
+    .then(()=>toast('Avatar removed.','ok'))
+    .catch(()=>toast("Couldn't remove avatar.",'bad'));
 };
 
 /* ================= MODALS + SETTINGS ================= */
@@ -1559,8 +1479,6 @@ function closeModal(){
   if(e.key !== 'Enter') return;
   if($('mGo')) $('mGo').click();
   else if($('mPwGo')) $('mPwGo').click();
-  else if($('aPwGo')) $('aPwGo').click();
-  else if($('cpGo')) $('cpGo').click();
   else if($('memGo')) $('memGo').click();
   else if($('joinGo')) $('joinGo').click();
 });
@@ -1572,42 +1490,6 @@ function closeModal(){
     const v = $('mPwIn').value; closeModal(); if(r) r(v);
     return;
   }
-  // admin panel password gate
-  const ap = e.target.closest('#aPwGo');
-  if(ap){
-    const val = $('aPwIn').value;
-    closeModal();
-    if(!val) return;                       // empty = cancelled
-    if(!adminPwHash){                      // first time — set the password
-      if(val.length < 4) return toast('Use at least 4 characters.','bad');
-      saveAdminPw(val);
-      return;
-    }
-    if(await sha256hex('admin:'+val) === adminPwHash.h){ openDrawer(); }
-    else{
-      toast('Wrong admin password.','bad');
-      $('logoBtn').classList.add('shake');
-      setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
-    }
-    return;
-  }
-  // change admin password (from the panel)
-  const cp = e.target.closest('#cpGo');
-  if(cp){
-    const oldPw = $('cpOld').value, newPw = $('cpNew').value;
-    if(!newPw) return toast('Enter a new password.','bad');
-    if(newPw.length < 4) return toast('New password needs 4+ characters.','bad');
-    if(adminPwHash && await sha256hex('admin:'+oldPw) !== adminPwHash.h) return toast('Current password is wrong.','bad');
-    try{
-      const h = await sha256hex('admin:'+newPw);
-      await set(ref(db,'config/adminPw'), {h, set:Date.now(), by:me});
-      adminPwHash = {h};
-      closeModal(); toast('Admin password saved.','ok');
-      if(activeTab==='ovw') renderOverview();
-    }catch{ toast("Couldn't save password.",'bad'); }
-    return;
-  }
-  // hidden-server members: add
   const mg = e.target.closest('#memGo');
   if(mg){
     const sid = mg.dataset.sid;
@@ -1617,7 +1499,6 @@ function closeModal(){
     const inp = $('memIn'); if(inp){ inp.value = ''; inp.focus(); }
     return;
   }
-  // hidden-server members: remove
   const um = e.target.closest('[data-unmem]');
   if(um){ await removeMember(um.dataset.sid, um.dataset.unmem); return; }
   const th = e.target.closest('[data-theme-set]');
@@ -1636,6 +1517,8 @@ function closeModal(){
   const go = e.target.closest('#mGo'); if(!go) return;
   const name = ($('mName').value || '').trim().replace(/^#/,'');
   if(!name) return toast('Give it a name.','bad');
+  const nv = nameViolation(name);
+  if(nv) return toast(nv,'bad');
   const pwv = ($('mPw') && $('mPw').value) || '';
   const hidden = !!($('mHidden') && $('mHidden').checked);
   go.disabled = true;
@@ -1646,7 +1529,8 @@ function closeModal(){
       if(pwv) sObj.locked = true;
       if(hidden) sObj.hidden = true;
       await set(ref(db,`servers/${sid}`), sObj);
-      if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
+      // plain passcode kept so you can look it up in the Firebase console
+      if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), plain: pwv, set:Date.now()});
       if(hidden) toast(`Server created — ID: ${sid} (or add people from the sidebar).`,'ok');
       else toast('Server created.','ok');
       closeModal(); selectServer(sid, true);
@@ -1683,6 +1567,7 @@ function markSettings(){
 /* ================= GIPHY ================= */
 function openGif(){
   if(!curPath) return toast('Open a server first.','bad');
+  if(chatLocked()) return toast('Chat is locked by the owner.','bad');
   $('gifWrap').hidden = false; loadGifs('');
 }
 function closeGif(){ $('gifWrap').hidden = true; $('gifSearch').value = ''; }
@@ -1709,7 +1594,8 @@ let gifDeb;
  $('gifSearch').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); clearTimeout(gifDeb); loadGifs($('gifSearch').value.trim()); } });
  $('gifGrid').addEventListener('click', e=>{
   const c = e.target.closest('.gcell'); if(!c || !curPath) return;
-  const err = spamCheck(c.dataset.url);           // gifs follow the same spam rules
+  if(chatLocked()) return toast('Chat is locked by the owner.','bad');
+  const err = spamCheck(c.dataset.url);
   if(err) return toast(err,'bad');
   markSent(c.dataset.url);
   push(ref(db,curPath), {u:me, t:Date.now(), type:'gif', url:c.dataset.url, w:+c.dataset.w||200, h:+c.dataset.h||200})
@@ -1717,333 +1603,35 @@ let gifDeb;
   closeGif();
 });
 
-/* ================= SECRET: TRIPLE-CLICK LOGO → ADMIN PANEL ================= */
- $('logoBtn').addEventListener('click', ()=>{
-  clickCount++;
-  clearTimeout(clickTimer);
-  clickTimer = setTimeout(()=>{ clickCount = 0; $('svcLine').textContent=''; $('svcLine').className='svc-line mono'; }, 900);
-  if(clickCount >= 3){ clickCount = 0; svcAuth(); }
-});
-async function svcAuth(){
-  const line = $('svcLine');
-  line.className = 'svc-line mono'; line.textContent = '';
-  const msg = 'ADMIN ACCESS';
-  for(const ch of msg){ line.textContent += ch; await sleep(16); }
-  line.textContent += ' … ';
-  await sleep(220);
-  const ok = isAdmin();
-  line.textContent += ok ? 'OK' : 'DENIED';
-  line.classList.add(ok ? 'ok' : 'bad');
-  if(ok){ await sleep(320); adminGate(); }
-  else{
-    $('logoBtn').classList.add('shake');
-    setTimeout(()=>$('logoBtn').classList.remove('shake'), 450);
-    toast('Admin panel is for admins only.','bad');
-  }
-  setTimeout(()=>{ line.textContent=''; line.className='svc-line mono'; }, 2200);
-}
-
-/* ================= ADMIN PANEL + PASSWORD GATE ================= */
-const isAdmin = () => !!(me && adminMap[me]);
-
-// password popup between "ADMIN ACCESS OK" and the panel itself
-function adminGate(){
-  if(!isAdmin()){ toast('Admins only.','bad'); return; }
-  const first = !adminPwHash;
-  openModal(`<h3>${first ? 'Set an admin password' : 'Admin password'}</h3>
-    <p class="sub">${first ? 'Pick one now — you&apos;ll need it every time the panel opens.' : 'Enter the admin password to open the panel.'}</p>
-    <label>password<input type="password" id="aPwIn" autocomplete="off"></label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="aPwGo">${first ? 'Set &amp; open' : 'Unlock'}</button></div>`);
-  setTimeout(()=>$('aPwIn')?.focus(), 50);
-}
-async function saveAdminPw(pw){
-  try{
-    const h = await sha256hex('admin:'+pw);
-    await set(ref(db,'config/adminPw'), {h, set:Date.now(), by:me});
-    adminPwHash = {h};
-    toast('Admin password set.','ok');
-    openDrawer();
-  }catch{ toast("Couldn't save the password.",'bad'); }
-}
-function chgPwModal(){
-  openModal(`<h3>Change admin password</h3>
-    <label>current password<input type="password" id="cpOld" autocomplete="off"></label>
-    <label>new password<input type="password" id="cpNew" autocomplete="off"></label>
-    <div class="m-actions"><button class="btn" data-close>Cancel</button><button class="btn acc" id="cpGo">Save</button></div>`);
-  setTimeout(()=>$('cpOld')?.focus(), 50);
-}
-
-function openDrawer(){
-  if(!isAdmin()){ toast('Admins only.','bad'); return; }
-  drawerOpen = true;
-  $('admWho').textContent = '· signed in as ' + me;
-  $('drawerWrap').hidden = false;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>$('drawer').classList.add('open')));
-  setTab(activeTab);
-}
-function closeDrawer(){
-  drawerOpen = false;
-  $('drawer').classList.remove('open');
-  setTimeout(()=>{ $('drawerWrap').hidden = true; }, 320);
-}
- $('drawerClose').onclick = closeDrawer;
- $('drawerOvl').onclick = closeDrawer;
-document.querySelectorAll('.drawer-tabs button').forEach(b => b.onclick = ()=>setTab(b.dataset.tab));
-function setTab(t){
-  activeTab = t;
-  document.querySelectorAll('.drawer-tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===t));
-  ['ovw','srv','usr','net'].forEach(k=>$('pane-'+k).hidden = (k !== t));
-  if(t==='ovw') renderOverview();
-  else if(t==='srv') renderAdminServers();
-  else if(t==='net') renderNet();
-}
-function refreshPanes(){
-  if(!drawerOpen) return;
-  if(activeTab==='ovw') renderOverview();
-  else if(activeTab==='srv') renderAdminServers();
-  else if(activeTab==='net') renderNet();
-  else if(activeTab==='usr' && lookupUser) renderLookup(lookupUser);
-}
-function arm(btn, fn){
-  if(btn.dataset.armed){
-    clearTimeout(+btn.dataset.armed); delete btn.dataset.armed;
-    btn.classList.remove('armed'); btn.textContent = btn.dataset.label;
-    fn(); return;
-  }
-  btn.dataset.label = btn.textContent;
-  btn.classList.add('armed'); btn.textContent = 'SURE?';
-  btn.dataset.armed = setTimeout(()=>{
-    delete btn.dataset.armed; btn.classList.remove('armed'); btn.textContent = btn.dataset.label;
-  }, 2600);
-}
-function renderOverview(){
-  const onl = Object.values(presenceMap).filter(p=>p && p.online).length;
-  $('admStats').innerHTML = `
-    <div class="stat"><b>${Object.keys(usersMap).length}</b><span>accounts</span></div>
-    <div class="stat"><b>${Object.keys(serversMap).length}</b><span>servers</span></div>
-    <div class="stat"><b>${onl}</b><span>online now</span></div>
-    <div class="stat"><b>${Object.keys(bannedIps).length}</b><span>banned IPs</span></div>
-    <div class="stat"><b>${Object.keys(bannedUsers).length}</b><span>banned accounts</span></div>`;
-  $('admPwState').textContent = adminPwHash
-    ? `required to open this panel${adminPwHash.set ? ' · set ${fmtDate(adminPwHash.set)}' : ''}`
-    : 'not set yet — will be requested next time the panel opens';
-  const recent = Object.entries(usersMap).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,6);
-  $('admRecent').innerHTML = recent.length
-    ? recent.map(([u,v])=>`<div class="mini-row"><b>${esc(u)}</b><span>joined ${fmtDate(v.createdAt)} · ip ${esc(v.ip||'—')}</span></div>`).join('')
-    : '<div class="empty">No accounts yet.</div>';
-}
-function renderAdminServers(){
-  const es = Object.entries(serversMap).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
-  $('admSrvList').innerHTML = es.length ? es.map(([sid,s])=>`
-    <div class="adm-row">
-      <div class="info"><b>${esc(s.name||'server')}</b>
-        <div class="sub">owner ${esc(s.owner||'?')} · since ${fmtDate(s.createdAt)}${s.locked?' · locked':''}${s.hidden?' · hidden':''} · ${Object.keys(s.members||{}).length} members · id ${sid}</div></div>
-      <div class="acts">
-        <button class="btn" data-act="clear-srv" data-sid="${sid}">CLEAR MSGS</button>
-        <button class="btn danger" data-act="del-srv" data-sid="${sid}">DELETE</button>
-      </div></div>`).join('') : '<div class="empty">No servers exist.</div>';
-}
-function chipHTML(p, curIp){
-  const ip = p.ip || '—';
-  const banned = bannedIps[ipKey(ip)];
-  return `<span class="chip${ip===curIp?' cur':''}" data-copy="${esc(ip)}" title="click to copy">${esc(ip)}<i class="cnt">·${p.count||1}×</i>${banned?'<i class="cnt" style="color:var(--bad)">BANNED</i>':''}${banned?'':`<button data-act="ban-ip" data-ip="${esc(ip)}">BAN</button>`}</span>`;
-}
-function renderNet(){
-  const bl = Object.entries(bannedIps).sort((a,b)=>(b[1].at||0)-(a[1].at||0));
-  $('bannedIpList').innerHTML = bl.length ? bl.map(([k,v])=>`
-    <div class="adm-row"><div class="info"><b class="mono">${esc(v.ip||k)}</b>
-      <div class="sub">${esc(v.reason||'no reason')} · by ${esc(v.by||'?')} · ${fmtDate(v.at)}</div></div>
-      <div class="acts"><button class="btn" data-act="unban-ip" data-ip="${esc(v.ip||k)}">UNBAN</button></div></div>`).join('')
-    : '<div class="empty">No banned IPs.</div>';
-  const ba = Object.entries(bannedUsers);
-  $('bannedAccList').innerHTML = ba.length ? ba.map(([u,r])=>`
-    <div class="adm-row"><div class="info"><b>${esc(u)}</b>
-      <div class="sub">${esc(reasonOf(r))}</div></div>
-      <div class="acts"><button class="btn" data-act="unban-user" data-u="${esc(u)}">UNBAN</button></div></div>`).join('')
-    : '<div class="empty">No banned accounts.</div>';
-  const us = Object.entries(usersMap).sort((a,b)=>(b[1].lastLogin||0)-(a[1].lastLogin||0));
-  $('ipUsers').innerHTML = us.length ? us.map(([u,v])=>{
-    const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
-    return `<div class="ip-user">
-      <div class="h"><b>${esc(u)}</b><span>last login ${fmtDate(v.lastLogin)} · now ${esc(v.ip||'—')}</span></div>
-      <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono" style="color:var(--faint);font-size:11px">no IPs logged</span>'}</div>
-    </div>`;
-  }).join('') : '<div class="empty">No registered users.</div>';
-}
-async function renderLookup(u){
-  lookupUser = u || null;
-  const box = $('userCard');
-  if(!u){ box.innerHTML = '<div class="empty">Enter a username to pull up their record.</div>'; return; }
-  const v = usersMap[u];
-  if(!v){ box.innerHTML = `<div class="empty">No account called "${esc(u)}".</div>`; return; }
-  const pres = presenceMap[u] || {};
-  let fr = {};
-  try{ fr = (await get(ref(db,`friends/${u}`))).val() || {}; }catch{}
-  const ips = Object.values(v.ips||{}).sort((a,b)=>(b.last||0)-(a.last||0));
-  const av = v.avatar;
-  box.innerHTML = `
-    <div class="ucard">
-      <div class="uc-head">
-        ${av?`<div class="ava"><img src="${esc(av)}" alt=""></div>`:`<div class="ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</div>`}
-        <div><b style="color:${nameColor(u)}">${esc(u)}</b>
-          <div class="st">${pres.online ? `<span style="color:var(--ok)">ONLINE</span> · ip ${esc(pres.ip||'?')}` : 'OFFLINE'}</div></div>
-        ${bannedUsers[u] ? '<span class="tagb">BANNED</span>' : ''}
-      </div>
-      <div class="u-meta">
-        <div><i>joined</i><b>${fmtDate(v.createdAt)}</b></div>
-        <div><i>last login</i><b>${fmtDate(v.lastLogin)}</b></div>
-        <div><i>current ip</i><b class="mono">${esc(v.ip||'—')}</b></div>
-        <div><i>ips tracked</i><b>${ips.length}/${MAX_IPS}</b></div>
-      </div>
-      <div class="lbl">IP history (max ${MAX_IPS})</div>
-      <div class="chips">${ips.length ? ips.map(p=>chipHTML(p, v.ip)).join('') : '<span class="mono muted" style="font-size:11px">none logged</span>'}</div>
-      <div class="lbl">Friends (${Object.keys(fr).length})</div>
-      <div class="chips">${Object.keys(fr).map(f=>`<span class="chip plain">${esc(f)}</span>`).join('') || '<span class="mono muted" style="font-size:11px">none</span>'}</div>
-      <div class="lbl">Admin actions</div>
-      <div class="uc-acts">
-        <input id="ucReason" placeholder="reason (optional, used for bans)">
-        <button class="btn danger" data-act="ban-user" data-u="${esc(u)}">${bannedUsers[u]?'BAN (update)':'BAN ACCOUNT'}</button>
-        <button class="btn danger" data-act="ban-cur-ip" data-ip="${esc(v.ip||'')}" data-u="${esc(u)}">BAN CURRENT IP</button>
-        <button class="btn danger" data-act="del-user" data-u="${esc(u)}">DELETE ACCOUNT</button>
-      </div>
-    </div>`;
-}
- $('lookupBtn').onclick = ()=>renderLookup($('lookupInput').value.trim().toLowerCase());
- $('lookupInput').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); $('lookupBtn').click(); } });
- $('banIpGo').onclick = async ()=>{
-  const ip = $('banIpInput').value.trim();
-  if(!/^[0-9a-fA-F.:]{3,45}$/.test(ip)) return toast("That doesn't look like an IP.",'bad');
-  await admBanIp(ip, $('banIpReason').value.trim());
-  $('banIpInput').value = ''; $('banIpReason').value = '';
-  renderNet();
-};
-
-/* admin operations */
-async function admClearServer(sid){
-  if(!sid) return;
-  try{ await remove(ref(db,`messages/${sid}`)); toast('Messages cleared.','ok'); }
-  catch{ toast('Clear failed.','bad'); }
-}
-async function admDeleteServer(sid){
-  if(!sid) return;
-  try{
-    await remove(ref(db,`messages/${sid}`));
-    await remove(ref(db,`roomPasswords/${sid}`));
-    await remove(ref(db,`servers/${sid}`));
-    Object.keys(usersMap).forEach(u=>{ remove(ref(db,`userRooms/${u}/${sid}`)).catch(()=>{}); });
-    Object.entries(presenceMap).forEach(([u,p])=>{ if(p && p.servers && p.servers[sid]) remove(ref(db,`presence/${u}/servers/${sid}`)).catch(()=>{}); });
-    if(cur.server === sid){
-      if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
-      cur.server = null; resetChannel();
-    }
-    renderServers(); renderOnline(); updateOnlinePill();
-    toast('Server deleted.','ok');
-    renderAdminServers(); renderOverview();
-  }catch{ toast('Delete failed.','bad'); }
-}
-async function admBanUser(u, reason){
-  if(!u) return;
-  const exists = usersMap[u] || await getV(`users/${u}`);
-  if(!exists) return toast('No such account.','bad');
-  try{
-    await set(ref(db,`config/bannedUsers/${u}`), reason || `banned by ${me}`);
-    await remove(ref(db,`presence/${u}`));
-    toast(`${u} banned — they'll be disconnected.`,'ok');
-    renderNet(); if(lookupUser===u) renderLookup(u);
-  }catch{ toast('Ban failed.','bad'); }
-}
-async function admUnbanUser(u){
-  try{ await remove(ref(db,`config/bannedUsers/${u}`)); toast(`${u} unbanned.`,'ok'); renderNet(); }
-  catch{ toast('Unban failed.','bad'); }
-}
-async function admDeleteUser(u){
-  if(!u) return;
-  try{
-    const fr = (await get(ref(db,`friends/${u}`))).val() || {};
-    await Promise.all(Object.keys(fr).map(f=>remove(ref(db,`friends/${f}/${u}`))));
-    await Promise.all([
-      remove(ref(db,`users/${u}`)), remove(ref(db,`presence/${u}`)),
-      remove(ref(db,`friendRequests/${u}`)), remove(ref(db,`friends/${u}`))
-    ]);
-    toast(`Account ${u} deleted.`,'ok');
-    renderNet(); renderLookup(u); renderOverview();
-  }catch{ toast('Delete failed.','bad'); }
-}
-async function admBanIp(ip, reason){
-  if(!ip) return;
-  try{
-    await set(ref(db,`config/bannedIps/${ipKey(ip)}`), {ip, reason: reason || 'banned', by: me, at: Date.now()});
-    toast(`IP ${ip} banned.`,'ok');
-    renderNet();
-  }catch{ toast('IP ban failed.','bad'); }
-}
-async function admUnbanIp(ip){
-  try{ await remove(ref(db,`config/bannedIps/${ipKey(ip)}`)); toast(`IP ${ip} unbanned.`,'ok'); renderNet(); }
-  catch{ toast('Unban failed.','bad'); }
-}
- $('drawerBody').addEventListener('click', e=>{
-  const b = e.target.closest('button[data-act]');
-  if(b){
-    const a = b.dataset.act;
-    if(a==='clear-srv')      arm(b, ()=>admClearServer(b.dataset.sid));
-    else if(a==='del-srv')   arm(b, ()=>admDeleteServer(b.dataset.sid));
-    else if(a==='chg-pw')    chgPwModal();
-    else if(a==='ban-user')  arm(b, ()=>admBanUser(b.dataset.u, ($('ucReason')||{}).value ? $('ucReason').value.trim() : ''));
-    else if(a==='del-user')  arm(b, ()=>admDeleteUser(b.dataset.u));
-    else if(a==='ban-ip')    arm(b, ()=>admBanIp(b.dataset.ip));
-    else if(a==='ban-cur-ip')arm(b, ()=>admBanIp(b.dataset.ip, 'linked to '+b.dataset.u));
-    else if(a==='unban-ip')  admUnbanIp(b.dataset.ip);
-    else if(a==='unban-user')admUnbanUser(b.dataset.u);
-    return;
-  }
-  const chip = e.target.closest('.chip[data-copy]');
-  if(chip && !chip.classList.contains('plain')){
-    try{ navigator.clipboard.writeText(chip.dataset.copy); toast('IP copied to clipboard.','ok'); }catch{}
-  }
-});
-
 /* ================= GLOBAL LIVE LISTENERS (incl. live ban enforcement) ================= */
 onValue(ref(db,'servers'), s=>{
   serversMap = s.val()||{};
-  if(me) renderServers();
+  if(me){ renderServers(); applyLockState(); }
 });
 onValue(ref(db,'users'), s=>{
   usersMap = s.val()||{};
-  const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;   // login page stat
+  const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;
   if(me){
     if(!usersMap[me]) return forceLogout('Account deleted', 'your account was removed by an admin');
-    renderMeChip(); refreshPanes(); refreshMsgStyles();   // live-update colors + avatars on screen
+    renderMeChip(); refreshMsgStyles();
   }
 });
 onValue(ref(db,'presence'), s=>{
   presenceMap = s.val()||{};
   if(me){
-    renderOnline(); updateOnlinePill(); renderDMs(); refreshPanes();
-    // member online-status in an open members modal
+    renderOnline(); updateOnlinePill(); renderDMs();
     if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
   }
-});
-onValue(ref(db,'config/admins'), s=>{
-  adminMap = s.val()||{};
-  renderMeChip();
-  if(drawerOpen && !isAdmin()){ closeDrawer(); toast('Admin access revoked.','bad'); }
-});
-onValue(ref(db,'config/adminPw'), s=>{
-  adminPwHash = s.val();   // {h, set, by} — null until first set
-  if(drawerOpen && activeTab==='ovw') renderOverview();
 });
 onValue(ref(db,'config/bannedUsers'), s=>{
   bannedUsers = s.val()||{};
   if(me && bannedUsers[me]) return forceLogout('Account banned', reasonOf(bannedUsers[me]));
-  if(drawerOpen && activeTab==='net') renderNet();
 });
 onValue(ref(db,'config/bannedIps'), s=>{
   bannedIps = s.val()||{};
   if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout("You're blocked", `your IP ${myIp} was banned`);
-  if(drawerOpen && activeTab==='net') renderNet();
 });
 
-// which server the open members modal belongs to (stored on the Add button)
 function curMemSid(){
   const b = document.querySelector('#memGo');
   return b ? b.dataset.sid : null;
@@ -2064,7 +1652,6 @@ document.addEventListener('keydown', e=>{
   if(e.key !== 'Escape') return;
   if(!$('gifWrap').hidden) closeGif();
   else if(!$('modalWrap').hidden) closeModal();
-  else if(drawerOpen) closeDrawer();
   else if(replyingTo) cancelReply();
 });
 

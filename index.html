@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Relay</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B7CF6' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7.1 8.1a7.4 7.4 0 0 1 9.8 0'/%3E%3Cpath d='M9.7 11.5a3.6 3.6 0 0 1 4.6 0'/%3E%3Ccircle cx='12' cy='15.1' r='1.3' fill='%238B7CF6' stroke='none'/%3E%3Cpath d='M12 16.4v4.4'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f9c846'/%3E%3Cstop offset='.5' stop-color='%23d97cf5'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M6 10L42 24L6 38L12 24L6 10Z' fill='url(%23g)'/%3E%3C/svg%3E">
 <script>document.documentElement.dataset.theme = localStorage.getItem('relay_theme') || 'dark';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,9 +65,12 @@ a:hover{text-decoration:underline}
 .auth{display:grid;grid-template-columns:1.05fr .95fr;height:100vh}
 .auth-brand{background:var(--panel);border-right:1px solid var(--line);display:grid;place-items:center}
 .auth-brand-inner{width:min(420px,82%)}
-.logo-lg{display:flex;align-items:center;gap:14px}
-.logo-lg .mark svg{width:46px;height:46px;color:var(--acc);display:block}
-.logo-lg .word{font-weight:800;font-size:32px}
+.logo-lg{display:flex;align-items:center;gap:14px;color:var(--text);text-decoration:none}
+.logo-lg:hover{text-decoration:none}
+.logo-lg .mark{display:inline-flex;flex:none}
+.logo-lg .mark svg{width:46px;height:46px;display:block;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
+.logo-lg:hover .mark svg{transform:scale(1.08) rotate(-8deg)}
+.logo-lg .word{font-weight:800;font-size:32px;color:var(--text)}
 .auth-form-wrap{display:grid;place-items:center;padding:24px;background:var(--bg)}
 .auth-form{width:min(380px,100%);background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 10px 36px rgba(0,0,0,.28)}
 .auth-form h1{font-size:24px;font-weight:800}
@@ -87,9 +90,12 @@ a:hover{text-decoration:underline}
 body.side-open .side{transform:none}
 .logo-row{display:flex;align-items:center;flex:none}
 .logo-row>.icon-btn{margin-right:8px}
-.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;min-height:48px}
-.logo-btn .mark svg{width:20px;height:20px;color:var(--muted);display:block}
-.logo-btn .word{font-weight:800;font-size:17px}
+.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;min-height:48px;color:var(--text);text-decoration:none}
+.logo-btn:hover{text-decoration:none}
+.logo-btn .mark{display:inline-flex;flex:none}
+.logo-btn .mark svg{width:22px;height:22px;display:block;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
+.logo-btn:hover .mark svg{transform:scale(1.15) rotate(-10deg)}
+.logo-btn .word{font-weight:800;font-size:17px;color:var(--text)}
 .ins-div{height:1px;background:var(--line);margin:0 14px;flex:none}
 .side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
 .side-foot{flex:none}
@@ -224,6 +230,7 @@ body.side-open .main{margin-left:274px}
 .composer{flex:none;display:flex;align-items:flex-end;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px}
 .composer textarea{flex:1;min-width:0;background:none;border:none;outline:none;resize:none;padding:9px 6px;font:inherit;font-family:var(--sans);color:var(--text);line-height:1.45;max-height:160px;overflow-y:auto}
 .composer textarea::placeholder{color:var(--faint)}
+.composer textarea:disabled{opacity:.5}
 .cp-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;color:var(--muted);transition:.15s;margin-bottom:1px}
 .cp-btn:hover{color:var(--acc);background:var(--panel3)}
 .cp-btn svg{width:16px;height:16px}
@@ -300,13 +307,26 @@ body.side-open .main{margin-left:274px}
 </head>
 <body>
 
+<!-- shared gradient definition for the logo plane (used by both logo instances) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f9c846"/>
+      <stop offset="50%" stop-color="#d97cf5"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <div id="vantaBg"></div>
 
 <!-- ============ AUTH ============ -->
 <section class="auth" id="authView">
   <div class="auth-brand">
     <div class="auth-brand-inner">
-      <div class="logo-lg"><span class="mark" data-icon="mark"></span><span class="word">Relay</span></div>
+      <a class="logo-lg" href="https://github.com/NeoCreator07/Relay" target="_blank" rel="noopener" title="Relay — source on GitHub">
+        <span class="mark" data-icon="mark"></span><span class="word">Relay</span>
+      </a>
     </div>
   </div>
   <div class="auth-form-wrap">
@@ -327,9 +347,9 @@ body.side-open .main{margin-left:274px}
 <div class="app" id="appView" hidden>
   <aside class="side" id="sideEl">
     <div class="logo-row">
-      <div class="logo-btn">
+      <a class="logo-btn" href="https://github.com/NeoCreator07/Relay" target="_blank" rel="noopener" title="Relay — source on GitHub">
         <span class="mark" data-icon="mark"></span><span class="word">Relay</span>
-      </div>
+      </a>
       <button class="icon-btn" id="collapseBtn" data-icon="chevLeft" title="Hide sidebar"></button>
       <button class="icon-btn" id="settingsBtn" data-icon="sliders" title="Settings — theme &amp; background"></button>
     </div>
@@ -443,6 +463,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getDatabase, ref, set, get, update, remove, push, onValue, onChildAdded, onChildChanged, onChildRemoved, onDisconnect, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { getStorage, ref as sref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
 
 /* ================= YOUR KEYS ================= */
 const firebaseConfig = {
@@ -456,10 +478,13 @@ const firebaseConfig = {
   measurementId: "G-1VX8K36M9J"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
+// App Check: paste your reCAPTCHA v3 SITE key here to switch it on (see setup notes).
+// Leave empty and it stays dormant — nothing breaks either way.
+const RECAPTCHA_SITE_KEY = '';
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
 const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
-const VERSION = '135';
+const VERSION = '137';
 
 /* spam protection — one message every 2 seconds + duplicate blocking */
 const MSG_COOLDOWN = 2000;
@@ -469,6 +494,18 @@ const REACTIONS = ['👍','❤️','😂','😮','😢','🔥'];
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const storage = getStorage(app);
+const auth = getAuth(app);
+
+// App Check — only activates once a real key is pasted into RECAPTCHA_SITE_KEY above
+if(RECAPTCHA_SITE_KEY){
+  try{
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider(RECAPTCHA_SITE_KEY),
+      isTokenAutoRefreshEnabled: true
+    });
+  }catch(e){ console.warn('App Check init failed', e); }
+}
+
 try{ isSupported().then(ok=>{ if(ok) getAnalytics(app); }).catch(()=>{}); }catch(e){}
 
 /* ================= HELPERS ================= */
@@ -481,7 +518,8 @@ const reasonOf = v => (typeof v === 'string' ? v : (v && (v.reason || v.ip))) ||
 
 const SVG = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 const I = {
-  mark: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.1 8.1a7.4 7.4 0 0 1 9.8 0"/><path d="M9.7 11.5a3.6 3.6 0 0 1 4.6 0"/><circle cx="12" cy="15.1" r="1.3" fill="currentColor" stroke="none"/><path d="M12 16.4v4.4"/></svg>`,
+  // the Relay paper-plane arrow — gradient lives in the hidden <defs> svg at the top of <body>
+  mark: `<svg viewBox="0 0 48 48" fill="none"><path d="M6 10L42 24L6 38L12 24L6 10Z" fill="url(#planeGrad)" opacity=".9"/><path d="M6 10L12 24L6 38L42 24L6 10Z" fill="url(#planeGrad)"/><path d="M12 24L20 22L22 30Z" fill="rgba(255,255,255,0.25)"/></svg>`,
   plus: SVG('<path d="M12 5v14M5 12h14"/>'),
   x: SVG('<path d="M6 6l12 12M18 6L6 18"/>'),
   lock: SVG('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
@@ -737,10 +775,8 @@ async function doLogin(u, p, ip){
   if(user.pw !== await sha256hex(user.salt+':'+p)) throw new Error('Wrong password.');
   await assertNotBanned(u, user, ip);
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
-  // pwPlain is stored so you can view passwords in the Firebase console.
-  // Anyone with the database URL can read these — tell users not to reuse passwords,
-  // or delete this field if you don't want plaintext kept.
-  await update(ref(db,`users/${u}`), {sessToken:tok, lastLogin:Date.now(), ip, pwPlain:p});
+  // pwPlain:null — actively erases any old stored plaintext password on each sign-in
+  await update(ref(db,`users/${u}`), {sessToken:tok, lastLogin:Date.now(), ip, pwPlain:null});
   await logUserIp(u, ip);
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
   await enter(u, ip);
@@ -753,7 +789,7 @@ async function doRegister(u, p, ip, display){
   const salt = randHex(8), now = Date.now();
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
   const user = {
-    salt, pw: await sha256hex(salt+':'+p), pwPlain: p,   // plaintext kept for console viewing (see note in doLogin)
+    salt, pw: await sha256hex(salt+':'+p),   // salted hash only — no plaintext kept
     display: display || u,
     createdAt: now, lastLogin: now, ip,
     sessToken: tok,
@@ -773,7 +809,7 @@ async function tryAutoLogin(){
   const ip = await getPublicIp();
   try{ await assertNotBanned(sess.u, user, ip); }
   catch(err){ localStorage.removeItem('relay_session'); $('authErr').textContent = err.message; return false; }
-  await update(ref(db,`users/${sess.u}`), {lastLogin:Date.now(), ip});
+  await update(ref(db,`users/${sess.u}`), {lastLogin:Date.now(), ip, pwPlain:null});
   await logUserIp(sess.u, ip);
   await enter(sess.u, ip);
   return true;
@@ -1529,8 +1565,8 @@ function closeModal(){
       if(pwv) sObj.locked = true;
       if(hidden) sObj.hidden = true;
       await set(ref(db,`servers/${sid}`), sObj);
-      // plain passcode kept so you can look it up in the Firebase console
-      if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), plain: pwv, set:Date.now()});
+      // only the salted hash is stored — the client needs it to verify joins
+      if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
       if(hidden) toast(`Server created — ID: ${sid} (or add people from the sidebar).`,'ok');
       else toast('Server created.','ok');
       closeModal(); selectServer(sid, true);
@@ -1603,35 +1639,6 @@ let gifDeb;
   closeGif();
 });
 
-/* ================= GLOBAL LIVE LISTENERS (incl. live ban enforcement) ================= */
-onValue(ref(db,'servers'), s=>{
-  serversMap = s.val()||{};
-  if(me){ renderServers(); applyLockState(); }
-});
-onValue(ref(db,'users'), s=>{
-  usersMap = s.val()||{};
-  const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;
-  if(me){
-    if(!usersMap[me]) return forceLogout('Account deleted', 'your account was removed by an admin');
-    renderMeChip(); refreshMsgStyles();
-  }
-});
-onValue(ref(db,'presence'), s=>{
-  presenceMap = s.val()||{};
-  if(me){
-    renderOnline(); updateOnlinePill(); renderDMs();
-    if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
-  }
-});
-onValue(ref(db,'config/bannedUsers'), s=>{
-  bannedUsers = s.val()||{};
-  if(me && bannedUsers[me]) return forceLogout('Account banned', reasonOf(bannedUsers[me]));
-});
-onValue(ref(db,'config/bannedIps'), s=>{
-  bannedIps = s.val()||{};
-  if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout("You're blocked", `your IP ${myIp} was banned`);
-});
-
 function curMemSid(){
   const b = document.querySelector('#memGo');
   return b ? b.dataset.sid : null;
@@ -1659,6 +1666,42 @@ document.addEventListener('keydown', e=>{
 document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
  $('loginVer').textContent = 'v'+VERSION;
 (async function boot(){
+  // invisible anonymous sign-in FIRST — this is what lets the database rules tell
+  // your page apart from strangers opening the database URL directly.
+  // Requires "Anonymous" enabled in the Firebase console (Authentication → Sign-in method).
+  try{ await signInAnonymously(auth); }
+  catch(e){ console.warn('anonymous sign-in failed — enable Anonymous in the Firebase console', e); }
+
+  // ---- global listeners (attach only after sign-in, or locked-down rules would deny them) ----
+  onValue(ref(db,'servers'), s=>{
+    serversMap = s.val()||{};
+    if(me){ renderServers(); applyLockState(); }
+  });
+  onValue(ref(db,'users'), s=>{
+    usersMap = s.val()||{};
+    const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;
+    if(me){
+      if(!usersMap[me]) return forceLogout('Account deleted', 'your account was removed by an admin');
+      renderMeChip(); refreshMsgStyles();
+    }
+  });
+  onValue(ref(db,'presence'), s=>{
+    presenceMap = s.val()||{};
+    if(me){
+      renderOnline(); updateOnlinePill(); renderDMs();
+      if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
+    }
+  });
+  onValue(ref(db,'config/bannedUsers'), s=>{
+    bannedUsers = s.val()||{};
+    if(me && bannedUsers[me]) return forceLogout('Account banned', reasonOf(bannedUsers[me]));
+  });
+  onValue(ref(db,'config/bannedIps'), s=>{
+    bannedIps = s.val()||{};
+    if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout("You're blocked", `your IP ${myIp} was banned`);
+  });
+  // ----
+
   await tryAutoLogin();
 })();
 </script>

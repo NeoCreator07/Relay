@@ -1,32 +1,32 @@
-Relay Source-Available License
+Relay Permission License
 
 Copyright (c) 2025-2026 TerminalVelocity
 
-1. Grant of Use. Subject to the terms below, the copyright holder grants
-   you a personal, non-exclusive, non-transferable, revocable permission
-   to use, run, host, and modify the Software for your own personal or
-   internal purposes.
+1. Personal Use. You may download, run, host, and modify this software
+   for your own personal, non-commercial use.
 
-2. No Redistribution. You may NOT publish, distribute, sublicense, sell,
-   share, or otherwise make the Software or any derivative of it available
-   to third parties, in source or compiled form, in whole or in part.
-   Forking the public repository for your own use is permitted; pushing
-   your fork to a public host is not.
+2. Permission Required. You may NOT copy, republish, distribute,
+   sublicense, sell, rebrand, rename, or publicly release this software
+   or any derivative of it — in whole or in part, source or built form —
+   without the prior written permission of the copyright holder.
+   Forking on GitHub is permitted only for contributing back to this
+   project; all other forks and copies are unlicensed.
 
-3. Attribution. If you use the Software, in whole or in part, you must
-   include the above copyright notice and this license text in all copies
-   and must credit "TerminalVelocity / Relay" in any place the Software's
-   origin would reasonably be displayed.
+3. Attribution. Any use permitted by license or by written permission
+   must retain this copyright notice and credit "TerminalVelocity / Relay".
 
-4. Revocation. This license is revocable at the sole discretion of the
-   copyright holder. Upon written notice, your permission terminates and
-   you must cease using and delete all copies of the Software and its
-   derivatives.
+4. Revocation. Permissions granted under this license or separately in
+   writing may be revoked by the copyright holder at any time upon
+   written notice, after which all copies and derivatives must be
+   removed.
 
-5. No Warranty. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-   KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-   LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-   OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+5. Requests. To request permission to copy, fork, or build on this
+   project, contact: YOUR_EMAIL_OR_GITHUB_PROFILE
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.

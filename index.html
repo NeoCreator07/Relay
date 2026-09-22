@@ -8,7 +8,7 @@
 <script>document.documentElement.dataset.theme = localStorage.getItem('relay_theme') || 'dark';</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#101014; --panel:#17171D; --panel2:#1E1E26; --panel3:#24242E;
@@ -28,14 +28,25 @@ html[data-theme=light]{
   --bad:#E35D5D; --ok:#3EA86B;
   --card:rgba(255,255,255,.82);
 }
+/* Discord theme palette */
+html[data-theme=discord]{
+  --bg:#1e1f22; --panel:#2b2d31; --panel2:#35373c; --panel3:#3f4147;
+  --line:#26282c; --line2:#3f4147;
+  --text:#dbdee1; --muted:#949ba4; --faint:#6d6f78;
+  --acc:#5865f2; --acc-ink:#FFFFFF; --acc-hi:#4752c4;
+  --bad:#f23f42; --ok:#23a55a;
+  --card:#313338;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
+html[data-theme=discord] body{font-family:'Inter','Nunito',system-ui,sans-serif}
 ::selection{background:var(--acc);color:var(--acc-ink)}
 ::-webkit-scrollbar{width:9px;height:9px}
 ::-webkit-scrollbar-thumb{background:var(--line2);border-radius:9px;border:2px solid var(--panel)}
 ::-webkit-scrollbar-track{background:transparent}
+html[data-theme=discord] ::-webkit-scrollbar-thumb{background:#1a1b1e;border:none}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
@@ -46,6 +57,7 @@ a{color:var(--acc);text-decoration:none;cursor:pointer}
 a:hover{text-decoration:underline}
 
 #vantaBg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+html[data-theme=discord] #vantaBg{display:none}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;font-weight:700;font-size:12.5px;color:var(--text);transition:border-color .15s,background .15s,color .15s}
@@ -56,7 +68,6 @@ a:hover{text-decoration:underline}
 .btn svg{width:13px;height:13px}
 .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;color:var(--muted);flex:none}
 .icon-btn:hover{color:var(--text);background:var(--panel2)}
-.icon-btn svg{width:15px;height:15px}
 .icon-btn.ok:hover{color:var(--ok)}
 .icon-btn.no:hover{color:var(--bad)}
 .icon-btn.on{color:var(--bad);background:rgba(240,109,109,.12)}
@@ -71,8 +82,11 @@ a:hover{text-decoration:underline}
 .logo-lg .mark svg{width:46px;height:46px;display:block;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
 .logo-lg:hover .mark svg{transform:scale(1.08) rotate(-8deg)}
 .logo-lg .word{font-weight:800;font-size:32px;color:var(--text)}
+.brand-tag{margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.brand-tag b{color:var(--acc);font-weight:500}
 .auth-form-wrap{display:grid;place-items:center;padding:24px;background:var(--bg)}
 .auth-form{width:min(380px,100%);background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 10px 36px rgba(0,0,0,.28)}
+html[data-theme=discord] .auth-form{backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid var(--line)}
 .auth-form h1{font-size:24px;font-weight:800}
 .auth-form .sub{margin-top:6px;color:var(--muted);font-size:13px}
 .auth-meta{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em}
@@ -84,13 +98,35 @@ a:hover{text-decoration:underline}
 .auth-form .btn.acc{width:100%;margin-top:10px;justify-content:center;padding:11px;font-size:14px}
 .auth-switch{margin-top:18px;font-size:13px;color:var(--muted);text-align:center}
 
+/* ---------- discord icon rail ---------- */
+#rail{display:none;position:fixed;left:0;top:0;bottom:0;width:72px;background:#1e1f22;flex-direction:column;align-items:center;padding:12px 0;z-index:105}
+html[data-theme=discord] #rail{display:flex}
+.rail-btn{width:48px;height:48px;border-radius:24px;display:grid;place-items:center;position:relative;transition:border-radius .15s,background .15s,color .15s;color:#dbdee1;flex:none;background:#313338}
+.rail-btn:hover{border-radius:16px}
+.rail-btn svg{width:24px;height:24px}
+.rail-home:hover{background:#5865f2;color:#fff}
+.rail-item::before{content:'';position:absolute;left:-12px;width:4px;border-radius:0 4px 4px 0;background:#f2f3f5;height:0;transition:height .15s}
+.rail-item:hover::before{height:20px}
+.rail-item.active{border-radius:16px}
+.rail-item.active::before{height:40px}
+.rail-ic{font-size:17px;font-weight:700;color:#fff;user-select:none}
+.rail-sep{width:32px;height:2px;background:#3f4147;border-radius:1px;margin:4px 0 8px;flex:none}
+#railList{flex:1;overflow-y:auto;overflow-x:hidden;width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 0 8px}
+#railList::-webkit-scrollbar{width:0}
+.rail-add,.rail-explore{color:#23a55a}
+.rail-add:hover,.rail-explore:hover{background:#23a55a;color:#fff}
+
 /* ---------- app frame ---------- */
 .app{height:100vh}
 .side{position:fixed;top:0;left:0;bottom:0;width:262px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;z-index:110;transform:translateX(-102%);transition:transform .25s cubic-bezier(.22,.85,.25,1)}
 body.side-open .side{transform:none}
+html[data-theme=discord] .side{left:72px;width:240px}
 .logo-row{display:flex;align-items:center;flex:none}
 .logo-row>.icon-btn{margin-right:8px}
-.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;min-height:48px;color:var(--text);text-decoration:none}
+html[data-theme=discord] .logo-btn{display:none}
+html[data-theme=discord] .logo-row{justify-content:flex-end;min-height:44px}
+html[data-theme=discord] .ins-div{display:none}
+.logo-btn{display:flex;align-items:center;gap:10px;padding:16px 12px 13px;min-height:48px;color:var(--text);text-decoration:none;flex:1}
 .logo-btn:hover{text-decoration:none}
 .logo-btn .mark{display:inline-flex;flex:none}
 .logo-btn .mark svg{width:22px;height:22px;display:block;transition:transform .18s cubic-bezier(.34,1.56,.64,1)}
@@ -98,17 +134,23 @@ body.side-open .side{transform:none}
 .logo-btn .word{font-weight:800;font-size:17px;color:var(--text)}
 .ins-div{height:1px;background:var(--line);margin:0 14px;flex:none}
 .side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+html[data-theme=discord] #srvSec{display:none}
 .side-foot{flex:none}
 .side-foot::before{content:'';display:block;height:1px;background:var(--line);margin:0 14px}
+html[data-theme=discord] .side-foot::before{margin:0}
 .me-chip{display:flex;align-items:center;gap:10px;padding:10px 14px}
+html[data-theme=discord] .me-chip{background:#232428;padding:8px 12px}
 .ava{display:grid;place-items:center;border-radius:8px;font-weight:800;color:#1B1B22;user-select:none;flex:none;overflow:hidden;position:relative}
 .ava img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;position:absolute;inset:0}
 .me-chip .ava{width:32px;height:32px;font-size:14px;cursor:pointer}
 .me-chip .ava:hover{outline:2px solid var(--acc)}
+html[data-theme=discord] .me-chip .ava{border-radius:50%}
 .me-chip .who{min-width:0;flex:1}
 .me-chip .who b{display:block;font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .me-chip .who span{font-size:9.5px;letter-spacing:.08em;color:var(--faint);display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prof-set{padding:2px 14px 12px}
+html[data-theme=discord] .prof-set{background:#232428;padding:2px 12px 12px}
+html[data-theme=discord] .prof-set::before{margin:0 0 8px;background:#1e1f22}
 .prof-set::before{content:'';display:block;height:1px;background:var(--line);margin:0 0 10px}
 .ps-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .ps-row+.ps-row{margin-top:10px}
@@ -119,13 +161,17 @@ body.side-open .side{transform:none}
 input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2);border-radius:6px;background:none;cursor:pointer}
 .sec{padding:12px 10px 14px}
 .sec+.sec::before{content:'';display:block;height:1px;background:var(--line);margin:0 14px}
+html[data-theme=discord] .sec+.sec::before{margin:0 12px;background:rgba(255,255,255,.06)}
+html[data-theme=discord] .sec{padding:8px 8px 12px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:2px 6px 8px}
 .sec-h span.t{font-size:9.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;font-weight:700}
+html[data-theme=discord] .sec-h span.t{font-size:11px;letter-spacing:.02em;font-weight:700}
 .sec-h .btns{display:flex;gap:2px}
 .sec-h .icon-btn{width:22px;height:22px}
 .sec-h .icon-btn svg{width:13px;height:13px}
 .side-list{list-style:none}
 .side-list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;color:var(--muted);cursor:pointer;font-size:13.5px;margin-bottom:1px}
+html[data-theme=discord] .side-list li{font-size:14.5px;border-radius:4px;padding:6px 8px}
 .side-list li:hover{background:var(--panel2);color:var(--text)}
 .side-list li.active{background:var(--panel2);color:var(--text);box-shadow:inset 2px 0 0 var(--acc)}
 .side-list .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
@@ -149,10 +195,16 @@ input[type=color]{width:28px;height:21px;padding:0;border:1px solid var(--line2)
 .add-row input{padding:6px 8px;font-size:12.5px}
 .add-row .btn{padding:6px 9px}
 .empty{font-size:11.5px;color:var(--faint);padding:10px 12px;border:1px dashed var(--line);border-radius:8px;line-height:1.6}
+.mini-ava{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:10px;font-weight:800;color:#1B1B22;flex:none;position:relative;overflow:hidden}
+.mini-ava img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+html[data-theme=discord] .mini-ava{border-radius:50%}
 
 /* ---------- main: floating chat card ---------- */
 .main{position:relative;z-index:1;height:calc(100vh - 24px);margin:12px;background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-width:0;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.28);transition:margin-left .25s cubic-bezier(.22,.85,.25,1)}
 body.side-open .main{margin-left:274px}
+/* discord mode: full-bleed, flat, sits next to the rail */
+html[data-theme=discord] .main{margin:0;margin-left:72px;height:100vh;border-radius:0;border:none;box-shadow:none;background:#313338;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-theme=discord] body.side-open .main{margin-left:312px}
 .chat-head{display:flex;align-items:center;gap:14px;height:58px;padding:0 16px;border-bottom:1px solid var(--line);flex:none}
 .chat-head h2{font-size:15.5px;font-weight:800}
 .chat-head h2 .hash{color:var(--acc);font-weight:700;margin-right:2px}
@@ -160,31 +212,50 @@ body.side-open .main{margin-left:274px}
 .chat-head .right{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em}
 .chat-head .right b{color:var(--ok);font-weight:500}
 .msgs{flex:1;overflow-y:auto;padding:16px 16px 12px}
+html[data-theme=discord] .msgs{padding:16px 20px 16px}
 .msg{display:flex;gap:11px;padding:6px 8px;border-radius:10px;margin-bottom:2px;position:relative}
 .msg:hover{background:rgba(128,128,128,.06)}
+html[data-theme=discord] .msg{padding:2px 16px 2px 8px;border-radius:0}
+html[data-theme=discord] .msg:hover{background:#2e3035}
 .msg .ava{width:30px;height:30px;font-size:12px;margin-top:2px}
+html[data-theme=discord] .msg .ava{border-radius:50%;width:40px;height:40px;font-size:15px;margin-top:0}
 .msg .mc{min-width:0}
 .msg .mh{display:flex;align-items:baseline;gap:9px}
 .msg .mh .name{font-size:13px;font-weight:700}
+html[data-theme=discord] .msg .mh .name{font-size:15px}
 .msg .mh .uname{font-family:var(--mono);font-size:9px;color:var(--faint)}
+html[data-theme=discord] .msg .mh .uname{font-size:11px}
 .msg .mh .time{font-family:var(--mono);font-size:9.5px;color:var(--faint)}
+html[data-theme=discord] .msg .mh .time{font-size:11px}
 .msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word;white-space:pre-wrap}
+html[data-theme=discord] .msg .text{font-size:15px;line-height:1.4;margin-top:2px}
 .msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
+html[data-theme=discord] .msg img.gif{border:none;border-radius:8px}
 .day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
 .day-div::before,.day-div::after{content:'';flex:1;height:1px;background:var(--line)}
+.edited{font-family:var(--mono);font-size:9px;color:var(--faint);margin-left:4px}
 
-/* ---------- hover toolbar: reactions + reply ---------- */
+/* ---------- message editing ---------- */
+.edit-row{display:flex;gap:6px;align-items:flex-end;margin-top:4px}
+.edit-row .edit-in{flex:1;min-width:0;background:var(--panel2);border:1px solid var(--acc);border-radius:8px;color:var(--text);padding:8px 10px;font:inherit;font-family:var(--sans);font-size:13.8px;line-height:1.45;resize:none;outline:none;max-height:160px;overflow-y:auto}
+html[data-theme=discord] .edit-row .edit-in{background:#383a40;font-size:15px}
+.edit-row .btn{padding:8px 10px;font-size:12px}
+
+/* ---------- hover toolbar: reactions + reply + edit ---------- */
 .hover-bar{position:absolute;right:10px;top:-15px;display:none;align-items:center;gap:2px;background:var(--panel3);border:1px solid var(--line2);border-radius:10px;padding:3px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:3}
+html[data-theme=discord] .hover-bar{top:-14px;right:16px;background:#2b2d31;border:1px solid #1e1f22}
 .msg:hover .hover-bar{display:flex}
 .hover-bar button{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:7px;font-size:13px;color:var(--muted);transition:.12s}
 .hover-bar button:hover{background:var(--panel2);color:var(--text);transform:scale(1.12)}
-.hover-bar .hb-reply svg{width:13px;height:13px}
+.hover-bar .hb-reply svg,.hover-bar .hb-edit svg{width:13px;height:13px}
 .reactions{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
 .react{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:2px 8px 2px 7px;font-size:12.5px;cursor:pointer}
 .react b{font-size:10.5px;color:var(--muted);font-family:var(--mono);font-weight:600}
 .react:hover{border-color:var(--muted)}
 .react.mine{border-color:var(--acc);background:rgba(139,124,246,.14)}
 .react.mine b{color:var(--acc)}
+html[data-theme=discord] .react{border-radius:4px;background:#2b2d31;border-color:#3f4147}
+html[data-theme=discord] .react.mine{background:rgba(88,101,242,.15);border-color:#5865f2}
 .reply-quote{display:flex;align-items:center;gap:6px;margin:1px 0 3px;padding-left:8px;border-left:2px solid var(--acc);color:var(--muted);font-size:11.5px;cursor:pointer;min-width:0;max-width:100%}
 .reply-quote:hover{color:var(--text)}
 .reply-quote .rq-ic{display:inline-flex;flex:none;color:var(--acc)} .reply-quote .rq-ic svg{width:12px;height:12px}
@@ -228,11 +299,14 @@ body.side-open .main{margin-left:274px}
 
 /* ---------- composer ---------- */
 .composer{flex:none;display:flex;align-items:flex-end;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px}
+html[data-theme=discord] .composer{background:#383a40;border:none;border-radius:8px;margin:0 16px 24px}
 .composer textarea{flex:1;min-width:0;background:none;border:none;outline:none;resize:none;padding:9px 6px;font:inherit;font-family:var(--sans);color:var(--text);line-height:1.45;max-height:160px;overflow-y:auto}
 .composer textarea::placeholder{color:var(--faint)}
 .composer textarea:disabled{opacity:.5}
 .cp-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;color:var(--muted);transition:.15s;margin-bottom:1px}
 .cp-btn:hover{color:var(--acc);background:var(--panel3)}
+html[data-theme=discord] .cp-btn{color:#b5bac1}
+html[data-theme=discord] .cp-btn:hover{color:#dbdee1;background:transparent}
 .cp-btn svg{width:16px;height:16px}
 .cp-gif{width:auto;padding:0 10px;font-weight:800;font-size:10.5px;letter-spacing:.08em}
 
@@ -240,6 +314,7 @@ body.side-open .main{margin-left:274px}
 .mem-list{margin-top:14px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto}
 .mem-row{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel2)}
 .mem-row .ava{width:24px;height:24px;font-size:11px}
+html[data-theme=discord] .mem-row .ava{border-radius:50%}
 .mem-row b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
 .mem-st{font-family:var(--mono);font-size:9.5px;color:var(--faint);flex:none}
 .mem-tag{font-family:var(--mono);font-size:8.5px;color:var(--acc);letter-spacing:.12em;flex:none}
@@ -250,6 +325,7 @@ body.side-open .main{margin-left:274px}
 .seg{display:flex;gap:6px}
 .seg-b{flex:1;border:1px solid var(--line2);border-radius:8px;padding:8px;font-weight:700;font-size:12.5px;color:var(--muted)}
 .seg-b.active{border-color:var(--acc);color:var(--acc);background:rgba(139,124,246,.1)}
+.seg-b.dis.active{border-color:#5865f2;color:#fff;background:#5865f2}
 .fx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .fx-b{border:1px solid var(--line2);border-radius:8px;padding:8px 4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .fx-b.active{border-color:var(--acc);color:var(--acc);background:rgba(139,124,246,.1)}
@@ -302,6 +378,10 @@ body.side-open .main{margin-left:274px}
   .side{width:280px;box-shadow:14px 0 40px rgba(0,0,0,.45)}
   .auth{grid-template-columns:1fr}
   .auth-brand{display:none}
+  html[data-theme=discord] #rail{display:none}
+  html[data-theme=discord] .side{left:0;width:280px}
+  html[data-theme=discord] .main{margin:0!important;height:100vh}
+  html[data-theme=discord] body.side-open .main{margin-left:0!important}
 }
 </style>
 </head>
@@ -320,6 +400,15 @@ body.side-open .main{margin-left:274px}
 
 <div id="vantaBg"></div>
 
+<!-- ============ Discord-style server rail (visible in Discord theme) ============ -->
+<nav id="rail">
+  <button class="rail-btn rail-home" id="railHome" data-icon="mark" title="Home"></button>
+  <div class="rail-sep"></div>
+  <div id="railList"></div>
+  <button class="rail-btn rail-add" id="railAdd" data-icon="plus" title="Add a server"></button>
+  <button class="rail-btn rail-explore" id="railExplore" data-icon="search" title="Find a server"></button>
+</nav>
+
 <!-- ============ AUTH ============ -->
 <section class="auth" id="authView">
   <div class="auth-brand">
@@ -327,6 +416,7 @@ body.side-open .main{margin-left:274px}
       <a class="logo-lg" href="https://github.com/NeoCreator07/Relay" target="_blank" rel="noopener" title="Relay — source on GitHub">
         <span class="mark" data-icon="mark"></span><span class="word">Relay</span>
       </a>
+      <p class="brand-tag">free encrypted text messaging</p>
     </div>
   </div>
   <div class="auth-form-wrap">
@@ -355,7 +445,7 @@ body.side-open .main{margin-left:274px}
     </div>
     <div class="ins-div"></div>
     <div class="side-scroll">
-      <div class="sec">
+      <div class="sec" id="srvSec">
         <div class="sec-h">
           <span class="t">SERVERS</span>
           <span class="btns">
@@ -414,6 +504,7 @@ body.side-open .main{margin-left:274px}
         <h2 id="roomTitle">—</h2>
         <p class="meta" id="roomMeta">no channel selected</p>
       </div>
+      <button class="icon-btn" id="inviteBtn" data-icon="userPlus" title="Add people to this hidden server" hidden></button>
       <button class="icon-btn" id="muteBtn" data-icon="micOff" title="Lock chat — stop everyone else from talking" hidden></button>
       <div class="right" id="onlinePill"></div>
     </header>
@@ -478,15 +569,15 @@ const firebaseConfig = {
   measurementId: "G-1VX8K36M9J"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
-// App Check: paste your reCAPTCHA v3 SITE key here to switch it on (see setup notes).
-// Leave empty and it stays dormant — nothing breaks either way.
-const RECAPTCHA_SITE_KEY = '';
+// App Check — also register this key in the Firebase console (App Check → Apps → Register with reCAPTCHA).
+// Monitor mode until you click Enforce in the console; only enforce once Metrics shows verified traffic.
+const RECAPTCHA_SITE_KEY = '6LfMBsAtAAAAAOHu39XRwkOlyeqogTw5zCAYtwjp';
 const MAX_IPS = 5;                    // max tracked IPs per user
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
 const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
-const VERSION = '137';
+const VERSION = '139';
 
-/* spam protection — one message every 2 seconds + duplicate blocking */
+/* spam protection — one message every 2 seconds + duplicate blocking (no censorship) */
 const MSG_COOLDOWN = 2000;
 const DUP_WINDOW = 30000;
 const REACTIONS = ['👍','❤️','😂','😮','😢','🔥'];
@@ -496,7 +587,6 @@ const db = getDatabase(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
 
-// App Check — only activates once a real key is pasted into RECAPTCHA_SITE_KEY above
 if(RECAPTCHA_SITE_KEY){
   try{
     initializeAppCheck(app, {
@@ -536,6 +626,7 @@ const I = {
   dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
   chevLeft: SVG('<path d="M15 18l-6-6 6-6"/>'),
   reply: SVG('<path d="M9 17l-6-5 6-5"/><path d="M3 12h11a5 5 0 0 1 5 5v4"/>'),
+  pencil: SVG('<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>'),
   micOff: SVG('<path d="M2 2l20 20"/><path d="M9 9a3 3 0 0 0 5.12 2.12"/><path d="M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2"/><path d="M12 19v3"/><path d="M8 22h8"/>'),
 };
 const icon = n => I[n] || '';
@@ -592,53 +683,10 @@ function toast(msg, kind='ok'){
   const kill = ()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),260); };
   t.onclick = kill; setTimeout(kill, 4200);
 }
-
-/* ================= PROFANITY FILTER (leetspeak-aware) ================= */
-const LEET = {'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','8':'b','@':'a','$':'s','!':'i','+':'t','€':'e','£':'l'};
-const BAD_RAW = [
-  'fuck','fucks','fucked','fucker','fuckers','fucking','motherfucker','motherfucking','mf',
-  'shit','shits','shitty','bullshit','dipshit','shithead','shitstorm',
-  'bitch','bitches','bitchy','bitchass',
-  'ass','arse','asshole','arsehole','asshat','dumbass','jackass','badass','smartass','fatass',
-  'bastard','bastards',
-  'cunt','cunts',
-  'dick','dicks','dickhead',
-  'piss','pissed','pissing',
-  'prick','pricks',
-  'whore','whores','slut','sluts','slutty','skank','skanks',
-  'douche','douches','douchebag',
-  'twat','twats','wanker','wankers','bollocks',
-  'cock','cocks','cocksucker','pussy',
-  'fag','fags','faggot','faggots',
-  'nigger','niggers','nigga','niggas',
-  'retard','retards','retarded',
-  'damn','damned','dammit','goddamn','goddammit','goddamnit',
-  'crap','craps','crappy','jerkoff','tit','tits','titties'
-];
-function canonWord(w){
-  let out = '';
-  for(const ch of w.toLowerCase()){
-    const c = /[a-z]/.test(ch) ? ch : LEET[ch];
-    if(c) out += c;
-  }
-  return out.replace(/(.)\1+/g, '$1');
-}
-const BAD_WORDS = new Set(BAD_RAW.map(canonWord));
-function censorWord(seg){
-  const m = seg.match(/^(\W*)(.*?)(\W*)$/);
-  const lead = m[1]||'', core = m[2]||'', trail = m[3]||'';
-  if(core && BAD_WORDS.has(canonWord(core))) return lead + '*'.repeat(core.length) + trail;
-  return seg;
-}
-const censorText = t => t.replace(/\S+/g, censorWord);
-function nameViolation(name){
-  const t = String(name||'').trim();
-  if(!t) return 'Enter a name.';
-  for(const w of t.split(/\s+/)){
-    const core = w.replace(/^\W+|\W+$/g,'');
-    if(core && BAD_WORDS.has(canonWord(core))) return 'That name isn\'t allowed.';
-  }
-  return null;
+function miniAva(u){
+  const av = avatarOf(u);
+  if(av) return `<span class="mini-ava"><img src="${esc(av)}" alt=""></span>`;
+  return `<span class="mini-ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</span>`;
 }
 
 /* ================= SPAM PROTECTION (2-second cooldown) ================= */
@@ -708,7 +756,7 @@ const VANTA_FX = {
 };
 
 function setTheme(t){
-  curTheme = (t==='light') ? 'light' : 'dark';
+  curTheme = (t==='light' || t==='discord') ? t : 'dark';   // relay dark stays the default
   localStorage.setItem('relay_theme', curTheme);
   document.documentElement.dataset.theme = curTheme;
   if(vantaKey !== 'none') setVanta(vantaKey);
@@ -718,7 +766,8 @@ async function setVanta(key){
   localStorage.setItem('relay_vanta', vantaKey);
   if(vantaEff){ try{ vantaEff.destroy(); }catch{} vantaEff = null; }
   const bg = $('vantaBg'); bg.innerHTML = '';
-  if(vantaKey === 'none' || !me) return;
+  // Discord theme is flat-color — no animated background
+  if(vantaKey === 'none' || !me || curTheme === 'discord') return;
   const fx = VANTA_FX[vantaKey];
   try{
     if(!window.THREE) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js');
@@ -742,6 +791,7 @@ let msgCache={};
 let replyingTo=null;
 let serverPres=null;
 let pwResolve=null;
+let editingKey=null;
 
 /* ================= IP LOGGING (max 5 per user) ================= */
 let _ip=null;
@@ -761,7 +811,6 @@ async function logUserIp(u, ip){
 }
 
 /* ================= AUTH ================= */
-/* bans are managed by writing config/bannedUsers and config/bannedIps in the Firebase console */
 async function assertNotBanned(u, user, ip){
   const [bIps,bUs] = await Promise.all([getV('config/bannedIps'), getV('config/bannedUsers')]);
   if(bUs && bUs[u]) throw new Error(`This account is banned — ${reasonOf(bUs[u])}`);
@@ -872,13 +921,8 @@ bindSwitch();
   const d = $('fDisp').value.trim();
   $('authErr').textContent = '';
   if(!/^[a-z0-9_]{3,16}$/.test(u)) return $('authErr').textContent = 'Username: 3–16 characters — a–z, 0–9, _ only.';
-  if(nameViolation(u)) return $('authErr').textContent = 'That username isn\'t allowed — pick another.';
   if(p.length < 4) return $('authErr').textContent = 'Password needs 4+ characters.';
-  if(authMode==='register' && d){
-    if(d.length < 2 || d.length > 24) return $('authErr').textContent = 'Display name: 2–24 characters.';
-    const v = nameViolation(d);
-    if(v) return $('authErr').textContent = v;
-  }
+  if(authMode==='register' && d && (d.length < 2 || d.length > 24)) return $('authErr').textContent = 'Display name: 2–24 characters.';
   const btn = $('authBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = '···';
   try{
     const ip = await getPublicIp();
@@ -938,7 +982,7 @@ function msgBody(m, key){
   if(m.type === 'gif') return `<img class="gif" src="${esc(m.url)}" width="${m.w||200}" height="${m.h||200}" alt="gif" loading="lazy">`;
   if(m.type === 'file') return fileCard(m);
   const solo = /^https?:\/\/\S+$/i.test((m.text||'').trim());
-  return `<div class="text">${linkify(esc(m.text))}</div>${solo?`<div class="embed" id="emb-${key}"></div>`:''}`;
+  return `<div class="text">${linkify(esc(m.text))}</div>${solo?`<div class="embed" id="emb-${key}" data-emb-url="${esc((m.text||'').trim())}"></div>`:''}`;
 }
 function replyQuote(m){
   if(!m.replyTo || !m.replyTo.u) return '';
@@ -958,16 +1002,19 @@ function reactionsHTML(key, m){
   ).join('')}</div>`;
 }
 function msgHTML(key, m){
+  const mine = m.u === me;
+  const canEdit = mine && (!m.type || m.type === 'text');
   return `<div class="msg" id="m-${key}" data-u="${esc(m.u)}">
     ${msgAva(m.u)}
     <div class="mc">
-      <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(dispOf(m.u))}</span><span class="uname">@${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span></div>
+      <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(dispOf(m.u))}</span><span class="uname">@${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span>${m.edited?'<span class="edited">(edited)</span>':''}</div>
       ${replyQuote(m)}
       ${msgBody(m, key)}
       ${reactionsHTML(key, m)}
     </div>
     <div class="hover-bar">
       ${REACTIONS.map(e=>`<button data-react="${e}" data-key="${key}" title="react ${e}">${e}</button>`).join('')}
+      ${canEdit?`<button class="hb-edit" data-edit="${key}" title="Edit">${icon('pencil')}</button>`:''}
       <button class="hb-reply" data-reply="${key}" title="Reply">${icon('reply')}</button>
     </div>
   </div>`;
@@ -985,7 +1032,7 @@ function appendMsg(key, m){
   $('msgs').insertAdjacentHTML('beforeend', msgHTML(key, m));
   if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
   const emb = document.getElementById('emb-'+key);
-  if(emb && m.type === 'text') buildEmbed(emb, m.text.trim());
+  if(emb && (m.type === 'text' || !m.type)) buildEmbed(emb, m.text.trim());
 }
 function updateMsg(key, m){
   if(!m || !m.u) return;
@@ -993,14 +1040,17 @@ function updateMsg(key, m){
   if(!old) return appendMsg(key, m);
   msgCache[key] = m;
   const stick = isPinned();
-  const oldEmbHTML = old.querySelector('.embed')?.innerHTML || '';
+  const oldEmb = old.querySelector('.embed');
+  const oldEmbHTML = oldEmb?.innerHTML || '';
+  const oldEmbUrl = oldEmb?.dataset.embUrl || '';
   old.outerHTML = msgHTML(key, m);
   if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
   const el = document.getElementById('m-'+key);
   const emb = el && el.querySelector('.embed');
   if(emb){
-    if(oldEmbHTML) emb.innerHTML = oldEmbHTML;
-    else if(m.type === 'text') buildEmbed(emb, m.text.trim());
+    const newUrl = (m.text||'').trim();
+    if(oldEmbHTML && oldEmbUrl === newUrl) emb.innerHTML = oldEmbHTML;   // same link → keep the fetched card
+    else if(m.type === 'text' || !m.type) buildEmbed(emb, newUrl);      // edited link → refetch
   }
 }
 function refreshMsgStyles(){
@@ -1023,7 +1073,7 @@ function refreshMsgStyles(){
 function send(){
   if(!curPath) return toast('Open a server first.','bad');
   if(chatLocked()) return toast('Chat is locked by the owner.','bad');
-  const text = censorText($('msgInput').value.replace(/\s+$/,''));
+  const text = $('msgInput').value.replace(/\s+$/,'');
   if(!text.trim()) return;
   const err = spamCheck(text);
   if(err) return toast(err,'bad');
@@ -1046,6 +1096,61 @@ function autosize(){
   if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
 });
 
+/* ================= MESSAGE EDITING ================= */
+function autosizeEl(t){
+  t.style.height = 'auto';
+  t.style.height = Math.min(t.scrollHeight, 160) + 'px';
+}
+function startEdit(key){
+  const m = msgCache[key];
+  if(!m || m.u !== me) return;
+  if(m.type && m.type !== 'text') return toast('Only text messages can be edited.','bad');
+  const el = document.getElementById('m-'+key); if(!el) return;
+  const txtEl = el.querySelector('.text'); if(!txtEl) return;
+  cancelEdit();
+  editingKey = key;
+  txtEl.style.display = 'none';
+  const row = document.createElement('div');
+  row.className = 'edit-row'; row.id = 'edit-row';
+  row.innerHTML = `<textarea class="edit-in" rows="1" maxlength="1500"></textarea>
+    <button class="btn acc ed-save">Save</button>
+    <button class="btn ed-cancel">Cancel</button>`;
+  txtEl.after(row);
+  const ta = row.querySelector('.edit-in');
+  ta.value = m.text || '';
+  autosizeEl(ta);
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  ta.addEventListener('input', ()=>autosizeEl(ta));
+  ta.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); saveEdit(key); }
+    if(e.key === 'Escape'){ e.preventDefault(); cancelEdit(); }
+  });
+  row.querySelector('.ed-save').onclick = ()=>saveEdit(key);
+  row.querySelector('.ed-cancel').onclick = cancelEdit;
+}
+async function saveEdit(key){
+  const ta = document.querySelector('#edit-row .edit-in');
+  if(!ta) return cancelEdit();
+  const newText = ta.value.replace(/\s+$/,'');
+  if(!newText.trim()) return toast("Message can't be empty.",'bad');
+  try{
+    await update(ref(db, `${curPath}/${key}`), {text:newText.slice(0,1500), edited:true});
+    toast('Message updated.','ok');
+    cancelEdit();
+  }catch{ toast("Couldn't save the edit.",'bad'); }
+}
+function cancelEdit(){
+  const row = document.getElementById('edit-row');
+  if(row){
+    const msgEl = row.closest('.msg');
+    const txtEl = msgEl && msgEl.querySelector('.text');
+    if(txtEl) txtEl.style.display = '';
+    row.remove();
+  }
+  editingKey = null;
+}
+
 /* ================= SERVER CHAT LOCK (owner toggle) ================= */
 function chatLocked(){
   if(!cur.server) return false;
@@ -1061,6 +1166,7 @@ function applyLockState(){
   btn.title = (s && s.muted)
     ? 'Chat is locked — click to let people talk again'
     : 'Lock chat — stop everyone else from talking';
+  $('inviteBtn').hidden = !(s && s.hidden && s.owner === me);
   $('msgInput').placeholder = chatLocked()
     ? 'Chat is locked by the server owner…'
     : ($('msgInput').dataset.ph || 'Open a server first…');
@@ -1078,6 +1184,7 @@ function applyLockState(){
     .then(()=>toast(s.muted ? 'Chat unlocked.' : 'Chat locked — only you can talk now.','ok'))
     .catch(()=>toast("Couldn't change that.",'bad'));
 };
+ $('inviteBtn').onclick = ()=>{ if(cur.server) membersModal(cur.server); };
 
 /* ================= REACTIONS ================= */
 async function toggleReact(key, emoji){
@@ -1118,6 +1225,8 @@ function jumpTo(key){
   setTimeout(()=>el.classList.remove('flash'), 1600);
 }
  $('msgs').addEventListener('click', e=>{
+  const ed = e.target.closest('[data-edit]');
+  if(ed){ startEdit(ed.dataset.edit); return; }
   const r = e.target.closest('[data-react]');
   if(r){ toggleReact(r.dataset.key, r.dataset.react); return; }
   const rb = e.target.closest('[data-reply]');
@@ -1238,10 +1347,13 @@ async function joinServer(sid){
   }
   selectServer(sid, true);
 }
-function renderServers(){
-  const es = Object.entries(serversMap)
+function visibleServers(){
+  return Object.entries(serversMap)
     .sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0))
     .filter(([sid,s]) => !s.hidden || s.owner===me || userRoomsMap[sid]);
+}
+function renderServers(){
+  const es = visibleServers();
   $('serverList').innerHTML = es.length ? es.map(([sid,s])=>`
     <li data-sid="${sid}" class="${cur.server===sid?'active':''}">
       <span class="nm">${esc(s.name||'server')}</span>
@@ -1251,6 +1363,7 @@ function renderServers(){
       ${s.hidden?'<span class="hid">HIDDEN</span>':''}
       ${s.owner===me?'<span class="sub">YOURS</span>':''}
     </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to make one.</div></li>`;
+  renderRail();
   if(!cur.server && es.length){
     const pick = es.find(([sid,s]) => s.owner===me || !s.locked || userRoomsMap[sid]);
     if(pick) selectServer(pick[0], true);
@@ -1261,6 +1374,36 @@ function renderServers(){
   if(inv){ membersModal(inv.dataset.invite); return; }
   const li = e.target.closest('li[data-sid]'); if(li) selectServer(li.dataset.sid);
 });
+
+/* ================= DISCORD RAIL ================= */
+function renderRail(){
+  const list = $('railList'); if(!list) return;
+  const es = visibleServers();
+  list.innerHTML = es.map(([sid,s])=>{
+    const letter = (s.name||'S').trim().charAt(0).toUpperCase() || 'S';
+    return `<button class="rail-btn rail-item${cur.server===sid?' active':''}" data-rsid="${sid}"
+      title="${esc(s.name||'server')}${s.hidden?' (hidden)':''}${s.locked?' · passcode':''}${s.muted?' · chat locked':''}"
+      style="background:${uColor(s.name||sid)}">
+      <span class="rail-ic">${esc(letter)}</span>
+    </button>`;
+  }).join('');
+}
+ $('railList').addEventListener('click', e=>{
+  const b = e.target.closest('[data-rsid]');
+  if(b) selectServer(b.dataset.rsid);
+});
+function openNewServer(){ $('addServerBtn').click(); }
+ $('railAdd').onclick = openNewServer;
+ $('railExplore').onclick = openSrvSearch;
+ $('railHome').onclick = ()=>{
+  if(!me) return;
+  if(cur.server){
+    if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+    cur.server = null;
+    resetChannel();
+    renderServers(); renderOnline(); updateOnlinePill();
+  }
+};
 
 /* ================= HIDDEN SERVER MEMBERS ================= */
 function membersModal(sid){
@@ -1372,7 +1515,7 @@ function renderDMs(){
       </span></li>`).join('');
   if(fr.length) html += fr.map(f=>{
     const on = presenceMap[f] && presenceMap[f].online;
-    return `<li data-dm="${esc(f)}" class="${cur.dm===f?'active':''}"><span class="pdot ${on?'on':''}"></span><span class="nm" title="@${esc(f)}">${esc(dispOf(f))}</span></li>`;
+    return `<li data-dm="${esc(f)}" class="${cur.dm===f?'active':''}">${miniAva(f)}<span class="nm" title="@${esc(f)}">${esc(dispOf(f))}</span><span class="pdot ${on?'on':''}" title="${on?'online':'offline'}"></span></li>`;
   }).join('');
   if(!html) html = `<li><div class="empty">No friends yet.<br>Add someone with +.</div></li>`;
   $('dmList').innerHTML = html;
@@ -1419,7 +1562,7 @@ function renderOnline(){
   const es = serverHere();
   $('onlineList').innerHTML = cur.server
     ? (es.length ? es.map(([u])=>`
-        <li><span class="pdot on"></span><span class="nm" title="@${esc(u)}">${esc(dispOf(u))}</span></li>`).join('')
+        <li>${miniAva(u)}<span class="nm" title="@${esc(u)}">${esc(dispOf(u))}</span></li>`).join('')
       : `<li><div class="empty">Nobody here but you.</div></li>`)
     : `<li><div class="empty">Pick a server to see who's in.</div></li>`;
 }
@@ -1462,8 +1605,6 @@ function renderMeChip(){
   const d = $('dispIn').value.trim();
   if(!d) return toast('Type a name first.','bad');
   if(d.length < 2 || d.length > 24) return toast('Name: 2–24 characters.','bad');
-  const v = nameViolation(d);
-  if(v) return toast(v,'bad');
   update(ref(db, `users/${me}`), {display:d})
     .then(()=>toast('Name updated for everyone.','ok'))
     .catch(e=>toast("Couldn't save name — "+(e.message||'check DB rules.'),'bad'));
@@ -1553,8 +1694,6 @@ function closeModal(){
   const go = e.target.closest('#mGo'); if(!go) return;
   const name = ($('mName').value || '').trim().replace(/^#/,'');
   if(!name) return toast('Give it a name.','bad');
-  const nv = nameViolation(name);
-  if(nv) return toast(nv,'bad');
   const pwv = ($('mPw') && $('mPw').value) || '';
   const hidden = !!($('mHidden') && $('mHidden').checked);
   go.disabled = true;
@@ -1565,7 +1704,6 @@ function closeModal(){
       if(pwv) sObj.locked = true;
       if(hidden) sObj.hidden = true;
       await set(ref(db,`servers/${sid}`), sObj);
-      // only the salted hash is stored — the client needs it to verify joins
       if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
       if(hidden) toast(`Server created — ID: ${sid} (or add people from the sidebar).`,'ok');
       else toast('Server created.','ok');
@@ -1588,6 +1726,7 @@ function closeModal(){
     <div class="seg">
       <button class="seg-b" data-theme-set="dark">Dark</button>
       <button class="seg-b" data-theme-set="light">Light</button>
+      <button class="seg-b dis" data-theme-set="discord">Discord</button>
     </div>
     <label>chat background</label>
     <div class="fx-grid">${Object.entries(VANTA_FX).map(([k,v])=>`<button class="fx-b" data-fx="${k}">${v.label}</button>`).join('')}</div>
@@ -1659,6 +1798,7 @@ document.addEventListener('keydown', e=>{
   if(e.key !== 'Escape') return;
   if(!$('gifWrap').hidden) closeGif();
   else if(!$('modalWrap').hidden) closeModal();
+  else if(editingKey) cancelEdit();
   else if(replyingTo) cancelReply();
 });
 
@@ -1668,11 +1808,10 @@ document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('af
 (async function boot(){
   // invisible anonymous sign-in FIRST — this is what lets the database rules tell
   // your page apart from strangers opening the database URL directly.
-  // Requires "Anonymous" enabled in the Firebase console (Authentication → Sign-in method).
   try{ await signInAnonymously(auth); }
   catch(e){ console.warn('anonymous sign-in failed — enable Anonymous in the Firebase console', e); }
 
-  // ---- global listeners (attach only after sign-in, or locked-down rules would deny them) ----
+  // ---- global listeners (attach only after sign-in) ----
   onValue(ref(db,'servers'), s=>{
     serversMap = s.val()||{};
     if(me){ renderServers(); applyLockState(); }

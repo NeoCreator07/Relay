@@ -28,7 +28,6 @@ html[data-theme=light]{
   --bad:#E35D5D; --ok:#3EA86B;
   --card:rgba(255,255,255,.82);
 }
-/* Discord theme palette */
 html[data-theme=discord]{
   --bg:#1e1f22; --panel:#2b2d31; --panel2:#35373c; --panel3:#3f4147;
   --line:#26282c; --line2:#3f4147;
@@ -42,6 +41,8 @@ html[data-theme=discord]{
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
 html[data-theme=discord] body{font-family:'Inter','Nunito',system-ui,sans-serif}
+/* smooth theme switches */
+body,.side,.chat-head,.composer,.me-chip,.prof-set,.modal,.toast{transition:background-color .2s ease,border-color .2s ease,color .2s ease}
 ::selection{background:var(--acc);color:var(--acc-ink)}
 ::-webkit-scrollbar{width:9px;height:9px}
 ::-webkit-scrollbar-thumb{background:var(--line2);border-radius:9px;border:2px solid var(--panel)}
@@ -58,6 +59,8 @@ a:hover{text-decoration:underline}
 
 #vantaBg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 html[data-theme=discord] #vantaBg{display:none}
+#netbar{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-64px);background:var(--bad);color:#fff;font-weight:700;font-size:12px;padding:7px 16px;border-radius:999px;z-index:500;transition:transform .25s;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+#netbar.show{transform:translateX(-50%) translateY(0)}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:7px 12px;font-weight:700;font-size:12.5px;color:var(--text);transition:border-color .15s,background .15s,color .15s}
@@ -86,7 +89,7 @@ html[data-theme=discord] #vantaBg{display:none}
 .brand-tag b{color:var(--acc);font-weight:500}
 .auth-form-wrap{display:grid;place-items:center;padding:24px;background:var(--bg)}
 .auth-form{width:min(380px,100%);background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 10px 36px rgba(0,0,0,.28)}
-html[data-theme=discord] .auth-form{backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid var(--line)}
+html[data-theme=discord] .auth-form{backdrop-filter:none;-webkit-backdrop-filter:none}
 .auth-form h1{font-size:24px;font-weight:800}
 .auth-form .sub{margin-top:6px;color:var(--muted);font-size:13px}
 .auth-meta{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em}
@@ -104,6 +107,7 @@ html[data-theme=discord] #rail{display:flex}
 .rail-btn{width:48px;height:48px;border-radius:24px;display:grid;place-items:center;position:relative;transition:border-radius .15s,background .15s,color .15s;color:#dbdee1;flex:none;background:#313338}
 .rail-btn:hover{border-radius:16px}
 .rail-btn svg{width:24px;height:24px}
+.rail-home svg{width:26px;height:26px}
 .rail-home:hover{background:#5865f2;color:#fff}
 .rail-item::before{content:'';position:absolute;left:-12px;width:4px;border-radius:0 4px 4px 0;background:#f2f3f5;height:0;transition:height .15s}
 .rail-item:hover::before{height:20px}
@@ -133,7 +137,7 @@ html[data-theme=discord] .ins-div{display:none}
 .logo-btn:hover .mark svg{transform:scale(1.15) rotate(-10deg)}
 .logo-btn .word{font-weight:800;font-size:17px;color:var(--text)}
 .ins-div{height:1px;background:var(--line);margin:0 14px;flex:none}
-.side-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.side-scroll{flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
 html[data-theme=discord] #srvSec{display:none}
 .side-foot{flex:none}
 .side-foot::before{content:'';display:block;height:1px;background:var(--line);margin:0 14px}
@@ -170,7 +174,7 @@ html[data-theme=discord] .sec-h span.t{font-size:11px;letter-spacing:.02em;font-
 .sec-h .icon-btn{width:22px;height:22px}
 .sec-h .icon-btn svg{width:13px;height:13px}
 .side-list{list-style:none}
-.side-list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;color:var(--muted);cursor:pointer;font-size:13.5px;margin-bottom:1px}
+.side-list li{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;color:var(--muted);cursor:pointer;font-size:13.5px;margin-bottom:1px;transition:background .12s,color .12s}
 html[data-theme=discord] .side-list li{font-size:14.5px;border-radius:4px;padding:6px 8px}
 .side-list li:hover{background:var(--panel2);color:var(--text)}
 .side-list li.active{background:var(--panel2);color:var(--text);box-shadow:inset 2px 0 0 var(--acc)}
@@ -185,6 +189,7 @@ html[data-theme=discord] .side-list li{font-size:14.5px;border-radius:4px;paddin
 .side-list .li-act:hover{color:var(--acc)}
 .side-list .li-act svg{width:12px;height:12px;opacity:1}
 .side-list li:hover .hid{display:none}
+.srv-ava{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:10px;font-weight:800;color:#1B1B22;flex:none}
 .rdot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
 .pdot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
 .pdot.on{background:var(--ok)}
@@ -200,9 +205,8 @@ html[data-theme=discord] .side-list li{font-size:14.5px;border-radius:4px;paddin
 html[data-theme=discord] .mini-ava{border-radius:50%}
 
 /* ---------- main: floating chat card ---------- */
-.main{position:relative;z-index:1;height:calc(100vh - 24px);margin:12px;background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-width:0;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.28);transition:margin-left .25s cubic-bezier(.22,.85,.25,1)}
+.main{position:relative;z-index:1;height:calc(100vh - 24px);margin:12px;background:var(--card);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-width:0;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.28);transition:margin-left .25s cubic-bezier(.22,.85,.25,1),background-color .2s ease,border-color .2s ease}
 body.side-open .main{margin-left:274px}
-/* discord mode: full-bleed, flat, sits next to the rail */
 html[data-theme=discord] .main{margin:0;margin-left:72px;height:100vh;border-radius:0;border:none;box-shadow:none;background:#313338;backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-theme=discord] body.side-open .main{margin-left:312px}
 .chat-head{display:flex;align-items:center;gap:14px;height:58px;padding:0 16px;border-bottom:1px solid var(--line);flex:none}
@@ -211,14 +215,23 @@ html[data-theme=discord] body.side-open .main{margin-left:312px}
 .chat-head .meta{font-size:10.5px;color:var(--muted);letter-spacing:.06em;margin-top:3px}
 .chat-head .right{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em}
 .chat-head .right b{color:var(--ok);font-weight:500}
-.msgs{flex:1;overflow-y:auto;padding:16px 16px 12px}
+.msgs{flex:1;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;padding:16px 16px 14px}
 html[data-theme=discord] .msgs{padding:16px 20px 16px}
+#msgs > .empty{margin:auto;text-align:center;max-width:300px}
 .msg{display:flex;gap:11px;padding:6px 8px;border-radius:10px;margin-bottom:2px;position:relative}
 .msg:hover{background:rgba(128,128,128,.06)}
 html[data-theme=discord] .msg{padding:2px 16px 2px 8px;border-radius:0}
 html[data-theme=discord] .msg:hover{background:#2e3035}
-.msg .ava{width:30px;height:30px;font-size:12px;margin-top:2px}
+.msg.anim{animation:msgIn .18s ease both}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg .ava{width:30px;height:30px;font-size:12px;margin-top:2px;cursor:pointer}
 html[data-theme=discord] .msg .ava{border-radius:50%;width:40px;height:40px;font-size:15px;margin-top:0}
+.msg.grp{padding-top:1px;padding-bottom:1px}
+.grp-pad{width:41px;flex:none}
+html[data-theme=discord] .grp-pad{width:51px}
+.msg.grp::before{content:attr(data-time);position:absolute;left:2px;top:3px;font-family:var(--mono);font-size:9px;color:var(--faint);opacity:0;transition:opacity .15s;pointer-events:none}
+.msg.grp:hover::before{opacity:1}
+html[data-theme=discord] .msg.grp::before{font-size:10.5px;left:4px;top:2px}
 .msg .mc{min-width:0}
 .msg .mh{display:flex;align-items:baseline;gap:9px}
 .msg .mh .name{font-size:13px;font-weight:700}
@@ -229,11 +242,21 @@ html[data-theme=discord] .msg .mh .uname{font-size:11px}
 html[data-theme=discord] .msg .mh .time{font-size:11px}
 .msg .text{font-size:13.8px;line-height:1.55;margin-top:1px;overflow-wrap:break-word;white-space:pre-wrap}
 html[data-theme=discord] .msg .text{font-size:15px;line-height:1.4;margin-top:2px}
-.msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
-html[data-theme=discord] .msg img.gif{border:none;border-radius:8px}
-.day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.msg img.gif{display:block;margin-top:6px;max-width:min(360px,100%);height:auto;border-radius:8px;border:1px solid var(--line);background:var(--panel);cursor:zoom-in}
+html[data-theme=discord] .msg img.gif{border:none}
+.day-div{display:flex;align-items:center;gap:12px;margin:16px 0 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);flex:none}
 .day-div::before,.day-div::after{content:'';flex:1;height:1px;background:var(--line)}
 .edited{font-family:var(--mono);font-size:9px;color:var(--faint);margin-left:4px}
+
+/* ---------- lightbox ---------- */
+#lightbox{position:fixed;inset:0;background:rgba(8,8,12,.92);z-index:350;display:grid;place-items:center;cursor:zoom-out}
+#lightbox img{max-width:92vw;max-height:92vh;border-radius:8px}
+
+/* ---------- scroll to bottom ---------- */
+#scrollBtn{position:absolute;right:18px;bottom:92px;width:38px;height:38px;border-radius:50%;background:var(--panel3);border:1px solid var(--line2);color:var(--muted);display:none;align-items:center;justify-content:center;z-index:5;box-shadow:0 4px 12px rgba(0,0,0,.35);cursor:pointer;transition:color .15s}
+#scrollBtn.show{display:flex}
+#scrollBtn:hover{color:var(--acc)}
+#scrollBtn svg{width:16px;height:16px}
 
 /* ---------- message editing ---------- */
 .edit-row{display:flex;gap:6px;align-items:flex-end;margin-top:4px}
@@ -241,13 +264,15 @@ html[data-theme=discord] .msg img.gif{border:none;border-radius:8px}
 html[data-theme=discord] .edit-row .edit-in{background:#383a40;font-size:15px}
 .edit-row .btn{padding:8px 10px;font-size:12px}
 
-/* ---------- hover toolbar: reactions + reply + edit ---------- */
-.hover-bar{position:absolute;right:10px;top:-15px;display:none;align-items:center;gap:2px;background:var(--panel3);border:1px solid var(--line2);border-radius:10px;padding:3px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:3}
-html[data-theme=discord] .hover-bar{top:-14px;right:16px;background:#2b2d31;border:1px solid #1e1f22}
-.msg:hover .hover-bar{display:flex}
+/* ---------- hover toolbar: reactions + reply + edit + delete ---------- */
+.hover-bar{position:absolute;right:10px;top:2px;display:none;align-items:center;gap:2px;background:var(--panel3);border:1px solid var(--line2);border-radius:10px;padding:3px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:3}
+html[data-theme=discord] .hover-bar{right:16px;background:#2b2d31;border:1px solid #1e1f22}
+.msg:hover .hover-bar,.msg.hb-open .hover-bar{display:flex}
 .hover-bar button{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:7px;font-size:13px;color:var(--muted);transition:.12s}
 .hover-bar button:hover{background:var(--panel2);color:var(--text);transform:scale(1.12)}
-.hover-bar .hb-reply svg,.hover-bar .hb-edit svg{width:13px;height:13px}
+.hover-bar button.armed{background:var(--bad);color:#fff}
+.hover-bar .hb-reply svg,.hover-bar .hb-edit svg,.hover-bar .hb-del svg{width:13px;height:13px}
+@media (hover:none){.hover-bar button{min-width:34px;height:34px;font-size:15px}}
 .reactions{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
 .react{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:2px 8px 2px 7px;font-size:12.5px;cursor:pointer}
 .react b{font-size:10.5px;color:var(--muted);font-family:var(--mono);font-weight:600}
@@ -264,13 +289,15 @@ html[data-theme=discord] .react.mine{background:rgba(88,101,242,.15);border-colo
 .msg.flash{animation:msgFlash 1.6s}
 @keyframes msgFlash{0%,55%{background:rgba(139,124,246,.2)}100%{background:transparent}}
 
-/* ---------- reply bar above composer ---------- */
+/* ---------- reply + typing bars above composer ---------- */
 .replybar{flex:none;margin:0 14px 8px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:7px 12px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);overflow:hidden}
 .replybar .rb-ic{display:inline-flex;flex:none;color:var(--acc)} .replybar .rb-ic svg{width:13px;height:13px}
 .replybar .rb-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .replybar .rb-x{margin-left:auto;flex:none;display:inline-flex;cursor:pointer;color:var(--muted)}
 .replybar .rb-x svg{width:14px;height:14px}
 .replybar .rb-x:hover{color:var(--bad)}
+#typingBar{flex:none;height:18px;margin:0 16px 4px;font-size:11px;font-style:italic;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-theme=discord] #typingBar{margin:0 20px 4px;font-size:12.5px}
 
 /* ---------- uploads / embeds ---------- */
 .upbar{flex:none;margin:0 14px 8px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:8px 12px}
@@ -287,18 +314,19 @@ html[data-theme=discord] .react.mine{background:rgba(88,101,242,.15);border-colo
 .fc-b i{font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:2px}
 .dl{color:var(--muted)} .dl svg{width:15px;height:15px}
 .embed{margin-top:6px;max-width:380px}
-.embed-img{display:block;max-width:min(380px,100%);max-height:380px;border-radius:8px;border:1px solid var(--line);background:var(--panel)}
+.embed-img{display:block;max-width:min(380px,100%);max-height:380px;border-radius:8px;border:1px solid var(--line);background:var(--panel);cursor:zoom-in}
 .embed-vid{display:block;width:100%;max-width:380px;aspect-ratio:16/9;border:1px solid var(--line);border-radius:8px;background:#000}
 .embed-sm{display:block;width:100%;max-width:380px;height:152px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
 .embed-card{display:flex;gap:10px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel);text-decoration:none;color:var(--text);align-items:center}
 .embed-card:hover{border-color:var(--acc);text-decoration:none}
-.embed-card img{width:64px;height:64px;object-fit:cover;border-radius:6px;flex:none}
+.embed-card img{width:64px;height:64px;object-fit:cover;border-radius:6px;flex:none;cursor:zoom-in}
 .ec-t{min-width:0;display:flex;flex-direction:column;gap:3px}
 .ec-t b{font-size:12.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ec-t span{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 
 /* ---------- composer ---------- */
-.composer{flex:none;display:flex;align-items:flex-end;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px}
+.composer{flex:none;display:flex;align-items:flex-end;gap:6px;margin:0 14px 14px;background:var(--panel2);border:1px solid var(--line2);border-radius:14px;padding:7px;transition:border-color .15s}
+.composer:focus-within{border-color:var(--acc)}
 html[data-theme=discord] .composer{background:#383a40;border:none;border-radius:8px;margin:0 16px 24px}
 .composer textarea{flex:1;min-width:0;background:none;border:none;outline:none;resize:none;padding:9px 6px;font:inherit;font-family:var(--sans);color:var(--text);line-height:1.45;max-height:160px;overflow-y:auto}
 .composer textarea::placeholder{color:var(--faint)}
@@ -310,6 +338,12 @@ html[data-theme=discord] .cp-btn:hover{color:#dbdee1;background:transparent}
 .cp-btn svg{width:16px;height:16px}
 .cp-gif{width:auto;padding:0 10px;font-weight:800;font-size:10.5px;letter-spacing:.08em}
 
+/* ---------- emoji popover ---------- */
+.emoji-pop{position:absolute;bottom:92px;right:14px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:8px;display:none;grid-template-columns:repeat(8,1fr);gap:2px;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.emoji-pop.show{display:grid}
+.emoji-opt{width:32px;height:32px;display:grid;place-items:center;font-size:18px;border-radius:6px}
+.emoji-opt:hover{background:var(--panel2)}
+
 /* ---------- members modal ---------- */
 .mem-list{margin-top:14px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto}
 .mem-row{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel2)}
@@ -320,6 +354,8 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
 .mem-tag{font-family:var(--mono);font-size:8.5px;color:var(--acc);letter-spacing:.12em;flex:none}
 .mem-row .icon-btn{width:22px;height:22px}
 .mem-row .icon-btn svg{width:12px;height:12px}
+.inv-row{display:flex;gap:6px;margin-top:8px}
+.inv-row input{font-family:var(--mono);flex:1;min-width:0}
 
 /* ---------- settings modal ---------- */
 .seg{display:flex;gap:6px}
@@ -331,7 +367,7 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
 .fx-b.active{border-color:var(--acc);color:var(--acc);background:rgba(139,124,246,.1)}
 
 /* ---------- toasts / modals / kick ---------- */
-#toasts{position:fixed;right:16px;bottom:16px;z-index:300;display:flex;flex-direction:column;gap:8px}
+#toasts{position:fixed;right:16px;bottom:16px;z-index:360;display:flex;flex-direction:column;gap:8px}
 .toast{background:var(--panel3);border:1px solid var(--line2);border-left:3px solid var(--acc);border-radius:9px;padding:10px 14px;font-size:13px;max-width:340px;animation:tin .22s cubic-bezier(.2,.9,.3,1.15);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.4)}
 .toast.bad{border-left-color:var(--bad)}
 .toast.ok{border-left-color:var(--ok)}
@@ -387,7 +423,7 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
 </head>
 <body>
 
-<!-- shared gradient definition for the logo plane (used by both logo instances) -->
+<!-- shared gradient definition for the logo plane -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -399,8 +435,9 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
 </svg>
 
 <div id="vantaBg"></div>
+<div id="netbar">You're offline — messages will send when reconnected</div>
 
-<!-- ============ Discord-style server rail (visible in Discord theme) ============ -->
+<!-- ============ Discord-style server rail ============ -->
 <nav id="rail">
   <button class="rail-btn rail-home" id="railHome" data-icon="mark" title="Home"></button>
   <div class="rail-sep"></div>
@@ -491,7 +528,12 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
           <button class="swatch" data-c="#8CD790" style="background:#8CD790"></button>
           <button class="swatch" data-c="#E8C15A" style="background:#E8C15A"></button>
           <button class="swatch" data-c="#C98BF2" style="background:#C98BF2"></button>
+          <button class="swatch" data-c="#F06D6D" style="background:#F06D6D"></button>
+          <button class="swatch" data-c="#7CE0D3" style="background:#7CE0D3"></button>
+          <button class="swatch" data-c="#A6E86D" style="background:#A6E86D"></button>
+          <button class="swatch" data-c="#F06DB4" style="background:#F06DB4"></button>
           <input type="color" id="colorPick" value="#8B7CF6" title="Custom color">
+          <button class="btn" id="colorReset">Reset</button>
         </div>
       </div>
     </div>
@@ -504,17 +546,21 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
         <h2 id="roomTitle">—</h2>
         <p class="meta" id="roomMeta">no channel selected</p>
       </div>
-      <button class="icon-btn" id="inviteBtn" data-icon="userPlus" title="Add people to this hidden server" hidden></button>
+      <button class="icon-btn" id="inviteBtn" data-icon="link" title="Invite people — share a code" hidden></button>
       <button class="icon-btn" id="muteBtn" data-icon="micOff" title="Lock chat — stop everyone else from talking" hidden></button>
       <div class="right" id="onlinePill"></div>
     </header>
     <div class="msgs" id="msgs"></div>
+    <button id="scrollBtn" data-icon="chevDown" title="Jump to latest messages"></button>
     <div class="upbar" id="upbar" hidden>
       <div class="up-info"><span id="upName"></span><button class="up-x" id="upCancel" data-icon="x" title="Cancel upload"></button></div>
       <div class="up-track"><div class="up-fill" id="upFill"></div></div>
     </div>
     <div class="replybar" id="replyBar" hidden></div>
+    <div id="typingBar"></div>
+    <div class="emoji-pop" id="emojiPop"></div>
     <div class="composer">
+      <button class="cp-btn" id="emojiBtn" data-icon="smile" title="Emoji"></button>
       <button class="cp-btn" id="attachBtn" data-icon="clip" title="Send a file — 1 GB max"></button>
       <button class="cp-btn cp-gif" id="gifBtn" title="Send a GIF">GIF</button>
       <textarea id="msgInput" rows="1" placeholder="Open a server first…  (Enter to send, Shift+Enter for a new line)" maxlength="1500" spellcheck="false"></textarea>
@@ -535,6 +581,8 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
     <div class="gif-foot">POWERED BY <a href="https://giphy.com" target="_blank" rel="noopener">GIPHY</a></div>
   </div>
 </div>
+
+<div id="lightbox" hidden><img alt=""></div>
 
 <div class="kick" id="kick" hidden>
   <div class="box">
@@ -569,18 +617,21 @@ const firebaseConfig = {
   measurementId: "G-1VX8K36M9J"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47";
-// App Check — also register this key in the Firebase console (App Check → Apps → Register with reCAPTCHA).
-// Monitor mode until you click Enforce in the console; only enforce once Metrics shows verified traffic.
 const RECAPTCHA_SITE_KEY = '6LfMBsAtAAAAAOHu39XRwkOlyeqogTw5zCAYtwjp';
-const MAX_IPS = 5;                    // max tracked IPs per user
+const MAX_IPS = 5;
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
-const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars
-const VERSION = '139';
+const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars (before compression)
+const AVATAR_DIM = 256;                // avatars compressed to max 256px — small + fast to load
+const VERSION = '141';
 
-/* spam protection — one message every 2 seconds + duplicate blocking (no censorship) */
 const MSG_COOLDOWN = 2000;
+const EDIT_COOLDOWN = 2000;
 const DUP_WINDOW = 30000;
+const GROUP_WINDOW = 5 * 60 * 1000;
+const TYPING_TTL = 5000;
 const REACTIONS = ['👍','❤️','😂','😮','😢','🔥'];
+const EMOJIS = ['😀','😁','😂','🤣','😊','😍','😎','🤔','😅','😴','😭','😡','👍','👏','🙏','💪','🔥','💯','🎉','❤️','✨','⭐','🍕','🎮'];
+const COARSE = matchMedia('(hover: none)').matches;
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -602,13 +653,12 @@ try{ isSupported().then(ok=>{ if(ok) getAnalytics(app); }).catch(()=>{}); }catch
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
-// RTDB keys cannot contain . $ # [ ] / — IPs are keyed sanitized, real IP lives in the value
 const ipKey = ip => String(ip).replace(/[.$#\[\]\/]/g,'_');
 const reasonOf = v => (typeof v === 'string' ? v : (v && (v.reason || v.ip))) || 'no reason given';
+function debounce(fn, ms){ let t=null; return (...a)=>{ if(t) clearTimeout(t); t=setTimeout(()=>{ t=null; fn(...a); }, ms); }; }
 
 const SVG = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 const I = {
-  // the Relay paper-plane arrow — gradient lives in the hidden <defs> svg at the top of <body>
   mark: `<svg viewBox="0 0 48 48" fill="none"><path d="M6 10L42 24L6 38L12 24L6 10Z" fill="url(#planeGrad)" opacity=".9"/><path d="M6 10L12 24L6 38L42 24L6 10Z" fill="url(#planeGrad)"/><path d="M12 24L20 22L22 30Z" fill="rgba(255,255,255,0.25)"/></svg>`,
   plus: SVG('<path d="M12 5v14M5 12h14"/>'),
   x: SVG('<path d="M6 6l12 12M18 6L6 18"/>'),
@@ -625,17 +675,25 @@ const I = {
   doc: SVG('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>'),
   dl: SVG('<path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/>'),
   chevLeft: SVG('<path d="M15 18l-6-6 6-6"/>'),
+  chevDown: SVG('<path d="M6 9l6 6 6-6"/>'),
   reply: SVG('<path d="M9 17l-6-5 6-5"/><path d="M3 12h11a5 5 0 0 1 5 5v4"/>'),
   pencil: SVG('<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>'),
+  trash: SVG('<path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/>'),
   micOff: SVG('<path d="M2 2l20 20"/><path d="M9 9a3 3 0 0 0 5.12 2.12"/><path d="M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2"/><path d="M12 19v3"/><path d="M8 22h8"/>'),
+  link: SVG('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'),
+  smile: SVG('<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/>'),
 };
 const icon = n => I[n] || '';
 
 const AVC = ['#8B7CF6','#5AD18C','#F2A65A','#6FB8F2','#F27BA9','#8CD790','#E8C15A','#C98BF2'];
 const uColor = u => AVC[[...String(u)].reduce((a,c)=>a+c.charCodeAt(0),0) % AVC.length];
-const nameColor = u => (usersMap[u] && usersMap[u].color) || uColor(u);
-const avatarOf = u => (usersMap[u] && usersMap[u].avatar) || null;
-const dispOf = u => (usersMap[u] && usersMap[u].display) || u;
+const HEX_RE = /^#[0-9a-fA-F]{6}$/;
+const nameColor = u => {
+  const c = usersMap[u] && usersMap[u].color;
+  return (typeof c === 'string' && HEX_RE.test(c)) ? c : uColor(u);
+};
+const avatarOf = u => (usersMap[u] && typeof usersMap[u].avatar === 'string' && /^https:\/\//.test(usersMap[u].avatar)) ? usersMap[u].avatar : null;
+const dispOf = u => (usersMap[u] && typeof usersMap[u].display === 'string' && usersMap[u].display.trim()) ? usersMap[u].display : u;
 
 function fmtDate(ts){
   if(!ts) return '—';
@@ -645,7 +703,8 @@ function fmtDate(ts){
 }
 function fmtTime(ts){
   if(!ts) return '';
-  const d = new Date(ts), hm = d.toTimeString().slice(0,5);
+  const d = new Date(ts);
+  const hm = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
   return d.toDateString()===new Date().toDateString() ? hm : `${d.toDateString().slice(4,10).toUpperCase()} · ${hm}`;
 }
 function dayLabel(ts){
@@ -677,9 +736,11 @@ async function getV(path){ try{ const s = await get(ref(db,path)); return s.val(
 function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 
 function toast(msg, kind='ok'){
+  const box = $('toasts');
+  while(box.children.length >= 4) box.firstChild.remove();
   const t = document.createElement('div');
   t.className = 'toast '+kind; t.textContent = msg;
-  $('toasts').appendChild(t);
+  box.appendChild(t);
   const kill = ()=>{ t.classList.add('out'); setTimeout(()=>t.remove(),260); };
   t.onclick = kill; setTimeout(kill, 4200);
 }
@@ -688,8 +749,54 @@ function miniAva(u){
   if(av) return `<span class="mini-ava"><img src="${esc(av)}" alt=""></span>`;
   return `<span class="mini-ava" style="background:${uColor(u)}">${esc(u[0].toUpperCase())}</span>`;
 }
+function stickBottom(){
+  const m = $('msgs');
+  m.scrollTo({top:m.scrollHeight, behavior:'auto'});
+}
+/* two-tap confirm for destructive little buttons (delete message etc.) */
+function armConfirm(btn, fn){
+  if(btn.dataset.armed){
+    clearTimeout(+btn.dataset.armed); delete btn.dataset.armed;
+    btn.classList.remove('armed'); btn.innerHTML = btn.dataset.label;
+    fn(); return;
+  }
+  btn.dataset.label = btn.innerHTML;
+  btn.classList.add('armed'); btn.innerHTML = '✓?';
+  btn.dataset.armed = setTimeout(()=>{
+    delete btn.dataset.armed; btn.classList.remove('armed'); btn.innerHTML = btn.dataset.label;
+  }, 2200);
+}
+/* client-side avatar compression — downscales to AVATAR_DIM and re-encodes JPEG */
+function compressImage(file, maxDim, quality){
+  return new Promise((res, rej)=>{
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = ()=>{
+      try{
+        const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+        const w = Math.max(1, Math.round(img.width*scale)), h = Math.max(1, Math.round(img.height*scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        c.toBlob(b=>{
+          URL.revokeObjectURL(url);
+          b ? res(b) : rej(new Error('encode failed'));
+        }, 'image/jpeg', quality);
+      }catch(e){ URL.revokeObjectURL(url); rej(e); }
+    };
+    img.onerror = ()=>{ URL.revokeObjectURL(url); rej(new Error('not an image')); };
+    img.src = url;
+  });
+}
+function insertAtCursor(ta, text){
+  const s = ta.selectionStart ?? ta.value.length, e = ta.selectionEnd ?? ta.value.length;
+  ta.value = ta.value.slice(0, s) + text + ta.value.slice(e);
+  ta.selectionStart = ta.selectionEnd = s + text.length;
+  ta.dispatchEvent(new Event('input'));
+  ta.focus();
+}
 
-/* ================= SPAM PROTECTION (2-second cooldown) ================= */
+/* ================= SPAM PROTECTION ================= */
 let lastSentAt = 0, sentLog = [];
 function spamCheck(key){
   const now = Date.now();
@@ -756,7 +863,7 @@ const VANTA_FX = {
 };
 
 function setTheme(t){
-  curTheme = (t==='light' || t==='discord') ? t : 'dark';   // relay dark stays the default
+  curTheme = (t==='light' || t==='discord') ? t : 'dark';
   localStorage.setItem('relay_theme', curTheme);
   document.documentElement.dataset.theme = curTheme;
   if(vantaKey !== 'none') setVanta(vantaKey);
@@ -766,7 +873,6 @@ async function setVanta(key){
   localStorage.setItem('relay_vanta', vantaKey);
   if(vantaEff){ try{ vantaEff.destroy(); }catch{} vantaEff = null; }
   const bg = $('vantaBg'); bg.innerHTML = '';
-  // Discord theme is flat-color — no animated background
   if(vantaKey === 'none' || !me || curTheme === 'discord') return;
   const fx = VANTA_FX[vantaKey];
   try{
@@ -787,11 +893,15 @@ let me=null, myIp=null, kicked=false;
 let serversMap={}, usersMap={}, presenceMap={}, friendsMap={}, reqMap={}, bannedUsers={}, bannedIps={}, userRoomsMap={};
 const cur = {server:null, dm:null};
 let curPath=null, msgUns=[], chOpen=0, lastDay=null;
+let lastMsgUser=null, lastMsgTs=0;
 let msgCache={};
 let replyingTo=null;
-let serverPres=null;
+let serverPres=null, serverPresDisc=null;
 let pwResolve=null;
-let editingKey=null;
+let editingKey=null, lastEditAt=0;
+let dmSig='';
+let typingNames='', lastTypingWrite=0;
+let pendingKeys=[], flushT=null;      // batched history render buffer
 
 /* ================= IP LOGGING (max 5 per user) ================= */
 let _ip=null;
@@ -824,7 +934,6 @@ async function doLogin(u, p, ip){
   if(user.pw !== await sha256hex(user.salt+':'+p)) throw new Error('Wrong password.');
   await assertNotBanned(u, user, ip);
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
-  // pwPlain:null — actively erases any old stored plaintext password on each sign-in
   await update(ref(db,`users/${u}`), {sessToken:tok, lastLogin:Date.now(), ip, pwPlain:null});
   await logUserIp(u, ip);
   localStorage.setItem('relay_session', JSON.stringify({u, tok}));
@@ -838,7 +947,7 @@ async function doRegister(u, p, ip, display){
   const salt = randHex(8), now = Date.now();
   const tok = crypto.randomUUID ? crypto.randomUUID() : randHex(24);
   const user = {
-    salt, pw: await sha256hex(salt+':'+p),   // salted hash only — no plaintext kept
+    salt, pw: await sha256hex(salt+':'+p),
     display: display || u,
     createdAt: now, lastLogin: now, ip,
     sessToken: tok,
@@ -863,6 +972,19 @@ async function tryAutoLogin(){
   await enter(sess.u, ip);
   return true;
 }
+function setServerPresence(sid){
+  if(serverPresDisc){ serverPresDisc.cancel().catch(()=>{}); }
+  if(serverPres){ remove(serverPres).catch(()=>{}); }
+  const r = ref(db, `presence/${me}/servers/${sid}`);
+  const disc = onDisconnect(r);
+  disc.remove().catch(()=>{});
+  set(r, Date.now()).catch(()=>{});
+  serverPres = r; serverPresDisc = disc;
+}
+function clearServerPresence(){
+  if(serverPresDisc){ serverPresDisc.cancel().catch(()=>{}); serverPresDisc = null; }
+  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+}
 async function enter(u, ip){
   me = u; myIp = ip || await getPublicIp();
   $('authView').hidden = true; $('appView').hidden = false;
@@ -878,7 +1000,7 @@ async function enter(u, ip){
     renderServers();
     const sv = cur.server && serversMap[cur.server];
     if(cur.server && sv && sv.hidden && sv.owner!==me && !userRoomsMap[cur.server]){
-      if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+      clearServerPresence();
       cur.server = null;
       resetChannel();
       toast('You were removed from that server.','bad');
@@ -889,6 +1011,12 @@ async function enter(u, ip){
   onValue(ref(db,`friendRequests/${me}`), s=>{ reqMap = s.val()||{}; renderDMs(); });
   setVanta(vantaKey);
   $('msgInput').focus();
+  // auto-join from a pending invite link (?invite=CODE)
+  const savedInv = localStorage.getItem('relay_invite');
+  if(savedInv){
+    localStorage.removeItem('relay_invite');
+    joinByInvite(savedInv);
+  }
 }
 function forceLogout(title, detail){
   if(kicked) return; kicked = true;
@@ -936,7 +1064,14 @@ bindSwitch();
 function resetChannel(){
   msgUns.forEach(u=>u && u()); msgUns = [];
   curPath = null; cur.dm = null; lastDay = null;
+  lastMsgUser = null; lastMsgTs = 0;
+  pendingKeys = []; if(flushT){ clearTimeout(flushT); flushT = null; }
   msgCache = {}; replyingTo = null; renderReplyBar();
+  editingKey = null;
+  typingNames = ''; $('typingBar').textContent = '';
+  $('scrollBtn').classList.remove('show');
+  closeLightbox();
+  $('emojiPop').classList.remove('show');
   $('roomTitle').textContent = '—';
   $('msgInput').dataset.ph = 'Open a server first…';
   applyLockState();
@@ -946,7 +1081,13 @@ function openChannel(path, name, kind){
   if(curPath === path) return;
   msgUns.forEach(u=>u && u()); msgUns = [];
   curPath = path; chOpen = Date.now(); lastDay = null;
+  lastMsgUser = null; lastMsgTs = 0;
+  pendingKeys = []; if(flushT){ clearTimeout(flushT); flushT = null; }
   msgCache = {}; replyingTo = null; renderReplyBar();
+  editingKey = null;
+  typingNames = ''; $('typingBar').textContent = '';
+  if(me) update(ref(db,`presence/${me}`), {typing:null}).catch(()=>{});
+  $('scrollBtn').classList.remove('show');
   $('msgs').innerHTML = '<div class="empty">No messages yet.</div>';
   $('roomTitle').innerHTML = `<span class="hash">${kind==='dm'?'@':'#'}</span>${esc(name)}`;
   $('msgInput').dataset.ph = `Message ${kind==='dm'?'@':'#'}${name}  (Enter to send, Shift+Enter for a new line)`;
@@ -956,7 +1097,19 @@ function openChannel(path, name, kind){
   msgUns.push(onChildChanged(q, s => updateMsg(s.key, s.val())));
   msgUns.push(onChildRemoved(q, s => {
     delete msgCache[s.key];
-    const el = document.getElementById('m-'+s.key); if(el) el.remove();
+    pendingKeys = pendingKeys.filter(k => k !== s.key);
+    const el = document.getElementById('m-'+s.key);
+    if(el){
+      const wasLeader = !!el.querySelector(':scope > .ava');
+      let next = el.nextElementSibling;
+      if(next && !next.classList.contains('msg')) next = null;
+      el.remove();
+      if(wasLeader && next){
+        const nk = next.id.slice(2);
+        const m = msgCache[nk];
+        if(m){ msgCache[nk] = {...m, _grp:false}; next.outerHTML = msgHTML(nk, msgCache[nk]); }
+      }
+    }
     if(!$('msgs').querySelector('.msg')) $('msgs').innerHTML = '<div class="empty">Channel cleared.</div>';
   }));
 }
@@ -1002,12 +1155,14 @@ function reactionsHTML(key, m){
   ).join('')}</div>`;
 }
 function msgHTML(key, m){
+  const grp = !!m._grp;
   const mine = m.u === me;
   const canEdit = mine && (!m.type || m.type === 'text');
-  return `<div class="msg" id="m-${key}" data-u="${esc(m.u)}">
-    ${msgAva(m.u)}
+  const t = fmtTime(m.t);
+  return `<div class="msg${grp?' grp':''}" id="m-${key}" data-u="${esc(m.u)}"${grp?` data-time="${esc(t)}"`:''}>
+    ${grp?'<div class="grp-pad"></div>':msgAva(m.u)}
     <div class="mc">
-      <div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(dispOf(m.u))}</span><span class="uname">@${esc(m.u)}</span><span class="time">${fmtTime(m.t)}</span>${m.edited?'<span class="edited">(edited)</span>':''}</div>
+      ${grp?'':`<div class="mh"><span class="name" style="color:${nameColor(m.u)}">${esc(dispOf(m.u))}</span><span class="uname">@${esc(m.u)}</span><span class="time">${t}</span>${m.edited?'<span class="edited">(edited)</span>':''}</div>`}
       ${replyQuote(m)}
       ${msgBody(m, key)}
       ${reactionsHTML(key, m)}
@@ -1016,41 +1171,95 @@ function msgHTML(key, m){
       ${REACTIONS.map(e=>`<button data-react="${e}" data-key="${key}" title="react ${e}">${e}</button>`).join('')}
       ${canEdit?`<button class="hb-edit" data-edit="${key}" title="Edit">${icon('pencil')}</button>`:''}
       <button class="hb-reply" data-reply="${key}" title="Reply">${icon('reply')}</button>
+      ${mine?`<button class="hb-del" data-act="del-msg" data-key="${key}" title="Delete message">${icon('trash')}</button>`:''}
     </div>
   </div>`;
 }
+/* builds one message chunk (plus a day divider when needed) and advances grouping state */
+function msgChunk(key, m){
+  const t = m.t || Date.now();
+  const dstr = new Date(t).toDateString();
+  let out = '';
+  if(dstr !== lastDay){
+    lastDay = dstr; lastMsgUser = null; lastMsgTs = 0;
+    out += `<div class="day-div"><span>${dayLabel(t)}</span></div>`;
+  }
+  const grouped = m.u === lastMsgUser && (t - lastMsgTs) < GROUP_WINDOW;
+  lastMsgUser = m.u; lastMsgTs = t;
+  msgCache[key] = {...m, _grp: grouped};
+  return out + msgHTML(key, msgCache[key]);
+}
+function removeMsgsEmpty(){
+  const es = $('msgs').querySelector('.empty'); if(es) es.remove();
+}
+function postInsert(key, m, live){
+  const el = document.getElementById('m-'+key);
+  if(el && live) el.classList.add('anim');
+  const emb = document.getElementById('emb-'+key);
+  if(emb && (!m.type || m.type === 'text')) buildEmbed(emb, (m.text||'').trim());
+}
+/* PERF: the initial history burst is buffered and rendered in ONE DOM insert */
 function appendMsg(key, m){
   if(!m || !m.u) return;
-  const stick = isPinned();
-  const es = $('msgs').querySelector('.empty'); if(es) es.remove();
-  const dstr = new Date(m.t || Date.now()).toDateString();
-  if(dstr !== lastDay){
-    lastDay = dstr;
-    $('msgs').insertAdjacentHTML('beforeend', `<div class="day-div"><span>${dayLabel(m.t)}</span></div>`);
-  }
   msgCache[key] = m;
-  $('msgs').insertAdjacentHTML('beforeend', msgHTML(key, m));
-  if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
-  const emb = document.getElementById('emb-'+key);
-  if(emb && (m.type === 'text' || !m.type)) buildEmbed(emb, m.text.trim());
+  if(Date.now() - chOpen > 900){                 // live message
+    flushPending();                              // keep ordering correct
+    const stick = isPinned();
+    removeMsgsEmpty();
+    $('msgs').insertAdjacentHTML('beforeend', msgChunk(key, m));
+    postInsert(key, m, true);
+    if(stick) stickBottom();
+  }else{
+    pendingKeys.push(key);
+    if(!flushT) flushT = setTimeout(flushPending, 350);
+  }
+}
+function flushPending(){
+  if(flushT){ clearTimeout(flushT); flushT = null; }
+  if(!pendingKeys.length) return;
+  const stick = isPinned();
+  removeMsgsEmpty();
+  let html = '';
+  for(const key of pendingKeys){
+    const m = msgCache[key];
+    if(m) html += msgChunk(key, m);
+  }
+  $('msgs').insertAdjacentHTML('beforeend', html);
+  for(const key of pendingKeys){
+    const m = msgCache[key];
+    if(m) postInsert(key, m, false);
+  }
+  pendingKeys = [];
+  if(stick) stickBottom();
 }
 function updateMsg(key, m){
   if(!m || !m.u) return;
   const old = document.getElementById('m-'+key);
-  if(!old) return appendMsg(key, m);
-  msgCache[key] = m;
+  if(!old){
+    if(pendingKeys.includes(key)) return;   // still buffered — flush renders the latest
+    return appendMsg(key, m);
+  }
+  const grp = msgCache[key] ? msgCache[key]._grp : false;
+  msgCache[key] = {...m, _grp: grp};
   const stick = isPinned();
   const oldEmb = old.querySelector('.embed');
   const oldEmbHTML = oldEmb?.innerHTML || '';
   const oldEmbUrl = oldEmb?.dataset.embUrl || '';
-  old.outerHTML = msgHTML(key, m);
-  if(stick) $('msgs').scrollTop = $('msgs').scrollHeight;
+  const wasEditing = editingKey === key;
+  let draft = null;
+  if(wasEditing) draft = old.querySelector('#edit-row .edit-in')?.value ?? null;
+  old.outerHTML = msgHTML(key, msgCache[key]);
+  if(stick) stickBottom();
   const el = document.getElementById('m-'+key);
   const emb = el && el.querySelector('.embed');
   if(emb){
     const newUrl = (m.text||'').trim();
-    if(oldEmbHTML && oldEmbUrl === newUrl) emb.innerHTML = oldEmbHTML;   // same link → keep the fetched card
-    else if(m.type === 'text' || !m.type) buildEmbed(emb, newUrl);      // edited link → refetch
+    if(oldEmbHTML && oldEmbUrl === newUrl) emb.innerHTML = oldEmbHTML;
+    else if(!m.type || m.type === 'text') buildEmbed(emb, newUrl);
+  }
+  if(wasEditing){
+    if(draft != null) startEdit(key, draft);
+    else editingKey = null;
   }
 }
 function refreshMsgStyles(){
@@ -1083,6 +1292,7 @@ function send(){
   push(ref(db,curPath), msg)
     .then(()=>{ replyingTo = null; renderReplyBar(); })
     .catch(()=>toast("Couldn't send that message.",'bad'));
+  if(me) update(ref(db,`presence/${me}`), {typing:null}).catch(()=>{});
   $('msgInput').value = '';
   autosize();
 }
@@ -1091,20 +1301,51 @@ function autosize(){
   t.style.height = 'auto';
   t.style.height = Math.min(t.scrollHeight, 160) + 'px';
 }
- $('msgInput').addEventListener('input', autosize);
+ $('msgInput').addEventListener('input', ()=>{
+  autosize();
+  if($('msgInput').value.trim()) pingTyping();
+});
+ $('msgInput').addEventListener('blur', ()=>{
+  if(me && curPath) update(ref(db,`presence/${me}`), {typing:null}).catch(()=>{});
+});
  $('msgInput').addEventListener('keydown', e=>{
   if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
 });
+
+/* ================= TYPING INDICATOR ================= */
+function pingTyping(){
+  if(!me || !curPath) return;
+  const now = Date.now();
+  if(now - lastTypingWrite < 2000) return;
+  lastTypingWrite = now;
+  update(ref(db,`presence/${me}`), {typing:{path:curPath, at:now}}).catch(()=>{});
+}
+function renderTyping(){
+  const bar = $('typingBar'); if(!bar) return;
+  let txt = '';
+  if(me && curPath){
+    const now = Date.now();
+    const names = Object.entries(presenceMap)
+      .filter(([u,p]) => u!==me && p && p.typing && p.typing.path===curPath && now - (p.typing.at||0) < TYPING_TTL)
+      .map(([u]) => dispOf(u));
+    if(names.length === 1) txt = `${names[0]} is typing…`;
+    else if(names.length === 2) txt = `${names[0]} and ${names[1]} are typing…`;
+    else if(names.length > 2) txt = 'Several people are typing…';
+  }
+  if(txt !== typingNames){ typingNames = txt; bar.textContent = txt; }
+}
+setInterval(renderTyping, 1500);
 
 /* ================= MESSAGE EDITING ================= */
 function autosizeEl(t){
   t.style.height = 'auto';
   t.style.height = Math.min(t.scrollHeight, 160) + 'px';
 }
-function startEdit(key){
+function startEdit(key, draft){
   const m = msgCache[key];
   if(!m || m.u !== me) return;
   if(m.type && m.type !== 'text') return toast('Only text messages can be edited.','bad');
+  if(chatLocked()) return toast('Chat is locked by the owner.','bad');
   const el = document.getElementById('m-'+key); if(!el) return;
   const txtEl = el.querySelector('.text'); if(!txtEl) return;
   cancelEdit();
@@ -1117,7 +1358,7 @@ function startEdit(key){
     <button class="btn ed-cancel">Cancel</button>`;
   txtEl.after(row);
   const ta = row.querySelector('.edit-in');
-  ta.value = m.text || '';
+  ta.value = draft != null ? draft : (m.text || '');
   autosizeEl(ta);
   ta.focus();
   ta.setSelectionRange(ta.value.length, ta.value.length);
@@ -1132,10 +1373,13 @@ function startEdit(key){
 async function saveEdit(key){
   const ta = document.querySelector('#edit-row .edit-in');
   if(!ta) return cancelEdit();
+  if(chatLocked()) return toast('Chat is locked by the owner.','bad');
   const newText = ta.value.replace(/\s+$/,'');
   if(!newText.trim()) return toast("Message can't be empty.",'bad');
+  if(Date.now() - lastEditAt < EDIT_COOLDOWN) return toast('Slow down — one edit every 2 seconds.','bad');
   try{
     await update(ref(db, `${curPath}/${key}`), {text:newText.slice(0,1500), edited:true});
+    lastEditAt = Date.now();
     toast('Message updated.','ok');
     cancelEdit();
   }catch{ toast("Couldn't save the edit.",'bad'); }
@@ -1151,7 +1395,34 @@ function cancelEdit(){
   editingKey = null;
 }
 
-/* ================= SERVER CHAT LOCK (owner toggle) ================= */
+/* ================= LIGHTBOX + SCROLL BUTTON ================= */
+function openLightbox(src){
+  if(!src) return;
+  $('lightbox').querySelector('img').src = src;
+  $('lightbox').hidden = false;
+}
+function closeLightbox(){ $('lightbox').hidden = true; }
+ $('lightbox').addEventListener('click', closeLightbox);
+ $('msgs').addEventListener('scroll', ()=>{
+  const m = $('msgs');
+  const away = m.scrollHeight - m.scrollTop - m.clientHeight > 400;
+  $('scrollBtn').classList.toggle('show', away);
+}, {passive:true});
+ $('scrollBtn').onclick = ()=>stickBottom();
+
+/* ================= EMOJI QUICK PICKER ================= */
+ $('emojiPop').innerHTML = EMOJIS.map(e=>`<button class="emoji-opt" data-e="${e}">${e}</button>`).join('');
+ $('emojiBtn').onclick = (e)=>{ e.stopPropagation(); $('emojiPop').classList.toggle('show'); };
+ $('emojiPop').addEventListener('click', e=>{
+  const b = e.target.closest('.emoji-opt'); if(!b) return;
+  insertAtCursor($('msgInput'), b.dataset.e);
+  $('emojiPop').classList.remove('show');
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.emoji-pop') && !e.target.closest('#emojiBtn')) $('emojiPop').classList.remove('show');
+});
+
+/* ================= SERVER CHAT LOCK ================= */
 function chatLocked(){
   if(!cur.server) return false;
   const s = serversMap[cur.server];
@@ -1166,7 +1437,7 @@ function applyLockState(){
   btn.title = (s && s.muted)
     ? 'Chat is locked — click to let people talk again'
     : 'Lock chat — stop everyone else from talking';
-  $('inviteBtn').hidden = !(s && s.hidden && s.owner === me);
+  $('inviteBtn').hidden = !owner;
   $('msgInput').placeholder = chatLocked()
     ? 'Chat is locked by the server owner…'
     : ($('msgInput').dataset.ph || 'Open a server first…');
@@ -1184,9 +1455,78 @@ function applyLockState(){
     .then(()=>toast(s.muted ? 'Chat unlocked.' : 'Chat locked — only you can talk now.','ok'))
     .catch(()=>toast("Couldn't change that.",'bad'));
 };
- $('inviteBtn').onclick = ()=>{ if(cur.server) membersModal(cur.server); };
+ $('inviteBtn').onclick = ()=>{ if(cur.server) inviteModal(cur.server); };
 
-/* ================= REACTIONS ================= */
+/* ================= SERVER INVITES (shareable codes) ================= */
+function makeInviteCode(){
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  const rnd = crypto.getRandomValues(new Uint8Array(8));
+  let c = '';
+  for(const b of rnd) c += chars[b % chars.length];
+  return c;
+}
+async function genInvite(sid){
+  for(let i=0;i<5;i++){
+    const code = makeInviteCode();
+    if(await getV('serverInvites/'+code)) continue;
+    try{
+      await set(ref(db,`serverInvites/${code}`), {sid, by:me, at:Date.now(), uses:0});
+      await update(ref(db,`servers/${sid}`), {invite:code});
+      (serversMap[sid] = serversMap[sid]||{}).invite = code;
+      toast('Invite code created.','ok');
+      inviteModal(sid);
+      return;
+    }catch{ toast("Couldn't create the invite.",'bad'); return; }
+  }
+  toast("Couldn't create a unique code — try again.",'bad');
+}
+async function inviteModal(sid){
+  const s = serversMap[sid]; if(!s) return;
+  if(s.owner!==me) return toast('Only the owner can invite people.','bad');
+  let code = (typeof s.invite === 'string') ? s.invite : null;
+  if(code && !(await getV('serverInvites/'+code))) code = null;   // stale code
+  openModal(`<h3>Invite people — ${esc(s.name||'server')}</h3>
+    <p class="sub">Share this code — anyone can join with it, even if the server is hidden or passcoded.</p>
+    <label>invite code</label>
+    <div class="inv-row">
+      <input id="invCode" readonly value="${code ? esc(code) : '— no code yet —'}">
+      <button class="btn" id="invCopy" ${code?'':'disabled'}>Copy</button>
+    </div>
+    <div class="m-actions" style="justify-content:flex-start">
+      <button class="btn acc" id="invNew">${code ? 'Generate new code' : 'Create invite code'}</button>
+    </div>`);
+  if(s.hidden){
+    $('modalBox').insertAdjacentHTML('beforeend', `
+      <label style="margin-top:18px">add by username<input id="memIn" maxlength="16" placeholder="username" spellcheck="false"></label>
+      <div class="m-actions"><button class="btn acc" id="memGo" data-sid="${sid}">Add member</button></div>
+      <div class="mem-list" id="memList"></div>`);
+    renderMemList(sid);
+  }
+  $('invNew').onclick = ()=>genInvite(sid);
+  $('invCopy').onclick = ()=>{
+    const c = $('invCode').value;
+    if(!c || c.startsWith('—')) return;
+    try{ navigator.clipboard.writeText(c).then(()=>toast('Invite code copied — share it!','ok')); }catch{}
+  };
+}
+async function joinByInvite(code){
+  code = String(code||'').trim();
+  if(!code) return toast('Paste an invite code first.','bad');
+  const inv = await getV('serverInvites/'+code);
+  if(!inv || !inv.sid) return toast("That invite code isn't valid.",'bad');
+  const sid = inv.sid;
+  const s = serversMap[sid] || await getV('servers/'+sid);
+  if(!s) return toast('That server no longer exists.','bad');
+  closeModal();
+  userRoomsMap[sid] = Date.now();
+  set(ref(db,`userRooms/${me}/${sid}`), Date.now()).catch(()=>{});
+  if(s.owner !== me) set(ref(db,`servers/${sid}/members/${me}`), Date.now()).catch(()=>{});
+  update(ref(db,`serverInvites/${code}`), {uses:(inv.uses||0)+1}).catch(()=>{});
+  toast(`Joined ${s.name||'server'} — welcome!`,'ok');
+  selectServer(sid, true);
+}
+
+/* ================= REACTIONS / REPLIES / DELETE ================= */
 async function toggleReact(key, emoji){
   if(!curPath || !key) return;
   const m = msgCache[key]; if(!m) return;
@@ -1195,8 +1535,6 @@ async function toggleReact(key, emoji){
     await set(ref(db, `${curPath}/${key}/reactions/${emoji}/${me}`), has ? null : true);
   }catch{ toast("Couldn't save that reaction.",'bad'); }
 }
-
-/* ================= REPLIES ================= */
 function startReply(key){
   const m = msgCache[key]; if(!m) return;
   replyingTo = {
@@ -1225,6 +1563,23 @@ function jumpTo(key){
   setTimeout(()=>el.classList.remove('flash'), 1600);
 }
  $('msgs').addEventListener('click', e=>{
+  // lightbox for any image in a message (gifs, embed images, file previews)
+  const img = e.target.closest('.msg img');
+  if(img && !img.closest('a.embed-card')?.contains(img) || (img && img.classList.contains('embed-img')) || (img && img.classList.contains('gif'))){
+    if(img){
+      const src = img.currentSrc || img.src;
+      if(src){ e.preventDefault(); openLightbox(src); return; }
+    }
+  }
+  const da = e.target.closest('[data-act="del-msg"]');
+  if(da){
+    armConfirm(da, ()=>{
+      remove(ref(db, `${curPath}/${da.dataset.key}`))
+        .then(()=>toast('Message deleted.','ok'))
+        .catch(()=>toast("Couldn't delete that.",'bad'));
+    });
+    return;
+  }
   const ed = e.target.closest('[data-edit]');
   if(ed){ startEdit(ed.dataset.edit); return; }
   const r = e.target.closest('[data-react]');
@@ -1233,6 +1588,13 @@ function jumpTo(key){
   if(rb){ startReply(rb.dataset.key); return; }
   const rq = e.target.closest('.reply-quote');
   if(rq){ jumpTo(rq.dataset.src); return; }
+  if(COARSE){
+    if(e.target.closest('a,button,.hover-bar,.reply-quote')) return;
+    const row = e.target.closest('.msg'); if(!row) return;
+    const open = row.classList.contains('hb-open');
+    document.querySelectorAll('#msgs .msg.hb-open').forEach(x=>x.classList.remove('hb-open'));
+    if(!open) row.classList.add('hb-open');
+  }
 });
 
 /* ================= LINK EMBEDS ================= */
@@ -1275,6 +1637,9 @@ let upTask = null;
   if(!curPath || chatLocked()) return toast('Chat is locked by the owner.','bad');
   if(f.size > MAX_FILE) return toast(`Too big — 1 GB max per file (this one: ${fmtSize(f.size)}).`,'bad');
   if(f.size === 0) return toast('That file is empty.','bad');
+  const err = spamCheck('file:'+f.name+':'+f.size);
+  if(err) return toast(err,'bad');
+  markSent('file:'+f.name+':'+f.size);
   const safe = f.name.replace(/[^\w.\- ]+/g,'_');
   const task = uploadBytesResumable(sref(storage, `files/${me}/${Date.now()}_${safe}`), f, {contentType: f.type || 'application/octet-stream'});
   upTask = task;
@@ -1325,10 +1690,7 @@ async function selectServer(sid, skipAuth){
     if(!ok) return;
   }
   cur.server = sid; cur.dm = null;
-  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
-  const r = ref(db, `presence/${me}/servers/${sid}`);
-  try{ onDisconnect(r).remove(); set(r, Date.now()); }catch{}
-  serverPres = r;
+  setServerPresence(sid);
   openChannel(`messages/${sid}`, s.name || 'server', 'server');
   renderServers(); renderOnline(); updateOnlinePill(); maybeCloseSide();
 }
@@ -1354,15 +1716,18 @@ function visibleServers(){
 }
 function renderServers(){
   const es = visibleServers();
-  $('serverList').innerHTML = es.length ? es.map(([sid,s])=>`
-    <li data-sid="${sid}" class="${cur.server===sid?'active':''}">
+  $('serverList').innerHTML = es.length ? es.map(([sid,s])=>{
+    const letter = (s.name||'S').trim().charAt(0).toUpperCase() || 'S';
+    return `<li data-sid="${sid}" class="${cur.server===sid?'active':''}">
+      <span class="srv-ava" style="background:${uColor(s.name||sid)}">${esc(letter)}</span>
       <span class="nm">${esc(s.name||'server')}</span>
       ${s.muted?`<span class="lk" title="chat locked">${icon('micOff')}</span>`:''}
       ${s.locked?`<span class="lk">${icon('lock')}</span>`:''}
       ${(s.hidden&&s.owner===me)?`<button class="li-act" data-invite="${sid}" title="Add people">${icon('userPlus')}</button>`:''}
       ${s.hidden?'<span class="hid">HIDDEN</span>':''}
       ${s.owner===me?'<span class="sub">YOURS</span>':''}
-    </li>`).join('') : `<li><div class="empty">No servers yet.<br>Hit + to make one.</div></li>`;
+    </li>`;
+  }).join('') : `<li><div class="empty">No servers yet.<br>Hit + to make one.</div></li>`;
   renderRail();
   if(!cur.server && es.length){
     const pick = es.find(([sid,s]) => s.owner===me || !s.locked || userRoomsMap[sid]);
@@ -1392,13 +1757,12 @@ function renderRail(){
   const b = e.target.closest('[data-rsid]');
   if(b) selectServer(b.dataset.rsid);
 });
-function openNewServer(){ $('addServerBtn').click(); }
- $('railAdd').onclick = openNewServer;
+ $('railAdd').onclick = ()=>{ $('addServerBtn').click(); };
  $('railExplore').onclick = openSrvSearch;
  $('railHome').onclick = ()=>{
   if(!me) return;
   if(cur.server){
-    if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+    clearServerPresence();
     cur.server = null;
     resetChannel();
     renderServers(); renderOnline(); updateOnlinePill();
@@ -1436,7 +1800,7 @@ function renderMemList(sid){
       <span class="mem-st">${on?'online':'offline'}</span>
       <button class="icon-btn no" data-unmem="${esc(u)}" data-sid="${sid}" title="Remove">${icon('x')}</button>
     </div>`;
-  }).join('') : '<div class="empty">No members yet — add someone above, or keep sharing the server ID.</div>');
+  }).join('') : '<div class="empty">No members yet — add someone above, or share your invite code from the header.</div>');
 }
 async function addMember(sid, u){
   const s = serversMap[sid]; if(!s) return;
@@ -1467,11 +1831,12 @@ async function removeMember(sid, u){
   }catch{ toast("Couldn't remove that member.",'bad'); }
 }
 
-/* ================= SERVER SEARCH / JOIN-BY-ID ================= */
+/* ================= SERVER SEARCH / JOIN ================= */
 function openSrvSearch(){
   openModal(`<h3>Find a server</h3>
     <label>search<input id="srvSearch" placeholder="type a name…" spellcheck="false"></label>
     <div class="srv-results" id="srvResults"></div>
+    <label>join with an invite code <span class="opt">(works for any server)</span><input id="invIn" placeholder="paste invite code" spellcheck="false"></label>
     <label>join with an id <span class="opt">(for hidden servers)</span><input id="joinId" placeholder="paste server id" spellcheck="false"></label>
     <div class="m-actions"><button class="btn" data-close>Close</button><button class="btn acc" id="joinGo">Join</button></div>`);
   renderSrvResults('');
@@ -1503,6 +1868,10 @@ async function acceptFriend(f){
   await remove(ref(db,`friendRequests/${me}/${f}`));
 }
 function renderDMs(){
+  const sig = Object.keys(friendsMap||{}).map(f=>f+((presenceMap[f]&&presenceMap[f].online)?1:0)).join(',')
+            + '|' + Object.keys(reqMap||{}).join(',') + '|' + (cur.dm||'');
+  if(sig === dmSig) return;
+  dmSig = sig;
   const reqs = Object.entries(reqMap||{});
   $('dmLabel').textContent = 'FRIENDS' + (reqs.length ? ` · ${reqs.length}` : '');
   const fr = Object.keys(friendsMap||{}).sort();
@@ -1528,7 +1897,7 @@ function renderDMs(){
   const li = e.target.closest('[data-dm]'); if(!li) return;
   const f = li.dataset.dm;
   cur.dm = f; cur.server = null; maybeCloseSide();
-  if(serverPres){ remove(serverPres).catch(()=>{}); serverPres = null; }
+  clearServerPresence();
   openChannel(`messages/_dm/${[me,f].sort().join('--')}`, dispOf(f), 'dm');
   renderDMs(); renderOnline(); updateOnlinePill();
 });
@@ -1573,7 +1942,7 @@ function updateOnlinePill(){
   $('onlinePill').innerHTML = `<b>${n}</b>&nbsp;ONLINE`;
 }
 
-/* ================= PROFILE CARD + SETTINGS (gear) ================= */
+/* ================= PROFILE CARD + SETTINGS ================= */
 function renderMeChip(){
   if(!me) return;
   const av = avatarOf(me);
@@ -1597,8 +1966,7 @@ function renderMeChip(){
   p.hidden = !p.hidden;
   if(!p.hidden){
     $('dispIn').value = dispOf(me);
-    const c = nameColor(me);
-    $('colorPick').value = /^#[0-9a-fA-F]{6}$/.test(c) ? c : '#8B7CF6';
+    $('colorPick').value = HEX_RE.test(nameColor(me)) ? nameColor(me) : '#8B7CF6';
   }
 };
  $('dispSave').onclick = ()=>{
@@ -1610,25 +1978,35 @@ function renderMeChip(){
     .catch(e=>toast("Couldn't save name — "+(e.message||'check DB rules.'),'bad'));
 };
 function setColor(hex){
-  if(!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+  if(!HEX_RE.test(hex)) return;
   update(ref(db, `users/${me}`), {color:hex})
     .then(()=>toast('Name color updated.','ok'))
     .catch(e=>toast("Couldn't save color — "+(e.message||'check DB rules.'),'bad'));
 }
 document.querySelectorAll('.swatch').forEach(s=>s.onclick = ()=>setColor(s.dataset.c));
  $('colorPick').addEventListener('change', e=>setColor(e.target.value));
+ $('colorReset').onclick = ()=>{
+  update(ref(db, `users/${me}`), {color:null})
+    .then(()=>toast('Name color reset to auto.','ok'))
+    .catch(()=>toast("Couldn't reset color.",'bad'));
+};
 
+/* avatar upload — compressed client-side before it ever hits Storage */
 function pickAvatar(){ if(me) $('avatarFile').click(); }
  $('meAva').onclick = pickAvatar;
  $('avatarBtn').onclick = pickAvatar;
- $('avatarFile').addEventListener('change', e=>{
+ $('avatarFile').addEventListener('change', async e=>{
   const f = e.target.files[0]; e.target.value = '';
   if(!f || !me) return;
   if(!/^image\//.test(f.type||'')) return toast('Pick an image file.','bad');
   if(f.size > MAX_AVATAR) return toast(`Avatar too big — 8 MB max (this one: ${fmtSize(f.size)}).`,'bad');
-  const safe = f.name.replace(/[^\w.\- ]+/g,'_');
-  const task = uploadBytesResumable(sref(storage, `avatars/${me}/${Date.now()}_${safe}`), f, {contentType: f.type});
   toast('Uploading avatar…');
+  let blob = f, name = f.name.replace(/[^\w.\- ]+/g,'_');
+  try{
+    blob = await compressImage(f, AVATAR_DIM, 0.85);   // 256px JPEG ≈ 20–60 KB
+    name = 'avatar.jpg';
+  }catch{ /* compression failed — fall back to the original file */ }
+  const task = uploadBytesResumable(sref(storage, `avatars/${me}/${Date.now()}_${name}`), blob, {contentType: blob.type || 'image/jpeg'});
   task.on('state_changed', null,
     err=>toast(`Avatar upload failed (${err.code||'error'}) — Storage rules must allow read/write.`,'bad'),
     async ()=>{
@@ -1636,7 +2014,7 @@ function pickAvatar(){ if(me) $('avatarFile').click(); }
         const url = await getDownloadURL(task.snapshot.ref);
         await update(ref(db,`users/${me}`), {avatar:url});
         toast('Avatar updated.','ok');
-      }catch(e){ toast("Couldn't save avatar — "+(e.message||''),'bad'); }
+      }catch(e2){ toast("Couldn't save avatar — "+(e2.message||''),'bad'); }
     });
 });
  $('avatarDel').onclick = ()=>{
@@ -1654,6 +2032,12 @@ function closeModal(){
  $('modalWrap').addEventListener('click', e=>{ if(e.target === $('modalWrap')) closeModal(); });
  $('modalBox').addEventListener('keydown', e=>{
   if(e.key !== 'Enter') return;
+  if(document.activeElement === $('srvSearch')){
+    e.preventDefault();
+    renderSrvResults($('srvSearch').value.trim().toLowerCase());
+    return;
+  }
+  if(document.activeElement === $('invIn')){ e.preventDefault(); $('joinGo')?.click(); return; }
   if($('mGo')) $('mGo').click();
   else if($('mPwGo')) $('mPwGo').click();
   else if($('memGo')) $('memGo').click();
@@ -1686,8 +2070,11 @@ function closeModal(){
   if(jr){ joinServer(jr.dataset.join); return; }
   const jg = e.target.closest('#joinGo');
   if(jg){
+    // invite code takes priority, then raw server ID
+    const inv = ($('invIn').value||'').trim();
+    if(inv){ await joinByInvite(inv); return; }
     const id = ($('joinId').value||'').trim();
-    if(!id) return toast('Paste a server ID first.','bad');
+    if(!id) return toast('Paste an invite code or server ID first.','bad');
     await joinServer(id);
     return;
   }
@@ -1705,8 +2092,8 @@ function closeModal(){
       if(hidden) sObj.hidden = true;
       await set(ref(db,`servers/${sid}`), sObj);
       if(pwv) await set(ref(db,`roomPasswords/${sid}`), {h: await sha256hex('server:'+pwv), set:Date.now()});
-      if(hidden) toast(`Server created — ID: ${sid} (or add people from the sidebar).`,'ok');
-      else toast('Server created.','ok');
+      if(hidden) toast(`Server created — share invite codes from the header, or add people directly.`,'ok');
+      else toast('Server created — hit the 🔗 in the header to invite people.','ok');
       closeModal(); selectServer(sid, true);
     }catch(err){ toast((err && err.message) || 'Failed.','bad'); go.disabled = false; }
   })();
@@ -1783,12 +2170,18 @@ function curMemSid(){
   return b ? b.dataset.sid : null;
 }
 
+/* ================= OFFLINE INDICATOR ================= */
+function setNet(on){ $('netbar').classList.toggle('show', !!on); }
+addEventListener('online', ()=>setNet(false));
+addEventListener('offline', ()=>setNet(true));
+setNet(!navigator.onLine);
+
 /* ================= MISC BINDINGS ================= */
  $('logoutBtn').onclick = async ()=>{
   try{
-    if(serverPres) await remove(serverPres);
+    clearServerPresence();
     await update(ref(db,`users/${me}`), {sessToken:null});
-    await update(ref(db,`presence/${me}`), {online:false, lastSeen:Date.now()});
+    await update(ref(db,`presence/${me}`), {online:false, lastSeen:Date.now(), typing:null});
   }catch{}
   localStorage.removeItem('relay_session');
   location.reload();
@@ -1796,8 +2189,10 @@ function curMemSid(){
  $('kickReload').onclick = ()=> location.reload();
 document.addEventListener('keydown', e=>{
   if(e.key !== 'Escape') return;
-  if(!$('gifWrap').hidden) closeGif();
+  if(!$('lightbox').hidden) closeLightbox();
+  else if(!$('gifWrap').hidden) closeGif();
   else if(!$('modalWrap').hidden) closeModal();
+  else if($('emojiPop').classList.contains('show')) $('emojiPop').classList.remove('show');
   else if(editingKey) cancelEdit();
   else if(replyingTo) cancelReply();
 });
@@ -1805,13 +2200,19 @@ document.addEventListener('keydown', e=>{
 /* ================= BOOT ================= */
 document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
  $('loginVer').textContent = 'v'+VERSION;
+// invite links: yoursite/?invite=CODE — stashed until the user is signed in
+try{
+  const urlInv = new URLSearchParams(location.search).get('invite');
+  if(urlInv){
+    localStorage.setItem('relay_invite', urlInv);
+    history.replaceState(null, '', location.pathname);
+  }
+}catch{}
 (async function boot(){
-  // invisible anonymous sign-in FIRST — this is what lets the database rules tell
-  // your page apart from strangers opening the database URL directly.
   try{ await signInAnonymously(auth); }
   catch(e){ console.warn('anonymous sign-in failed — enable Anonymous in the Firebase console', e); }
 
-  // ---- global listeners (attach only after sign-in) ----
+  // ---- global listeners ----
   onValue(ref(db,'servers'), s=>{
     serversMap = s.val()||{};
     if(me){ renderServers(); applyLockState(); }
@@ -1821,15 +2222,18 @@ document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('af
     const lu = $('loginUsers'); if(lu) lu.textContent = Object.keys(usersMap).length;
     if(me){
       if(!usersMap[me]) return forceLogout('Account deleted', 'your account was removed by an admin');
-      renderMeChip(); refreshMsgStyles();
+      debouncedUsersHeavy();
     }
   });
+  const debouncedUsersHeavy = debounce(()=>{ if(!me) return; renderMeChip(); refreshMsgStyles(); }, 300);
+  const debouncedPresence = debounce(()=>{
+    if(!me) return;
+    renderOnline(); updateOnlinePill(); renderDMs(); renderTyping();
+    if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
+  }, 300);
   onValue(ref(db,'presence'), s=>{
     presenceMap = s.val()||{};
-    if(me){
-      renderOnline(); updateOnlinePill(); renderDMs();
-      if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
-    }
+    debouncedPresence();
   });
   onValue(ref(db,'config/bannedUsers'), s=>{
     bannedUsers = s.val()||{};

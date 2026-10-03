@@ -41,7 +41,6 @@ html[data-theme=discord]{
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased;overflow:hidden}
 html[data-theme=discord] body{font-family:'Inter','Nunito',system-ui,sans-serif}
-/* smooth theme switches */
 body,.side,.chat-head,.composer,.me-chip,.prof-set,.modal,.toast{transition:background-color .2s ease,border-color .2s ease,color .2s ease}
 ::selection{background:var(--acc);color:var(--acc-ink)}
 ::-webkit-scrollbar{width:9px;height:9px}
@@ -264,7 +263,7 @@ html[data-theme=discord] .msg img.gif{border:none}
 html[data-theme=discord] .edit-row .edit-in{background:#383a40;font-size:15px}
 .edit-row .btn{padding:8px 10px;font-size:12px}
 
-/* ---------- hover toolbar: reactions + reply + edit + delete ---------- */
+/* ---------- hover toolbar ---------- */
 .hover-bar{position:absolute;right:10px;top:2px;display:none;align-items:center;gap:2px;background:var(--panel3);border:1px solid var(--line2);border-radius:10px;padding:3px;box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:3}
 html[data-theme=discord] .hover-bar{right:16px;background:#2b2d31;border:1px solid #1e1f22}
 .msg:hover .hover-bar,.msg.hb-open .hover-bar{display:flex}
@@ -289,7 +288,7 @@ html[data-theme=discord] .react.mine{background:rgba(88,101,242,.15);border-colo
 .msg.flash{animation:msgFlash 1.6s}
 @keyframes msgFlash{0%,55%{background:rgba(139,124,246,.2)}100%{background:transparent}}
 
-/* ---------- reply + typing bars above composer ---------- */
+/* ---------- reply + typing bars ---------- */
 .replybar{flex:none;margin:0 14px 8px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:7px 12px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);overflow:hidden}
 .replybar .rb-ic{display:inline-flex;flex:none;color:var(--acc)} .replybar .rb-ic svg{width:13px;height:13px}
 .replybar .rb-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -459,7 +458,7 @@ html[data-theme=discord] .mem-row .ava{border-radius:50%}
   <div class="auth-form-wrap">
     <form class="auth-form" id="authForm" autocomplete="off">
       <h1 id="authTitle">Sign in</h1>
-      <p class="sub" id="authSub"><span id="authSubText">Welcome</span> <span class="auth-meta">· <b id="loginUsers">—</b> users · <span id="loginVer"></span></span></p>
+      <p class="sub" id="authSub"><span id="authSubText">Welcome</span> <span class="auth-meta">· <b id="loginUsers">—</b> users <span id="loginVer"></span></span></p>
       <label>username<input id="fUser" maxlength="16" spellcheck="false" autocomplete="username"></label>
       <label id="dispField" hidden>display name <span class="opt">(what others see — changeable later)</span><input id="fDisp" maxlength="24" autocomplete="off"></label>
       <label>password<input id="fPass" type="password" autocomplete="current-password"></label>
@@ -621,8 +620,8 @@ const RECAPTCHA_SITE_KEY = '6LfMBsAtAAAAAOHu39XRwkOlyeqogTw5zCAYtwjp';
 const MAX_IPS = 5;
 const MAX_FILE = 1024 * 1024 * 1024;   // 1 GB per file
 const MAX_AVATAR = 8 * 1024 * 1024;    // 8 MB avatars (before compression)
-const AVATAR_DIM = 256;                // avatars compressed to max 256px — small + fast to load
-const VERSION = '141';
+const AVATAR_DIM = 256;                // avatars compressed to max 256px
+const VERSION = '142';
 
 const MSG_COOLDOWN = 2000;
 const EDIT_COOLDOWN = 2000;
@@ -753,7 +752,6 @@ function stickBottom(){
   const m = $('msgs');
   m.scrollTo({top:m.scrollHeight, behavior:'auto'});
 }
-/* two-tap confirm for destructive little buttons (delete message etc.) */
 function armConfirm(btn, fn){
   if(btn.dataset.armed){
     clearTimeout(+btn.dataset.armed); delete btn.dataset.armed;
@@ -766,7 +764,6 @@ function armConfirm(btn, fn){
     delete btn.dataset.armed; btn.classList.remove('armed'); btn.innerHTML = btn.dataset.label;
   }, 2200);
 }
-/* client-side avatar compression — downscales to AVATAR_DIM and re-encodes JPEG */
 function compressImage(file, maxDim, quality){
   return new Promise((res, rej)=>{
     const img = new Image();
@@ -901,7 +898,7 @@ let pwResolve=null;
 let editingKey=null, lastEditAt=0;
 let dmSig='';
 let typingNames='', lastTypingWrite=0;
-let pendingKeys=[], flushT=null;      // batched history render buffer
+let pendingKeys=[], flushT=null;
 
 /* ================= IP LOGGING (max 5 per user) ================= */
 let _ip=null;
@@ -969,7 +966,9 @@ async function tryAutoLogin(){
   catch(err){ localStorage.removeItem('relay_session'); $('authErr').textContent = err.message; return false; }
   await update(ref(db,`users/${sess.u}`), {lastLogin:Date.now(), ip, pwPlain:null});
   await logUserIp(sess.u, ip);
-  await enter(sess.u, ip);
+  try{
+    await enter(sess.u, ip);   // LOGIN FIX: isolated so a renderer hiccup can't break the chain
+  }catch(e){ console.warn('enter() warning', e); }
   return true;
 }
 function setServerPresence(sid){
@@ -1011,7 +1010,6 @@ async function enter(u, ip){
   onValue(ref(db,`friendRequests/${me}`), s=>{ reqMap = s.val()||{}; renderDMs(); });
   setVanta(vantaKey);
   $('msgInput').focus();
-  // auto-join from a pending invite link (?invite=CODE)
   const savedInv = localStorage.getItem('relay_invite');
   if(savedInv){
     localStorage.removeItem('relay_invite');
@@ -1175,7 +1173,6 @@ function msgHTML(key, m){
     </div>
   </div>`;
 }
-/* builds one message chunk (plus a day divider when needed) and advances grouping state */
 function msgChunk(key, m){
   const t = m.t || Date.now();
   const dstr = new Date(t).toDateString();
@@ -1198,12 +1195,11 @@ function postInsert(key, m, live){
   const emb = document.getElementById('emb-'+key);
   if(emb && (!m.type || m.type === 'text')) buildEmbed(emb, (m.text||'').trim());
 }
-/* PERF: the initial history burst is buffered and rendered in ONE DOM insert */
 function appendMsg(key, m){
   if(!m || !m.u) return;
   msgCache[key] = m;
-  if(Date.now() - chOpen > 900){                 // live message
-    flushPending();                              // keep ordering correct
+  if(Date.now() - chOpen > 900){
+    flushPending();
     const stick = isPinned();
     removeMsgsEmpty();
     $('msgs').insertAdjacentHTML('beforeend', msgChunk(key, m));
@@ -1236,7 +1232,7 @@ function updateMsg(key, m){
   if(!m || !m.u) return;
   const old = document.getElementById('m-'+key);
   if(!old){
-    if(pendingKeys.includes(key)) return;   // still buffered — flush renders the latest
+    if(pendingKeys.includes(key)) return;
     return appendMsg(key, m);
   }
   const grp = msgCache[key] ? msgCache[key]._grp : false;
@@ -1457,7 +1453,7 @@ function applyLockState(){
 };
  $('inviteBtn').onclick = ()=>{ if(cur.server) inviteModal(cur.server); };
 
-/* ================= SERVER INVITES (shareable codes) ================= */
+/* ================= SERVER INVITES ================= */
 function makeInviteCode(){
   const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
   const rnd = crypto.getRandomValues(new Uint8Array(8));
@@ -1484,7 +1480,7 @@ async function inviteModal(sid){
   const s = serversMap[sid]; if(!s) return;
   if(s.owner!==me) return toast('Only the owner can invite people.','bad');
   let code = (typeof s.invite === 'string') ? s.invite : null;
-  if(code && !(await getV('serverInvites/'+code))) code = null;   // stale code
+  if(code && !(await getV('serverInvites/'+code))) code = null;
   openModal(`<h3>Invite people — ${esc(s.name||'server')}</h3>
     <p class="sub">Share this code — anyone can join with it, even if the server is hidden or passcoded.</p>
     <label>invite code</label>
@@ -1563,13 +1559,10 @@ function jumpTo(key){
   setTimeout(()=>el.classList.remove('flash'), 1600);
 }
  $('msgs').addEventListener('click', e=>{
-  // lightbox for any image in a message (gifs, embed images, file previews)
   const img = e.target.closest('.msg img');
-  if(img && !img.closest('a.embed-card')?.contains(img) || (img && img.classList.contains('embed-img')) || (img && img.classList.contains('gif'))){
-    if(img){
-      const src = img.currentSrc || img.src;
-      if(src){ e.preventDefault(); openLightbox(src); return; }
-    }
+  if(img && (img.classList.contains('embed-img') || img.classList.contains('gif'))){
+    const src = img.currentSrc || img.src;
+    if(src){ e.preventDefault(); openLightbox(src); return; }
   }
   const da = e.target.closest('[data-act="del-msg"]');
   if(da){
@@ -1624,7 +1617,7 @@ async function buildEmbed(el, url){
   }catch{ /* stays a plain link */ }
 }
 
-/* ================= FILE UPLOADS (1 GB per file) ================= */
+/* ================= FILE UPLOADS ================= */
 let upTask = null;
  $('attachBtn').onclick = ()=>{
   if(!curPath) return toast('Open a server first.','bad');
@@ -1661,7 +1654,7 @@ let upTask = null;
 });
  $('upCancel').onclick = ()=>{ if(upTask) upTask.cancel(); $('upbar').hidden = true; };
 
-/* ================= SERVERS: SELECT / GATE / JOIN ================= */
+/* ================= SERVERS ================= */
 function promptPw(what){
   return new Promise(res=>{
     pwResolve = res;
@@ -1991,7 +1984,6 @@ document.querySelectorAll('.swatch').forEach(s=>s.onclick = ()=>setColor(s.datas
     .catch(()=>toast("Couldn't reset color.",'bad'));
 };
 
-/* avatar upload — compressed client-side before it ever hits Storage */
 function pickAvatar(){ if(me) $('avatarFile').click(); }
  $('meAva').onclick = pickAvatar;
  $('avatarBtn').onclick = pickAvatar;
@@ -2003,9 +1995,9 @@ function pickAvatar(){ if(me) $('avatarFile').click(); }
   toast('Uploading avatar…');
   let blob = f, name = f.name.replace(/[^\w.\- ]+/g,'_');
   try{
-    blob = await compressImage(f, AVATAR_DIM, 0.85);   // 256px JPEG ≈ 20–60 KB
+    blob = await compressImage(f, AVATAR_DIM, 0.85);
     name = 'avatar.jpg';
-  }catch{ /* compression failed — fall back to the original file */ }
+  }catch{ /* fall back to original */ }
   const task = uploadBytesResumable(sref(storage, `avatars/${me}/${Date.now()}_${name}`), blob, {contentType: blob.type || 'image/jpeg'});
   task.on('state_changed', null,
     err=>toast(`Avatar upload failed (${err.code||'error'}) — Storage rules must allow read/write.`,'bad'),
@@ -2070,7 +2062,6 @@ function closeModal(){
   if(jr){ joinServer(jr.dataset.join); return; }
   const jg = e.target.closest('#joinGo');
   if(jg){
-    // invite code takes priority, then raw server ID
     const inv = ($('invIn').value||'').trim();
     if(inv){ await joinByInvite(inv); return; }
     const id = ($('joinId').value||'').trim();
@@ -2200,7 +2191,6 @@ document.addEventListener('keydown', e=>{
 /* ================= BOOT ================= */
 document.querySelectorAll('[data-icon]').forEach(el=>{ el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] || ''); });
  $('loginVer').textContent = 'v'+VERSION;
-// invite links: yoursite/?invite=CODE — stashed until the user is signed in
 try{
   const urlInv = new URLSearchParams(location.search).get('invite');
   if(urlInv){
@@ -2212,7 +2202,14 @@ try{
   try{ await signInAnonymously(auth); }
   catch(e){ console.warn('anonymous sign-in failed — enable Anonymous in the Firebase console', e); }
 
-  // ---- global listeners ----
+  // LOGIN FIX: debounced helpers declared BEFORE the listeners that reference them.
+  const debouncedUsersHeavy = debounce(()=>{ if(!me) return; renderMeChip(); refreshMsgStyles(); }, 300);
+  const debouncedPresence = debounce(()=>{
+    if(!me) return;
+    renderOnline(); updateOnlinePill(); renderDMs(); renderTyping();
+    if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
+  }, 300);
+
   onValue(ref(db,'servers'), s=>{
     serversMap = s.val()||{};
     if(me){ renderServers(); applyLockState(); }
@@ -2225,12 +2222,6 @@ try{
       debouncedUsersHeavy();
     }
   });
-  const debouncedUsersHeavy = debounce(()=>{ if(!me) return; renderMeChip(); refreshMsgStyles(); }, 300);
-  const debouncedPresence = debounce(()=>{
-    if(!me) return;
-    renderOnline(); updateOnlinePill(); renderDMs(); renderTyping();
-    if(!$('modalWrap').hidden && $('memList')) renderMemList(curMemSid());
-  }, 300);
   onValue(ref(db,'presence'), s=>{
     presenceMap = s.val()||{};
     debouncedPresence();
@@ -2243,7 +2234,6 @@ try{
     bannedIps = s.val()||{};
     if(me && myIp && bannedIps[ipKey(myIp)]) return forceLogout("You're blocked", `your IP ${myIp} was banned`);
   });
-  // ----
 
   await tryAutoLogin();
 })();

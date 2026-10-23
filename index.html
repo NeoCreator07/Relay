@@ -261,7 +261,32 @@ footer{padding:.85rem 1rem;background:transparent;border-top:none;flex-shrink:0;
 .theme-swatch-label{position:absolute;bottom:0;left:0;right:0;font-size:.58rem;font-family:'Roboto Mono',monospace;color:#fff;background:rgba(0,0,0,.55);padding:.2rem .3rem;text-align:center;text-transform:uppercase;letter-spacing:.05em;opacity:0;transition:opacity .15s}
 .theme-swatch:hover .theme-swatch-label{opacity:1}
 .theme-none{background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-family:'Roboto Mono',monospace;color:var(--dim);letter-spacing:.05em}
-#settings-modal .modal{max-width:420px}
+#settings-modal .modal{max-width:420px;max-height:calc(100vh - 2.5rem);overflow-y:auto}
+/* ── V145: vanta color changer panel ── */
+#vanta-panel{max-height:min(46vh,380px);overflow-y:auto;overflow-x:hidden;padding-right:.3rem;margin-top:.15rem}
+#vanta-panel::-webkit-scrollbar{width:3px}
+#vanta-panel::-webkit-scrollbar-thumb{background:var(--muted);border-radius:3px}
+.vc-title{font-family:'Roboto Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-top:.7rem}
+.vc-rows{display:flex;flex-direction:column;gap:.3rem;margin-top:.35rem}
+.vc-row{display:flex;align-items:center;gap:.6rem}
+.vc-color{width:40px;height:26px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;padding:0;flex-shrink:0}
+.vc-color::-webkit-color-swatch-wrapper{padding:2px}
+.vc-color::-webkit-color-swatch{border:none;border-radius:4px}
+.vc-label{font-size:.76rem;font-weight:500;color:var(--text)}
+.vc-reset{margin-top:.5rem;background:none;border:1px solid var(--border);border-radius:7px;padding:.28rem .7rem;font-family:'Roboto Mono',monospace;font-size:.64rem;color:var(--dim);cursor:pointer;transition:all .15s}
+.vc-reset:hover{border-color:var(--accent);color:var(--accent)}
+.vc-hint{font-family:'Roboto Mono',monospace;font-size:.64rem;color:var(--dim);margin-top:.5rem;line-height:1.5}
+/* ── V145: register availability hints ── */
+.avail-hint{font-family:'Roboto Mono',monospace;font-size:.64rem;margin-top:.3rem;min-height:.95em;letter-spacing:.02em}
+.avail-hint.ok{color:#56f0a0}
+.avail-hint.bad{color:#ff6b6b}
+/* ── V145: taken-color swatches + profile notes ── */
+.pm-swatch.taken{opacity:.22;cursor:not-allowed;position:relative}
+.pm-swatch.taken::after{content:'';position:absolute;inset:-2px;border-radius:50%;background:linear-gradient(45deg,transparent 44%,rgba(255,107,107,.95) 44%,rgba(255,107,107,.95) 56%,transparent 56%)}
+.pm-swatch.taken:hover{transform:none}
+.pm-note{font-family:'Roboto Mono',monospace;font-size:.6rem;min-height:.85em;margin-top:.3rem;color:var(--dim);letter-spacing:.02em}
+.pm-note.bad{color:#ff6b6b}
+.pm-note.ok{color:#56f0a0}
 .setting-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border)}
 .setting-row:last-child{border-bottom:none}
 .setting-label{font-size:.85rem;font-weight:500;color:var(--text)}
@@ -488,6 +513,7 @@ body.vanta-active #messages .msg-name{text-shadow:0 1px 8px rgba(0,0,0,.95)}
 body.vanta-active footer .in-row input,body.vanta-active footer .in-row textarea{background:rgba(10,12,18,.82);text-shadow:0 1px 6px rgba(0,0,0,.8)}
 body.vanta-active .chat-title,body.vanta-active .chat-sub,body.vanta-active .chat-online{text-shadow:0 1px 10px rgba(0,0,0,.95)}
 body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
+body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 3px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.95)}
 
 /* ── LIGHT MODE OVERRIDES for glass UI ── */
 [data-theme="light"] #sidebar{background:rgba(228,231,240,.97);border-right:1px solid var(--border)}
@@ -604,10 +630,12 @@ body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
       <div class="field">
         <label>Username</label>
         <input id="regUser" type="text" placeholder="letters, numbers, underscores" maxlength="20" autocomplete="username" autocapitalize="none"/>
+        <div class="avail-hint" id="regUserHint"></div>
       </div>
       <div class="field">
         <label>Display name</label>
         <input id="regDisplay" type="text" placeholder="e.g. Jacob L" maxlength="28" autocomplete="off"/>
+        <div class="avail-hint" id="regDisplayHint"></div>
       </div>
       <div class="field">
         <label>Password</label>
@@ -622,7 +650,7 @@ body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
     </div>
     <div class="auth-footer">
       <span id="loginStats">…</span>
-      <span class="ver" id="loginVersion">v144</span>
+      <span class="ver" id="loginVersion">v145</span>
     </div>
   </div>
 </div>
@@ -689,6 +717,7 @@ body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
             <div class="pm-name-edit" style="flex:1;min-width:0">
               <div class="pm-label">Display name</div>
               <input id="pmNameInput" type="text" maxlength="28" placeholder="Your name" autocomplete="off"/>
+              <div class="pm-note" id="pmNameNote"></div>
               <div style="font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--dim);margin-top:.3rem" id="pmUsername"></div>
             </div>
           </div>
@@ -704,6 +733,7 @@ body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
           <div>
             <div class="pm-label">Name color</div>
             <div class="pm-color-row" id="pmColorRow"></div>
+            <div class="pm-note" id="pmColorNote"></div>
           </div>
           <button class="pm-save-btn" onclick="saveProfile()">Save profile</button>
           <button class="pm-danger-btn" onclick="logOut()">Sign out</button>
@@ -940,7 +970,10 @@ body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
     </div>
     <div style="padding-top:.6rem">
       <div class="sb-label" style="margin-bottom:.7rem">Chat background</div>
-      <div class="theme-grid" id="themeGrid"></div>
+      <div id="vanta-panel">
+        <div class="theme-grid" id="themeGrid"></div>
+        <div id="vanta-colors"></div>
+      </div>
     </div>
     <div class="modal-btns" style="margin-top:.4rem">
       <button class="primary-btn" style="padding:.65rem 1.2rem" onclick="closeSettings()">Done</button>
@@ -1053,8 +1086,10 @@ body.vanta-active .date-divider-text{text-shadow:0 1px 8px rgba(0,0,0,.9)}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  RELAY v144 — classic look, fixed architecture, rooms in servers,
+//  RELAY v145 — classic look, fixed architecture, rooms in servers,
 //  sidebar: single unified scroll column (servers list fully expanded)
+//  v145: unique display names + unique name colors (one person, one
+//  color), full 13-effect Vanta suite + persistent color changer.
 //  Fatal-bug fix: signs in to Firebase Auth (anonymous) BEFORE any
 //  database call. The old file never signed in, so every read/write
 //  hung forever under "auth != null" rules.
@@ -1070,7 +1105,7 @@ const FB_CONFIG = {
   appId: "1:relay-87573:web:v143"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47"; // fallback if config/giphyKey unset
-const VERSION = '143';
+const VERSION = '145';
 const MAX_FILE = 25 * 1024 * 1024;             // 25 MB — must match the cap in firebase-storage-rules.rules
 const MSG_COOLDOWN = 2000;                  // anti-spam: 2s between sends
 const EDIT_COOLDOWN = 2000;
@@ -1165,26 +1200,51 @@ async function verifyPw(password, salt, stored){
 }
 
 // ── VANTA BACKGROUNDS (three.js lazy-loaded — old file shipped 600KB upfront) ──
+// Full 13-effect vanta@0.5.24 suite. Each theme lists its REAL color options
+// (verified against each effect's defaultOptions) so the color changer only
+// exposes params the effect actually uses. User color overrides persist in
+// localStorage (lc_vanta_colors) and survive refreshes.
 const VANTA_THEMES = [
   { id:'none',   label:'None',   effect:null, preview:'linear-gradient(135deg,#0c0e14,#1e2436)' },
   { id:'net',    label:'Net',    effect:'NET',    preview:'linear-gradient(135deg,#1e1b4b,#6d28d9)',
-    cfg:{ color:0x6d28d9, backgroundColor:0x0c0e14, points:9, maxDistance:22, spacing:18, showDots:true }},
+    cfg:{ color:0x6d28d9, backgroundColor:0x0c0e14, points:9, maxDistance:22, spacing:18, showDots:true },
+    colors:[['color','Lines'],['backgroundColor','Backdrop']] },
   { id:'waves',  label:'Waves',  effect:'WAVES',  preview:'linear-gradient(135deg,#060612,#1e1b4b)',
-    cfg:{ color:0x180840, backgroundColor:0x060612, waveHeight:20, waveSpeed:0.6, zoom:0.9 }},
+    cfg:{ color:0x180840, waveHeight:20, waveSpeed:0.6, zoom:0.9 },   // no backgroundColor — WAVES has no such option
+    colors:[['color','Waves']] },
   { id:'birds',  label:'Birds',  effect:'BIRDS',  preview:'linear-gradient(135deg,#0a0c14,#7c3aed,#f472b6)',
-    cfg:{ backgroundColor:0x0a0c14, color1:0x7c3aed, color2:0xf472b6, birdSize:1.2, wingSpan:28, speedLimit:4, separation:60, quantity:3 }},
+    cfg:{ backgroundColor:0x0a0c14, color1:0x7c3aed, color2:0xf472b6, birdSize:1.2, wingSpan:28, speedLimit:4, separation:60, quantity:3 },
+    colors:[['color1','Bird 1'],['color2','Bird 2'],['backgroundColor','Sky']] },
   { id:'cells',  label:'Cells',  effect:'CELLS',  preview:'linear-gradient(135deg,#1e1b4b,#7c3aed)',
-    cfg:{ color1:0x1e1b4b, color2:0x7c3aed, size:2.5, speed:1 }},
+    cfg:{ color1:0x1e1b4b, color2:0x7c3aed, size:2.5, speed:1 },
+    colors:[['color1','Cells 1'],['color2','Cells 2']] },
   { id:'dots',   label:'Dots',   effect:'DOTS',   preview:'linear-gradient(135deg,#080810,#7c3aed,#f9c846)',
-    cfg:{ color:0x7c3aed, color2:0xf9c846, backgroundColor:0x080810, size:3, spacing:38, showLines:false }},
+    cfg:{ color:0x7c3aed, color2:0xf9c846, backgroundColor:0x080810, size:3, spacing:38, showLines:false },
+    colors:[['color','Dots'],['color2','Dots 2'],['backgroundColor','Backdrop']] },
   { id:'fog',    label:'Fog',    effect:'FOG',    preview:'linear-gradient(135deg,#0a0014,#4f1d96)',
-    cfg:{ highlightColor:0x7c3aed, midtoneColor:0x4f1d96, lowlightColor:0x0a0014, baseColor:0x0c0e14, blurFactor:0.6, speed:1, zoom:0.9 }},
+    cfg:{ highlightColor:0x7c3aed, midtoneColor:0x4f1d96, lowlightColor:0x0a0014, baseColor:0x0c0e14, blurFactor:0.6, speed:1, zoom:0.9 },
+    colors:[['highlightColor','Highlight'],['midtoneColor','Midtone'],['lowlightColor','Shadow'],['baseColor','Base']] },
   { id:'globe',  label:'Globe',  effect:'GLOBE',  preview:'linear-gradient(135deg,#060612,#1e3a5f)',
-    cfg:{ color:0x3b82f6, color2:0x7c3aed, backgroundColor:0x060612, size:1.2, offsetX:0, offsetY:0 }},
+    cfg:{ color:0x3b82f6, color2:0x7c3aed, backgroundColor:0x060612, size:1.2 },
+    colors:[['color','Globe'],['color2','Meridian'],['backgroundColor','Backdrop']] },
   { id:'clouds', label:'Clouds', effect:'CLOUDS', preview:'linear-gradient(135deg,#0a0014,#2d1b69)',
-    cfg:{ backgroundColor:0x0a0014, skyColor:0x2d1b69, cloudColor:0x4f1d96, cloudShadowColor:0x0a0014, sunGlareColor:0x7c3aed, sunlightX:0.75, sunlightY:-0.25, speed:0.6 }},
+    cfg:{ backgroundColor:0x0a0014, skyColor:0x2d1b69, cloudColor:0x4f1d96, cloudShadowColor:0x0a0014, sunGlareColor:0x7c3aed, speed:0.6 },
+    colors:[['skyColor','Sky'],['cloudColor','Clouds'],['cloudShadowColor','Shade'],['sunGlareColor','Sun'],['backgroundColor','Backdrop']] },
   { id:'ripple', label:'Ripple', effect:'RIPPLE', preview:'linear-gradient(135deg,#060612,#4f1d96)',
-    cfg:{ color:0x7c3aed, backgroundColor:0x060612, amplitudeFactor:1.5, speed:1.2 }},
+    cfg:{ color1:0x7c3aed, color2:0xf472b6, backgroundColor:0x060612, amplitudeFactor:1.5, speed:1.2 },
+    colors:[['color1','Ring 1'],['color2','Ring 2'],['backgroundColor','Backdrop']] },
+  { id:'halo',    label:'Halo',    effect:'HALO',    preview:'linear-gradient(135deg,#060612,#7c3aed,#f472b6)',
+    cfg:{ baseColor:0x7c3aed, backgroundColor:0x060612, size:1.2, amplitudeFactor:1.1, xOffset:0, yOffset:0 },
+    colors:[['baseColor','Halo'],['backgroundColor','Backdrop']] },
+  { id:'rings',   label:'Rings',   effect:'RINGS',   preview:'linear-gradient(135deg,#080810,#7c3aed)',
+    cfg:{ backgroundColor:0x080810 },   // ring colors come from vanta's built-in palette — only the backdrop is settable
+    colors:[['backgroundColor','Backdrop']] },
+  { id:'topology',label:'Topology',effect:'TOPOLOGY',preview:'linear-gradient(135deg,#060612,#4f1d96,#c4b5fd)',
+    cfg:{ color:0xc4b5fd, backgroundColor:0x060612 },   // strokes draw at 5% alpha — keep the color bright; the flow-field builds up over ~10s
+    colors:[['color','Ribbon'],['backgroundColor','Backdrop']] },
+  { id:'trunk',   label:'Trunk',   effect:'TRUNK',   preview:'linear-gradient(135deg,#0a0014,#a78bfa)',
+    cfg:{ color:0xa78bfa, backgroundColor:0x0a0014 },
+    colors:[['color','Branches'],['backgroundColor','Backdrop']] },
 ];
 let vantaInstance = null;
 let threeLoaded = false;
@@ -1206,20 +1266,110 @@ async function ensureThree(){
   await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js', 'three');
   threeLoaded = true;
 }
+
+// V145: TOPOLOGY and TRUNK are p5-based effects (verified against the
+// vanta@0.5.24 sources) — they need p5.js instead of three.js
+const VANTA_P5_EFFECTS = { TOPOLOGY: 1, TRUNK: 1 };
+let p5Loaded = false;
+async function ensureP5(){
+  if (p5Loaded || window.p5) { p5Loaded = true; return; }
+  await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js', 'p5');
+  p5Loaded = true;
+}
+
+// ── V145: persisted per-effect color overrides ──
+function getVantaColors(){
+  try{ return JSON.parse(localStorage.getItem('lc_vanta_colors') || '{}') || {}; }catch(e){ return {}; }
+}
+function saveVantaColors(store){ try{ localStorage.setItem('lc_vanta_colors', JSON.stringify(store)); }catch(e){} }
+function numToHex(n){
+  if (typeof n !== 'number' || isNaN(n)) return '#7c3aed';
+  return '#' + ('000000' + Math.max(0, Math.min(0xffffff, Math.round(n))).toString(16)).slice(-6);
+}
+function vantaCfgFor(t){
+  const cfg = Object.assign({}, t.cfg);
+  const ov = getVantaColors()[t.id] || {};
+  (t.colors || []).forEach(([k]) => {
+    const hex = ov[k];
+    if (typeof hex === 'string' && /^#[0-9a-fA-F]{6}$/.test(hex)) cfg[k] = parseInt(hex.slice(1), 16);
+  });
+  return cfg;
+}
+const vantaColorReinit = debounce(() => { if (activeVantaId) applyVanta(activeVantaId); }, 380);
+function onVantaColorInput(themeId, key, hex){
+  const store = getVantaColors();
+  store[themeId] = store[themeId] || {};
+  store[themeId][key] = hex;
+  saveVantaColors(store);
+  vantaColorReinit();
+}
+function buildVantaColorsPanel(){
+  const host = document.getElementById('vanta-colors');
+  if (!host) return;
+  host.innerHTML = '';
+  const t = VANTA_THEMES.find(x => x.id === activeVantaId);
+  if (!t || !t.effect){
+    const h = document.createElement('div');
+    h.className = 'vc-hint';
+    h.textContent = 'Pick an animated background to customize its colors. Your choice and colors are remembered after refresh.';
+    host.appendChild(h);
+    return;
+  }
+  const ov = getVantaColors()[t.id] || {};
+  const title = document.createElement('div');
+  title.className = 'vc-title';
+  title.textContent = 'Colors — ' + t.label;
+  host.appendChild(title);
+  const rows = document.createElement('div');
+  rows.className = 'vc-rows';
+  (t.colors || []).forEach(([k, label]) => {
+    const row = document.createElement('div');
+    row.className = 'vc-row';
+    const inp = document.createElement('input');
+    inp.type = 'color';
+    inp.className = 'vc-color';
+    inp.value = (typeof ov[k] === 'string' && /^#[0-9a-fA-F]{6}$/.test(ov[k])) ? ov[k] : numToHex(t.cfg[k]);
+    inp.addEventListener('input', () => onVantaColorInput(t.id, k, inp.value));
+    const lbl = document.createElement('span');
+    lbl.className = 'vc-label';
+    lbl.textContent = label;
+    row.appendChild(inp);
+    row.appendChild(lbl);
+    rows.appendChild(row);
+  });
+  host.appendChild(rows);
+  if (Object.keys(ov).length){
+    const rb = document.createElement('button');
+    rb.className = 'vc-reset';
+    rb.textContent = 'Reset colors';
+    rb.onclick = () => {
+      const store = getVantaColors();
+      delete store[t.id];
+      saveVantaColors(store);
+      applyVanta(t.id);
+    };
+    host.appendChild(rb);
+  }
+}
+
 function applyVanta(id){
   if (vantaInstance){ try{ vantaInstance.destroy(); }catch(e){} vantaInstance = null; }
   activeVantaId = id;
   localStorage.setItem('lc_vanta', id);
   updateSwatchActive();
+  buildVantaColorsPanel();
   document.body.classList.remove('vanta-active');
   const t = VANTA_THEMES.find(x => x.id === id);
   if (!t || !t.effect) return;
   const el = document.getElementById('vanta-bg');
   if (!el) return;
-  Promise.all([ ensureThree(), loadScriptOnce('https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.'+t.effect.toLowerCase()+'.min.js', t.effect) ])
+  const depLoad = (VANTA_P5_EFFECTS[t.effect]) ? ensureP5() : ensureThree();
+  Promise.all([ depLoad, loadScriptOnce('https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.'+t.effect.toLowerCase()+'.min.js', t.effect) ])
     .then(() => {
       if (!window.VANTA || !window.VANTA[t.effect]) return;
-      vantaInstance = window.VANTA[t.effect]({ el, THREE: window.THREE, ...t.cfg, mouseControls:true, touchControls:true, gyroControls:false });
+      const cfg = vantaCfgFor(t);
+      try{ window.__lastVantaCfg = { id: t.id, cfg }; }catch(e){}   // debug/test hook
+      vantaInstance = window.VANTA[t.effect]({ el, THREE: window.THREE, p5: window.p5, ...cfg, mouseControls:true, touchControls:true, gyroControls:false });
       document.body.classList.add('vanta-active');
     })
     .catch(e => console.warn('vanta:', e.message));
@@ -1254,6 +1404,7 @@ function toggleTheme(cb){
 function toggleSound(cb){ localStorage.setItem('lc_sound', cb.checked ? '1' : '0'); }
 function openSettings(){
   buildThemeGrid();
+  buildVantaColorsPanel();
   document.getElementById('soundToggle').checked = localStorage.getItem('lc_sound') !== '0';
   document.getElementById('settings-modal').classList.add('show');
 }
@@ -1393,12 +1544,93 @@ function checkBan(banned){
   document.getElementById('screen-banned').classList.remove('hidden');
 }
 
+// ── V145: IDENTITY UNIQUENESS — usernames, display names, colors ──
+// All checks work off the existing `users` node (rules already allow
+// read/write there) — no DB schema or security-rules changes needed.
+function normName(s){ return String(s == null ? '' : s).trim().toLowerCase().replace(/\s+/g, ' '); }
+function displayConflict(display, users, self){
+  // returns the username that already uses this display name (or whose
+  // username equals it), or null if the display name is free
+  const n = normName(display);
+  if (!n) return null;
+  for (const [u, acc] of Object.entries(users || {})){
+    if (self && u === self) continue;
+    if (normName(u) === n) return u;                    // equals someone's username
+    if (acc && normName(acc.display) === n) return u;   // equals someone's display name
+  }
+  return null;
+}
+function colorConflict(color, users, self){
+  // returns the username that already owns this hex color, or null
+  const c = String(color == null ? '' : color).trim().toLowerCase();
+  if (!HEX_RE.test(c)) return null;
+  for (const [u, acc] of Object.entries(users || {})){
+    if (self && u === self) continue;
+    if (acc && String(acc.color == null ? '' : acc.color).trim().toLowerCase() === c) return u;
+  }
+  return null;
+}
+function hueHex(h, s, l){
+  const a = s * Math.min(l, 1 - l);
+  const f = n => { const k = (n + h / 30) % 12; const v = l - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1))); return Math.round(255 * v).toString(16).padStart(2, '0'); };
+  return '#' + f(0) + f(8) + f(4);
+}
+function pickUniqueColor(users){
+  // first free palette color; if the palette is exhausted, walk the hue wheel
+  const taken = new Set();
+  Object.entries(users || {}).forEach(([, acc]) => {
+    if (acc && acc.color && HEX_RE.test(String(acc.color))) taken.add(String(acc.color).trim().toLowerCase());
+  });
+  for (const c of NAME_COLORS){ if (HEX_RE.test(c) && !taken.has(c.toLowerCase())) return c; }   // HEX_RE guard: only persistable colors
+  for (let i = 0; i < 360; i += 15){ const c = hueHex(i, .72, .62); if (!taken.has(c)) return c; }
+  return '#e8ff6b';
+}
+function setPmNote(id, msg, cls){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg || '';
+  el.className = 'pm-note' + (cls ? ' ' + cls : '');
+}
+
+// live availability hints on the register form
+let regUsersCache = null;
+async function loadRegUsers(force){
+  if (regUsersCache && !force) return regUsersCache;
+  try{ const s = await db.ref('users').get(); regUsersCache = s.val() || {}; }
+  catch(e){ regUsersCache = {}; }
+  return regUsersCache;
+}
+const regAvailCheck = debounce(async () => {
+  const uh = document.getElementById('regUserHint'), dh = document.getElementById('regDisplayHint');
+  if (!uh && !dh) return;
+  const users = await loadRegUsers();
+  const u = (document.getElementById('regUser').value || '').trim().toLowerCase();
+  const dRaw = (document.getElementById('regDisplay').value || '').trim();
+  const d = dRaw || u;   // empty display falls back to the username
+  if (uh){
+    if (!u){ uh.textContent = ''; uh.className = 'avail-hint'; }
+    else if (users[u]){ uh.textContent = '✕ taken'; uh.className = 'avail-hint bad'; }
+    else if (/^[a-z0-9_]{3,20}$/.test(u)){ uh.textContent = '✓ available'; uh.className = 'avail-hint ok'; }
+    else { uh.textContent = ''; uh.className = 'avail-hint'; }
+  }
+  if (dh){
+    if (!d){ dh.textContent = ''; dh.className = 'avail-hint'; }
+    else {
+      const dc = displayConflict(d, users, null);
+      if (dc){ dh.textContent = '✕ already used by @' + dc; dh.className = 'avail-hint bad'; }
+      else if (d.length >= 2){ dh.textContent = '✓ available'; dh.className = 'avail-hint ok'; }
+      else { dh.textContent = ''; dh.className = 'avail-hint'; }
+    }
+  }
+}, 300);
+
 // ── AUTH TABS / LOGIN / REGISTER ──
 function switchAuthTab(tab){
   document.getElementById('auth-login').classList.toggle('hidden', tab !== 'login');
   document.getElementById('auth-register').classList.toggle('hidden', tab !== 'register');
   document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
   document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+  if (tab === 'register') loadRegUsers();   // V145: prefetch for live availability hints
 }
 
 async function doLogin(){
@@ -1439,18 +1671,25 @@ async function doRegister(){
   if (password !== password2){ err.textContent = '⚠ Passwords do not match.'; return; }
   err.textContent = ''; btn.disabled = true; btn.textContent = 'Creating…';
   try{
-    const snap = await db.ref('users/' + username).get();
-    if (snap.exists()){ err.textContent = '⚠ Username taken. Choose another.'; resetBtn(btn,'Create Account'); return; }
+    // V145: one fresh read — username uniqueness, display-name uniqueness,
+    // and a unique auto-assigned name color, all from the same snapshot
+    const usersSnap = await db.ref('users').get();
+    const users = usersSnap.val() || {};
+    if (users[username]){ err.textContent = '⚠ Username taken. Choose another.'; resetBtn(btn,'Create Account'); return; }
+    const dc = displayConflict(display, users, null);
+    if (dc){ err.textContent = '⚠ That display name is already used by @' + dc + '. Choose another.'; resetBtn(btn,'Create Account'); return; }
+    const startColor = pickUniqueColor(users);
     const salt = randToken(8);
     const pw = await hashPw(salt, password);
     const token = randToken(36);
     await db.ref('users/' + username).set({
-      pw, salt, sessToken: token, display, color: null, avatar: null,
+      pw, salt, sessToken: token, display, color: startColor, avatar: null,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
       lastLogin: firebase.database.ServerValue.TIMESTAMP,
       ip: myIp || null, ips: myIp ? { [myIp.replace(/\./g,'_')]: true } : null
     });
-    myUsername = username; myDisplay = display; myColor = '#e8ff6b'; myPfp = null;
+    myUsername = username; myDisplay = display; myColor = startColor; myPfp = null;
+    localStorage.setItem('lc_color', startColor);
     localStorage.setItem('relay_session', JSON.stringify({ u: username, t: token }));
     enterApp();
   }catch(e){ err.textContent = '⚠ ' + (e.message || 'failed'); resetBtn(btn,'Create Account'); }
@@ -1467,6 +1706,7 @@ function logOut(){
 //  ENTER APP / GLOBAL LISTENERS
 // ═══════════════════════════════════════════════════════════════
 let usersCache = {};
+let colorClaimed = false;   // V145: one-time unique-color claim for legacy accounts (color == null)
 
 function enterApp(inviteCode){
   document.getElementById('screen-name').classList.add('hidden');
@@ -1487,6 +1727,15 @@ function enterApp(inviteCode){
     const me = usersCache[myUsername];
     if (me){
       if (me.display && me.display !== myDisplay){ myDisplay = me.display; document.getElementById('meName').textContent = myDisplay; }
+      // V145: legacy account with no stored color → claim a free unique one
+      if (!colorClaimed && !me.color){
+        colorClaimed = true;
+        const c = pickUniqueColor(usersCache);
+        myColor = c;
+        localStorage.setItem('lc_color', c);
+        db.ref('users/' + myUsername + '/color').set(c).catch(()=>{});
+        applyMyColor(); applyMyAvatar(); broadcastPresence();
+      }
     }
     debouncedPresenceRender();
     if (currentDm) renderDmList();
@@ -2932,7 +3181,7 @@ async function removeFriend(f){
 // ═══════════════════════════════════════════════════════════════
 //  PROFILE
 // ═══════════════════════════════════════════════════════════════
-const NAME_COLORS = ['#e8ff6b','#60c8ff','#f472b6','#34d399','#fb923c','#a78bfa','#f87171','#38bdf8','#fff','#c4b5fd'];
+const NAME_COLORS = ['#e8ff6b','#60c8ff','#f472b6','#34d399','#fb923c','#a78bfa','#f87171','#38bdf8','#ffffff','#c4b5fd']; // v145: '#fff'→'#ffffff' so white passes HEX_RE and can be claimed uniquely
 
 function applyMyColor(){
   document.querySelectorAll('.msg.self .msg-name').forEach(el => el.style.color = myColor);
@@ -2963,18 +3212,31 @@ function toggleProfileMenu(){
   if (badge) badge.style.background = colors[myStatus] || '#49536e';
   const row = document.getElementById('pmColorRow');
   row.innerHTML = '';
+  setPmNote('pmColorNote', 'One color per person — struck-through swatches are taken.', '');
   NAME_COLORS.forEach(c => {
+    const taker = colorConflict(c, usersCache, myUsername);
     const sw = document.createElement('div');
-    sw.className = 'pm-swatch' + (c === myColor ? ' active' : '');
+    sw.className = 'pm-swatch' + (c === myColor ? ' active' : '') + (taker ? ' taken' : '');
     sw.style.background = c;
-    sw.onclick = () => { myColor = c; localStorage.setItem('lc_color', c); row.querySelectorAll('.pm-swatch').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); applyMyColor(); applyMyAvatar(); };
+    if (taker) sw.title = 'Taken by @' + taker;
+    sw.onclick = () => {
+      const nowTaker = colorConflict(c, usersCache, myUsername);
+      if (nowTaker){ setPmNote('pmColorNote', '✕ ' + c + ' belongs to @' + nowTaker + '. Pick a free color.', 'bad'); return; }
+      setPmNote('pmColorNote', 'One color per person — struck-through swatches are taken.', '');
+      myColor = c; localStorage.setItem('lc_color', c); row.querySelectorAll('.pm-swatch').forEach(s=>s.classList.remove('active')); sw.classList.add('active'); applyMyColor(); applyMyAvatar();
+    };
     row.appendChild(sw);
   });
   const custom = document.createElement('div');
   custom.className = 'pm-swatch-custom';
   const ci = document.createElement('input');
   ci.type = 'color'; ci.value = HEX_RE.test(myColor) ? myColor : '#e8ff6b';
-  ci.oninput = () => { myColor = ci.value; localStorage.setItem('lc_color', ci.value); applyMyColor(); applyMyAvatar(); row.querySelectorAll('.pm-swatch').forEach(s=>s.classList.remove('active')); };
+  ci.oninput = () => {
+    const taker = colorConflict(ci.value, usersCache, myUsername);
+    if (taker){ setPmNote('pmColorNote', '✕ ' + ci.value + ' belongs to @' + taker + '. Pick a free color.', 'bad'); return; }
+    setPmNote('pmColorNote', '✓ ' + ci.value + ' is unique to you.', 'ok');
+    myColor = ci.value; localStorage.setItem('lc_color', ci.value); applyMyColor(); applyMyAvatar(); row.querySelectorAll('.pm-swatch').forEach(s=>s.classList.remove('active'));
+  };
   custom.appendChild(ci);
   row.appendChild(custom);
   if (myPfp){
@@ -2986,10 +3248,24 @@ function toggleProfileMenu(){
     row.appendChild(reset);
   }
   m.classList.remove('hidden');
+  // V145: live display-name availability check while typing
+  const ni = document.getElementById('pmNameInput');
+  ni.oninput = debounce(() => {
+    const v = ni.value.trim();
+    if (!v || v === (myDisplay || '')){ setPmNote('pmNameNote', '', ''); return; }
+    const taker = displayConflict(v, usersCache, myUsername);
+    if (taker) setPmNote('pmNameNote', '✕ Already used by @' + taker, 'bad');
+    else if (v.length >= 2) setPmNote('pmNameNote', '✓ available', 'ok');
+    else setPmNote('pmNameNote', '', '');
+  }, 300);
 }
 function saveProfile(){
   const newName = document.getElementById('pmNameInput').value.trim();
   if (newName && newName.length >= 2 && newName !== myDisplay){
+    // V145: display names are unique — block a name another user already has
+    const taker = displayConflict(newName, usersCache, myUsername);
+    if (taker){ setPmNote('pmNameNote', '✕ That name is already used by @' + taker + '.', 'bad'); return; }
+    setPmNote('pmNameNote', '', '');
     myDisplay = newName;
     document.getElementById('meName').textContent = myDisplay;
     applyMyAvatar();
@@ -3000,7 +3276,23 @@ function saveProfile(){
 }
 async function saveAccount(){
   if (!myUsername) return;
-  const upd = { display: myDisplay, color: HEX_RE.test(myColor) ? myColor : null };
+  let colorToSave = HEX_RE.test(myColor) ? myColor : null;
+  if (colorToSave){
+    // V145: last-guard — never persist a color another user already owns
+    const taker = colorConflict(colorToSave, usersCache, myUsername);
+    if (taker){
+      setPmNote('pmColorNote', '⚠ ' + colorToSave + ' belongs to @' + taker + ' — kept your previous color.', 'bad');
+      try{
+        const cur = await db.ref('users/' + myUsername + '/color').get();
+        const prev = cur.val();
+        myColor = (prev && HEX_RE.test(prev)) ? prev : pickUniqueColor(usersCache);
+      }catch(e){ myColor = pickUniqueColor(usersCache); }
+      colorToSave = HEX_RE.test(myColor) ? myColor : null;
+      localStorage.setItem('lc_color', myColor);
+      applyMyColor(); applyMyAvatar();
+    }
+  }
+  const upd = { display: myDisplay, color: colorToSave };
   if (myPfp && myPfp.length < 300000) upd.avatar = myPfp;
   else if (!myPfp) upd.avatar = null;
   try{ await db.ref('users/' + myUsername).update(upd); }catch(e){}
@@ -3346,7 +3638,9 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginPass').focus(); });
   document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
   document.getElementById('regUser').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('regDisplay').focus(); });
+  document.getElementById('regUser').addEventListener('input', regAvailCheck);   // V145: live availability
   document.getElementById('regDisplay').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('regPass').focus(); });
+  document.getElementById('regDisplay').addEventListener('input', regAvailCheck); // V145: live availability
   document.getElementById('regPass').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('regPass2').focus(); });
   document.getElementById('regPass2').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
   document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });

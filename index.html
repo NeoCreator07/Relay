@@ -54,10 +54,12 @@ html,body{height:100%;background:#0c0e14;color:var(--text);font-family:'Roboto',
 .brand-name{font-family:'Roboto Mono',monospace;font-size:.78rem;letter-spacing:.16em;color:var(--accent);font-weight:500}
 .panel-title{font-size:1.6rem;font-weight:700;color:var(--text);line-height:1.25}
 .field{display:flex;flex-direction:column;gap:.45rem}
-.field label{font-family:'Roboto Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.field label{font-family:'Roboto Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+[data-theme="light"] .field label{color:var(--dim)}
 .field input,.field select{background:var(--input-bg);border:1px solid var(--muted);border-radius:10px;padding:.72rem 1rem;color:var(--text);font-family:'Roboto',sans-serif;font-size:.88rem;font-weight:500;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
 .field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-.field input::placeholder{color:var(--dim)}
+.field input::placeholder{color:rgba(255,255,255,.4)}
+[data-theme="light"] .field input::placeholder{color:var(--dim)}
 .primary-btn{padding:.82rem;background:var(--accent);color:var(--accent-text);font-family:'Roboto Mono',monospace;font-size:.82rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:opacity .15s,transform .1s;letter-spacing:.06em;text-transform:uppercase}
 .primary-btn:hover{opacity:.88}
 .primary-btn:active{transform:scale(.98)}
@@ -92,53 +94,53 @@ html,body{height:100%;background:#0c0e14;color:var(--text);font-family:'Roboto',
 #sb-toggle svg{transition:transform .28s}
 #sidebar-wrap.collapsed #sb-toggle svg{transform:rotate(180deg)}
 .sb-head{padding:1rem 1.1rem .9rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.sb-brand{display:flex;align-items:center;gap:.6rem;cursor:pointer;border-radius:8px;padding:.2rem .3rem;transition:background .15s}
+.sb-brand{display:flex;align-items:center;gap:.6rem;cursor:pointer;border-radius:8px;padding:.2rem .3rem;transition:background .15s;color:#fff}
 .sb-brand:hover{background:var(--hover)}
-.sb-settings-btn,.notif-btn{background:none;border:none;color:var(--dim);cursor:pointer;padding:.2rem;line-height:1;transition:opacity .15s;border-radius:6px;display:flex;align-items:center;opacity:.65}
-.sb-settings-btn:hover,.notif-btn:hover{opacity:1;color:var(--text)}
+.sb-settings-btn,.notif-btn{background:none;border:none;color:#fff;cursor:pointer;padding:.2rem;line-height:1;transition:opacity .15s;border-radius:6px;display:flex;align-items:center;opacity:.8}
+.sb-settings-btn:hover,.notif-btn:hover{opacity:1;color:#fff}
 .notif-btn.on{opacity:1;color:var(--accent)}
 .sb-section{padding:.85rem 1.1rem .35rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.sb-label{font-family:'Roboto Mono',monospace;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:500}
-.sb-add{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.95rem;padding:0 .2rem;transition:color .15s;line-height:1}
+.sb-label{font-family:'Roboto Mono',monospace;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);font-weight:500}
+.sb-add{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:.95rem;padding:0 .2rem;transition:color .15s;line-height:1}
 .sb-add:hover{color:var(--accent)}
 .srv-search-wrap{padding:.3rem .75rem .45rem;flex-shrink:0}
-.srv-search{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.42rem .8rem;color:var(--text);font-family:'Roboto',sans-serif;font-size:.82rem;outline:none;transition:border-color .2s}
+.srv-search{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.42rem .8rem;color:#fff;font-family:'Roboto',sans-serif;font-size:.82rem;outline:none;transition:border-color .2s}
 .srv-search:focus{border-color:var(--accent)}
-.srv-search::placeholder{color:var(--dim)}
+.srv-search::placeholder{color:rgba(255,255,255,.4)}
 .srv-list{display:flex;flex-direction:column;gap:.03rem;padding:0 .6rem;flex-shrink:0}
 #sb-scroll::-webkit-scrollbar,#messages::-webkit-scrollbar{width:4px}
-#sb-scroll::-webkit-scrollbar-thumb,#messages::-webkit-scrollbar-thumb{background:var(--muted);border-radius:4px}
-.srv-item{display:flex;align-items:center;gap:.5rem;padding:.52rem .7rem;border-radius:8px;cursor:pointer;transition:background .15s;font-size:.92rem;font-weight:500;color:var(--dim);position:relative}
-.srv-item:hover{background:rgba(255,255,255,.06);color:var(--text)}
-.srv-item.active{background:var(--accent-dim);color:var(--accent)}
-.srv-hash{font-family:'Roboto Mono',monospace;font-size:.78rem;color:var(--muted);flex-shrink:0}
-.srv-item.active .srv-hash{color:var(--accent);opacity:.6}
-.srv-lock{font-size:.72rem;margin-left:auto;flex-shrink:0;opacity:.5}
-.srv-ro{font-size:.7rem;flex-shrink:0;opacity:.7}
+#sb-scroll::-webkit-scrollbar-thumb,#messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:4px}
+.srv-item{display:flex;align-items:center;gap:.5rem;padding:.52rem .7rem;border-radius:8px;cursor:pointer;transition:background .15s;font-size:.92rem;font-weight:500;color:#fff;position:relative}
+.srv-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.srv-item.active{background:var(--accent-dim);color:#fff}
+.srv-hash{font-family:'Roboto Mono',monospace;font-size:.78rem;color:rgba(255,255,255,.5);flex-shrink:0}
+.srv-item.active .srv-hash{color:var(--accent);opacity:.75}
+.srv-lock{font-size:.72rem;margin-left:auto;flex-shrink:0;opacity:.65}
+.srv-ro{font-size:.7rem;flex-shrink:0;opacity:.75}
 .srv-item:hover .srv-actions{opacity:1}
 .srv-actions{opacity:0;display:flex;gap:.2rem;margin-left:auto;transition:opacity .15s;flex-shrink:0}
-.srv-action-btn{background:none;border:none;padding:.12rem .28rem;cursor:pointer;font-size:.75rem;color:var(--dim);border-radius:4px;line-height:1;transition:color .15s,background .15s}
-.srv-action-btn:hover{color:var(--text);background:var(--muted)}
+.srv-action-btn{background:none;border:none;padding:.12rem .28rem;cursor:pointer;font-size:.75rem;color:rgba(255,255,255,.75);border-radius:4px;line-height:1;transition:color .15s,background .15s}
+.srv-action-btn:hover{color:#fff;background:rgba(255,255,255,.12)}
 .srv-action-btn.del:hover{color:var(--danger);background:var(--danger-dim)}
 /* ── ROOMS (nested inside active server) ── */
 .srv-rooms{display:flex;flex-direction:column;gap:.02rem;padding:.1rem 0 .3rem 1.45rem}
-.room-item{display:flex;align-items:center;gap:.42rem;padding:.38rem .6rem;border-radius:7px;cursor:pointer;transition:background .15s;font-size:.85rem;font-weight:500;color:var(--dim);position:relative}
-.room-item:hover{background:rgba(255,255,255,.06);color:var(--text)}
-.room-item.active{background:rgba(255,255,255,.1);color:var(--text)}
+.room-item{display:flex;align-items:center;gap:.42rem;padding:.38rem .6rem;border-radius:7px;cursor:pointer;transition:background .15s;font-size:.85rem;font-weight:500;color:#fff;position:relative}
+.room-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.room-item.active{background:rgba(255,255,255,.14);color:#fff}
 .room-item.active .room-hash{color:var(--accent)}
-.room-hash{font-family:'Roboto Mono',monospace;font-size:.72rem;color:var(--muted);flex-shrink:0;opacity:.8}
+.room-hash{font-family:'Roboto Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.5);flex-shrink:0}
 .room-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .room-unread{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;box-shadow:0 0 6px var(--accent)}
-.room-del{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.68rem;padding:0 .25rem;border-radius:4px;opacity:0;transition:all .15s;line-height:1}
+.room-del{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:.68rem;padding:0 .25rem;border-radius:4px;opacity:0;transition:all .15s;line-height:1}
 .room-item:hover .room-del{opacity:.8}
 .room-del:hover{color:var(--danger)}
-.rooms-loading{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--dim);padding:.3rem .6rem .3rem 1.9rem;opacity:.6}
+.rooms-loading{font-family:'Roboto Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.55);padding:.3rem .6rem .3rem 1.9rem}
 .sb-divider{height:1px;background:rgba(255,255,255,.07);margin:.6rem .9rem;flex-shrink:0}
 .member-scroll{flex-shrink:0}
 .mem-list{display:flex;flex-direction:column;gap:.04rem;padding:0 .6rem .6rem}
-.mem-item{display:flex;align-items:center;gap:.55rem;padding:.42rem .7rem;border-radius:8px;font-size:.88rem;font-weight:500;color:var(--dim);cursor:pointer;transition:background .12s}
+.mem-item{display:flex;align-items:center;gap:.55rem;padding:.42rem .7rem;border-radius:8px;font-size:.88rem;font-weight:500;color:#fff;cursor:pointer;transition:background .12s}
 .mem-item:hover{background:rgba(255,255,255,.06)}
-.mem-item.me{color:var(--text);cursor:default}
+.mem-item.me{color:#fff;cursor:default}
 .mem-avatar{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Roboto Mono',monospace;font-size:.7rem;font-weight:700;flex-shrink:0;overflow:hidden;position:relative}
 .mem-avatar img{width:100%;height:100%;object-fit:cover}
 .mem-dot{width:8px;height:8px;border-radius:50%;background:var(--online);flex-shrink:0;box-shadow:0 0 5px var(--online)}
@@ -151,8 +153,10 @@ html,body{height:100%;background:#0c0e14;color:var(--text);font-family:'Roboto',
 .me-avatar{width:34px;height:34px;border-radius:9px;background:var(--accent-dim);border:2px solid rgba(232,255,107,.2);display:flex;align-items:center;justify-content:center;font-family:'Roboto Mono',monospace;font-size:.85rem;font-weight:700;flex-shrink:0;overflow:hidden;color:var(--accent);position:relative}
 .me-avatar img{width:100%;height:100%;object-fit:cover;border-radius:7px}
 .me-status-badge{position:absolute;bottom:-2px;right:-2px;width:10px;height:10px;border-radius:50%;border:2px solid var(--sidebar)}
-.me-name{font-size:.9rem;font-weight:500;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.me-edit{font-size:.75rem;color:var(--dim);opacity:.5}
+.me-name{font-size:.9rem;font-weight:500;color:#fff;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me-edit{font-size:.75rem;color:rgba(255,255,255,.6)}
+.me-handle{font-family:'Roboto Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.55)}
+[data-theme="light"] .me-handle{color:var(--dim)}
 /* profile popup */
 #profile-menu{position:absolute;bottom:72px;left:.6rem;width:240px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:60;animation:fadeUp .18s ease both}
 #profile-menu.hidden{display:none}
@@ -366,7 +370,17 @@ footer{padding:.85rem 1rem;background:transparent;border-top:none;flex-shrink:0;
 .modal-bg.show{display:flex}
 .modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;width:100%;max-width:340px;display:flex;flex-direction:column;gap:1.2rem;box-shadow:0 8px 40px var(--shadow);animation:fadeUp .22s ease both;max-height:90vh;overflow-y:auto}
 .modal h2{font-size:1rem;font-weight:700;color:var(--text)}
-.modal-sub{font-size:.82rem;color:var(--dim);line-height:1.5;font-weight:400}
+.modal-sub{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5;font-weight:400}
+[data-theme="light"] .modal-sub{color:var(--dim)}
+/* v147: resolved-user card in the New DM modal */
+#dm-resolve .dmr-card{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+#dm-resolve .dmr-avatar{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Roboto Mono',monospace;font-weight:700;font-size:.85rem;overflow:hidden;flex-shrink:0}
+#dm-resolve .dmr-avatar img{width:100%;height:100%;object-fit:cover}
+#dm-resolve .dmr-name{font-size:.9rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dm-resolve .dmr-handle{font-family:'Roboto Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.55);margin-top:.1rem}
+#dm-resolve .dmr-status{color:rgba(255,255,255,.55)}
+[data-theme="light"] #dm-resolve .dmr-card{background:rgba(0,0,0,.04);border-color:var(--border)}
+[data-theme="light"] #dm-resolve .dmr-handle,[data-theme="light"] #dm-resolve .dmr-status{color:var(--dim)}
 .modal-btns{display:flex;gap:.6rem;justify-content:flex-end}
 .danger-btn{padding:.6rem 1rem;background:var(--danger);color:#fff;border:none;border-radius:8px;font-family:'Roboto',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:opacity .15s}
 .danger-btn:hover{opacity:.85}
@@ -478,16 +492,16 @@ a.msg-link:hover{border-bottom-color:var(--blue);border-bottom-style:solid}
 
 /* ── FRIENDS / DM ── */
 .dm-list{display:flex;flex-direction:column;gap:.03rem;padding:0 .6rem;flex-shrink:0}
-.dm-item{display:flex;align-items:center;gap:.55rem;padding:.42rem .7rem;border-radius:8px;font-size:.88rem;font-weight:500;color:var(--dim);cursor:pointer;transition:background .12s}
+.dm-item{display:flex;align-items:center;gap:.55rem;padding:.42rem .7rem;border-radius:8px;font-size:.88rem;font-weight:500;color:#fff;cursor:pointer;transition:background .12s}
 .dm-item:hover{background:rgba(255,255,255,.06)}
-.dm-item.active{background:var(--accent-dim);color:var(--accent)}
+.dm-item.active{background:var(--accent-dim);color:#fff}
 .dm-avatar{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Roboto Mono',monospace;font-size:.68rem;font-weight:700;flex-shrink:0;overflow:hidden}
 .dm-avatar img{width:100%;height:100%;object-fit:cover}
 .dm-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dm-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--dim)}
+.dm-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.35)}
 .dm-status.on{background:var(--online);box-shadow:0 0 5px var(--online)}
 .req-badge{background:var(--danger);color:#fff;font-family:'Roboto Mono',monospace;font-size:.58rem;font-weight:700;border-radius:10px;padding:.08rem .35rem;min-width:18px;text-align:center}
-.dm-preview{font-family:'Roboto Mono',monospace;font-size:.6rem;color:var(--dim);opacity:.7;flex-shrink:0}
+.dm-preview{font-family:'Roboto Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.55);flex-shrink:0}
 
 /* ── USER CARD (click member) ── */
 #user-card{position:fixed;width:250px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;display:none;flex-direction:column;gap:.75rem;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:150;animation:fadeUp .15s ease both}
@@ -522,6 +536,19 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
 [data-theme="light"] .sb-foot{border-top:1px solid var(--border)}
 [data-theme="light"] .srv-item:hover,[data-theme="light"] .me-row:hover,[data-theme="light"] .dm-item:hover{background:rgba(0,0,0,.05)}
 [data-theme="light"] .srv-search{background:rgba(0,0,0,.04);border-color:var(--border)}
+/* v147: sidebar list text is always white on the dark sidebar; light theme keeps readable dark text */
+[data-theme="light"] .sb-brand,[data-theme="light"] .srv-item,[data-theme="light"] .room-item,[data-theme="light"] .dm-item,[data-theme="light"] .mem-item,[data-theme="light"] .me-name,[data-theme="light"] .srv-search{color:var(--text)}
+[data-theme="light"] .srv-item:hover,[data-theme="light"] .room-item:hover{color:var(--text)}
+[data-theme="light"] .srv-item.active,[data-theme="light"] .dm-item.active{color:var(--accent)}
+[data-theme="light"] .room-item.active{background:rgba(0,0,0,.07);color:var(--text)}
+[data-theme="light"] .sb-label,[data-theme="light"] .sb-add,[data-theme="light"] .srv-action-btn,[data-theme="light"] .room-del,[data-theme="light"] .me-edit,[data-theme="light"] .dm-preview,[data-theme="light"] .rooms-loading{color:var(--dim)}
+[data-theme="light"] .srv-hash,[data-theme="light"] .room-hash{color:var(--muted)}
+[data-theme="light"] .srv-search::placeholder{color:var(--dim)}
+[data-theme="light"] .sb-settings-btn,[data-theme="light"] .notif-btn{color:var(--dim)}
+[data-theme="light"] .srv-action-btn:hover,[data-theme="light"] .sb-settings-btn:hover,[data-theme="light"] .notif-btn:hover{color:var(--text)}
+[data-theme="light"] .srv-action-btn:hover{background:var(--muted)}
+[data-theme="light"] .dm-status{background:var(--dim)}
+[data-theme="light"] #sb-scroll::-webkit-scrollbar-thumb,[data-theme="light"] #messages::-webkit-scrollbar-thumb{background:var(--muted)}
 [data-theme="light"] footer{background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-top:1px solid var(--border)}
 [data-theme="light"] .in-row input,[data-theme="light"] .in-row textarea{background:rgba(0,0,0,.04);border-color:var(--border);color:var(--text)}
 [data-theme="light"] .in-row input::placeholder,[data-theme="light"] .in-row textarea::placeholder{color:var(--dim)}
@@ -650,7 +677,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
     </div>
     <div class="auth-footer">
       <span id="loginStats">…</span>
-      <span class="ver" id="loginVersion">v145</span>
+      <span class="ver" id="loginVersion">v148</span>
     </div>
   </div>
 </div>
@@ -701,7 +728,10 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <div class="sb-divider"></div>
       <div class="sb-section" style="padding-top:.7rem">
         <span class="sb-label">Direct messages</span>
-        <span id="frBadgeWrap"></span>
+        <span style="display:flex;align-items:center;gap:.4rem">
+          <span id="frBadgeWrap"></span>
+          <button class="sb-add" onclick="openNewDmModal()" title="New DM — find anyone by @username">＋</button>
+        </span>
       </div>
       <div class="dm-list" id="dmList"></div>
       <div class="sb-divider"></div>
@@ -745,7 +775,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
           </div>
           <div style="flex:1;min-width:0">
             <div class="me-name" id="meName">—</div>
-            <div style="font-family:'Roboto Mono',monospace;font-size:.58rem;color:var(--dim)" id="meHandle">@—</div>
+            <div class="me-handle" id="meHandle">@—</div>
           </div>
           <span class="me-edit">✎</span>
         </div>
@@ -827,7 +857,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <button class="reply-bar-close" onclick="clearReply()" title="Cancel reply">✕</button>
       </div>
       <div class="in-row">
-        <button class="action-btn" id="fileBtn" onclick="document.getElementById('fileInput').click()" disabled title="Send file or image (up to 25MB)">＋</button>
+        <button class="action-btn" id="fileBtn" onclick="document.getElementById('fileInput').click()" disabled title="Send file or image — paste or drag it in too (images auto-compress)">＋</button>
         <button class="action-btn" id="gifBtn" onclick="openGifModal()" disabled title="Send a GIF">GIF</button>
         <textarea id="msgInput" rows="1" placeholder="Message…" maxlength="500" autocomplete="off" disabled></textarea>
         <span id="char-counter"></span>
@@ -873,6 +903,25 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
     <div class="modal-btns">
       <button class="ghost-btn" onclick="closeSrvJoinModal()">Cancel</button>
       <button class="primary-btn" style="padding:.65rem 1.2rem" onclick="submitSrvJoinCode()">Join</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW DM MODAL (v147: reach ANY account by @username — even offline) -->
+<div class="modal-bg" id="dm-modal">
+  <div class="modal" style="max-width:380px">
+    <h2>New conversation</h2>
+    <p class="modal-sub">Find anyone by @username — even if they're offline. Open a DM, or send a friend request.</p>
+    <div class="field">
+      <label>Username</label>
+      <input id="dmUserInput" type="text" placeholder="e.g. andy" maxlength="24" autocomplete="off" oninput="dmLookupDebounced()" onkeydown="if(event.key==='Enter'){event.preventDefault();openDmFromModal();}"/>
+    </div>
+    <div id="dm-resolve" style="display:none"></div>
+    <div class="err-msg" id="dm-err"></div>
+    <div class="modal-btns">
+      <button class="ghost-btn" onclick="closeDmModal()">Cancel</button>
+      <button class="ghost-btn" id="dmFriendBtn" onclick="sendFriendRequestFromModal()" style="display:none">＋ Friend</button>
+      <button class="primary-btn" style="padding:.65rem 1.2rem" id="dmOpenBtn" onclick="openDmFromModal()" disabled>Open DM</button>
     </div>
   </div>
 </div>
@@ -1086,10 +1135,30 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  RELAY v145 — classic look, fixed architecture, rooms in servers,
+//  RELAY v147 — classic look, fixed architecture, rooms in servers,
 //  sidebar: single unified scroll column (servers list fully expanded)
 //  v145: unique display names + unique name colors (one person, one
 //  color), full 13-effect Vanta suite + persistent color changer.
+//  v146: attachments actually WORK without Firebase Storage — files
+//  ≤4MB (images auto-compressed) send through the Realtime Database
+//  as base64, clipboard paste of images/files, drag & drop. Storage
+//  is only used for files too big for the DB route.
+//  v147: sidebar text (servers, rooms, DMs, members, labels) is now
+//  ALWAYS WHITE on the dark sidebar — the old --dim/--muted grays
+//  were nearly unreadable. Light theme keeps readable dark text.
+//  v147: NEW DM modal (＋ next to "Direct messages") — find ANY account
+//  by @username, even offline, and open a DM or send a friend request.
+//  Non-friend DMs persist as "recent" rows in the sidebar.
+//  v148: friends/DM hardening — Enter resolves AND opens in one press,
+//  the modal closes on backdrop click (like every other modal), resolved
+//  accounts merge into usersCache instantly, already-sent requests show
+//  "✓ Requested" (tracked locally per account), incoming requests can be
+//  accepted right from the modal, and the resolved card reads the avatar
+//  from users/{name}/avatar (was acc.pfp — avatars never showed offline).
+//  v148 (readability completion): the last near-invisible --dim grays are
+//  gone from the dark theme — sidebar footer @handle, modal subtitles,
+//  field labels, input placeholders and the resolved-card meta text now
+//  use white opacities (light theme keeps its readable dim palette).
 //  Fatal-bug fix: signs in to Firebase Auth (anonymous) BEFORE any
 //  database call. The old file never signed in, so every read/write
 //  hung forever under "auth != null" rules.
@@ -1105,8 +1174,13 @@ const FB_CONFIG = {
   appId: "1:relay-87573:web:v143"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47"; // fallback if config/giphyKey unset
-const VERSION = '145';
-const MAX_FILE = 25 * 1024 * 1024;             // 25 MB — must match the cap in firebase-storage-rules.rules
+const VERSION = '148';
+const MAX_FILE = 25 * 1024 * 1024;             // 25 MB hard cap — must match the cap in firebase-storage-rules.rules (Storage route)
+const MAX_DB_FILE = 4 * 1024 * 1024;           // v146: files this small travel through the Realtime Database as
+                                               // base64 data URLs — works on the FREE Spark plan with NO Firebase
+                                               // Storage. base64 adds ~35%, so 4MB raw ≈ 5.4MB string — safely under
+                                               // RTDB per-value limits. Images are auto-compressed first, so nearly
+                                               // all image sends (incl. pasted screenshots) take this free route.
 const MSG_COOLDOWN = 2000;                  // anti-spam: 2s between sends
 const EDIT_COOLDOWN = 2000;
 const REPEAT_WINDOW = 30000;                // 30s identical-message window
@@ -1925,13 +1999,22 @@ function doSwitchServer(id, srv){
       return;
     }
     if (!rooms || !Object.keys(rooms).length){
-      // first open: provision a general room
-      db.ref('servers/'+id+'/rooms/general').set({ name:'general', createdBy: myUsername, createdAt: firebase.database.ServerValue.TIMESTAMP })
-        .then(()=> migrateLegacyMessages(id))
-        .catch(()=>{});
+      // first open: provision a general room — but re-check the server still
+      // exists server-side first (v146: the local servers map can be stale for
+      // a moment right after a deletion, which resurrected ghost rooms-only
+      // server nodes from any client that had the server open)
+      db.ref('servers/'+id).get().then(ss => {
+        if (!ss.exists()) return;
+        db.ref('servers/'+id+'/rooms/general').set({ name:'general', createdBy: myUsername, createdAt: firebase.database.ServerValue.TIMESTAMP })
+          .then(()=> migrateLegacyMessages(id))
+          .catch(()=>{});
+      }).catch(()=>{});
     } else if (!s.child('general').exists()){
-      db.ref('servers/'+id+'/rooms/general').set({ name:'general', createdBy: myUsername, createdAt: firebase.database.ServerValue.TIMESTAMP }).catch(()=>{});
-      migrateLegacyMessages(id);
+      db.ref('servers/'+id).get().then(ss => {
+        if (!ss.exists()) return;
+        db.ref('servers/'+id+'/rooms/general').set({ name:'general', createdBy: myUsername, createdAt: firebase.database.ServerValue.TIMESTAMP }).catch(()=>{});
+        migrateLegacyMessages(id);
+      }).catch(()=>{});
     } else {
       migrateLegacyMessages(id);
     }
@@ -1975,6 +2058,8 @@ function checkRoomUnread(sid){
 async function migrateLegacyMessages(sid){
   if (roomMigrate[sid]) return;
   try{
+    const srvAlive = await db.ref('servers/'+sid).get();
+    if (!srvAlive.exists()){ roomMigrate[sid] = true; return; }   // v146: never resurrect a deleted server via roomsClaim
     const claim = await db.ref('servers/'+sid+'/roomsClaim').transaction(cur => cur === null ? myUsername : undefined);
     if (!claim.committed){ roomMigrate[sid] = true; return; }
     roomMigrate[sid] = true;
@@ -2017,6 +2102,7 @@ function openDm(user){
   currentRoom = null; currentSrv = null;
   if (roomsUnsub){ try{ roomsUnsub(); }catch(e){} roomsUnsub = null; }
   currentDm = { user, pair };
+  touchRecentDm(user);   // v147: non-friend DMs stay reachable after reload
   openChannel('messages/_dm/' + pair, {
     kind: 'dm',
     title: (usersCache[user] && usersCache[user].display) || user,
@@ -2285,6 +2371,7 @@ function buildMsgContent(body, data, key){
   } else if (type === 'file'){
     const a = document.createElement('a');
     a.className = 'msg-file'; a.href = data.url; a.target = '_blank'; a.rel = 'noopener';
+    if (data.url && data.url.startsWith('data:')) a.setAttribute('download', data.fileName || 'file');  // v146: DB-sent files save with their real name
     const icon = document.createElement('span'); icon.className = 'msg-file-icon'; icon.textContent = '📎';
     const info = document.createElement('div'); info.className = 'msg-file-info';
     const fn = document.createElement('span'); fn.className = 'msg-file-name'; fn.textContent = data.fileName || 'file';
@@ -2480,6 +2567,7 @@ async function sendMsg(){
     const file = pendingFile, caption = raw;
     inp.value = '';
     autoGrowMsgInput();
+    clearPendingFile();   // v146: was never cleared — the attachment used to re-send with every following message
     uploadAndSendFile(file, caption);
     return;
   }
@@ -2510,6 +2598,8 @@ function handleFileUpload(input){
   stagePendingFile(file);
 }
 function stagePendingFile(file){   // ← was missing entirely in the old file (paste crashed)
+  if (!file) return;                                             // v146: clipboard items can yield null files
+  if (file.size > MAX_FILE){ sysMsg('⚠ File too large (max ' + fmtSize(MAX_FILE) + ').'); return; }  // v146: guard pasted/dragged files too
   pendingFile = file;
   const isImage = file.type && file.type.startsWith('image/');
   const thumb = document.getElementById('fileBarThumb');
@@ -2536,30 +2626,124 @@ function clearPendingGif(){
   document.getElementById('gifBarThumb').src = '';
   document.getElementById('gifBarTitle').textContent = '';
 }
-function uploadAndSendFile(file, caption){
+// ── FILE UPLOAD (v146: works WITHOUT Firebase Storage) ──
+// Files ≤ MAX_DB_FILE travel through the Realtime Database as base64 data
+// URLs — same technique the app already uses for avatars — so they work on
+// the free Spark plan. Images are auto-compressed first (canvas ≤1920px,
+// JPEG 0.85), which brings nearly every image and pasted screenshot under
+// the cap. Only files too big for the DB route fall back to Firebase
+// Storage, which requires the Blaze plan (see firebase-storage-rules.rules).
+function fileToDataUrl(file){
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = () => rej(r.error || new Error('could not read file'));
+    r.readAsDataURL(file);
+  });
+}
+function loadImageEl(file){
+  const url = URL.createObjectURL(file);
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.onload = () => res(img);
+    img.onerror = () => rej(new Error('could not decode image'));
+    img.src = url;
+  }).finally(() => URL.revokeObjectURL(url));
+}
+// downscale + re-encode an image so it fits the DB route; animated GIFs and
+// SVGs are returned untouched (canvas would kill animation / vectors).
+async function compressImageForChat(file){
+  try{
+    if (file.type === 'image/gif' || file.type === 'image/svg+xml') return file;
+    const img = await loadImageEl(file);
+    const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+    if (!iw || !ih) return file;
+    file.w = iw; file.h = ih;                                     // stash dims for message metadata
+    const MAXDIM = 1920;
+    const scale = Math.min(1, MAXDIM / Math.max(iw, ih));
+    if (scale >= 1 && file.size <= MAX_DB_FILE) return file;     // already small — keep original bytes
+    const w = Math.max(1, Math.round(iw * scale)), h = Math.max(1, Math.round(ih * scale));
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);             // white matte so transparent PNGs survive JPEG
+    ctx.drawImage(img, 0, 0, w, h);
+    const blob = await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.85));
+    if (!blob || blob.size >= file.size) { file.w = iw; file.h = ih; return file; }  // re-encode didn't help
+    const out = new File([blob], (file.name || 'image').replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+    out.w = w; out.h = h;
+    return out;
+  }catch(e){ return file; }                                      // undecodable → raw route decides
+}
+function imageDimsOf(file){ return (file && file.w && file.h) ? { w: file.w, h: file.h } : null; }
+function friendlyStorageError(err){
+  const code = (err && err.code) || '';
+  const m = (err && err.message) ? err.message : (code || 'unknown error');
+  if (code === 'storage/canceled' || /cancel/i.test(m))
+    return 'upload stalled — this page cannot reach Firebase Storage (file:// origin or Spark plan). Files over ' + fmtSize(MAX_DB_FILE) + ' need Storage (Blaze plan, served over https).';
+  if (code === 'storage/unauthorized' || code === 'storage/retry-limit-exceeded')
+    return 'no Firebase Storage access (' + code + ') — files over ' + fmtSize(MAX_DB_FILE) + ' need Storage (Blaze plan). Smaller files send without it.';
+  return m + ' — files over ' + fmtSize(MAX_DB_FILE) + ' need Firebase Storage (Blaze plan). Smaller files send without it.';
+}
+async function uploadAndSendFile(file, caption){
   const path = channelPath();
   if (!path || !file) return;
   const spam = spamCheck(null);
   if (spam){ sysMsg('⚠ ' + spam); stagePendingFile(file); return; }
   markSent(null);
+  const btn = document.getElementById('sendBtn');
+  const busy = on => { btn.disabled = on; btn.textContent = on ? '…' : '↑'; };
+
+  // images compress first — most land well under the DB cap
+  if (file.type && file.type.startsWith('image/')){
+    busy(true);
+    file = await compressImageForChat(file);
+    busy(false);
+  }
+
+  // ── DB route: base64 data URL in the Realtime Database (free Spark plan) ──
+  if (file.size <= MAX_DB_FILE){
+    busy(true);
+    try{
+      const dataUrl = await fileToDataUrl(file);
+      const isImage = file.type && file.type.startsWith('image/');
+      const msg = { u: myUsername, t: firebase.database.ServerValue.TIMESTAMP,
+                    type: isImage ? 'image' : 'file', url: dataUrl,
+                    fileName: file.name || 'file', fileSize: file.size };
+      const dims = imageDimsOf(file);
+      if (dims){ msg.w = dims.w; msg.h = dims.h; }
+      if (caption) msg.text = caption;
+      if (replyingTo){ msg.replyTo = { key: replyingTo.key, name: replyingTo.name, text: replyingTo.text }; clearReply(); }
+      await db.ref(path).push(msg);
+    }catch(e){
+      sysMsg('⚠ Send failed: ' + ((e && e.message) || 'unknown error'));
+    }finally{ busy(false); }
+    return;
+  }
+
+  // ── Storage route: only for files too big for the DB route (needs Blaze) ──
   const isImage = file.type && file.type.startsWith('image/');
   const storePath = 'uploads/' + path.replace(/^messages\//,'').replace(/[\/]/g,'__') + '/' + Date.now() + '_' + (file.name||'file').replace(/[^\w.\-]/g,'_');
-  const btn = document.getElementById('sendBtn');
-  btn.disabled = true; btn.textContent = '…';
+  busy(true);
   const task = storage.ref(storePath).put(file);
+  // v146: without Storage access (Spark plan / file:// origin) the SDK used to
+  // retry forever with the button stuck at 0% — cancel if no bytes ever move.
+  const stallTimer = setTimeout(() => { try{ task.cancel(); }catch(e){} }, 35000);
   task.on('state_changed',
     snap => {
+      if (snap.bytesTransferred > 0) clearTimeout(stallTimer);   // upload is moving — it's legit
       const pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
       btn.textContent = pct < 100 ? pct + '%' : '↑';
     },
-    err => { sysMsg('⚠ Upload failed: ' + err.message); btn.disabled = false; btn.textContent = '↑'; },
+    err => { clearTimeout(stallTimer); busy(false); sysMsg('⚠ Upload failed: ' + friendlyStorageError(err)); },
     () => {
+      clearTimeout(stallTimer);
       task.snapshot.ref.getDownloadURL().then(url => {
         const msg = { u: myUsername, t: firebase.database.ServerValue.TIMESTAMP, type: isImage ? 'image' : 'file', url, fileName: file.name, fileSize: file.size };
         if (caption) msg.text = caption;
         if (replyingTo){ msg.replyTo = { key: replyingTo.key, name: replyingTo.name, text: replyingTo.text }; clearReply(); }
         db.ref(path).push(msg).catch(()=>sysMsg('⚠ Send failed.'));
-        btn.disabled = false; btn.textContent = '↑';
+        busy(false);
       });
     });
 }
@@ -3146,14 +3330,38 @@ function renderDmList(){
     d.onclick = () => openDm(f);
     el.appendChild(d);
   });
+  // v147: recent DMs with people who aren't friends (yet) — they'd otherwise
+  // vanish from the sidebar, since the DM list only renders friends/requests.
+  // Kept in localStorage per account, so they survive reloads.
+  try{
+    const recents = Object.entries(getRecentDms())
+      .filter(([f]) => f && f !== 'null' && f !== myUsername && !friendsMap[f] && !friendReqMap[f] && usersCache[f])
+      .sort((a,b) => b[1] - a[1]).slice(0, 6);
+    recents.forEach(([f, ts]) => {
+      const u = usersCache[f] || {};
+      const active = currentDm && currentDm.user === f;
+      const color = (u.color && HEX_RE.test(u.color)) ? u.color : 'var(--blue)';
+      const d = document.createElement('div');
+      d.className = 'dm-item' + (active ? ' active' : '');
+      d.title = 'Recent DM — not a friend yet';
+      d.innerHTML = (u.pfp
+          ? '<div class="dm-avatar"><img src="' + esc(u.pfp) + '" alt=""/></div>'
+          : '<div class="dm-avatar" style="color:' + color + '">' + esc(((u.display||f)[0]||'?').toUpperCase()) + '</div>') +
+        '<span class="dm-name">' + esc(u.display || f) + '</span>' +
+        '<span class="dm-preview">recent</span>';
+      d.onclick = () => openDm(f);
+      el.appendChild(d);
+    });
+  }catch(e){}
   if (!el.children.length){
-    el.innerHTML = '<div class="rooms-loading" style="padding:.2rem .8rem">no friends yet — click someone online</div>';
+    el.innerHTML = '<div class="rooms-loading" style="padding:.2rem .8rem">no DMs yet — ＋ to find someone</div>';
   }
 }
 async function sendFriendRequest(to){
   if (!to || to === myUsername) return;
   try{
     await db.ref('friendRequests/' + to + '/' + myUsername).set(firebase.database.ServerValue.TIMESTAMP);
+    markOutgoingFriendReq(to);            // v148: modal shows "✓ Requested" next time
     sysMsg('✓ Friend request sent to @' + to);
     document.getElementById('user-card').classList.remove('show');
   }catch(e){ sysMsg('⚠ ' + e.message); }
@@ -3164,6 +3372,7 @@ async function respondRequest(from, accept){
     if (accept){
       await db.ref('friends/' + myUsername + '/' + from).set(firebase.database.ServerValue.TIMESTAMP);
       await db.ref('friends/' + from + '/' + myUsername).set(firebase.database.ServerValue.TIMESTAMP);
+      clearOutgoingFriendReq(from);       // v148: we're friends — drop any stale outgoing marker
       sysMsg('✓ You are now friends with @' + from);
     }
   }catch(e){ sysMsg('⚠ ' + e.message); }
@@ -3174,8 +3383,152 @@ async function removeFriend(f){
   try{
     await db.ref('friends/' + myUsername + '/' + f).remove();
     await db.ref('friends/' + f + '/' + myUsername).remove();
+    clearOutgoingFriendReq(f);            // v148: re-adding later should offer a fresh request
   }catch(e){ sysMsg('⚠ ' + e.message); }
   document.getElementById('user-card').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  NEW DM MODAL (v147) — reach ANY account by @username, even offline.
+//  Before this, adding a friend or starting a DM required the other
+//  person to be online right now (click them in the member list) —
+//  which read as "you can't add friends / DMs anymore".
+//  v148 hardening: one-press Enter, backdrop-close, instant usersCache
+//  merge, "✓ Requested" state for already-sent requests, and Accept
+//  for incoming requests straight from the modal.
+// ═══════════════════════════════════════════════════════════════
+let dmResolveTimer = null, dmResolveSeq = 0, dmResolvedUser = null;
+function openNewDmModal(){
+  dmResolvedUser = null;
+  clearTimeout(dmResolveTimer);
+  document.getElementById('dmUserInput').value = '';
+  document.getElementById('dm-err').textContent = '';
+  const box = document.getElementById('dm-resolve');
+  box.style.display = 'none'; box.innerHTML = '';
+  document.getElementById('dmOpenBtn').disabled = true;
+  const fb = document.getElementById('dmFriendBtn');
+  fb.style.display = 'none'; fb.disabled = false; fb.textContent = '＋ Friend'; fb.onclick = sendFriendRequestFromModal;
+  document.getElementById('dm-modal').classList.add('show');
+  setTimeout(()=>document.getElementById('dmUserInput').focus(), 50);
+}
+function closeDmModal(){ document.getElementById('dm-modal').classList.remove('show'); }
+function dmLookupDebounced(){
+  clearTimeout(dmResolveTimer);
+  dmResolveTimer = setTimeout(resolveDmUser, 300);
+}
+async function resolveDmUser(){
+  const raw = (document.getElementById('dmUserInput').value || '').trim().replace(/^@+/, '').toLowerCase();
+  const err = document.getElementById('dm-err');
+  const box = document.getElementById('dm-resolve');
+  const seq = ++dmResolveSeq;               // stale-response guard
+  dmResolvedUser = null;
+  document.getElementById('dmOpenBtn').disabled = true;
+  document.getElementById('dmFriendBtn').style.display = 'none';
+  err.textContent = '';
+  box.style.display = 'none'; box.innerHTML = '';
+  if (!raw) return null;
+  if (raw === myUsername){ err.textContent = '⚠ That\'s you — enter someone else\'s @username.'; return null; }
+  if (!/^[a-z0-9_]{3,}$/.test(raw)){ err.textContent = '⚠ Usernames are lowercase letters, numbers, underscores (3+ chars).'; return null; }
+  try{
+    const s = await db.ref('users/' + raw).get();    // fresh read — works for accounts never seen locally
+    if (seq !== dmResolveSeq) return null;           // user typed again meanwhile
+    if (!s.exists()){ err.textContent = '⚠ No account named @' + raw + '.'; return null; }
+    const acc = s.val() || {};
+    // v148: merge the fresh account into usersCache so the chat header and
+    // the recent-DM row render instantly (the live users/ listener syncs a
+    // beat later and would blank them for offline users)
+    if (!usersCache[raw]) usersCache[raw] = { display: acc.display || raw, color: (acc.color && HEX_RE.test(acc.color)) ? acc.color : null, avatar: acc.avatar || null };
+    const display = acc.display || raw;
+    const color = (acc.color && HEX_RE.test(acc.color)) ? acc.color : 'var(--blue)';
+    const p = presenceMap[raw] || {};
+    const on = p.lastSeen && (Date.now() - p.lastSeen) < 60000;
+    const isFriend = !!friendsMap[raw];
+    const incomingReq = !!friendReqMap[raw];              // v148: THEY already asked us
+    const outgoingReq = !!getOutgoingFriendReqs()[raw];   // v148: we already asked them
+    const pfp = acc.avatar || p.pfp || null;              // v148: users node stores the avatar as `avatar` (acc.pfp never existed — offline avatars never showed)
+    box.innerHTML = '<div class="dmr-card">' +
+        '<div class="dmr-avatar" style="background:rgba(96,200,255,.12);color:' + color + '">' + (pfp ? '<img src="' + esc(pfp) + '" alt=""/>' : esc((display[0] || '?').toUpperCase())) + '</div>' +
+        '<div style="min-width:0;flex:1">' +
+          '<div class="dmr-name">' + esc(display) + '</div>' +
+          '<div class="dmr-handle">@' + esc(raw) + '</div>' +
+        '</div>' +
+        '<span class="dmr-status" style="font-family:\'Roboto Mono\',monospace;font-size:.58rem;flex-shrink:0' + (on ? ';color:#56f0a0' : '') + '">' + (on ? 'online' : 'offline') + (isFriend ? ' · friend' : (incomingReq ? ' · wants to add you' : (outgoingReq ? ' · requested' : ''))) + '</span>' +
+      '</div>';
+    box.style.display = 'block';
+    dmResolvedUser = raw;
+    document.getElementById('dmOpenBtn').disabled = false;
+    if (!isFriend){
+      const fb = document.getElementById('dmFriendBtn');
+      fb.style.display = 'inline-block';
+      if (incomingReq){
+        fb.disabled = false; fb.textContent = '✓ Accept'; fb.onclick = respondFromDmModal;   // v148
+      } else if (outgoingReq){
+        fb.disabled = true;  fb.textContent = '✓ Requested';                                 // v148 — no silent duplicate sends
+      } else {
+        fb.disabled = false; fb.textContent = '＋ Friend'; fb.onclick = sendFriendRequestFromModal;
+      }
+    }
+    return raw;
+  }catch(e){ if (seq === dmResolveSeq) err.textContent = '⚠ ' + e.message; return null; }
+}
+async function openDmFromModal(){
+  let u = dmResolvedUser;
+  if (!u) u = await resolveDmUser();   // v148: Enter before the debounce fired → resolve now and open in the SAME press
+  if (!u) return;
+  closeDmModal();
+  openDm(u);
+}
+async function sendFriendRequestFromModal(){
+  let u = dmResolvedUser;
+  if (!u) u = await resolveDmUser();   // v148: same one-press flow
+  if (!u) return;
+  closeDmModal();
+  sendFriendRequest(u);
+}
+async function respondFromDmModal(){   // v148: they already asked us — accept without hunting for the request row
+  let u = dmResolvedUser;
+  if (!u) u = await resolveDmUser();
+  if (!u) return;
+  closeDmModal();
+  respondRequest(u, true);
+}
+// v147: remember DM targets who aren't friends yet, so those DMs stay
+// reachable from the sidebar after a reload (friends render from the DB).
+function touchRecentDm(user){
+  try{
+    const k = 'dmrec_' + myUsername;
+    const rec = JSON.parse(localStorage.getItem(k) || '{}');
+    rec[user] = Date.now();
+    const trimmed = Object.entries(rec).sort((a,b) => b[1] - a[1]).slice(0, 8);
+    localStorage.setItem(k, JSON.stringify(Object.fromEntries(trimmed)));
+  }catch(e){}
+}
+function getRecentDms(){
+  try{ return JSON.parse(localStorage.getItem('dmrec_' + myUsername) || '{}'); }
+  catch(e){ return {}; }
+}
+// v148: outgoing friend requests are remembered per account (max 32) so the
+// modal shows "✓ Requested" instead of offering another silent duplicate —
+// a request that appears to do nothing reads as "adding friends is broken".
+function getOutgoingFriendReqs(){
+  try{ return JSON.parse(localStorage.getItem('frout_' + myUsername) || '{}'); }
+  catch(e){ return {}; }
+}
+function markOutgoingFriendReq(to){
+  try{
+    const k = 'frout_' + myUsername;
+    const m = getOutgoingFriendReqs();
+    m[to] = Date.now();
+    const trimmed = Object.entries(m).sort((a,b) => b[1] - a[1]).slice(0, 32);
+    localStorage.setItem(k, JSON.stringify(Object.fromEntries(trimmed)));
+  }catch(e){}
+}
+function clearOutgoingFriendReq(to){
+  try{
+    const k = 'frout_' + myUsername;
+    const m = getOutgoingFriendReqs();
+    if (to in m){ delete m[to]; localStorage.setItem(k, JSON.stringify(m)); }
+  }catch(e){}
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3601,11 +3954,35 @@ window.addEventListener('DOMContentLoaded', () => {
     if (val) localStorage.setItem(key, val); else localStorage.removeItem(key);
   });
   inp.addEventListener('paste', e => {
-    const items = e.clipboardData && e.clipboardData.items;
-    if (!items) return;
-    for (const item of items){
-      if (item.type && item.type.startsWith('image/')){ e.preventDefault(); stagePendingFile(item.getAsFile()); break; }
+    // v146: real clipboard support — screenshots, copied files, any file kind.
+    // Text-only pastes fall through untouched.
+    const cd = e.clipboardData; if (!cd) return;
+    let file = null;
+    if (cd.files && cd.files.length){
+      file = cd.files[0];
+    } else if (cd.items){
+      for (const item of cd.items){
+        if (item.kind === 'file'){
+          const f = item.getAsFile();          // v146: null-guarded (old code crashed on null)
+          if (f){ file = f; break; }
+        }
+      }
     }
+    if (file){
+      e.preventDefault();                     // keep the blob out of the text input
+      stagePendingFile(file);
+    }
+  });
+  // v146: drag & drop a file anywhere on the window — stages it instead of the
+  // browser navigating away and losing the whole chat session
+  document.addEventListener('dragover', e => {
+    if (e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files')) e.preventDefault();
+  });
+  document.addEventListener('drop', e => {
+    if (!e.dataTransfer || !Array.from(e.dataTransfer.types || []).includes('Files')) return;
+    e.preventDefault();
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) stagePendingFile(f);
   });
   window.addEventListener('beforeunload', () => { saveDraft(); });
   window.addEventListener('resize', autoGrowMsgInput);
@@ -3645,7 +4022,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('regPass2').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
   document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
 
-  ['srv-modal','gif-modal','settings-modal','srv-join-modal','contact-modal','quick-modal','invite-modal','confirm-modal','link-modal'].forEach(id => {
+  ['srv-modal','gif-modal','settings-modal','srv-join-modal','contact-modal','quick-modal','invite-modal','confirm-modal','link-modal','dm-modal'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('click', e => { if (e.target === el) el.classList.remove('show'); });
   });

@@ -4,11 +4,11 @@ This document describes the security posture of the Relay chat app (single-file 
 
 | | |
 |---|---|
-| **Current release** | `relay-v145.html` |
+| **Current release** | `relay-v147.html` |
 | **Firebase project** | `relay-87573` |
 | **Repository** | [github.com/NeoCreator07/Relay-Messaging](https://github.com/NeoCreator07/Relay-Messaging) |
 | **Owner** | NeoCreator07 (TerminalVelocity) |
-| **Policy last updated** | 2026-10-23 |
+| **Policy last updated** | 2026-11-05 |
 
 ---
 
@@ -16,7 +16,9 @@ This document describes the security posture of the Relay chat app (single-file 
 
 | Version | Status |
 |---|---|
-| `relay-v145.html` | ✅ **Current release — supported** |
+| `relay-v147.html` | ✅ **Current release — supported** |
+| `relay-v146.html` | ⚠️ Legacy, kept for rollback only |
+| `relay-v145.html` | ⚠️ Legacy, kept for rollback only |
 | `relay-v144.html` | ⚠️ Legacy, kept for rollback only |
 | `relay-v143.html` | ⚠️ Legacy, kept for rollback only |
 | Older "old relay" builds | ❌ Do not use — contained a dead Firebase project config, no auth sign-in before DB calls, two conflicting AES keys, and a hardcoded master admin password, all since removed |
@@ -56,6 +58,12 @@ Relay is a **client-only application**: there is no server-side code of our own,
 
 Within that model the app is a **walled garden, not a fortress**: it is well-suited to a semi-open community chat, and it is *not* suited to storing secrets that must be kept from other users of the same system.
 
+### How Relay is tested — and why the test harness can write to the database
+
+Every release is verified against the **live** database before delivery: an automated harness registers throwaway accounts (`zz…` usernames), drives the real UI (register → login → clicks), exercises the feature under test, and then **deletes exactly the records it created** — the test accounts, their presence, friend/request nodes, servers and test DM channels. Watching test data appear and vanish is *not* evidence of secret admin access: the harness signs in anonymously like any other visitor and holds exactly the read/write power the rules grant *every* visitor (see the trust model above). It cannot change the security rules, touch the Firebase console, or delete the project itself — only the data nodes the rules leave open.
+
+If that power concerns you, it should — the attack scenarios below describe what any anonymous visitor can do with the same access. The harness scripts are kept alongside the project so every write and the exact cleanup list are auditable line by line.
+
 ## Attack surface inventory
 
 Every service the shipped file talks to, and why:
@@ -64,7 +72,7 @@ Every service the shipped file talks to, and why:
 |---|---|---|
 | Firebase Auth (anonymous) | Sign-in before any DB call | Authenticated ≠ trusted — anyone can be anonymous |
 | Firebase Realtime Database | Users, servers, messages, DMs, friends, presence, config | Governed by `firebase-database-rules.json` |
-| Firebase Cloud Storage *(optional)* | File attachments only | Governed by `firebase-storage-rules.rules`; disabled apps degrade gracefully |
+| Firebase Cloud Storage *(optional — only for attachments > 4 MB)* | Large file attachments | Governed by `firebase-storage-rules.rules`; the app degrades gracefully — smaller files route through the Realtime Database instead |
 | Giphy API (`api.giphy.com`) | GIF picker | Key shipped in the file (see *Attack scenarios* #6) |
 | noembed.com (JSONP) | Link embeds | Script injection by design — fixed reputable endpoint |
 | microlink.io | Embed fallback when noembed fails | Best-effort, cached per URL |
@@ -85,13 +93,14 @@ Every service the shipped file talks to, and why:
 - **Default deny:** top-level `.read` / `.write` are `false`; every node must be explicitly allowed.
 - **Every node requires `auth != null`** (`users`, `servers`, `serverInvites`, `messages`, `presence`, `typing`, `friends`, `friendRequests`).
 - **`config` is read-only to clients** (`.write: false` at the node and at `config/banned` / `config/giphyKey`) — admin lists, the ban list and the Giphy key cannot be tampered with by app users.
+- **Per-node `.validate` schema (v148, hardened rules):** every writable field is now type- and size-checked server-side — message shape (`u` ≤ 40 chars, numeric `t` in a 2020–2100 window, `type` allow-list, `text` ≤ 4 000 chars), `url` must be an `https://`/`http://`/`data:` string of ≤ 5.7 M chars (bounds the base64 attachment route at ~4.3 MB — just above the client's own 4 MB cap), avatars ≤ 400 k chars, `fileSize` ≤ 25 MB, boolean-only flags (`muted`, `online`, `enc`, `edited`), `true`-only map leaves (`members`, `ips`, reactions), hex-64 `pw`/`codeHash`, hex `color`, timestamp windows on `createdAt`/`lastLogin`/`lastSeen`/`ts`, and friend/request edges must be timestamps. A machine cross-check (scripts/v148_rules_check.js) verified every read path and all 40 write call-sites in `relay-v148.html` against these rules with the app's real payloads, plus 12 adversarial payloads that must be rejected. The pre-hardening rules are kept as `firebase-database-rules-v1-permissive.json` for rollback.
 
 ### Cloud Storage rules (`firebase-storage-rules.rules`)
 
 - Reads and writes require `auth != null`.
 - **Uploads capped at 25 MB** (`request.resource.size < 25 * 1024 * 1024`) — the previous 1 GB allowance was a bill-run-up vector for anonymous visitors.
 - **Content-type allow-list:** only images, video, audio, text, PDF, JSON, and common archive/office/Apple document types are accepted.
-- The app mirrors the cap client-side (`MAX_FILE = 25 MB`) and shows a friendly "Upload failed" message if Storage is disabled entirely — the app degrades gracefully on the free Spark plan.
+- The app mirrors the cap client-side (`MAX_FILE = 25 MB`), cancels stalled uploads after ~35 s (no Storage access no longer hangs the send button), and routes files ≤ 4 MB through the Realtime Database as base64 instead — so the app works fully on the free Spark plan.
 
 ### XSS surface
 
@@ -120,7 +129,7 @@ Messages are encrypted with **AES-256-GCM** (PBKDF2, 100k iterations). However, 
 
 ## Attack scenarios the current rules permit
 
-These are verified against the shipped `relay-v145.html` and the delivered rules files. They are **accepted risks of the current design**, not unknown bugs — documented so nobody mistakes politeness of the client for a guarantee. All of them require nothing more than anonymous auth, i.e. *any visitor*.
+These are verified against the shipped clients (`relay-v145.html` through `relay-v148.html`) and the delivered rules files. They are **accepted risks of the current design**, not unknown bugs — documented so nobody mistakes politeness of the client for a guarantee. All of them require nothing more than anonymous auth, i.e. *any visitor*. (The v148 hardened rules bound the *size and shape* of what can be written — scenarios 1–6 below still need identity binding, which is roadmap item 3.)
 
 1. **Full account takeover by overwrite.** `users/.write = auth != null` means any visitor can simply overwrite `users/{victim}` — setting their own `pw` + `salt` (then logging in with a chosen password), or replacing the `sessToken`. The client only ever writes the logged-in user's own record, but the rules do not enforce that.
 2. **Account takeover via `sessToken` theft.** `users/.read = auth != null` exposes every account's `sessToken`; auto-login only compares the `localStorage` token with the DB value. An attacker who reads a victim's token and sets `relay_session = {u: victim, t: token}` in their own browser is logged in as the victim — no password needed.
@@ -128,6 +137,7 @@ These are verified against the shipped `relay-v145.html` and the delivered rules
 4. **Message forgery and destructive writes.** `messages/.write` and `servers/.write` are `auth != null`, so a custom client can post messages under any username (`u` is client-chosen), edit or delete *anyone's* messages, and mute or delete *any* server. The in-app edit/delete guards apply only to the real client.
 5. **Uniqueness race + bypass.** Two clients registering the same name in the same moment can both pass the live-check; and a custom client skips the checks entirely. Uniqueness is UX-level, not enforced by the database.
 6. **API-key exposure.** The Giphy key is readable two ways: hardcoded in the file (as a fallback) and via `config/giphyKey` (readable by any authenticated visitor). A third party could extract and use it for their own requests against Giphy's rate limits.
+7. **DB-routed attachment quota abuse (v146, bounded in v148).** Files ≤ 4 MB travel as base64 data URLs inside `messages`. The v148 hardened rules now cap `url` at 5.7 M characters server-side and validate message shape, so a custom client can no longer push arbitrarily large strings or garbage shapes per message — the worst case per message is bounded at ~4.3 MB. What remains: **volume** abuse (many *valid* ~4 MB messages would still exhaust the Spark quotas, 1 GB stored / ~10 GB downloaded per month, and slow listeners in the affected room) — there is no server-side rate limiting; see the roadmap (App Check, item 5).
 
 ## Privacy considerations
 
@@ -139,11 +149,11 @@ These are verified against the shipped `relay-v145.html` and the delivered rules
 
 ## Known limitations (summary)
 
-1. `auth != null` = the whole internet — see the six concrete scenarios above.
+1. `auth != null` = the whole internet — see the seven concrete scenarios above.
 2. Client-side guards (cooldowns, spam windows, mute UX, validation) are bypassable.
 3. `sessToken` is a non-expiring bearer credential with no revocation flow.
 4. Link previews use JSONP and third-party iframes (noembed, YouTube) — convenience, not isolation.
-5. No App Check, no server-side rate limiting, no per-field `.validate` rules on message shape/size.
+5. No App Check and no server-side rate limiting — per-field `.validate` rules on message shape/size **shipped in v148** (see *Controls in place*), which bounds scenario #7 per-message but not per-volume.
 6. Anonymous Firebase accounts are free and unlimited, so the auth boundary itself cannot slow down a determined abuser.
 7. Two benign debug hooks remain in the shipped file: `__NOAUTO` (skips auto-opening the first server — test aid) and `__lastVantaCfg` (exposes the last Vanta config object). Neither writes to Firebase nor grants privileges.
 
@@ -159,7 +169,7 @@ Because anonymous auth means "anyone", the storage rules are deliberately strict
 
 Ordered roughly by impact-to-effort:
 
-1. **Per-node `.validate` rules** — validate message shape, string lengths, timestamp sanity and authorship (e.g. `newData.child('u').val()` bindings) so custom clients can't write garbage or forge authors.
+1. **Per-node `.validate` rules** — ✅ **shipped in v148** (`firebase-database-rules.json`, see *Controls in place*): message shape, string lengths (including the 5.7 M-char `url` cap that bounds base64 attachments), timestamp windows and boolean/map-leaf constraints are enforced server-side. Authorship bindings (`newData.child('u').val()` tied to the writer) are NOT included — they require the uid registry of item 3, since usernames are client-chosen strings today.
 2. **Atomic uniqueness registries** — add `usernames/{name} → uid`, `displayNames/{name} → uid`, `colors/{hex} → uid` nodes with `.validate: !data.exists()` (or multi-path transactions) so name/color collisions become impossible server-side.
 3. **Bind writes to the authenticated identity** — once records carry the Firebase `uid`, restrict `users/{name}` writes to `auth.uid === data.child('uid').val()`; this closes the overwrite-takeover (#1) and most forgery paths (#4).
 4. **Move `sessToken` (and the password hash) out of the world-readable `users` node** — e.g. a private `creds/{uid}` node with read denied; rotate/expire tokens and add revocation.

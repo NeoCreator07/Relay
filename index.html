@@ -8,11 +8,11 @@
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
 <meta name="theme-color" content="#4f1d96"/>
 <meta name="description" content="Relay: free text messaging"/>
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=2"/>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2"/>
-<link rel="shortcut icon" href="favicon.ico?v=2"/>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2"/>
-<link rel="manifest" href="manifest.webmanifest?v=2"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=3"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=3"/>
+<link rel="shortcut icon" href="favicon.ico?v=3"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3"/>
+<link rel="manifest" href="manifest.webmanifest?v=3"/>
 <meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -1214,7 +1214,7 @@ const FB_CONFIG = {
   appId: "1:relay-87573:web:v143"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47"; // fallback if config/giphyKey unset
-const VERSION = '151';
+const VERSION = '153';
 const MAX_FILE = 25 * 1024 * 1024;             // 25 MB hard cap — must match the cap in firebase-storage-rules.rules (Storage route)
 const MAX_DB_FILE = 4 * 1024 * 1024;           // v146: files this small travel through the Realtime Database as
                                                // base64 data URLs — works on the FREE Spark plan with NO Firebase
@@ -1263,6 +1263,8 @@ const MSG_CHUNK = 800;                       // v149: per-message cap (was 500, 
 const MSG_INPUT_MAX = 4000;                  // v149: longer drafts are auto-split into ordered messages of <= MSG_CHUNK
 const INVITE_TTL = 7 * 24 * 3600 * 1000, INVITE_MAX_USES = 25;
 let loginFails = 0, loginLockUntil = 0;
+let dmIdx = {}; const dmIndexed = {};
+function mergedRecents(){ const m = Object.assign({}, getRecentDms()); Object.keys(dmIdx).forEach(k => { m[k] = Math.max(+dmIdx[k] || 0, m[k] || 0); }); return m; }
 // v151: per-user Firebase Auth. Usernames map to <name>@relay.invalid; the Firebase password is a salted hash of the real one
 // (so any length works). Old accounts upgrade on their next login: the legacy hash is checked once, then deleted.
 const AUTH_EMAIL = '@relay.invalid';
@@ -1826,7 +1828,10 @@ async function doLogin(){
     }
     const acc = (await db.ref('users/' + username).get()).val() || {};
     if (acc.uid && acc.uid !== user.uid){ await auth.signOut(); return fail('This account belongs to a different sign-in.'); }
-    if (!acc.uid) await claimAccount(user, username);
+    if (!acc.uid){   // Firebase account exists but was never bound (e.g. an upgrade interrupted by a rules error): prove the old password first
+      if (acc.pw && !(await verifyPw(password, acc.salt, acc.pw))){ await auth.signOut(); noteLoginFail(); return fail('Wrong password.'); }
+      await claimAccount(user, username, { pw: null, salt: null, sessToken: null, migratedAt: firebase.database.ServerValue.TIMESTAMP });
+    }
     loginFails = 0;
     myUsername = username; myDisplay = acc.display || username;
     myColor = HEX_RE.test(acc.color || '') ? acc.color : myColor; myPfp = acc.avatar || null;
@@ -1915,7 +1920,7 @@ function enterApp(inviteCode){
       }
     }
     debouncedPresenceRender();
-    if (currentDm) renderDmList();
+    renderDmList();   // v153: always redraw once the user cache arrives (recent DMs were hidden after a reload until a DM was open)
   });
 
   // servers
@@ -1936,6 +1941,7 @@ function enterApp(inviteCode){
   // friends + requests
   db.ref('friends/' + myUsername).on('value', s => { friendsMap = s.val() || {}; renderDmList(); });
   db.ref('friendRequests/' + myUsername).on('value', s => { friendReqMap = s.val() || {}; renderDmList(); });
+  db.ref('dmIndex/' + myUsername).on('value', s => { dmIdx = s.val() || {}; renderDmList(); }, () => {});   // v152: DM list lives in the database
 
   startPresence();
   if (activeVantaId && activeVantaId !== 'none') setTimeout(() => applyVanta(activeVantaId), 300);
@@ -3463,9 +3469,9 @@ function renderDmList(){
   // vanish from the sidebar, since the DM list only renders friends/requests.
   // Kept in localStorage per account, so they survive reloads.
   try{
-    const recents = Object.entries(getRecentDms())
-      .filter(([f]) => f && f !== 'null' && f !== myUsername && !friendsMap[f] && !friendReqMap[f] && usersCache[f])
-      .sort((a,b) => b[1] - a[1]).slice(0, 6);
+    const recents = Object.entries(mergedRecents())
+      .filter(([f]) => f && f !== 'null' && f !== myUsername && !friendsMap[f] && !friendReqMap[f] && (!Object.keys(usersCache).length || usersCache[f]))   // v153: don't hide a recent DM just because the cache hasn't loaded yet
+      .sort((a,b) => b[1] - a[1]).slice(0, 12);
     recents.forEach(([f, ts]) => {
       const u = usersCache[f] || {};
       const active = currentDm && currentDm.user === f;
@@ -3473,8 +3479,8 @@ function renderDmList(){
       const d = document.createElement('div');
       d.className = 'dm-item' + (active ? ' active' : '');
       d.title = 'Recent DM — not a friend yet';
-      d.innerHTML = (u.pfp
-          ? '<div class="dm-avatar"><img src="' + esc(u.pfp) + '" alt=""/></div>'
+      d.innerHTML = (u.avatar
+          ? '<div class="dm-avatar"><img src="' + esc(u.avatar) + '" alt=""/></div>'
           : '<div class="dm-avatar" style="color:' + color + '">' + esc(((u.display||f)[0]||'?').toUpperCase()) + '</div>') +
         '<span class="dm-name">' + esc(u.display || f) + '</span>' +
         '<span class="dm-preview">recent</span>';
@@ -3629,6 +3635,7 @@ function touchRecentDm(user){
     const k = 'dmrec_' + myUsername;
     const rec = JSON.parse(localStorage.getItem(k) || '{}');
     rec[user] = Date.now();
+    db.ref('dmIndex/' + myUsername + '/' + user).set(firebase.database.ServerValue.TIMESTAMP).catch(()=>{});
     const trimmed = Object.entries(rec).sort((a,b) => b[1] - a[1]).slice(0, 8);
     localStorage.setItem(k, JSON.stringify(Object.fromEntries(trimmed)));
   }catch(e){}
@@ -4335,7 +4342,14 @@ function syncChannel(){
   document.getElementById('voiceBtn').style.display = inSrv ? '' : 'none';
   document.getElementById('auditBtn').style.display = inSrv && myRank() >= 2 ? '' : 'none';
 }
-setInterval(() => { try{ syncChannel(); }catch(e){} }, 700);
+setInterval(() => { try{
+  syncChannel();
+  if (currentDm && !dmIndexed[currentDm.pair] && document.querySelector('#messages .msg.self')){
+    dmIndexed[currentDm.pair] = 1; const ts = firebase.database.ServerValue.TIMESTAMP;
+    db.ref('dmIndex/' + currentDm.user + '/' + myUsername).set(ts).catch(()=>{});
+    db.ref('dmIndex/' + myUsername + '/' + currentDm.user).set(ts).catch(()=>{});
+  }
+}catch(e){} }, 700);
 setInterval(() => { try{ paintReceipts(); }catch(e){} }, 8000);
 
 // accent presets

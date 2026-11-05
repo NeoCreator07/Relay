@@ -1214,7 +1214,7 @@ const FB_CONFIG = {
   appId: "1:relay-87573:web:v143"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47"; // fallback if config/giphyKey unset
-const VERSION = '153';
+const VERSION = '154';
 const MAX_FILE = 25 * 1024 * 1024;             // 25 MB hard cap — must match the cap in firebase-storage-rules.rules (Storage route)
 const MAX_DB_FILE = 4 * 1024 * 1024;           // v146: files this small travel through the Realtime Database as
                                                // base64 data URLs — works on the FREE Spark plan with NO Firebase
@@ -1263,6 +1263,8 @@ const MSG_CHUNK = 800;                       // v149: per-message cap (was 500, 
 const MSG_INPUT_MAX = 4000;                  // v149: longer drafts are auto-split into ordered messages of <= MSG_CHUNK
 const INVITE_TTL = 7 * 24 * 3600 * 1000, INVITE_MAX_USES = 25;
 let loginFails = 0, loginLockUntil = 0;
+// v154: 'null' was always hidden as a leftover-bug key, which also hid a real account named null. Only treat it as junk when no such account exists.
+const isJunkName = u => !u || (u === 'null' && !usersCache['null']);
 let dmIdx = {}; const dmIndexed = {};
 function mergedRecents(){ const m = Object.assign({}, getRecentDms()); Object.keys(dmIdx).forEach(k => { m[k] = Math.max(+dmIdx[k] || 0, m[k] || 0); }); return m; }
 // v151: per-user Firebase Auth. Usernames map to <name>@relay.invalid; the Firebase password is a salted hash of the real one
@@ -3345,7 +3347,7 @@ function renderMembers(){
   const count = document.getElementById('onlineCount');
   const now = Date.now();
   const statusColors = { online:'#56f0a0', away:'#f9c846', busy:'#ff6b6b', invisible:'#49536e' };
-  const entries = Object.entries(presenceMap).filter(([u,p]) => p && p.lastSeen && (now - p.lastSeen) < 60000 && (p.status||'online') !== 'invisible' && u !== 'null');
+  const entries = Object.entries(presenceMap).filter(([u,p]) => p && p.lastSeen && (now - p.lastSeen) < 60000 && (p.status||'online') !== 'invisible' && !isJunkName(u));
   count.textContent = entries.length;
   entries.sort((a,b)=>((a[1].name||a[0]).localeCompare(b[1].name||b[0])));
   list.innerHTML = '';
@@ -3448,7 +3450,7 @@ function renderDmList(){
   });
   // friends
   Object.keys(friendsMap).forEach(f => {
-    if (f === 'null' || !f) return;
+    if (isJunkName(f)) return;
     const u = usersCache[f] || {};
     const p = presenceMap[f] || {};
     const on = p.lastSeen && (now - p.lastSeen) < 60000;
@@ -3470,7 +3472,7 @@ function renderDmList(){
   // Kept in localStorage per account, so they survive reloads.
   try{
     const recents = Object.entries(mergedRecents())
-      .filter(([f]) => f && f !== 'null' && f !== myUsername && !friendsMap[f] && !friendReqMap[f] && (!Object.keys(usersCache).length || usersCache[f]))   // v153: don't hide a recent DM just because the cache hasn't loaded yet
+      .filter(([f]) => !isJunkName(f) && f !== myUsername && !friendsMap[f] && !friendReqMap[f] && (!Object.keys(usersCache).length || usersCache[f]))   // v153: don't hide a recent DM just because the cache hasn't loaded yet
       .sort((a,b) => b[1] - a[1]).slice(0, 12);
     recents.forEach(([f, ts]) => {
       const u = usersCache[f] || {};
@@ -3845,7 +3847,7 @@ function handleMentionInput(val, cursor){
   mentionQuery = match[1].toLowerCase();
   mentionStart = before.lastIndexOf('@');
   const pool = {};
-  Object.keys(presenceMap).forEach(u => { if (u !== 'null' && u !== myUsername) pool[u] = presenceMap[u]; });
+  Object.keys(presenceMap).forEach(u => { if (!isJunkName(u) && u !== myUsername) pool[u] = presenceMap[u]; });
   Object.keys(friendsMap).forEach(u => { if (u !== myUsername) pool[u] = pool[u] || {}; });
   mentionMatches = Object.entries(pool)
     .map(([u,p]) => ({ u, name: p.name || (usersCache[u] && usersCache[u].display) || u }))

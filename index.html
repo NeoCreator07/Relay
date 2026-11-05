@@ -4,6 +4,16 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Relay</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.googleapis.com https://api.giphy.com https://noembed.com https://api.microlink.io https://api.ipify.org; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com https://open.spotify.com https://w.soundcloud.com https://*.firebaseapp.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"/>
+<meta name="referrer" content="strict-origin-when-cross-origin"/>
+<meta name="theme-color" content="#4f1d96"/>
+<meta name="description" content="Relay: free text messaging"/>
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=2"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2"/>
+<link rel="shortcut icon" href="favicon.ico?v=2"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2"/>
+<link rel="manifest" href="manifest.webmanifest?v=2"/>
+<meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
@@ -587,6 +597,30 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
   .reaction-add-btn{display:inline-flex!important;opacity:.7}
 }
 </style>
+<style>
+/* v149 additions */
+.msg-quote{border-left:3px solid var(--accent);margin:.15rem 0;padding:.1rem .65rem;opacity:.92}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.msg:focus-visible{outline-offset:-2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+#emoji-pop{position:fixed;left:12px;bottom:78px;z-index:60;width:min(320px,calc(100vw - 24px));max-height:280px;overflow:auto;padding:.5rem;border-radius:12px;background:#1b1f2e;color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 40px rgba(0,0,0,.5);display:none}
+#emoji-pop.show{display:block}
+#emoji-pop .ep-h{font-size:.68rem;opacity:.6;margin:.35rem .3rem .15rem}
+#emoji-pop .ep-g{display:flex;flex-wrap:wrap}
+#emoji-pop button{width:34px;height:34px;border:0;background:none;border-radius:8px;font-size:1.2rem;cursor:pointer}
+#emoji-pop button:hover,#emoji-pop button:focus-visible{background:rgba(255,255,255,.1)}
+</style>
+<style>
+.msg-mod{position:absolute;right:.6rem;top:-.55rem;display:none;gap:.2rem}.msg:hover .msg-mod,.msg:focus-within .msg-mod{display:flex}
+.v150-btn{border:1px solid var(--border2);background:var(--card);color:var(--text);border-radius:8px;padding:.1rem .35rem;font-size:.75rem;cursor:pointer}
+.msg-status{align-self:flex-end;font-size:.65rem;opacity:.7;margin-left:.3rem;white-space:nowrap}.msg-status.read{color:var(--accent);opacity:1}
+#pin-bar{display:none;align-items:center;gap:.6rem;padding:.35rem .9rem;border-bottom:1px solid var(--border);background:var(--accent-dim);font-size:.78rem;cursor:pointer}
+#pin-bar .pb-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#voice-panel{position:fixed;left:12px;bottom:84px;z-index:55;width:min(260px,calc(100vw - 24px));padding:.6rem;border-radius:12px;background:var(--card);color:var(--text);border:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,.4);display:none;font-size:.8rem}
+#voice-panel.show{display:block}.vp-row{display:flex;align-items:center;gap:.4rem;padding:.15rem 0}.vp-dot{width:8px;height:8px;border-radius:50%;background:#49536e}.vp-dot.on{background:#56f0a0}
+#voiceBtn.live{color:#56f0a0}.acc-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;padding:0}
+</style>
 </head>
 
 <body>
@@ -599,9 +633,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <svg width="42" height="42" viewBox="0 0 48 48" fill="none">
           <defs>
             <linearGradient id="plane-grad-splash" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f9c846"/>
-              <stop offset="50%" stopColor="#d97cf5"/>
-              <stop offset="100%" stopColor="#7c3aed"/>
+              <stop offset="0%" stop-color="#f9c846"/>
+              <stop offset="50%" stop-color="#d97cf5"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
             </linearGradient>
           </defs>
           <path d="M6 10L42 24L6 38L12 24L6 10Z" fill="url(#plane-grad-splash)" opacity=".9"/>
@@ -626,9 +660,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
     <div class="brand">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0">
         <rect width="28" height="28" rx="8" fill="url(#plane-grad-login)"/>
-        <defs><linearGradient id="plane-grad-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#7c3aed"/><stop offset="100%" stopColor="#4f1d96"/></linearGradient></defs>
+        <defs><linearGradient id="plane-grad-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4f1d96"/></linearGradient></defs>
         <path d="M4 7L24 14L4 21L8 14L4 7Z" fill="url(#plane-grad-icon-login)"/>
-        <defs><linearGradient id="plane-grad-icon-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f9c846"/><stop offset="60%" stopColor="#d97cf5"/><stop offset="100%" stopColor="#c4b5fd"/></linearGradient></defs>
+        <defs><linearGradient id="plane-grad-icon-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f9c846"/><stop offset="60%" stop-color="#d97cf5"/><stop offset="100%" stop-color="#c4b5fd"/></linearGradient></defs>
         <path d="M8 14L13 12.5L14 18Z" fill="rgba(255,255,255,0.3)"/>
       </svg>
       <span style="font-family:'Roboto',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);letter-spacing:-.01em">Relay</span>
@@ -700,9 +734,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <div class="sb-brand" id="relayLogoBtn" title="Relay">
           <svg width="22" height="22" viewBox="0 0 28 28" fill="none" style="flex-shrink:0">
             <rect width="28" height="28" rx="7" fill="url(#plane-grad-sb)"/>
-            <defs><linearGradient id="plane-grad-sb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#7c3aed"/><stop offset="100%" stopColor="#4f1d96"/></linearGradient></defs>
+            <defs><linearGradient id="plane-grad-sb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4f1d96"/></linearGradient></defs>
             <path d="M4 7L24 14L4 21L8 14L4 7Z" fill="url(#plane-grad-sb-icon)"/>
-            <defs><linearGradient id="plane-grad-sb-icon" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f9c846"/><stop offset="60%" stopColor="#d97cf5"/><stop offset="100%" stopColor="#c4b5fd"/></linearGradient></defs>
+            <defs><linearGradient id="plane-grad-sb-icon" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f9c846"/><stop offset="60%" stop-color="#d97cf5"/><stop offset="100%" stop-color="#c4b5fd"/></linearGradient></defs>
             <path d="M8 14L13 12.5L14 18Z" fill="rgba(255,255,255,0.3)"/>
           </svg>
           <span style="font-family:'Roboto',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);letter-spacing:-.01em">Relay</span>
@@ -805,12 +839,14 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <button class="chat-icon-btn" id="muteBtn" onclick="toggleServerMute()" title="Lock/unlock chat (owner)" style="display:none">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       </button>
+      <button class="chat-icon-btn" id="voiceBtn" onclick="toggleVoice()" title="Join voice" aria-label="Join voice" style="display:none">🎙</button>
+      <button class="chat-icon-btn" id="auditBtn" onclick="openAudit()" title="Audit log" aria-label="Audit log" style="display:none">📜</button>
       <button class="chat-icon-btn danger" id="clearChatBtn" onclick="askClearRoom()" title="Clear this room's history (owner)" style="display:none">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
       </button>
     </div>
     <div class="readonly-bar" id="readonlyBar">🔇 The owner locked chat in this server — you can read but not post.</div>
-    <div class="status-bar" id="statusBar"><span>●</span><span id="statusMsg">Reconnecting…</span></div>
+    <div class="status-bar" id="statusBar" role="status" aria-live="polite"><span>●</span><span id="statusMsg">Reconnecting…</span></div>
     <div id="search-bar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--dim);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="search-input" placeholder="Search messages…" oninput="searchMessages(this.value)"/>
@@ -819,7 +855,8 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <button class="search-nav" onclick="navigateSearch(1)" title="Next">↓</button>
       <button class="search-nav" onclick="closeSearch()" title="Close">✕</button>
     </div>
-    <div id="messages" onscroll="handleMsgScroll()">
+    <div id="pin-bar" role="region" aria-label="Pinned messages"></div>
+    <div id="messages" role="log" aria-live="polite" aria-relevant="additions" aria-label="Messages" onscroll="handleMsgScroll()">
       <div class="empty" id="emptyState"><div class="empty-icon">💬</div><div class="empty-text">Pick a room to start chatting</div></div>
     </div>
     <button id="scroll-btn" onclick="scrollToBottom()" title="Scroll to bottom">
@@ -827,7 +864,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <span class="scroll-badge" id="scrollBadge">0</span>
     </button>
     <div id="mention-dropdown"></div>
-    <div id="typing-bar">
+    <div id="typing-bar" role="status" aria-live="polite">
       <div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
       <span class="typing-text" id="typingText"></span>
     </div>
@@ -857,11 +894,12 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <button class="reply-bar-close" onclick="clearReply()" title="Cancel reply">✕</button>
       </div>
       <div class="in-row">
-        <button class="action-btn" id="fileBtn" onclick="document.getElementById('fileInput').click()" disabled title="Send file or image — paste or drag it in too (images auto-compress)">＋</button>
-        <button class="action-btn" id="gifBtn" onclick="openGifModal()" disabled title="Send a GIF">GIF</button>
-        <textarea id="msgInput" rows="1" placeholder="Message…" maxlength="500" autocomplete="off" disabled></textarea>
+        <button class="action-btn" id="fileBtn" aria-label="Attach file" onclick="document.getElementById('fileInput').click()" disabled title="Send file or image — paste or drag it in too (images auto-compress)">＋</button>
+        <button class="action-btn" id="gifBtn" onclick="openGifModal()" disabled title="Send a GIF" aria-label="Send a GIF">GIF</button>
+        <button class="action-btn" id="emojiBtn" type="button" onclick="toggleEmojiPicker()" title="Emoji" aria-label="Add emoji">😀</button>
+        <textarea id="msgInput" rows="1" placeholder="Message…" maxlength="4000" aria-label="Message" autocomplete="off" disabled></textarea>
         <span id="char-counter"></span>
-        <button class="send-btn" onclick="sendMsg()" id="sendBtn" disabled>↑</button>
+        <button class="send-btn" onclick="sendMsg()" id="sendBtn" aria-label="Send message" disabled>↑</button>
       </div>
     </footer>
   </div>
@@ -1006,6 +1044,8 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <div class="toggle-thumb"></div>
       </label>
     </div>
+    <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:.5rem"><div class="setting-label">Accent color</div><div id="accent-row" style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"></div></div>
+    <div class="setting-row"><div><div class="setting-label">Read receipts</div><div class="setting-sub">Let people in DMs see when you have read their messages</div></div><label class="toggle"><input type="checkbox" id="rrToggle" onchange="localStorage.setItem('lc_receipts', this.checked ? '1' : '0')"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
     <div class="setting-row">
       <div>
         <div class="setting-label">Message sounds</div>
@@ -1045,7 +1085,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <svg width="34" height="34" viewBox="0 0 28 28" fill="none">
         <path d="M4 7L24 14L4 21L8 14L4 7Z" fill="url(#plane-grad-contact)"/>
         <defs><linearGradient id="plane-grad-contact" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#f9c846"/><stop offset="60%" stopColor="#d97cf5"/><stop offset="100%" stopColor="#c4b5fd"/>
+          <stop offset="0%" stop-color="#f9c846"/><stop offset="60%" stop-color="#d97cf5"/><stop offset="100%" stop-color="#c4b5fd"/>
         </linearGradient></defs>
         <path d="M8 14L13 12.5L14 18Z" fill="rgba(255,255,255,0.35)"/>
       </svg>
@@ -1174,7 +1214,7 @@ const FB_CONFIG = {
   appId: "1:relay-87573:web:v143"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47"; // fallback if config/giphyKey unset
-const VERSION = '148';
+const VERSION = '151';
 const MAX_FILE = 25 * 1024 * 1024;             // 25 MB hard cap — must match the cap in firebase-storage-rules.rules (Storage route)
 const MAX_DB_FILE = 4 * 1024 * 1024;           // v146: files this small travel through the Realtime Database as
                                                // base64 data URLs — works on the FREE Spark plan with NO Firebase
@@ -1217,8 +1257,60 @@ function slugify(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').re
 function debounce(fn,ms){let t=null;return function(){clearTimeout(t);const a=arguments,c=this;t=setTimeout(()=>fn.apply(c,a),ms);};}
 function fmt(ts){if(!ts)return'';const d=new Date(ts);let h=d.getHours(),m=d.getMinutes();const ampm=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ampm;}
 function fmtSize(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';return(b/1048576).toFixed(1)+'MB';}
-function randToken(n){const c='abcdefghijklmnopqrstuvwxyz0123456789';let s='';for(let i=0;i<n;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
+function randToken(n){const c='abcdefghijklmnopqrstuvwxyz0123456789',r=crypto.getRandomValues(new Uint32Array(n));let s='';for(let i=0;i<n;i++)s+=c[r[i]%c.length];return s;}   // v149: CSPRNG (was Math.random, used for session tokens + invite codes)
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
+const MSG_CHUNK = 800;                       // v149: per-message cap (was 500, +300)
+const MSG_INPUT_MAX = 4000;                  // v149: longer drafts are auto-split into ordered messages of <= MSG_CHUNK
+const INVITE_TTL = 7 * 24 * 3600 * 1000, INVITE_MAX_USES = 25;
+let loginFails = 0, loginLockUntil = 0;
+// v151: per-user Firebase Auth. Usernames map to <name>@relay.invalid; the Firebase password is a salted hash of the real one
+// (so any length works). Old accounts upgrade on their next login: the legacy hash is checked once, then deleted.
+const AUTH_EMAIL = '@relay.invalid';
+async function fbCreds(u, pw){ return { email: u + AUTH_EMAIL, pass: 'r1:' + await sha256('relay-auth:' + u + ':' + pw) }; }
+function authReady(){ return new Promise(res => { const un = firebase.auth().onAuthStateChanged(x => { un(); res(x); }); }); }
+async function claimAccount(user, name, extra){
+  await db.ref('uidMap/' + user.uid).set(name);                        // uid -> username (the database rules key off this)
+  await db.ref('users/' + name).update(Object.assign({ uid: user.uid }, extra || {}));
+}
+function noteLoginFail(){ loginFails++; if (loginFails >= 5) loginLockUntil = Date.now() + Math.min(300000, 15000 * 2 ** (loginFails - 5)); }
+const _rl = {};
+function rateOk(k, ms){ const n = Date.now(); if (_rl[k] && n - _rl[k] < ms) return false; _rl[k] = n; return true; }
+// Only https: (http is upgraded) and inert data: payloads may reach src/href. Blocks javascript:, data:text/html, svg, relative paths.
+function safeUrl(u, allowData){
+  u = String(u == null ? '' : u).trim();
+  if (/^https:\/\//i.test(u)) return u;
+  if (/^http:\/\//i.test(u)) return 'https://' + u.slice(7);
+  if (allowData && /^data:[a-z0-9.+\/-]+;base64,/i.test(u) && !/^data:(text\/html|image\/svg|application\/xhtml)/i.test(u)) return u;
+  return '';
+}
+function chunkText(str, n){
+  const out = []; str = str.trim();
+  while (str.length > n){
+    let cut = Math.max(str.lastIndexOf('\n', n), str.lastIndexOf(' ', n));
+    if (cut < n * 0.5) cut = n;
+    const c = str.charCodeAt(cut - 1); if (c >= 0xD800 && c <= 0xDBFF) cut--;
+    out.push(str.slice(0, cut).trim()); str = str.slice(cut).trim();
+  }
+  if (str) out.push(str);
+  return out;
+}
+function inviteLive(inv){
+  const exp = inv.expiresAt || (inv.createdAt ? inv.createdAt + INVITE_TTL : 0);
+  return !(exp && Date.now() > exp) && !(inv.maxUses && (inv.uses || 0) >= inv.maxUses);
+}
+const EMBED_HOSTS = ['www.youtube-nocookie.com','www.youtube.com','player.vimeo.com','open.spotify.com','w.soundcloud.com'];
+function safeEmbedHtml(html){   // rebuild a single sandboxed iframe from an allow-listed host; never trust provider HTML
+  if (!html || !/<iframe/i.test(html)) return null;
+  const t = document.createElement('template'); t.innerHTML = html;
+  const f = t.content.querySelector('iframe'); if (!f) return null;
+  let u; try{ u = new URL(f.getAttribute('src') || '', 'https://x.invalid'); }catch(e){ return null; }
+  if (u.protocol !== 'https:' || !EMBED_HOSTS.includes(u.hostname)) return null;
+  const o = document.createElement('iframe');
+  o.src = u.href; o.width = '100%'; o.height = String(Math.min(480, parseInt(f.getAttribute('height'), 10) || 315));
+  o.setAttribute('allowfullscreen', ''); o.setAttribute('loading', 'lazy'); o.setAttribute('title', 'Embedded media');
+  o.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation allow-popups');
+  return o.outerHTML;
+}
 
 async function sha256(s){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
@@ -1545,7 +1637,7 @@ async function boot(){
     return;
   }
   try{
-    await firebase.auth().signInAnonymously();
+    const cu = await authReady(); if (!cu) await firebase.auth().signInAnonymously();
   }catch(e){
     console.warn('anon auth failed (continuing):', e.message);
     // If anonymous auth is disabled in the console, everything under
@@ -1558,10 +1650,16 @@ async function boot(){
   document.documentElement.setAttribute('data-theme', savedTheme);
   document.getElementById('themeToggle').checked = savedTheme === 'light';
 
-  db.ref('.info/connected').on('value', snap => {
-    const bar = document.getElementById('statusBar');
-    if (snap.val()){ bar.classList.remove('show'); broadcastPresence(); }
-    else { bar.classList.add('show'); document.getElementById('statusMsg').textContent = 'Reconnecting…'; }
+  db.ref('.info/connected').on('value', snap => {   // the Firebase SDK already retries with exponential backoff; this is the visual badge
+    const bar = document.getElementById('statusBar'), msg = document.getElementById('statusMsg');
+    if (snap.val()){
+      if (window.__wasOff){ msg.textContent = 'Back online'; setTimeout(() => bar.classList.remove('show'), 1500); } else bar.classList.remove('show');
+      window.__everConn = true; window.__wasOff = false; broadcastPresence();
+    } else {
+      if (window.__everConn) window.__wasOff = true;
+      bar.classList.add('show');
+      msg.textContent = navigator.onLine === false ? 'You’re offline. Messages send when you reconnect.' : 'Reconnecting…';
+    }
   });
 
   db.ref('config/giphyKey').get().then(s => { if (s.val()) giphyKey = s.val(); }).catch(()=>{});
@@ -1575,20 +1673,16 @@ async function boot(){
     if (inviteCode) history.replaceState(null, '', location.pathname);
   }catch(e){}
 
-  // 4. auto-login via session token
-  const sess = JSON.parse(localStorage.getItem('relay_session') || 'null');
+  // 4. resume the saved Firebase session (no database-stored tokens any more)
   dismissSplash();
-  if (sess && sess.u && sess.t){
+  localStorage.removeItem('relay_session');
+  const cu2 = firebase.auth().currentUser;
+  if (cu2 && !cu2.isAnonymous && /@relay\.invalid$/.test(cu2.email || '')){
     try{
-      const snap = await db.ref('users/' + sess.u).get();
-      const acc = snap.val();
-      if (acc && acc.sessToken === sess.t){
-        myUsername = sess.u;
-        myDisplay = acc.display || myUsername;
-        myColor = HEX_RE.test(acc.color||'') ? acc.color : myColor;
-        myPfp = acc.avatar || null;
-        enterApp(inviteCode);
-        return;
+      const name = cu2.email.split('@')[0], acc = (await db.ref('users/' + name).get()).val();
+      if (acc && acc.uid === cu2.uid){
+        myUsername = name; myDisplay = acc.display || name; myColor = HEX_RE.test(acc.color || '') ? acc.color : myColor; myPfp = acc.avatar || null;
+        enterApp(inviteCode); return;
       }
     }catch(e){ console.warn('session check failed', e.message); }
   }
@@ -1708,27 +1802,37 @@ function switchAuthTab(tab){
 }
 
 async function doLogin(){
-  if (window.__authDead){ document.getElementById('auth-err-login').textContent = '⚠ Server auth is misconfigured (enable Anonymous sign-in in Firebase Console).'; return; }
   const btn = document.getElementById('loginBtn'), err = document.getElementById('auth-err-login');
+  if (window.__authDead){ err.textContent = '⚠ Sign-in is unavailable. Enable Anonymous and Email/Password sign-in in the Firebase console.'; return; }
   const username = document.getElementById('loginUser').value.trim().toLowerCase();
   const password = document.getElementById('loginPass').value;
+  if (Date.now() < loginLockUntil){ err.textContent = '⚠ Too many attempts. Try again in ' + Math.ceil((loginLockUntil - Date.now()) / 1000) + 's.'; return; }
   if (!username || !password){ err.textContent = '⚠ Fill in all fields.'; return; }
   err.textContent = ''; btn.disabled = true; btn.textContent = 'Signing in…';
+  const fail = m => { err.textContent = '⚠ ' + m; resetBtn(btn, 'Sign In'); };
   try{
-    const snap = await db.ref('users/' + username).get();
-    if (!snap.exists()){ err.textContent = '⚠ Account not found. Create one?'; resetBtn(btn,'Sign In'); return; }
-    const acc = snap.val();
-    const ok = await verifyPw(password, acc.salt, acc.pw);
-    if (!ok){ err.textContent = '⚠ Wrong password.'; resetBtn(btn,'Sign In'); return; }
-    const token = randToken(36);
-    await db.ref('users/' + username).update({ sessToken: token, lastLogin: firebase.database.ServerValue.TIMESTAMP });
-    myUsername = username;
-    myDisplay = acc.display || username;
-    myColor = HEX_RE.test(acc.color||'') ? acc.color : myColor;
-    myPfp = acc.avatar || null;
-    localStorage.setItem('relay_session', JSON.stringify({ u: username, t: token }));
+    const { email, pass } = await fbCreds(username, password), auth = firebase.auth();
+    let user = null;
+    try{ user = (await auth.signInWithEmailAndPassword(email, pass)).user; }
+    catch(e){
+      if (!/user-not-found|invalid-credential|invalid-login|wrong-password/.test(e.code || '')) throw e;
+      const snap = await db.ref('users/' + username).get();
+      if (!snap.exists()) return fail('Account not found. Create one?');
+      const acc = snap.val();
+      if (acc.uid || !(await verifyPw(password, acc.salt, acc.pw))){ noteLoginFail(); return fail('Wrong password.'); }
+      try{ user = (await auth.createUserWithEmailAndPassword(email, pass)).user; }
+      catch(e2){ if (e2.code === 'auth/email-already-in-use') return fail('This account is stuck mid-upgrade. Ask an admin to reset it.'); throw e2; }
+      await claimAccount(user, username, { pw: null, salt: null, sessToken: null, migratedAt: firebase.database.ServerValue.TIMESTAMP });   // legacy hash is deleted here
+    }
+    const acc = (await db.ref('users/' + username).get()).val() || {};
+    if (acc.uid && acc.uid !== user.uid){ await auth.signOut(); return fail('This account belongs to a different sign-in.'); }
+    if (!acc.uid) await claimAccount(user, username);
+    loginFails = 0;
+    myUsername = username; myDisplay = acc.display || username;
+    myColor = HEX_RE.test(acc.color || '') ? acc.color : myColor; myPfp = acc.avatar || null;
+    db.ref('users/' + username + '/lastLogin').set(firebase.database.ServerValue.TIMESTAMP).catch(()=>{});
     enterApp();
-  }catch(e){ err.textContent = '⚠ ' + (e.message || 'failed'); resetBtn(btn,'Sign In'); }
+  }catch(e){ fail(e.message || 'Sign-in failed.'); }
 }
 function resetBtn(btn, label){ btn.disabled = false; btn.textContent = label; }
 
@@ -1753,27 +1857,26 @@ async function doRegister(){
     const dc = displayConflict(display, users, null);
     if (dc){ err.textContent = '⚠ That display name is already used by @' + dc + '. Choose another.'; resetBtn(btn,'Create Account'); return; }
     const startColor = pickUniqueColor(users);
-    const salt = randToken(8);
-    const pw = await hashPw(salt, password);
-    const token = randToken(36);
+    const { email, pass } = await fbCreds(username, password);
+    let user;
+    try{ user = (await firebase.auth().createUserWithEmailAndPassword(email, pass)).user; }
+    catch(e2){ if (e2.code === 'auth/email-already-in-use'){ err.textContent = '⚠ Username taken. Choose another.'; resetBtn(btn, 'Create Account'); return; } throw e2; }
+    await db.ref('uidMap/' + user.uid).set(username);
     await db.ref('users/' + username).set({
-      pw, salt, sessToken: token, display, color: startColor, avatar: null,
-      createdAt: firebase.database.ServerValue.TIMESTAMP,
-      lastLogin: firebase.database.ServerValue.TIMESTAMP,
-      ip: myIp || null, ips: myIp ? { [myIp.replace(/\./g,'_')]: true } : null
+      uid: user.uid, display, color: startColor, avatar: null,
+      createdAt: firebase.database.ServerValue.TIMESTAMP, lastLogin: firebase.database.ServerValue.TIMESTAMP,
+      ip: myIp || null, ips: myIp ? { [myIp.replace(/\./g, '_')]: true } : null
     });
     myUsername = username; myDisplay = display; myColor = startColor; myPfp = null;
     localStorage.setItem('lc_color', startColor);
-    localStorage.setItem('relay_session', JSON.stringify({ u: username, t: token }));
     enterApp();
   }catch(e){ err.textContent = '⚠ ' + (e.message || 'failed'); resetBtn(btn,'Create Account'); }
 }
 
 function logOut(){
   if (!confirm('Sign out of Relay?')) return;
-  try{ if (presenceRef) presenceRef.remove(); }catch(e){}
   localStorage.removeItem('relay_session');
-  location.reload();
+  Promise.resolve(presenceRef ? presenceRef.remove() : null).catch(()=>{}).then(() => firebase.auth().signOut()).catch(()=>{}).then(() => location.reload());
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1958,6 +2061,7 @@ function switchServer(id, skipPrompt){
 let pendingSrv = null;
 function closeSrvJoinModal(){ document.getElementById('srv-join-modal').classList.remove('show'); pendingSrv = null; }
 async function submitSrvJoinCode(){
+  if (!rateOk('srvjoin', 2000)){ sysMsg('⚠ Slow down — wait a moment.'); return; }
   const code = document.getElementById('srvJoinCodeInput').value.trim();
   const err = document.getElementById('srv-join-err');
   if (!code){ err.textContent = '⚠ Enter the code.'; return; }
@@ -2318,6 +2422,11 @@ function buildMsgNode(key, data){
   });
 
   wrap.append(time, nameEl, body, reactionBtn);
+  wrap.tabIndex = 0; wrap.setAttribute('role', 'article');
+  wrap.addEventListener('keydown', e => { if (e.target === wrap && e.key === 'Enter'){ const r = wrap.getBoundingClientRect(); wrap.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: r.left + 40, clientY: r.top + 20 })); } });
+  try{ v150Decorate(wrap, key, data); }catch(e){}
+  nameEl.tabIndex = 0; nameEl.setAttribute('role', 'button');
+  nameEl.onkeydown = e => { if (e.key === 'Enter'){ e.stopPropagation(); showUserCard(data.u, nameEl); } };
   return wrap;
 }
 
@@ -2360,9 +2469,9 @@ function buildMsgContent(body, data, key){
     if (urlMatch) renderEmbed(body, urlMatch[0]);
   } else if (type === 'image' || type === 'gif'){
     const img = document.createElement('img');
-    img.className = 'msg-img'; img.src = data.url; img.alt = data.fileName || ''; img.loading = 'lazy';
+    img.className = 'msg-img'; img.referrerPolicy = 'no-referrer'; const su = safeUrl(data.url, true); img.src = su; img.alt = data.fileName || ''; img.loading = 'lazy';
     if (data.w) img.style.maxWidth = Math.min(320, data.w) + 'px';
-    img.onclick = () => { document.getElementById('lightboxImg').src = data.url; document.getElementById('lightbox').classList.add('show'); };
+    img.onclick = () => { document.getElementById('lightboxImg').src = su; document.getElementById('lightbox').classList.add('show'); };
     body.insertBefore(img, body.querySelector('.msg-reactions'));
     if (data.text){
       const cap = document.createElement('span'); cap.className='msg-text'; cap.style.marginTop='.2rem';
@@ -2370,7 +2479,7 @@ function buildMsgContent(body, data, key){
     }
   } else if (type === 'file'){
     const a = document.createElement('a');
-    a.className = 'msg-file'; a.href = data.url; a.target = '_blank'; a.rel = 'noopener';
+    a.className = 'msg-file'; a.href = safeUrl(data.url, true) || '#'; a.target = '_blank'; a.rel = 'noopener';
     if (data.url && data.url.startsWith('data:')) a.setAttribute('download', data.fileName || 'file');  // v146: DB-sent files save with their real name
     const icon = document.createElement('span'); icon.className = 'msg-file-icon'; icon.textContent = '📎';
     const info = document.createElement('div'); info.className = 'msg-file-info';
@@ -2438,7 +2547,7 @@ function resolveLinkMeta(url, cb){
       card.desc = d.description || (d.author_name ? 'by ' + d.author_name : null);
       card.site = d.provider_name || card.site;
       card.image = d.thumbnail_url || card.image;
-      card.html = (d.html && /<iframe/i.test(d.html) && !/<script/i.test(d.html)) ? d.html : null;
+      card.html = safeEmbedHtml(d.html);
     }
     if (card.title || card.image || card.html){ finish(); return; }
     fetch('https://api.microlink.io/?url=' + encodeURIComponent(url) + '&palette=false').then(r=>r.json()).then(dd => {
@@ -2574,15 +2683,22 @@ async function sendMsg(){
   if (!raw) return;
   const spam = spamCheck(raw);
   if (spam){ sysMsg('⚠ ' + spam); return; }
+  const path = channelPath(), reply = replyingTo;
+  if (!path) return;
   inp.value = '';
   autoGrowMsgInput();
   localStorage.removeItem('draft_' + draftSuffix());
   markSent(raw);
-  const encrypted = await encryptMsg(raw);
-  const msg = { u: myUsername, t: firebase.database.ServerValue.TIMESTAMP, type:'text', text: encrypted || raw };
-  if (encrypted) msg.enc = true;
-  if (replyingTo){ msg.replyTo = { key: replyingTo.key, name: replyingTo.name, text: replyingTo.text }; clearReply(); }
-  db.ref(channelPath()).push(msg).catch(()=>{ sysMsg('⚠ Message failed.'); inp.value = raw; autoGrowMsgInput(); });
+  if (reply) clearReply();
+  const chunks = chunkText(raw, MSG_CHUNK);   // sent one after another so order is preserved
+  for (let i = 0; i < chunks.length; i++){
+    const encrypted = await encryptMsg(chunks[i]);
+    const msg = { u: myUsername, t: firebase.database.ServerValue.TIMESTAMP, type:'text', text: encrypted || chunks[i] };
+    if (encrypted) msg.enc = true;
+    if (i === 0 && reply) msg.replyTo = { key: reply.key, name: reply.name, text: reply.text };
+    try{ await db.ref(path).push(msg); }
+    catch(e){ sysMsg('⚠ Message failed.' + (i ? ' Part ' + (i + 1) + ' of ' + chunks.length + ' was not sent.' : '')); if (!i){ inp.value = raw; autoGrowMsgInput(); } return; }
+  }
 }
 function channelPath(){
   if (currentDm) return 'messages/_dm/' + currentDm.pair;
@@ -2759,29 +2875,37 @@ function searchGifs(query){
   const q = query || document.getElementById('gifSearch').value.trim();
   const grid = document.getElementById('gifGrid');
   if (!q) return;
+  const fail = why => { console.warn('GIF search failed:', why); grid.innerHTML = '<div class="gif-empty">GIFs are unavailable right now. Try again in a minute.</div>'; };
   grid.innerHTML = '<div class="gif-empty">Loading…</div>';
-  const ep = q === 'trending'
-    ? 'https://api.giphy.com/v1/gifs/trending?api_key=' + giphyKey + '&limit=18&rating=pg-13'
-    : 'https://api.giphy.com/v1/gifs/search?api_key=' + giphyKey + '&q=' + encodeURIComponent(q) + '&limit=18&rating=pg-13';
-  fetch(ep).then(r=>r.json()).then(data => {
-    grid.innerHTML = '';
-    if (!data.data || !data.data.length){ grid.innerHTML = '<div class="gif-empty">No results</div>'; return; }
-    data.data.forEach(gif => {
-      const preview = gif.images.fixed_height_small.url, full = gif.images.original.url;
-      const item = document.createElement('div'); item.className = 'gif-item';
-      const img = document.createElement('img'); img.src = preview; img.loading = 'lazy';
-      item.appendChild(img);
-      item.onclick = () => {
-        pendingGif = { url: full, title: gif.title || 'GIF', preview, w: gif.images.original.width, h: gif.images.original.height };
-        document.getElementById('gifBarThumb').src = preview;
-        document.getElementById('gifBarTitle').textContent = gif.title || 'GIF';
-        document.getElementById('gif-bar').classList.add('show');
-        closeGifModal();
-        document.getElementById('msgInput').focus();
-      };
-      grid.appendChild(item);
-    });
-  }).catch(()=>{ grid.innerHTML = '<div class="gif-empty">Failed to load</div>'; });
+  const base = 'https://api.giphy.com/v1/gifs/' + (q === 'trending' ? 'trending?' : 'search?q=' + encodeURIComponent(q) + '&');
+  fetch(base + 'api_key=' + encodeURIComponent(giphyKey) + '&limit=24&rating=pg-13&lang=en')
+    .then(r => r.json().then(d => ({ ok: r.ok, d })))
+    .then(({ ok, d }) => {
+      if (!ok || !d || !Array.isArray(d.data)) return fail((d && d.meta && d.meta.status) || 'bad response');   // 401/429 = key invalid or rate-limited
+      grid.innerHTML = '';
+      if (!d.data.length){ grid.innerHTML = '<div class="gif-empty">No results</div>'; return; }
+      d.data.forEach(gif => {
+        const im = gif.images || {}, pv = im.fixed_height_small || im.fixed_height || im.original, full = im.downsized_medium || im.original;
+        const preview = pv && safeUrl(pv.url), url = full && safeUrl(full.url);   // always https://
+        if (!preview || !url) return;
+        const item = document.createElement('div'); item.className = 'gif-item'; item.tabIndex = 0;
+        item.setAttribute('role', 'button'); item.setAttribute('aria-label', gif.title || 'GIF');
+        const img = document.createElement('img'); img.src = preview; img.alt = ''; img.loading = 'lazy'; img.referrerPolicy = 'no-referrer';
+        item.appendChild(img);
+        const pick = () => {
+          pendingGif = { url, title: gif.title || 'GIF', preview, w: +full.width || null, h: +full.height || null };
+          document.getElementById('gifBarThumb').src = preview;
+          document.getElementById('gifBarTitle').textContent = gif.title || 'GIF';
+          document.getElementById('gif-bar').classList.add('show');
+          closeGifModal();
+          document.getElementById('msgInput').focus();
+        };
+        item.onclick = pick;
+        item.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } };
+        grid.appendChild(item);
+      });
+      if (!grid.children.length) fail('no usable images');
+    }).catch(fail);
 }
 
 // ── REPLY ──
@@ -3040,6 +3164,7 @@ function closeSrvModal(){
 }
 
 async function submitServerModal(){
+  if (!rateOk('srv', 3000)){ sysMsg('⚠ Slow down — wait a moment.'); return; }
   const name = document.getElementById('srvNameInput').value.trim();
   const code = document.getElementById('srvCodeInput').value.trim();
   const err = document.getElementById('srv-err');
@@ -3131,12 +3256,14 @@ function askClearRoom(){
 function askDeleteAccount(){
   askConfirm('Delete account', 'Permanently delete @' + myUsername + ', your friends list and your session? Your messages remain in servers.', 'Delete account', async () => {
     try{
-      await db.ref('users/' + myUsername).remove();
+      const me = firebase.auth().currentUser;
       await db.ref('friends/' + myUsername).remove();
       await db.ref('presence/' + myUsername).remove();
+      await db.ref('users/' + myUsername).remove();
+      if (me){ await db.ref('uidMap/' + me.uid).remove(); await me.delete().catch(()=>{}); }
     }catch(e){}
     localStorage.removeItem('relay_session');
-    location.reload();
+    firebase.auth().signOut().catch(()=>{}).then(() => location.reload());
   });
 }
 
@@ -3159,20 +3286,20 @@ function openInviteModal(){
   const existing = srv.invite;
   if (existing){
     db.ref('serverInvites/' + existing).get().then(s => {
-      if (s.exists()) showInviteCode(existing);
+      if (s.exists() && inviteLive(s.val())) showInviteCode(existing);
       else genInvite();
     }).catch(()=>genInvite());
   } else genInvite();
 }
 function showInviteCode(code){
   document.getElementById('inviteLinkInput').value = inviteLink(code);
-  document.getElementById('inviteCodeLabel').textContent = code;
+  document.getElementById('inviteCodeLabel').textContent = code + ' (valid 7 days, ' + INVITE_MAX_USES + ' uses)';
 }
 async function genInvite(){
-  if (!currentSrv) return;
-  const code = randToken(7);
+  if (!currentSrv || !rateOk('invite', 3000)) return;
+  const code = randToken(10);
   try{
-    await db.ref('serverInvites/' + code).set({ sid: currentSrv.id, name: (servers[currentSrv.id]||{}).name, createdBy: myUsername, createdAt: firebase.database.ServerValue.TIMESTAMP });
+    await db.ref('serverInvites/' + code).set({ sid: currentSrv.id, name: (servers[currentSrv.id]||{}).name, createdBy: myUsername, createdAt: firebase.database.ServerValue.TIMESTAMP, expiresAt: Date.now() + INVITE_TTL, maxUses: INVITE_MAX_USES, uses: 0 });
     await db.ref('servers/' + currentSrv.id + '/invite').set(code);
     showInviteCode(code);
   }catch(e){
@@ -3186,19 +3313,21 @@ function copyInviteLink(){
   try{ navigator.clipboard.writeText(input.value); }catch(e){ document.execCommand('copy'); }
 }
 async function joinByInvite(code){
+  code = String(code || '').replace(/[^a-z0-9]/gi, '').slice(0, 32);
+  if (!code || !rateOk('join', 2000)) return;
   try{
-    const snap = await db.ref('serverInvites/' + code).get();
-    const inv = snap.val();
+    const inv = (await db.ref('serverInvites/' + code).get()).val();
     if (!inv || !inv.sid){ sysMsg('⚠ This invite is invalid or expired.'); return; }
-    if (servers[inv.sid]){
+    if (!inviteLive(inv)){ sysMsg('⚠ This invite has expired or reached its use limit.'); return; }
+    const srv = servers[inv.sid];
+    if (!srv){ sysMsg('⚠ This invite points to a server that no longer exists.'); return; }
+    if (!isMember(srv)){
+      const res = await db.ref('serverInvites/' + code + '/uses').transaction(n => ((inv.maxUses && (n || 0) >= inv.maxUses) ? undefined : (n || 0) + 1));
+      if (!res.committed){ sysMsg('⚠ This invite has reached its use limit.'); return; }
       await db.ref('servers/' + inv.sid + '/members/' + myUsername).set(true).catch(()=>{});
-      doSwitchServer(inv.sid, servers[inv.sid]);
-    } else {
-      sysMsg('⚠ This invite points to a server that no longer exists.');
     }
-  }catch(e){
-    sysMsg('⚠ Invites need the serverInvites rule in your database — see the rules update.');
-  }
+    doSwitchServer(inv.sid, servers[inv.sid]);
+  }catch(e){ sysMsg('⚠ Could not use that invite. Check your connection and try again.'); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3358,6 +3487,7 @@ function renderDmList(){
   }
 }
 async function sendFriendRequest(to){
+  if (!rateOk('freq', 1500)) return;
   if (!to || to === myUsername) return;
   try{
     await db.ref('friendRequests/' + to + '/' + myUsername).set(firebase.database.ServerValue.TIMESTAMP);
@@ -3548,7 +3678,7 @@ function applyMyColor(){
 function applyMyAvatar(){
   const av = document.getElementById('meAvatar');
   if (!av) return;
-  if (myPfp) av.innerHTML = '<img src="' + myPfp + '" alt=""/><div class="me-status-badge" id="meStatusBadge"></div>';
+  if (myPfp) av.innerHTML = '<img src="' + esc(myPfp) + '" alt=""/><div class="me-status-badge" id="meStatusBadge"></div>';
   else { av.innerHTML = '<span>' + (myDisplay ? myDisplay[0].toUpperCase() : '?') + '</span><div class="me-status-badge" id="meStatusBadge"></div>'; av.style.color = myColor; }
   updateMyStatusDot();
 }
@@ -3558,7 +3688,7 @@ function toggleProfileMenu(){
   document.getElementById('pmNameInput').value = myDisplay || '';
   document.getElementById('pmUsername').textContent = '@' + myUsername;
   const ba = document.getElementById('pmBigAvatar');
-  ba.innerHTML = myPfp ? '<img src="' + myPfp + '" alt=""/>' : '<span style="color:' + myColor + ';font-family:\'Roboto Mono\',monospace;font-size:1.4rem;font-weight:700">' + (myDisplay ? myDisplay[0].toUpperCase() : '?') + '</span>';
+  ba.innerHTML = myPfp ? '<img src="' + esc(myPfp) + '" alt=""/>' : '<span style="color:' + myColor + ';font-family:\'Roboto Mono\',monospace;font-size:1.4rem;font-weight:700">' + (myDisplay ? myDisplay[0].toUpperCase() : '?') + '</span>';
   document.querySelectorAll('.pm-status-btn').forEach(b => b.classList.toggle('active', b.dataset.status === myStatus));
   const colors = { online:'#56f0a0', away:'#f9c846', busy:'#ff6b6b', invisible:'#49536e' };
   const badge = document.getElementById('pmStatusBadge');
@@ -3794,14 +3924,26 @@ function renderMarkdown(text){
   const cbRe = /```([\s\S]*?)```/g;
   let last = 0, m;
   while ((m = cbRe.exec(text)) !== null){
-    if (m.index > last) appendInline(frag, text.slice(last, m.index));
+    if (m.index > last) appendBlocks(frag, text.slice(last, m.index));
     const pre = document.createElement('code');
     pre.className = 'msg-code-block'; pre.textContent = m[1].trim();
     frag.appendChild(pre);
     last = m.index + m[0].length;
   }
-  if (last < text.length) appendInline(frag, text.slice(last));
+  if (last < text.length) appendBlocks(frag, text.slice(last));
   return frag;
+}
+function appendBlocks(parent, text){   // "> quote" lines become <blockquote>; everything is built with DOM nodes (no innerHTML)
+  const runs = [];
+  text.split('\n').forEach(l => {
+    const q = /^>\s(.*)$/.exec(l), isQ = !!q, v = isQ ? q[1] : l, last = runs[runs.length - 1];
+    if (last && last.q === isQ) last.lines.push(v); else runs.push({ q: isQ, lines: [v] });
+  });
+  runs.forEach(r => {
+    const t = r.lines.join('\n');
+    if (!r.q){ appendInline(parent, t); return; }
+    const bq = document.createElement('blockquote'); bq.className = 'msg-quote'; appendInline(bq, t); parent.appendChild(bq);
+  });
 }
 function appendInline(parent, text){
   const rules = [
@@ -3897,11 +4039,10 @@ function replaceEmojiCodes(inp){
 }
 
 function updateCharCounter(val){
-  let el = document.getElementById('char-counter');
-  const rem = 500 - val.length;
-  if (rem > 100){ el.textContent = ''; return; }
-  el.textContent = rem;
-  el.className = rem < 20 ? 'danger' : rem < 50 ? 'warn' : '';
+  const el = document.getElementById('char-counter'), n = val.length;
+  if (n <= MSG_CHUNK - 100){ el.textContent = ''; el.className = ''; return; }
+  el.textContent = n > MSG_CHUNK ? Math.ceil(n / MSG_CHUNK) + ' msgs' : (MSG_CHUNK - n);
+  el.className = n > MSG_INPUT_MAX - 100 ? 'danger' : n > MSG_CHUNK ? 'warn' : '';
 }
 
 // ── SIDEBAR TOGGLE ──
@@ -4063,6 +4204,218 @@ if (localStorage.getItem('lc_pfp')) myPfp = localStorage.getItem('lc_pfp');
 
 boot();
 
+
+// ── v149: composer emoji picker ──
+const EMOJI_GROUPS = [
+  ['Smileys','😀 😃 😄 😁 😆 😅 😂 🤣 🙂 😉 😊 😇 🥰 😍 😘 😎 🤩 🥳 😏 🙄 😬 😴 🤔 🤗 😭 😢 😡 🤯 😱 🥺'],
+  ['Hands','👍 👎 👏 🙌 🙏 💪 👀 🤝 ✌️ 🤞 👌 🤙 👋 🫶'],
+  ['Hearts & party','❤️ 🧡 💛 💚 💙 💜 🖤 💔 ✨ 🔥 💯 ⭐ 🎉 🎶'],
+  ['Things','🌭 🍕 🍔 🍟 🍿 🍩 ☕ 🎮 ⚽ 🚀 🌈 🌙 ☀️ 🐶 🐱 🦊 🐸 👻 💀']
+];
+let emojiPop = null;
+function toggleEmojiPicker(){
+  const inp = document.getElementById('msgInput');
+  if (!inp || inp.disabled) return;
+  if (!emojiPop){
+    emojiPop = document.createElement('div'); emojiPop.id = 'emoji-pop'; emojiPop.setAttribute('role', 'dialog'); emojiPop.setAttribute('aria-label', 'Emoji picker');
+    EMOJI_GROUPS.forEach(([name, list]) => {
+      const h = document.createElement('div'); h.className = 'ep-h'; h.textContent = name;
+      const g = document.createElement('div'); g.className = 'ep-g';
+      list.split(' ').forEach(em => { const b = document.createElement('button'); b.type = 'button'; b.textContent = em; b.setAttribute('aria-label', em); b.onclick = () => insertEmoji(em); g.appendChild(b); });
+      emojiPop.append(h, g);
+    });
+    document.body.appendChild(emojiPop);
+  }
+  emojiPop.classList.toggle('show');
+}
+function insertEmoji(em){
+  const inp = document.getElementById('msgInput'), a = inp.selectionStart == null ? inp.value.length : inp.selectionStart, b = inp.selectionEnd == null ? a : inp.selectionEnd;
+  inp.value = inp.value.slice(0, a) + em + inp.value.slice(b);
+  inp.selectionStart = inp.selectionEnd = a + em.length;
+  inp.dispatchEvent(new Event('input', { bubbles: true }));
+  inp.focus();
+}
+document.addEventListener('click', e => { if (emojiPop && emojiPop.classList.contains('show') && !emojiPop.contains(e.target) && !e.target.closest('#emojiBtn')) emojiPop.classList.remove('show'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && emojiPop) emojiPop.classList.remove('show'); });
+
+// ── v149: PWA service worker (https only) ──
+if ('serviceWorker' in navigator && location.protocol === 'https:') window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+
+// ═══ v150: roles, audit log, pins, read receipts, accent presets, voice ═══
+// NOTE: roles are enforced in the UI only. Until accounts move to per-user Firebase Auth, anyone calling the database directly can bypass them.
+const RANK = { member: 0, mod: 1, admin: 2, owner: 3 };
+function roleOf(sid, u){ const sv = servers[sid]; if (!sv) return 'member'; if (sv.owner === u) return 'owner'; const r = sv.roles && sv.roles[u]; return (r === 'admin' || r === 'mod') ? r : 'member'; }
+function myRank(){ return currentSrv ? RANK[roleOf(currentSrv.id, myUsername)] : 0; }
+function logAudit(a, d){ if (currentSrv) db.ref('audit/' + currentSrv.id).push({ t: firebase.database.ServerValue.TIMESTAMP, by: myUsername, a: a, d: String(d || '').slice(0, 120) }).catch(()=>{}); }
+function setRole(u, r){
+  const sid = currentSrv && currentSrv.id; if (!sid || myRank() <= RANK[roleOf(sid, u)] || myRank() <= RANK[r]) return;
+  db.ref('servers/' + sid + '/roles/' + u).set(r === 'member' ? null : r).then(() => { logAudit('role.set', u + ' -> ' + r); sysMsg('✓ ' + displayOf(u) + ' is now ' + r + '.'); }).catch(() => sysMsg('⚠ Could not change that role.'));
+}
+const _suc = showUserCard;
+showUserCard = function(u, el){
+  _suc(u, el);
+  try{
+    const card = document.getElementById('user-card'); if (!card || !currentSrv || u === myUsername) return;
+    const role = roleOf(currentSrv.id, u), box = document.createElement('div'); box.style.cssText = 'padding:.4rem .8rem .6rem;font-size:.75rem;display:flex;gap:.3rem;flex-wrap:wrap;align-items:center';
+    box.textContent = 'Role: ' + role;
+    if (RANK[role] < myRank() && myRank() >= 2) ['member', 'mod', 'admin'].forEach(r => { if (r !== role && RANK[r] < myRank()){ const b = document.createElement('button'); b.className = 'uc-btn'; b.textContent = 'Make ' + r; b.onclick = () => setRole(u, r); box.appendChild(b); } });
+    card.appendChild(box);
+  }catch(e){}
+};
+async function openAudit(){
+  if (!currentSrv || myRank() < 2) return;
+  const old = document.getElementById('audit-modal'); if (old) old.remove();
+  const bg = document.createElement('div'); bg.className = 'modal-bg show'; bg.id = 'audit-modal'; bg.onclick = e => { if (e.target === bg) bg.remove(); };
+  const m = document.createElement('div'); m.className = 'modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Audit log');
+  const h = document.createElement('h2'); h.textContent = 'Audit log';
+  const list = document.createElement('div'); list.style.cssText = 'max-height:50vh;overflow:auto;font-size:.78rem;display:flex;flex-direction:column;gap:.35rem;margin:.6rem 0'; list.textContent = 'Loading…';
+  const x = document.createElement('button'); x.className = 'uc-btn'; x.textContent = 'Close'; x.onclick = () => bg.remove();
+  m.append(h, list, x); bg.appendChild(m); document.body.appendChild(bg);
+  try{
+    const sn = await db.ref('audit/' + currentSrv.id).orderByKey().limitToLast(60).get(), rows = []; sn.forEach(c => { rows.push(c.val()); }); rows.reverse(); list.textContent = '';
+    if (!rows.length) list.textContent = 'Nothing logged yet.';
+    rows.forEach(r => { const d = document.createElement('div'); d.textContent = new Date(r.t || 0).toLocaleString() + '  ' + displayOf(r.by) + '  ' + r.a + (r.d ? ': ' + r.d : ''); list.appendChild(d); });
+  }catch(e){ list.textContent = 'Could not load the log. Publish database.rules.json first.'; }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape'){ const a = document.getElementById('audit-modal'); if (a) a.remove(); } });
+
+// pins (server rooms) + read receipts (DMs)
+let pinRef = null, pinPath = null, pins = {}, pinIdx = 0, readRef = null, readPath = null, readMap = {}, lastMark = 0;
+function mkBtn(txt, label, fn){ const b = document.createElement('button'); b.type = 'button'; b.className = 'v150-btn'; b.textContent = txt; b.title = label; b.setAttribute('aria-label', label); b.onclick = e => { e.stopPropagation(); fn(); }; return b; }
+function msgText(wrap){ return ((wrap.querySelector('.msg-text') || {}).textContent || '').trim(); }
+function v150Decorate(wrap, key, data){
+  wrap.dataset.t = data.t || 0; wrap.dataset.u = data.u;
+  if (currentSrv && !currentDm && myRank() >= 1){
+    const m = document.createElement('span'); m.className = 'msg-mod';
+    m.appendChild(mkBtn('📌', 'Pin or unpin message', () => togglePin(key, wrap)));
+    if (data.u !== myUsername && RANK[roleOf(currentSrv.id, data.u)] < myRank()) m.appendChild(mkBtn('🗑', 'Delete message (moderator)', () => { logAudit('msg.delete', data.u + ': ' + msgText(wrap).slice(0, 40)); deleteMsg(key); }));
+    wrap.appendChild(m);
+  }
+  if (currentDm && data.u === myUsername){ const st = document.createElement('span'); st.className = 'msg-status'; wrap.appendChild(st); paintReceipts(); }
+}
+async function togglePin(key, wrap){
+  if (!pinPath || myRank() < 1) return;
+  const ref = db.ref('pins/' + pinPath + '/' + key);
+  if (pins[key]){ ref.remove().then(() => logAudit('unpin', (pins[key].u || ''))).catch(()=>{}); return; }
+  if (Object.keys(pins).length >= 5){ sysMsg('⚠ Rooms hold up to 5 pins. Unpin one first.'); return; }
+  const t = (msgText(wrap) || '[attachment]').slice(0, 140), e = await encryptMsg(t);
+  ref.set({ by: myUsername, u: wrap.dataset.u || '', t: firebase.database.ServerValue.TIMESTAMP, text: e || t, enc: !!e })
+    .then(() => logAudit('pin', t.slice(0, 40))).catch(() => sysMsg('⚠ Pinning needs the new database rules (database.rules.json).'));
+}
+async function paintPins(){
+  const bar = document.getElementById('pin-bar'), ks = Object.keys(pins).sort((a, b) => (pins[b].t || 0) - (pins[a].t || 0));
+  if (!ks.length){ bar.style.display = 'none'; return; }
+  pinIdx %= ks.length; const k = ks[pinIdx], p = pins[k], txt = p.enc ? await decryptMsg(p.text) : p.text;
+  bar.textContent = ''; bar.style.display = 'flex';
+  const c = document.createElement('span'); c.textContent = '📌 ' + (pinIdx + 1) + '/' + ks.length;
+  const t = document.createElement('span'); t.className = 'pb-t'; t.textContent = displayOf(p.u) + ': ' + txt;
+  bar.append(c, t); if (ks.length > 1) bar.appendChild(mkBtn('›', 'Next pinned message', () => { pinIdx++; paintPins(); }));
+  bar.onclick = () => { const el = document.querySelector('.msg[data-key="' + k + '"]'); if (el){ el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.background = 'var(--accent-dim)'; setTimeout(() => el.style.background = '', 1200); } else sysMsg('That pin is older than the loaded history.'); };
+}
+function paintReceipts(){
+  if (!currentDm) return;
+  const other = currentDm.user, rd = +readMap[other] || 0, online = !!presenceMap[other];
+  document.querySelectorAll('#messages .msg.self').forEach(w => {
+    const st = w.querySelector('.msg-status'); if (!st) return;
+    const read = rd && rd >= (+w.dataset.t || 0);
+    st.className = 'msg-status' + (read ? ' read' : ''); st.textContent = (read || online) ? '✓✓' : '✓';
+    st.title = read ? 'Read' : online ? 'Delivered' : 'Sent';
+  });
+}
+function syncChannel(){
+  const sp = currentSrv && currentRoom && !currentDm ? currentSrv.id + '/' + currentRoom.id : null;
+  if (sp !== pinPath){ if (pinRef) pinRef.off(); pinPath = sp; pins = {}; pinRef = null; paintPins(); if (sp){ pinRef = db.ref('pins/' + sp); pinRef.on('value', sn => { pins = sn.val() || {}; paintPins(); }, () => {}); } }
+  const rp = currentDm ? 'reads/_dm/' + currentDm.pair : null;
+  if (rp !== readPath){ if (readRef) readRef.off(); readPath = rp; readMap = {}; readRef = null; if (rp){ readRef = db.ref(rp); readRef.on('value', sn => { readMap = sn.val() || {}; paintReceipts(); }, () => {}); } }
+  if (rp && document.visibilityState === 'visible' && localStorage.getItem('lc_receipts') !== '0'){
+    const ts = [].reduce.call(document.querySelectorAll('#messages .msg.other'), (m, e) => Math.max(m, +e.dataset.t || 0), 0);
+    if (ts && ts > (+readMap[myUsername] || 0) && Date.now() - lastMark > 3000){ lastMark = Date.now(); db.ref(rp + '/' + myUsername).set(firebase.database.ServerValue.TIMESTAMP).catch(()=>{}); }
+  }
+  const inSrv = !!(currentSrv && !currentDm);
+  document.getElementById('voiceBtn').style.display = inSrv ? '' : 'none';
+  document.getElementById('auditBtn').style.display = inSrv && myRank() >= 2 ? '' : 'none';
+}
+setInterval(() => { try{ syncChannel(); }catch(e){} }, 700);
+setInterval(() => { try{ paintReceipts(); }catch(e){} }, 8000);
+
+// accent presets
+const ACCENTS = [['Lime', '#e8ff6b'], ['Violet', '#7c3aed'], ['Sky', '#38bdf8'], ['Rose', '#fb7185'], ['Amber', '#f9c846'], ['Mint', '#34d399'], ['Ember', '#f97316']];
+function applyAccent(hex){
+  const st = document.documentElement.style;
+  if (!HEX_RE.test(hex || '')){ ['--accent', '--accent-dim', '--accent-text'].forEach(p => st.removeProperty(p)); localStorage.removeItem('lc_accent'); return; }
+  const n = parseInt(hex.slice(1), 16), R = n >> 16, G = (n >> 8) & 255, B = n & 255;
+  st.setProperty('--accent', hex); st.setProperty('--accent-dim', 'rgba(' + R + ',' + G + ',' + B + ',.14)'); st.setProperty('--accent-text', (0.299 * R + 0.587 * G + 0.114 * B) > 150 ? '#0a0c10' : '#ffffff');
+  localStorage.setItem('lc_accent', hex);
+}
+(function(){
+  const row = document.getElementById('accent-row'); if (!row) return;
+  ACCENTS.forEach(([name, hex]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'acc-sw'; b.style.background = hex; b.title = name; b.setAttribute('aria-label', name + ' accent'); b.onclick = () => applyAccent(hex); row.appendChild(b); });
+  const c = document.createElement('input'); c.type = 'color'; c.value = localStorage.getItem('lc_accent') || '#7c3aed'; c.setAttribute('aria-label', 'Custom accent color'); c.oninput = () => applyAccent(c.value); row.appendChild(c);
+  const r = document.createElement('button'); r.type = 'button'; r.className = 'uc-btn'; r.textContent = 'Reset'; r.onclick = () => applyAccent(null); row.appendChild(r);
+  applyAccent(localStorage.getItem('lc_accent'));
+  const rr = document.getElementById('rrToggle'); if (rr) rr.checked = localStorage.getItem('lc_receipts') !== '0';
+})();
+
+// voice: peer-to-peer mesh audio, signaled through the database (STUN only, so some strict networks can't connect)
+const VOICE = { sid: null, stream: null, pcs: {}, q: {}, aud: {}, refs: [], members: [], muted: false };
+const ICE = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+function vsend(to, type, data){ db.ref('voice/' + VOICE.sid + '/sig/' + to).push({ from: myUsername, type: type, data: JSON.stringify(data) }).catch(()=>{}); }
+function vdrop(u){ const pc = VOICE.pcs[u]; if (pc){ try{ pc.close(); }catch(e){} } delete VOICE.pcs[u]; if (VOICE.aud[u]){ VOICE.aud[u].srcObject = null; delete VOICE.aud[u]; } paintVoice(); }
+function vpeer(u, init){
+  const pc = new RTCPeerConnection(ICE); VOICE.pcs[u] = pc; VOICE.q[u] = [];
+  VOICE.stream.getTracks().forEach(t => pc.addTrack(t, VOICE.stream));
+  pc.onicecandidate = e => { if (e.candidate) vsend(u, 'ice', e.candidate); };
+  pc.ontrack = e => { let a = VOICE.aud[u]; if (!a){ a = VOICE.aud[u] = new Audio(); a.autoplay = true; } a.srcObject = e.streams[0]; a.play().catch(()=>{}); };
+  pc.onconnectionstatechange = () => { if (pc.connectionState === 'failed' || pc.connectionState === 'closed') vdrop(u); else paintVoice(); };
+  if (init) pc.createOffer().then(o => pc.setLocalDescription(o)).then(() => vsend(u, 'offer', pc.localDescription)).catch(() => vdrop(u));
+  return pc;
+}
+function vflush(u, pc){ (VOICE.q[u] || []).splice(0).forEach(c => pc.addIceCandidate(c).catch(()=>{})); }
+async function vsignal(sn){
+  const m = sn.val(); sn.ref.remove().catch(()=>{}); if (!m || !VOICE.sid || !VOICE.stream) return;
+  const u = m.from; let d; try{ d = JSON.parse(m.data); }catch(e){ return; }
+  try{
+    if (m.type === 'offer'){
+      const cur = VOICE.pcs[u]; if (cur && cur.signalingState === 'have-local-offer' && myUsername < u) return;   // both offered at once: the lower name wins
+      vdrop(u); const pc = vpeer(u, false); await pc.setRemoteDescription(d); await pc.setLocalDescription(await pc.createAnswer()); vsend(u, 'answer', pc.localDescription); vflush(u, pc);
+    } else if (m.type === 'answer'){ const pc = VOICE.pcs[u]; if (pc){ await pc.setRemoteDescription(d); vflush(u, pc); } }
+    else if (m.type === 'ice'){ const pc = VOICE.pcs[u]; if (pc && pc.remoteDescription) pc.addIceCandidate(d).catch(()=>{}); else if (VOICE.q[u]) VOICE.q[u].push(d); }
+  }catch(e){ vdrop(u); }
+}
+async function toggleVoice(){
+  if (VOICE.sid) return leaveVoice();
+  if (!currentSrv || !isMember(servers[currentSrv.id])){ sysMsg('⚠ Join this server to use voice.'); return; }
+  if (!navigator.mediaDevices || !window.RTCPeerConnection){ sysMsg('⚠ This browser does not support voice.'); return; }
+  try{ VOICE.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+  catch(e){ sysMsg('⚠ Microphone access is blocked. Allow it in your browser and try again.'); return; }
+  const base = db.ref('voice/' + currentSrv.id); VOICE.sid = currentSrv.id;
+  try{
+    const me = base.child('members/' + myUsername); await me.set({ t: firebase.database.ServerValue.TIMESTAMP }); me.onDisconnect().remove();
+    const sig = base.child('sig/' + myUsername), mem = base.child('members'); sig.onDisconnect().remove();
+    const snap = await mem.get(); snap.forEach(c => { if (c.key !== myUsername) vpeer(c.key, true); });
+    sig.on('child_added', vsignal);
+    mem.on('value', sn => { VOICE.members = Object.keys(sn.val() || {}); Object.keys(VOICE.pcs).forEach(u => { if (VOICE.members.indexOf(u) < 0) vdrop(u); }); paintVoice(); });
+    VOICE.refs = [sig, mem];
+  }catch(e){ sysMsg('⚠ Voice needs the new database rules (database.rules.json).'); leaveVoice(); return; }
+  paintVoice();
+}
+function leaveVoice(){
+  VOICE.refs.forEach(r => r.off()); Object.keys(VOICE.pcs).forEach(vdrop);
+  if (VOICE.stream) VOICE.stream.getTracks().forEach(t => t.stop());
+  if (VOICE.sid) db.ref('voice/' + VOICE.sid + '/members/' + myUsername).remove().catch(()=>{});
+  VOICE.sid = null; VOICE.stream = null; VOICE.refs = []; VOICE.members = []; VOICE.muted = false; paintVoice();
+}
+function paintVoice(){
+  let p = document.getElementById('voice-panel'); if (!p){ p = document.createElement('div'); p.id = 'voice-panel'; p.setAttribute('role', 'region'); p.setAttribute('aria-label', 'Voice channel'); document.body.appendChild(p); }
+  const vb = document.getElementById('voiceBtn'); vb.classList.toggle('live', !!VOICE.sid); vb.title = VOICE.sid ? 'Leave voice' : 'Join voice'; vb.setAttribute('aria-label', vb.title);
+  p.classList.toggle('show', !!VOICE.sid); p.textContent = ''; if (!VOICE.sid) return;
+  const h = document.createElement('div'); h.style.fontWeight = '700'; h.textContent = 'Voice · ' + ((servers[VOICE.sid] || {}).name || 'server'); p.appendChild(h);
+  VOICE.members.forEach(u => { const r = document.createElement('div'); r.className = 'vp-row'; const d = document.createElement('span'); d.className = 'vp-dot' + ((u === myUsername || (VOICE.pcs[u] && VOICE.pcs[u].connectionState === 'connected')) ? ' on' : ''); const n = document.createElement('span'); n.textContent = displayOf(u) + (u === myUsername && VOICE.muted ? ' (muted)' : ''); r.append(d, n); p.appendChild(r); });
+  const row = document.createElement('div'); row.style.cssText = 'display:flex;gap:.4rem;margin-top:.4rem';
+  row.append(mkBtn(VOICE.muted ? 'Unmute' : 'Mute', 'Toggle microphone', () => { VOICE.muted = !VOICE.muted; VOICE.stream.getAudioTracks().forEach(t => t.enabled = !VOICE.muted); paintVoice(); }), mkBtn('Leave', 'Leave voice', leaveVoice));
+  p.appendChild(row);
+}
+window.addEventListener('pagehide', () => { if (VOICE.sid) leaveVoice(); });
 </script>
 </body>
 </html>

@@ -6,13 +6,12 @@
 <title>Relay</title>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.googleapis.com https://api.giphy.com https://noembed.com https://api.microlink.io https://api.ipify.org; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com https://open.spotify.com https://w.soundcloud.com https://*.firebaseapp.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"/>
 <meta name="referrer" content="strict-origin-when-cross-origin"/>
-<meta name="theme-color" content="#4f1d96"/>
+<meta name="theme-color" content="#1a1c22"/>
 <meta name="description" content="Relay: free text messaging"/>
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=3"/>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=3"/>
-<link rel="shortcut icon" href="favicon.ico?v=3"/>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3"/>
-<link rel="manifest" href="manifest.webmanifest?v=3"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMTEiIGZpbGw9IiMzYTNkNDciLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyNCAyNCkgc2NhbGUoMS4xNikgdHJhbnNsYXRlKC0yNCAtMjMuNSkiPjxwYXRoIGQ9Ik00MSA3TDE5IDI3LjVMMjUgNDBaIiBmaWxsPSIjYzRjOGQyIi8+PHBhdGggZD0iTTQxIDdMNyAyMkwxOSAyNy41WiIgZmlsbD0iI2ZmZiIvPjwvZz48L3N2Zz4="/>
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEvUlEQVR4nMWXXWxURRTH/+fM3O3dXbF8BCoIRBABlQhUDIoFE766TUWMiB8hEmPiC74Z3jc8guiT8cUXfCZ+JpiKbCXpFQKUj8TQSLumadkulrJQaEu7e+/M8WE/Uihsu2WJ5+k+zMz/9585Z+4cAoB4PM4HDhyw69dvrtNu6HMIvSViVwAgVCeEiK+A5JdgLPfVmTOt/UVNKn5s2LhtO5P6llgtttZCxFZJOx9EDGaGWNNrxXx6qu334/F4nAkAXmuIbXEcfcIYA2uNISJG9dwXQ0TEMiullILvB1tPey0JamiIzTUklxTzfGOMJSJVZeH7KYxSio2115TQGjZk92ulFzxOcSIa/62MMVYrvcCQ3c8Q7LbWClHVtxxKKQgA3/fvgwBZawWC3UxES0QsAcTVECWivLAIbt4aBAF4qq4Oxpjxo1jEEhEtYQBSDWFmhlIKQRBgcHAQAGHPh7vwzddfoq6uDrlcDswTPIrGI2Z7cdHR0VFkczk8vWA+Pvl4D2KxrVi8aCG+//k3tJ8/j0gkAmsnlDbp6YgSEZgZxhgMDQ9DscLKFc/h3V078camDZg9exZu3hrCqbOX8eMPP4GZQUQQmbjZFQEwEYgZvu/jztAQopEIGl5/FR/teQ+vrKsv7UYqfR2pdAbJrk50dl6B67oPcj91gKKD0dFRZLM5zJkzG81N2/HB++9g2bKlAICiuX/7M0h29yEaiSCRSMBaeaj7SQGUUrDWYmRkBMZYLF/+LLZv24ydO5owb97cgrDAWoFSjN5UP7p7ruGJaBQdHZfR0dFR1n1ZAGMMbt++A9etwdo1L+Htnc2INW6B4zgAUFo0X3aMZHcfUn3XoVS+Gs6ePQdjTFn3DwQgIhhjUFv7JJpi2/BmcyNerl99Dxhz4cci+e1NdvchlR6A42g4joOenh5cungR4XC4rDgAPPDyERGEw2GsWvU8Xnxh5T3i+RuNSrBF8ZCjYa2F1hp/tLbi7t27JchyQRs2Nk4YQUTwfR9DQ8NYvGghmpq2YkdzDEuXPlMaEwQGf3f14uat29A6Lx4KhZBOp/HFoUOldaYFUJzMzMjlchgeHsHMmbXYsnkTdjTHsHbtavzV8Q8G7wwj5DiFRLSIRKP47sgReG1tiEajZZNvUoD7QYLAYGRkBIBg32f7UF+/DtnsWMml4zi43t+PgwcPlnJjMvfAQ3JgfIhI4eyBWbNq4boujh37Fb6fLf3hRAShUAjnL1yY8tlPGWB8+H6AUCiE1NWrOHeuHeFwGMYYaK2RyWTgtbWhpqZmyuIVAxRDa42TJ09ibGwMAOC6LjzPQyaTgdb68QIUs70vlUJnVxdmzJiBgYEBeG1tcF23IvFpAQD5xLTW4sTx43BdF396HjI3blTsvghQ8YPEWgvXdZFMJtGaSKC9vR2hCs++EDJpGZadXSi/IAimuwRYRLqJWIDKO5HijVl5iCViEZFuBuEoM5PI9N6G41+7U5YXCDMTCEdZCR8OTJBWSrGImMmnP1oUG5PABGklfJg9r2UAQnuZFTErVYCoykt5orYYZqWYFUFor+e1DHA8HufTXksiCLKNBOnV2lFEXPUmhYhJa0cRpDcIso2nvZZEqTn9P9vz/wCL4XCNAXkGVQAAAABJRU5ErkJggg=="/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=4"/>
+<link rel="manifest" href="manifest.webmanifest?v=4"/>
 <meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -23,7 +22,7 @@
 .splash-logo{display:flex;flex-direction:column;align-items:center;gap:1.2rem;animation:splashPop .6s cubic-bezier(.34,1.56,.64,1) both}
 .splash-brand-item{display:flex;flex-direction:column;align-items:center;gap:.55rem}
 .splash-brand-icon{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.splash-brand-icon.relay{background:linear-gradient(135deg,#7c3aed,#4f1d96);box-shadow:0 8px 32px rgba(124,58,237,.45),0 0 0 1px rgba(255,255,255,.08)}
+.splash-brand-icon.relay{background:linear-gradient(135deg,#3b3e47,#22242b);box-shadow:0 8px 32px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
 .splash-brand-name{font-size:1.5rem;font-weight:900;letter-spacing:.04em;font-family:'Roboto',sans-serif;background:linear-gradient(135deg,#ffffff 0%,#c4b5fd 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .splash-sub{font-family:'Roboto Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;animation:fadeUp .5s .25s ease both}
 .splash-dots{display:flex;gap:.4rem;margin-top:.2rem;animation:fadeUp .4s .4s ease both}
@@ -619,7 +618,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
 #pin-bar .pb-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #voice-panel{position:fixed;left:12px;bottom:84px;z-index:55;width:min(260px,calc(100vw - 24px));padding:.6rem;border-radius:12px;background:var(--card);color:var(--text);border:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,.4);display:none;font-size:.8rem}
 #voice-panel.show{display:block}.vp-row{display:flex;align-items:center;gap:.4rem;padding:.15rem 0}.vp-dot{width:8px;height:8px;border-radius:50%;background:#49536e}.vp-dot.on{background:#56f0a0}
-#voiceBtn.live{color:#56f0a0}.acc-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;padding:0}
+#voiceBtn.live{color:var(--text);background:rgba(255,255,255,.14)}
+.ic{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em}
+.notif-btn.on{color:var(--text)}.acc-sw{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;padding:0}
 </style>
 </head>
 
@@ -633,9 +634,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <svg width="42" height="42" viewBox="0 0 48 48" fill="none">
           <defs>
             <linearGradient id="plane-grad-splash" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#f9c846"/>
-              <stop offset="50%" stop-color="#d97cf5"/>
-              <stop offset="100%" stop-color="#7c3aed"/>
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="50%" stop-color="#e2e5ec"/>
+              <stop offset="100%" stop-color="#3b3e47"/>
             </linearGradient>
           </defs>
           <path d="M6 10L42 24L6 38L12 24L6 10Z" fill="url(#plane-grad-splash)" opacity=".9"/>
@@ -660,9 +661,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
     <div class="brand">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0">
         <rect width="28" height="28" rx="8" fill="url(#plane-grad-login)"/>
-        <defs><linearGradient id="plane-grad-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4f1d96"/></linearGradient></defs>
+        <defs><linearGradient id="plane-grad-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b3e47"/><stop offset="100%" stop-color="#22242b"/></linearGradient></defs>
         <path d="M4 7L24 14L4 21L8 14L4 7Z" fill="url(#plane-grad-icon-login)"/>
-        <defs><linearGradient id="plane-grad-icon-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f9c846"/><stop offset="60%" stop-color="#d97cf5"/><stop offset="100%" stop-color="#c4b5fd"/></linearGradient></defs>
+        <defs><linearGradient id="plane-grad-icon-login" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#e2e5ec"/><stop offset="100%" stop-color="#b4b9c4"/></linearGradient></defs>
         <path d="M8 14L13 12.5L14 18Z" fill="rgba(255,255,255,0.3)"/>
       </svg>
       <span style="font-family:'Roboto',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);letter-spacing:-.01em">Relay</span>
@@ -734,9 +735,9 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
         <div class="sb-brand" id="relayLogoBtn" title="Relay">
           <svg width="22" height="22" viewBox="0 0 28 28" fill="none" style="flex-shrink:0">
             <rect width="28" height="28" rx="7" fill="url(#plane-grad-sb)"/>
-            <defs><linearGradient id="plane-grad-sb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4f1d96"/></linearGradient></defs>
+            <defs><linearGradient id="plane-grad-sb" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b3e47"/><stop offset="100%" stop-color="#22242b"/></linearGradient></defs>
             <path d="M4 7L24 14L4 21L8 14L4 7Z" fill="url(#plane-grad-sb-icon)"/>
-            <defs><linearGradient id="plane-grad-sb-icon" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f9c846"/><stop offset="60%" stop-color="#d97cf5"/><stop offset="100%" stop-color="#c4b5fd"/></linearGradient></defs>
+            <defs><linearGradient id="plane-grad-sb-icon" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#e2e5ec"/><stop offset="100%" stop-color="#b4b9c4"/></linearGradient></defs>
             <path d="M8 14L13 12.5L14 18Z" fill="rgba(255,255,255,0.3)"/>
           </svg>
           <span style="font-family:'Roboto',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);letter-spacing:-.01em">Relay</span>
@@ -839,8 +840,8 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <button class="chat-icon-btn" id="muteBtn" onclick="toggleServerMute()" title="Lock/unlock chat (owner)" style="display:none">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       </button>
-      <button class="chat-icon-btn" id="voiceBtn" onclick="toggleVoice()" title="Join voice" aria-label="Join voice" style="display:none">🎙</button>
-      <button class="chat-icon-btn" id="auditBtn" onclick="openAudit()" title="Audit log" aria-label="Audit log" style="display:none">📜</button>
+      <button class="chat-icon-btn" id="voiceBtn" onclick="toggleVoice()" title="Join voice" aria-label="Join voice" style="display:none"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+      <button class="chat-icon-btn" id="auditBtn" onclick="openAudit()" title="Audit log" aria-label="Audit log" style="display:none"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17H6zM9 8.5h6M9 12h6M9 15.5h3.5"/></svg></button>
       <button class="chat-icon-btn danger" id="clearChatBtn" onclick="askClearRoom()" title="Clear this room's history (owner)" style="display:none">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
       </button>
@@ -896,7 +897,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
       <div class="in-row">
         <button class="action-btn" id="fileBtn" aria-label="Attach file" onclick="document.getElementById('fileInput').click()" disabled title="Send file or image — paste or drag it in too (images auto-compress)">＋</button>
         <button class="action-btn" id="gifBtn" onclick="openGifModal()" disabled title="Send a GIF" aria-label="Send a GIF">GIF</button>
-        <button class="action-btn" id="emojiBtn" type="button" onclick="toggleEmojiPicker()" title="Emoji" aria-label="Add emoji">😀</button>
+        <button class="action-btn" id="emojiBtn" type="button" onclick="toggleEmojiPicker()" title="Emoji" aria-label="Add emoji"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2a4 4 0 0 0 7 0M9 9.6h.01M15 9.6h.01"/></svg></button>
         <textarea id="msgInput" rows="1" placeholder="Message…" maxlength="4000" aria-label="Message" autocomplete="off" disabled></textarea>
         <span id="char-counter"></span>
         <button class="send-btn" onclick="sendMsg()" id="sendBtn" aria-label="Send message" disabled>↑</button>
@@ -1081,11 +1082,11 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
 <!-- CONTACT MODAL -->
 <div class="modal-bg" id="contact-modal">
   <div class="modal" style="max-width:360px;text-align:center;align-items:center">
-    <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#7c3aed,#4f1d96);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(124,58,237,.45);margin:0 auto">
+    <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#3b3e47,#22242b);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 28px rgba(0,0,0,.45);margin:0 auto">
       <svg width="34" height="34" viewBox="0 0 28 28" fill="none">
         <path d="M4 7L24 14L4 21L8 14L4 7Z" fill="url(#plane-grad-contact)"/>
         <defs><linearGradient id="plane-grad-contact" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#f9c846"/><stop offset="60%" stop-color="#d97cf5"/><stop offset="100%" stop-color="#c4b5fd"/>
+          <stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#e2e5ec"/><stop offset="100%" stop-color="#b4b9c4"/>
         </linearGradient></defs>
         <path d="M8 14L13 12.5L14 18Z" fill="rgba(255,255,255,0.35)"/>
       </svg>
@@ -1125,7 +1126,7 @@ body.vanta-active .empty{opacity:.92;text-shadow:0 1px 10px rgba(0,0,0,.98),0 0 
 <div class="modal-bg" id="quick-modal">
   <div class="modal" style="max-width:380px;gap:.7rem">
     <div style="display:flex;align-items:center;gap:.75rem">
-      <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#7c3aed,#4f1d96);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#3b3e47,#22242b);display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       </div>
       <div>
@@ -1214,7 +1215,7 @@ const FB_CONFIG = {
   appId: "1:relay-87573:web:v143"
 };
 const GIPHY_KEY = "dqYfys2LirMQAXDx7RJfuegvJfNbUl47"; // fallback if config/giphyKey unset
-const VERSION = '154';
+const VERSION = '155';
 const MAX_FILE = 25 * 1024 * 1024;             // 25 MB hard cap — must match the cap in firebase-storage-rules.rules (Storage route)
 const MAX_DB_FILE = 4 * 1024 * 1024;           // v146: files this small travel through the Realtime Database as
                                                // base64 data URLs — works on the FREE Spark plan with NO Firebase
@@ -4290,14 +4291,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape'){ const a = d
 
 // pins (server rooms) + read receipts (DMs)
 let pinRef = null, pinPath = null, pins = {}, pinIdx = 0, readRef = null, readPath = null, readMap = {}, lastMark = 0;
-function mkBtn(txt, label, fn){ const b = document.createElement('button'); b.type = 'button'; b.className = 'v150-btn'; b.textContent = txt; b.title = label; b.setAttribute('aria-label', label); b.onclick = e => { e.stopPropagation(); fn(); }; return b; }
+const ICONS = {pin:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5h6l-1 5.5 3 3.5H7L10 9 9 3.5zM12 16v4.5"/></svg>',trash:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h15M9.5 7V4h5v3M6.5 7l1 13h9l1-13M10.5 11v6M13.5 11v6"/></svg>'};
+function mkBtn(txt, label, fn){ const b = document.createElement('button'); b.type = 'button'; b.className = 'v150-btn'; if (ICONS[txt]) b.innerHTML = ICONS[txt]; else b.textContent = txt; b.title = label; b.setAttribute('aria-label', label); b.onclick = e => { e.stopPropagation(); fn(); }; return b; }
 function msgText(wrap){ return ((wrap.querySelector('.msg-text') || {}).textContent || '').trim(); }
 function v150Decorate(wrap, key, data){
   wrap.dataset.t = data.t || 0; wrap.dataset.u = data.u;
   if (currentSrv && !currentDm && myRank() >= 1){
     const m = document.createElement('span'); m.className = 'msg-mod';
-    m.appendChild(mkBtn('📌', 'Pin or unpin message', () => togglePin(key, wrap)));
-    if (data.u !== myUsername && RANK[roleOf(currentSrv.id, data.u)] < myRank()) m.appendChild(mkBtn('🗑', 'Delete message (moderator)', () => { logAudit('msg.delete', data.u + ': ' + msgText(wrap).slice(0, 40)); deleteMsg(key); }));
+    m.appendChild(mkBtn('pin', 'Pin or unpin message', () => togglePin(key, wrap)));
+    if (data.u !== myUsername && RANK[roleOf(currentSrv.id, data.u)] < myRank()) m.appendChild(mkBtn('trash', 'Delete message (moderator)', () => { logAudit('msg.delete', data.u + ': ' + msgText(wrap).slice(0, 40)); deleteMsg(key); }));
     wrap.appendChild(m);
   }
   if (currentDm && data.u === myUsername){ const st = document.createElement('span'); st.className = 'msg-status'; wrap.appendChild(st); paintReceipts(); }
@@ -4316,7 +4318,7 @@ async function paintPins(){
   if (!ks.length){ bar.style.display = 'none'; return; }
   pinIdx %= ks.length; const k = ks[pinIdx], p = pins[k], txt = p.enc ? await decryptMsg(p.text) : p.text;
   bar.textContent = ''; bar.style.display = 'flex';
-  const c = document.createElement('span'); c.textContent = '📌 ' + (pinIdx + 1) + '/' + ks.length;
+  const c = document.createElement('span'); c.innerHTML = ICONS.pin + ' ' + (pinIdx + 1) + '/' + ks.length;
   const t = document.createElement('span'); t.className = 'pb-t'; t.textContent = displayOf(p.u) + ': ' + txt;
   bar.append(c, t); if (ks.length > 1) bar.appendChild(mkBtn('›', 'Next pinned message', () => { pinIdx++; paintPins(); }));
   bar.onclick = () => { const el = document.querySelector('.msg[data-key="' + k + '"]'); if (el){ el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.background = 'var(--accent-dim)'; setTimeout(() => el.style.background = '', 1200); } else sysMsg('That pin is older than the loaded history.'); };
